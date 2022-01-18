@@ -5,7 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable
 
   has_many :documents, as: :owner, dependent: :destroy
-  
+  # Only if this user is an employee of the company
+  belongs_to :company
+
   ROLES = ["Advisor", "Employee", "Individual", "Institutional Investor", "Super"]
   
   def name

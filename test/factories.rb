@@ -1,4 +1,15 @@
 FactoryBot.define do
+  factory :investment do
+    investment_type { Investment::TYPES[rand(Investment::TYPES.length)] }
+    investor_company_id { Company.vcs.shuffle.first.id }
+    investee_company_id { Company.startups.shuffle.first.id }
+    investor_type { Investment::INVESTOR_TYPES[rand(Investment::INVESTOR_TYPES.length)] }
+    investment_instrument { Investment::INSTRUMENTS[rand(Investment::INSTRUMENTS.length)] }
+    quantity { rand(10) * 100 + rand(10) * 10 }
+    intial_value { quantity * rand(10) * 10 }
+    current_value {  }
+  end
+
   
   factory :user do
     first_name { Faker::Name.first_name }

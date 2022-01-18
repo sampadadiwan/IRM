@@ -1,0 +1,29 @@
+<tr id="<%= dom_id investment %>">
+<td>
+    <%= investment.investment_type %>
+</td>  
+<td>
+    <%= investment.investor.name %>
+</td>  
+<td>
+    <%= investment.investee.name %>
+</td>  
+<td>
+    <%= investment.investor_type %>
+</td>  
+<td>
+    <%= investment.investment_instrument %>
+</td>  
+<td>
+    <%= investment.quantity %>
+</td>  
+<td>
+    <%= number_to_currency(investment.intial_value, units: "INR")  %>
+</td>  
+<td>
+    <%= investment.current_value %>
+</td>  
+<td>
+  <%= link_to "Show", investment , {class: "btn btn-primary"}%>
+</td>
+</tr>

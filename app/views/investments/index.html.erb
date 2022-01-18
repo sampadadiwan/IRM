@@ -1,0 +1,44 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Investments</h1>
+  <%= link_to "New investment", new_investment_path, {class: "btn btn-primary"}  %>
+</div>
+
+<table id="investments" class="table table-bordered dataTable">
+
+  <tr>
+    <th>
+      <strong>Investment Type</strong>
+    </th>
+    <th>
+      <strong>Investor Company</strong>
+    </th>
+    <th>
+      <strong>Investee Company</strong>
+    </th>
+    <th>
+      <strong>Investor Type</strong>
+    </th>
+    <th>
+      <strong>Investment Instrument</strong>
+    </th>
+    <th>
+      <strong>Quantity</strong>
+    </th>
+    <th>
+      <strong>Intial Value</strong>
+    </th>
+    <th>
+      <strong>Current Value</strong>
+    </th>
+
+    <th>
+    <th>
+  </tr>
+
+  <% @investments.each do |investment| %>
+    <%= render investment %>
+  <% end %>
+</table>
+

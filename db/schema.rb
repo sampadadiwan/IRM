@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_18_054718) do
+ActiveRecord::Schema.define(version: 2022_01_18_072430) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -100,6 +100,21 @@ ActiveRecord::Schema.define(version: 2022_01_18_054718) do
     t.index ["owner_id", "owner_type"], name: "index_documents_on_owner_id_and_owner_type"
   end
 
+  create_table "investments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "investment_type", limit: 20
+    t.integer "investor_company_id"
+    t.integer "investee_company_id"
+    t.string "investor_type", limit: 20
+    t.string "investment_instrument", limit: 50
+    t.integer "quantity"
+    t.decimal "intial_value", precision: 10
+    t.decimal "current_value", precision: 10
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["investee_company_id"], name: "index_investments_on_investee_company_id"
+    t.index ["investor_company_id"], name: "index_investments_on_investor_company_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "first_name", limit: 80
     t.string "last_name", limit: 80
@@ -116,6 +131,8 @@ ActiveRecord::Schema.define(version: 2022_01_18_054718) do
     t.string "confirmation_token"
     t.datetime "confirmed_at", precision: 6
     t.datetime "confirmation_sent_at", precision: 6
+    t.integer "company_id"
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
