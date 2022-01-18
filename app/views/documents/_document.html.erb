@@ -1,0 +1,11 @@
+<tr id="<%= dom_id document %>">
+  <td>
+      <%= link_to document.name, document %>
+  </td>  
+  <td>
+      <%= document.doc_type %>
+  </td>  
+  <td>
+      <%= link_to document.owner.name, document.owner %>
+  </td>  
+</tr>

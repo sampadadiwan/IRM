@@ -1,0 +1,24 @@
+<p style="color: green"><%%= notice %></p>
+
+<table class="table table-bordered dataTable">
+
+    <% attributes.reject(&:password_digest?).each do |attribute| -%>
+      <tr>
+        <td>
+          <%= attribute.human_name.titleize %>
+        </td>
+        <td>
+          <%%= <%= singular_name %>.<%= attribute.column_name %> %>
+        </td>    
+      </tr>
+    <% end %>
+  
+</table>
+
+
+<div>
+  <%%= link_to "Edit", <%= edit_helper(type: :path) %>, {class: "btn btn-primary"} %> |
+  <%%= link_to "Back", <%= index_helper(type: :path) %>, {class: "btn btn-primary"} %> |
+
+  <%%= button_to "Delete", <%= model_resource_name(prefix: "@") %>, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+</div>

@@ -1,0 +1,49 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="card shadow mb-4">
+
+   <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary"><%= link_to @user.name, @user %></h6>
+   </div>
+
+   <div class="card-body">
+
+      <table id="users" class="table table-bordered dataTable">
+
+        <tr>
+          <td>
+            <strong>First name</strong>
+          </td>
+          <td>
+            <%=@user.first_name%>
+          </td>
+        </tr>
+        <tr>  
+          <td>
+            <strong>Last name</strong>
+          </td>
+        <td>
+            <%=@user.last_name%>
+          </td>
+        </tr>
+        <tr>  
+          <td>
+            <strong>Role</strong>
+          </td>
+          <td>
+            <%=@user.role%>
+          </td>
+        </tr>
+
+    </table>
+    
+    <div>
+      <%= link_to "Edit", edit_user_path(@user), {class: "btn btn-primary"} %> |
+      <%= link_to "Back", users_path, {class: "btn btn-primary"} %> |
+      <%= link_to "New Document", new_document_path(owner_id: @user.id, owner_type: "User"), {class: "btn btn-primary"}  %> 
+    </div>
+  </div>
+</div>
+
+<%= render "documents/index", documents: @user.documents %>
+<%= render "interests/index", interests: @user.interests %>

@@ -1,0 +1,68 @@
+
+div.field,
+div.actions {
+  margin-bottom: 10px; 
+  margin-top: 10px;
+}
+
+.pagination-sm {
+  .page-link {
+    font-size: 0.75rem !important;
+  }
+}
+
+.print_header {
+  width: 300px;
+}
+
+.rounded-square {
+  border-radius: 10% !important;
+  height: 5rem;
+  width: 5rem;
+  margin-left: -5px;
+} 
+
+#alert {
+  color: #df4e4e; 
+  text-align: center;
+  display: table;
+  margin: 0 auto;
+}
+
+.field_with_errors {
+  padding: 1px;
+  color: rgb(233, 105, 105);
+  input {
+    border: 1px solid rgb(233, 105, 105);
+  }
+  display: table; 
+}
+
+#error_explanation {
+  width: 450px;
+  border: 1px solid rgb(233, 105, 105);
+  padding: 7px 7px 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0; }
+
+#error_explanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px -7px 0;
+  background-color: rgb(233, 105, 105);
+  color: black;
+}
+
+#error_explanation ul li {
+  font-size: 12px;
+  list-style: square; }
+
+label {
+  display: block; }
+
+
+input[type="file" i] {
+  height: calc(1.5em + .75rem + 7px);
+}

@@ -1,0 +1,25 @@
+
+<tr id="<%= dom_id company %>">
+<td>
+    <%= image_tag(company.logo_url, class: "logo_url") %>
+  </td>  
+<td>
+    <%= link_to company.name, company %>
+  </td>  
+<td>
+    <%= link_to company.url, company.url %>
+  </td>  
+<td>
+    <%= company.category %>
+  </td>  
+<td>
+    <%= company.founded %>
+  </td>  
+<td>
+    <%= company.funding_amount %>, <%= company.funding_unit %>
+  </td>  
+
+<td>
+    <%= company.company_type %>
+  </td>  
+</tr>

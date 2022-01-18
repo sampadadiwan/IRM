@@ -1,0 +1,37 @@
+<%= form_with(model: document) do |form| %>
+  <% if document.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(document.errors.count, "error") %> prohibited this document from being saved:</h2>
+
+      <ul>
+        <% document.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :doc_type %>
+    <%= form.select :doc_type, Document::USER_TYPES, {}, {class: "form-control"} %>
+  </div>
+
+  <div class="field" class="form-group">
+    <%= form.label :file %>
+    <%= form.file_field :file, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.number_field :owner_id, class: "form-control", hidden: true  %>
+    <%= form.text_field :owner_type, class: "form-control", hidden: true  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>

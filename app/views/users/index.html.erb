@@ -1,0 +1,25 @@
+<p style="color: green"><%= notice %></p>
+
+<h1 class="h3 mb-0 text-gray-800">Users</h1>
+
+<table id="users" class="table table-bordered dataTable">
+
+  <tr>
+    <th>
+      <strong>First name</strong>
+    </th>
+
+    <th>
+      <strong>Last name</strong>
+    </th>
+
+    <th>
+      <strong>Role</strong>
+    </th>
+  </tr>
+
+
+  <% @users.each do |user| %>
+    <%= render user %>    
+  <% end %>
+</table>

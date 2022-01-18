@@ -1,0 +1,72 @@
+<p style="color: green;text-align: center"><%= notice %></p>
+
+<div class="card shadow mb-4">
+
+   <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary"><%= link_to @company.name, @company %></h6>
+   </div>
+
+   <div class="card-body">
+
+      <table class="table table-bordered dataTable">
+         <tr id="<%= dom_id @company %>">
+            <td>
+               <strong>Logo</strong>
+            </td>
+            <td>
+               <%= image_tag(@company.logo_url, class: "logo_url") %>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <strong>Url</strong>
+            </td>
+            <td>
+               <%= link_to @company.url, @company.url %>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <strong>Category</strong>
+            </td>
+            <td>
+               <%= @company.category %>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <strong>Founded</strong>
+            </td>
+            <td>
+               <%= @company.founded %>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <strong>Funding</strong>
+            </td>
+            <td>
+               <%= @company.funding_amount %>, <%= @company.funding_unit %>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <strong>Details</strong>
+            </td>
+            <td>
+               <%= @company.details %>
+            </td>
+         </tr>
+      </table>
+      <div>
+         <%= link_to "Edit", edit_company_path(@company), {class: "btn btn-primary"} %> |
+         <%= link_to "Back", companies_path, {class: "btn btn-primary"} %> |
+         <%= link_to "New Document", new_document_path(owner_id: @company.id, owner_type: "Company"), {class: "btn btn-primary"}  %> |
+
+         <%= button_to "Delete", @company, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+      </div>
+   </div>
+</div>
+
+<%= render "documents/index", documents: @company.documents %>
+<%= render "interests/index", interests: @company.interests %>

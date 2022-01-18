@@ -1,0 +1,46 @@
+<%= render "/companies/stats" %>
+
+<span>
+  <span id="notice"><%= notice %></span>
+  <span id="alert"><%= alert %></span>
+</span>
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Companies</h1>
+  <%= link_to "New Company", new_company_path, {class: "btn btn-primary"} %>
+</div>
+
+
+<table id="companies" class="table table-bordered dataTable">
+  <tr>
+    <th>
+      <strong>Logo</strong>
+    </th>
+    <th>
+      <strong>Name</strong>
+    </th>
+    <th>
+      <strong>Url</strong>
+    </th>
+    <th>
+      <strong>Category</strong>
+    </th>
+    <th>
+      <strong>Founded</strong>
+    </th>
+    <th>
+      <strong>Funding</strong>
+    </th>
+    <th>
+      <strong>Type</strong>
+    </th>
+  
+  </tr>
+
+
+  <% @companies.each do |company| %>
+    <%= render company %>
+  <% end %>
+</table>
+
+

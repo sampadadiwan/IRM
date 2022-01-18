@@ -1,0 +1,25 @@
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Documents</h1>
+</div>
+
+<table id="documents" class="table table-bordered dataTable">
+
+  <tr>
+    <th>
+      <strong>Name</strong>
+    </th>
+    <th>
+      <strong>Doc Type</strong>
+    </th>
+    <th>
+      <strong>Owner</strong>
+    </th>
+  
+  </tr>
+
+  <% documents.each do |document| %>
+    <%= render document %>
+  <% end %>
+</table>
+
