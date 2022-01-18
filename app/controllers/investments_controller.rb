@@ -3,7 +3,14 @@ class InvestmentsController < ApplicationController
 
   # GET /investments or /investments.json
   def index
-    @investments = Investment.all
+    if(params[:prospective].present?)
+      @investments = Investment.prospective
+    elsif(params[:all].present?)
+      @investments = Investment.all
+    else
+      params[:shareholders] = true
+      @investments = Investment.shareholders
+    end
   end
 
   # GET /investments/1 or /investments/1.json

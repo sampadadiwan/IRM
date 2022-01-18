@@ -20,19 +20,20 @@
     <th>
       <strong>Investor Type</strong>
     </th>
-    <th>
-      <strong>Investment Instrument</strong>
-    </th>
-    <th>
-      <strong>Quantity</strong>
-    </th>
-    <th>
-      <strong>Intial Value</strong>
-    </th>
-    <th>
-      <strong>Current Value</strong>
-    </th>
-
+    <% if !params[:prospective] %>
+      <th>
+        <strong>Investment Instrument</strong>
+      </th>
+      <th>
+        <strong>Quantity</strong>
+      </th>
+      <th>
+        <strong>Intial Value</strong>
+      </th>
+      <th>
+        <strong>Current Value</strong>
+      </th>
+    <% end %>
     <th>
     <th>
   </tr>

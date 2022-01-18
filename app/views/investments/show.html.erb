@@ -1,79 +1,74 @@
 <p style="color: green"><%= notice %></p>
-
 <table class="table table-bordered dataTable">
-
-          <tr>
-        <td>
-          Investment Type
-        </td>
-        <td>
-          <%= @investment.investment_type %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Investor Company
-        </td>
-        <td>
-          <%= @investment.investor.name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Investee Company
-        </td>
-        <td>
-          <%= @investment.investee.name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Investor Type
-        </td>
-        <td>
-          <%= @investment.investor_type %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Investment Instrument
-        </td>
-        <td>
-          <%= @investment.investment_instrument %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Quantity
-        </td>
-        <td>
-          <%= @investment.quantity %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Intial Value
-        </td>
-        <td>
-          <%= @investment.intial_value %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Current Value
-        </td>
-        <td>
-          <%= @investment.current_value %>
-        </td>    
-      </tr>
-    
-  
+   <tr>
+      <td>
+         Investment Type
+      </td>
+      <td>
+         <%= @investment.investment_type %>
+      </td>
+   </tr>
+   <tr>
+      <td>
+         Investor Company
+      </td>
+      <td>
+         <%= @investment.investor.name %>
+      </td>
+   </tr>
+   <tr>
+      <td>
+         Investee Company
+      </td>
+      <td>
+         <%= @investment.investee.name %>
+      </td>
+   </tr>
+   <tr>
+      <td>
+         Investor Type
+      </td>
+      <td>
+         <%= @investment.investor_type %>
+      </td>
+   </tr>
+   <% if @investment.investor_type != "Prospective" %>
+   <tr>
+      <td>
+         Investment Instrument
+      </td>
+      <td>
+         <%= @investment.investment_instrument %>
+      </td>
+   </tr>
+   <tr>
+      <td>
+         Quantity
+      </td>
+      <td>
+         <%= @investment.quantity %>
+      </td>
+   </tr>
+   <tr>
+      <td>
+         Intial Value
+      </td>
+      <td>
+         <%= @investment.intial_value %>
+      </td>
+   </tr>
+   <tr>
+      <td>
+         Current Value
+      </td>
+      <td>
+         <%= @investment.current_value %>
+      </td>
+   </tr>
+   <% end %>
 </table>
-
-
 <div>
-  <%= link_to "Edit", edit_investment_path(@investment), {class: "btn btn-primary"} %> |
-  <%= link_to "Back", investments_path, {class: "btn btn-primary"} %> |
-
-  <%= button_to "Delete", @investment, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+   <%= link_to "Edit", edit_investment_path(@investment), {class: "btn btn-primary"} %> |
+   <%= link_to "Back", investments_path, {class: "btn btn-primary"} %> |
+   <%= button_to "Delete", @investment, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
 </div>

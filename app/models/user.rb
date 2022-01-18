@@ -8,7 +8,7 @@ class User < ApplicationRecord
   # Only if this user is an employee of the company
   belongs_to :company
 
-  ROLES = ["Advisor", "Employee", "Individual", "Institutional Investor", "Super"]
+  ROLES = ["Advisor", "Employee", "Individual", "Institutional Investor", "Super", "CxO"]
   
   def name
     first_name + " " + last_name

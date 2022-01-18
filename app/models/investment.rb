@@ -5,4 +5,8 @@ class Investment < ApplicationRecord
     TYPES = ["Series A", "Series B", "Series C"]
     INSTRUMENTS = ["Equity", "Preferred", "Debt"]
     INVESTOR_TYPES = ["Shareholder", "Prospective"]
+
+    scope :prospective, -> { where(investor_type: "Prospective") }
+    scope :shareholders, -> { where(investor_type: "Shareholder") }
+
 end
