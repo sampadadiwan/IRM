@@ -8,7 +8,7 @@ class User < ApplicationRecord
   # Only if this user is an employee of the company
   belongs_to :company
 
-  ROLES = ["Advisor", "Employee", "Individual", "Institutional Investor", "Super", "CxO"]
+  ROLES = ["Employee", "Super", "CxO", "CompanyAdmin"]
   
   def name
     first_name + " " + last_name
@@ -21,7 +21,11 @@ class User < ApplicationRecord
   end
 
   def setup_role
-    self.role = "User"
+    self.role = "Employee"
+  end
+
+  def is_super?
+    self.role == "Super"
   end
 
   def send_devise_notification(notification, *args)
