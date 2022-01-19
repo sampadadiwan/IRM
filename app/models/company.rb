@@ -4,7 +4,6 @@ class Company < ApplicationRecord
   # Will have many employees
   has_many :employees, foreign_key: "company_id", class_name: "User"
 
-
   TYPES = ["VC", "Startup"]
 
   scope :vcs, -> { where(company_type: "VC") }

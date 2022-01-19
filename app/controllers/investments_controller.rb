@@ -11,6 +11,8 @@ class InvestmentsController < ApplicationController
       params[:shareholders] = true
       @investments = @investments.shareholders
     end
+
+    @investments = @investments.order(initial_value: :desc)
   end
 
   # GET /investments/1 or /investments/1.json

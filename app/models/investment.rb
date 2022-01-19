@@ -1,7 +1,8 @@
 class Investment < ApplicationRecord
     belongs_to :investor, foreign_key: "investor_company_id", class_name: "Company"
-    belongs_to :investee, foreign_key: "investee_company_id", class_name: "Company"
+    belongs_to :investee, foreign_key: "investee_company_id", class_name: "Company"    
 
+    # encrypts :quantity, :initial_value 
 
     TYPES = ENV["INVESTMENT_TYPES"].split(",")
     INSTRUMENTS = ENV["INVESTMENT_INSTRUMENTS"].split(",")

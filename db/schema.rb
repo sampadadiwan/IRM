@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 2022_01_19_051001) do
   create_table "companies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "url"
-    t.string "category", limit: 30
+    t.string "category", limit: 50
     t.date "founded"
     t.float "funding_amount"
     t.string "funding_unit", limit: 10
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 2022_01_19_051001) do
 
   create_table "documents", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 100
-    t.string "doc_type", default: "--- []\n"
+    t.string "visible_to", default: "--- []\n"
     t.string "text", default: "--- []\n"
     t.integer "owner_id"
     t.string "owner_type", limit: 20
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 2022_01_19_051001) do
     t.string "investor_type", limit: 20
     t.string "investment_instrument", limit: 50
     t.integer "quantity"
-    t.decimal "intial_value", precision: 10
+    t.decimal "initial_value", precision: 10
     t.decimal "current_value", precision: 10
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
