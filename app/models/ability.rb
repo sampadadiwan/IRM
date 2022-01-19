@@ -9,11 +9,11 @@ class Ability
     user ||= User.new # guest user (not logged in)
     if user.role == "Super"
       can :manage, :all
-    elsif user.role == "User"
-      can :read, Company
-      can :read, Document, owner_type: "Company"
-      can :manage, User, id: user.id
-      can :manage, Document, owner_id: user.id
+    elsif user.role == "CxO"
+      can :manage, Company, id: user.company_id 
+      can :manage, Document, owner_type: "Company", owner_id: user.company_id
+      can :manage, User, company_id: user.company_id
+      can :manage, Investment, investee_company_id: user.company_id
     else
       can :read, Company
     end

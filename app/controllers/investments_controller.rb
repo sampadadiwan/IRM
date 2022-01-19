@@ -1,15 +1,15 @@
 class InvestmentsController < ApplicationController
-  before_action :set_investment, only: %i[ show edit update destroy ]
+  load_and_authorize_resource
 
   # GET /investments or /investments.json
   def index
     if(params[:prospective].present?)
-      @investments = Investment.prospective
+      @investments = @investments.prospective
     elsif(params[:all].present?)
-      @investments = Investment.all
+      @investments = @investments
     else
       params[:shareholders] = true
-      @investments = Investment.shareholders
+      @investments = @investments.shareholders
     end
   end
 
@@ -29,6 +29,7 @@ class InvestmentsController < ApplicationController
   # POST /investments or /investments.json
   def create
     @investment = Investment.new(investment_params)
+    @investment.investee_company_id = current_user.company_id if !current_user.is_super?
 
     respond_to do |format|
       if @investment.save
@@ -72,6 +73,8 @@ class InvestmentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def investment_params
-      params.require(:investment).permit(:investment_type, :investor_company_id, :investee_company_id, :investor_type, :investment_instrument, :quantity, :intial_value, :current_value)
+      params.require(:investment).permit(:investment_type, :investor_company_id, 
+        :investee_company_id, :investor_type, :investment_instrument, :quantity, 
+        :category, :intial_value, :current_value)
     end
 end

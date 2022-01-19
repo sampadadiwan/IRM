@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_18_072430) do
+ActiveRecord::Schema.define(version: 2022_01_19_051001) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -92,7 +92,8 @@ ActiveRecord::Schema.define(version: 2022_01_18_072430) do
 
   create_table "documents", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 100
-    t.string "doc_type", limit: 20
+    t.string "doc_type", default: "--- []\n"
+    t.string "text", default: "--- []\n"
     t.integer "owner_id"
     t.string "owner_type", limit: 20
     t.datetime "created_at", precision: 6, null: false
@@ -111,6 +112,7 @@ ActiveRecord::Schema.define(version: 2022_01_18_072430) do
     t.decimal "current_value", precision: 10
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "category", limit: 25
     t.index ["investee_company_id"], name: "index_investments_on_investee_company_id"
     t.index ["investor_company_id"], name: "index_investments_on_investor_company_id"
   end

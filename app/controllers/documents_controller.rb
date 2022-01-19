@@ -12,7 +12,6 @@ class DocumentsController < ApplicationController
 
   # GET /documents/new
   def new
-    @document = Document.new(owner_id: params[:owner_id], owner_type: params[:owner_type])
   end
 
   # GET /documents/1/edit
@@ -22,6 +21,8 @@ class DocumentsController < ApplicationController
   # POST /documents or /documents.json
   def create
     @document = Document.new(document_params)
+    @document.owner_id = current_user.company_id
+    @document.owner_type = "Company"
 
     respond_to do |format|
       if @document.save
@@ -65,6 +66,6 @@ class DocumentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def document_params
-      params.require(:document).permit(:name, :doc_type, :owner_id, :owner_type, :file)
+      params.require(:document).permit(:name,:owner_id, :owner_type, :file, :doc_type=>[])
     end
 end

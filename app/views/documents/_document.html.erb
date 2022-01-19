@@ -3,7 +3,7 @@
       <%= link_to document.name, document %>
   </td>  
   <td>
-      <%= document.doc_type %>
+      <%= document.doc_type.join(", ") %>
   </td>  
   <td>
       <%= link_to document.owner.name, document.owner %>

@@ -19,6 +19,7 @@ FactoryBot.define do
     phone { Faker::PhoneNumber.cell_phone }
     role { User::ROLES[rand(User::ROLES.length)] }
     confirmed_at {Time.now}
+    company {Company.all.shuffle.first}
   end
 
   factory :company do

@@ -92,6 +92,9 @@ GEM
       responders
       warden (~> 1.2.3)
     dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     erubi (1.10.0)
     exception_notification (4.1.1)
       actionmailer (>= 3.0.4)
@@ -266,7 +269,7 @@ DEPENDENCIES
   capybara
   debug
   devise
-  dotenv
+  dotenv-rails
   exception_notification
   factory_bot_rails
   faker

@@ -32,7 +32,7 @@ gem "redis", "~> 4.0"
 
 gem 'devise'
 gem 'cancancan'
-gem 'dotenv'
+gem 'dotenv-rails'
 gem 'sidekiq'
 gem 'exception_notification'
 gem 'sassc-rails' 

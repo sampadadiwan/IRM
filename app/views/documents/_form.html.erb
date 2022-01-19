@@ -18,7 +18,7 @@
 
   <div class="form-group">
     <%= form.label :doc_type %>
-    <%= form.select :doc_type, Document::USER_TYPES, {}, {class: "form-control"} %>
+    <%= form.select :doc_type, Investment::CATEGORIES, {}, {class: "form-control", multiple: true} %>
   </div>
 
   <div class="field" class="form-group">
