@@ -21,12 +21,16 @@ class User < ApplicationRecord
 
   before_create :setup_role
 
+  def name
+    self.full_name
+  end
+
   def full_name
     first_name + " " + last_name
   end
 
   def setup_role
-    self.role = "Employee"
+    self.role ||= "Employee"
   end
 
   def is_super?

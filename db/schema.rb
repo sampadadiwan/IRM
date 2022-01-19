@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_19_074153) do
+ActiveRecord::Schema.define(version: 2022_01_19_094920) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 2022_01_19_074153) do
   create_table "companies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "url"
-    t.string "category", limit: 30
+    t.string "category", limit: 100
     t.date "founded"
     t.float "funding_amount"
     t.string "funding_unit", limit: 10
@@ -88,6 +88,15 @@ ActiveRecord::Schema.define(version: 2022_01_19_074153) do
     t.text "logo_url"
     t.boolean "active", default: true
     t.string "company_type", limit: 15
+  end
+
+  create_table "doc_visibilities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "document_id"
+    t.string "visiblity_type", limit: 30
+    t.string "to"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["document_id"], name: "index_doc_visibilities_on_document_id"
   end
 
   create_table "documents", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -103,28 +112,30 @@ ActiveRecord::Schema.define(version: 2022_01_19_074153) do
 
   create_table "investments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "investment_type", limit: 20
-    t.integer "investor_company_id"
-    t.integer "investee_company_id"
+    t.integer "investor_id"
     t.string "investor_type", limit: 20
+    t.integer "investee_company_id"
+    t.string "status", limit: 20
     t.string "investment_instrument", limit: 50
     t.integer "quantity"
-    t.decimal "initial_value", precision: 10
-    t.decimal "current_value", precision: 10
+    t.decimal "initial_value", precision: 2
+    t.decimal "current_value", precision: 2
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "category", limit: 25
     t.index ["investee_company_id"], name: "index_investments_on_investee_company_id"
-    t.index ["investor_company_id"], name: "index_investments_on_investor_company_id"
+    t.index ["investor_id", "investor_type"], name: "index_investments_on_investor"
   end
 
   create_table "investors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "investor_company_id"
+    t.integer "investor_id"
+    t.string "investor_type", limit: 20
     t.integer "investee_company_id"
     t.string "category", limit: 50
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["investee_company_id"], name: "index_investors_on_investee_company_id"
-    t.index ["investor_company_id"], name: "index_investors_on_investor_company_id"
+    t.index ["investor_id", "investor_type"], name: "index_investors_on_investor"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

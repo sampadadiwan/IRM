@@ -65,6 +65,6 @@ class InvestorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def investor_params
-      params.require(:investor).permit(:investor_company_id, :investee_company_id, :category)
+      params.require(:investor).permit(:investor_id, :investor_type, :investee_company_id, :category)
     end
 end

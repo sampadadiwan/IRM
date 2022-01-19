@@ -3,15 +3,6 @@ class InvestmentsController < ApplicationController
 
   # GET /investments or /investments.json
   def index
-    if(params[:prospective].present?)
-      @investments = @investments.prospective
-    elsif(params[:all].present?)
-      @investments = @investments
-    else
-      params[:shareholders] = true
-      @investments = @investments.shareholders
-    end
-
     @investments = @investments.order(initial_value: :desc)
   end
 
@@ -75,8 +66,8 @@ class InvestmentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def investment_params
-      params.require(:investment).permit(:investment_type, :investor_company_id, 
+      params.require(:investment).permit(:investment_type, :investor_id, 
         :investee_company_id, :investor_type, :investment_instrument, :quantity, 
-        :category, :initial_value, :current_value)
+        :category, :initial_value, :current_value, :status)
     end
 end

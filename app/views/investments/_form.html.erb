@@ -13,8 +13,9 @@
 
   
   <div class="form-group">
-    <%= form.label :investor_company_id %>
-    <%= form.select :investor_company_id, Company.vcs.map{|c| [c.name, c.id]}, {include_blank: true}, {class: "form-control"} %>
+    <%= form.label :investor %>
+    <%= form.select :investor_id, Company.vcs.map{|c| [c.name, c.id]}, {include_blank: true}, {class: "form-control"} %>
+    <%= form.text_field :investor_type, class: "form-control", hidden: true, value: "Company"  %>
   </div>
 
   <% if current_user.role == "Super" %>
@@ -24,10 +25,6 @@
   </div>
   <% end %>
 
-  <div class="form-group">
-    <%= form.label :investor_type %>
-    <%= form.select :investor_type, Investment::INVESTOR_TYPES , {}, {class: "form-control"} %>
-  </div>
 
   <div class="form-group">
     <%= form.label :category %>

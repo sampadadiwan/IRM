@@ -9,7 +9,7 @@ class DocumentsController < ApplicationController
           investor = c.investors.where(investor_company_id: current_user.company_id).first
           if investor.present?
             @documents = Document.where(owner_type: "Company", owner_id:params[:company_id])            
-            @documents = @documents.where("c.category = ANY(visible_to)").includes(:owner) 
+            @documents = @documents.select{|doc| doc.visible_to.include?(c.categoty)}
           end
         end
       end

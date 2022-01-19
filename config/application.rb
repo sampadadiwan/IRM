@@ -24,6 +24,9 @@ module InvestorRelationshipManagement
       Devise::Mailer.layout "mailer" # simple.haml or simple.erb
     end
 
+    config.time_zone = 'New Delhi'
+    config.active_record.default_timezone = :local
+
     config.secret_key_base = ENV['SECRET_KEY_BASE']
 
     config.active_job.queue_adapter = :sidekiq

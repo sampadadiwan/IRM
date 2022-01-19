@@ -34,3 +34,13 @@ en:
       format:
         format: "%n %u"
         unit: "INR"
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%b %d"
+      long: "%B %d, %Y"
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%b %d"
+      long: "%B %d, %Y"

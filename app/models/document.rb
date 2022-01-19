@@ -3,7 +3,7 @@ class Document < ApplicationRecord
     has_one_attached :file
     serialize :visible_to
     before_validation :sanitize_visible_tos
-
+    has_many :doc_visibilities, dependent: :destroy
 
     USER_TYPES = ["ID Proof", "Bank Statement"]
     COMPANY_TYPES = [""]

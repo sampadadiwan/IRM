@@ -1,4 +1,10 @@
 FactoryBot.define do
+  factory :doc_visibility do
+    document_id { 1 }
+    visiblity_type { "MyString" }
+    to { "MyString" }
+  end
+
   factory :investor do
     investor_company_id { 1 }
     investee_company_id { 1 }
@@ -7,12 +13,12 @@ FactoryBot.define do
 
   factory :investment do
     investment_type { Investment::TYPES[rand(Investment::TYPES.length)] }
-    investor_company_id { Company.vcs.shuffle.first.id }
+    investor { Company.vcs.shuffle.first }
     investee_company_id { Company.startups.shuffle.first.id }
-    investor_type { Investment::INVESTOR_TYPES[rand(Investment::INVESTOR_TYPES.length)] }
     investment_instrument { Investment::INSTRUMENTS[rand(Investment::INSTRUMENTS.length)] }
+    category { Investment::CATEGORIES[rand(Investment::CATEGORIES.length)] }
     quantity { rand(10) * 100 + rand(10) * 10 }
-    intial_value { quantity * rand(10) * 10 }
+    initial_value { quantity * rand(10) * 10 }
     current_value {  }
   end
 

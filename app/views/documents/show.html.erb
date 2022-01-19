@@ -10,10 +10,10 @@
    </tr>
    <tr>
       <td>
-         Visible To
+         Created
       </td>
       <td>
-         <%= @document.visible_to.join(", ") %>
+         <%= l @document.created_at, format: :default %>
    </tr>
    <tr>
       </td>    
@@ -33,8 +33,17 @@
       </td>
    </tr>
 </table>
-<div>
-   <%= link_to "Edit", edit_document_path(@document), {class: "btn btn-primary"} %> |
-   <%= link_to "Back", documents_path, {class: "btn btn-primary"} %> |
-   <%= button_to "Delete", @document, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
-</div>
+
+<turbo-frame>
+
+   <div>
+      <%= link_to "Edit", edit_document_path(@document), {class: "btn btn-primary"} %> |
+      <%= link_to "Back", documents_path, {class: "btn btn-primary"} %> |
+      <%= button_to "Delete", @document, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+      <%= link_to "Share", new_doc_visibility_path("doc_visibility[document_id]": @document.id), {class: "btn btn-primary"} %> |
+   </div>
+
+   <div id="new_doc_visibility"></div>
+   <%= render "/doc_visibilities/index", doc_visibilities: @document.doc_visibilities %>
+
+</turbo-frame>
