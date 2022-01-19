@@ -3,7 +3,16 @@ class DocumentsController < ApplicationController
 
   # GET /documents or /documents.json
   def index
-    @documents.includes(:owner)
+      if params[:company_id].present? && current_user.company_id != params[:company_id].to_i
+        c = Company.find(params[:company_id])
+        if c.present? 
+          investor = c.investors.where(investor_company_id: current_user.company_id).first
+          if investor.present?
+            @documents = Document.where(owner_type: "Company", owner_id:params[:company_id])            
+            @documents = @documents.where("c.category = ANY(visible_to)").includes(:owner) 
+          end
+        end
+      end
   end
 
   # GET /documents/1 or /documents/1.json

@@ -1,0 +1,28 @@
+<tr>
+  <th>
+    <strong>Investor Company</strong>
+  </th>
+  <th>
+    <strong>Investee Company</strong>
+  </th>
+  <th>
+    <strong>Category</strong>
+  </th>
+
+  <th>
+  <th>
+</tr>
+<tr id="<%= dom_id investor %>">
+<td>
+    <%= investor.investor_company.name %>
+</td>  
+<td>
+    <%= investor.investee_company.name %>
+</td>  
+<td>
+    <%= investor.category %>
+</td>  
+<td>
+  <%= link_to "Show", investor , {class: "btn btn-primary"}%>
+</td>
+</tr>

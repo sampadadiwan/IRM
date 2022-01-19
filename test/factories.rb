@@ -1,4 +1,10 @@
 FactoryBot.define do
+  factory :investor do
+    investor_company_id { 1 }
+    investee_company_id { 1 }
+    category { "MyString" }
+  end
+
   factory :investment do
     investment_type { Investment::TYPES[rand(Investment::TYPES.length)] }
     investor_company_id { Company.vcs.shuffle.first.id }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_19_051001) do
+ActiveRecord::Schema.define(version: 2022_01_19_074153) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 2022_01_19_051001) do
   create_table "companies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "url"
-    t.string "category", limit: 50
+    t.string "category", limit: 30
     t.date "founded"
     t.float "funding_amount"
     t.string "funding_unit", limit: 10
@@ -115,6 +115,16 @@ ActiveRecord::Schema.define(version: 2022_01_19_051001) do
     t.string "category", limit: 25
     t.index ["investee_company_id"], name: "index_investments_on_investee_company_id"
     t.index ["investor_company_id"], name: "index_investments_on_investor_company_id"
+  end
+
+  create_table "investors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "investor_company_id"
+    t.integer "investee_company_id"
+    t.string "category", limit: 50
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["investee_company_id"], name: "index_investors_on_investee_company_id"
+    t.index ["investor_company_id"], name: "index_investors_on_investor_company_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

@@ -7,7 +7,7 @@ class Document < ApplicationRecord
 
     USER_TYPES = ["ID Proof", "Bank Statement"]
     COMPANY_TYPES = [""]
-
+    
 
     def sanitize_visible_tos
         self.visible_to = visible_to.reject(&:blank?)&.uniq

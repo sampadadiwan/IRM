@@ -1,0 +1,12 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Investors</h1>
+</div>
+
+<table id="investors" class="table table-bordered dataTable">
+  <% @investors.each do |investor| %>
+    <%= render investor %>
+  <% end %>
+</table>
+

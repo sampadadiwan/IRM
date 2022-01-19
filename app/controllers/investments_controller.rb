@@ -77,6 +77,6 @@ class InvestmentsController < ApplicationController
     def investment_params
       params.require(:investment).permit(:investment_type, :investor_company_id, 
         :investee_company_id, :investor_type, :investment_instrument, :quantity, 
-        :category, :intial_value, :current_value)
+        :category, :initial_value, :current_value)
     end
 end

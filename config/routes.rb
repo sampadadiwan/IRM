@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :investors
   resources :investments
   resources :documents
   resources :interests

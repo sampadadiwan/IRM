@@ -8,8 +8,13 @@ class User < ApplicationRecord
   # Only if this user is an employee of the company
   belongs_to :company
 
-  ROLES = ["Employee", "Super", "CxO", "CompanyAdmin"]
+  ROLES = ["Employee", "Super", "CxO", "Admin"]
   
+  scope :cxos, -> { where(role: "CxO") }
+  scope :admins, -> { where(role: "Admin") }
+  scope :employees, -> { where(role: "Employee") }
+
+
   def name
     first_name + " " + last_name
   end

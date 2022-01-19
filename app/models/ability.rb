@@ -14,6 +14,21 @@ class Ability
       can :manage, Document, owner_type: "Company", owner_id: user.company_id
       can :manage, User, company_id: user.company_id
       can :manage, Investment, investee_company_id: user.company_id
+      can :read, Investor, investee_company_id: user.company_id
+    elsif user.role == "Admin"
+      can :manage, Company, id: user.company_id 
+      can :manage, Document, owner_type: "Company", owner_id: user.company_id
+      can :manage, User, company_id: user.company_id
+      can :read, Investment, investee_company_id: user.company_id
+      can :read, Investor, investee_company_id: user.company_id
+    elsif user.role == "Employee"
+      can :read, Company 
+      can :show, Document do |doc|
+        false
+      end
+      can :index, Document
+      can :read, Investment, investor_company_id: user.company_id
+      can :read, Investor, investor_company_id: user.company_id
     else
       can :read, Company
     end
