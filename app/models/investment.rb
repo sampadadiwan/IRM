@@ -1,4 +1,6 @@
 class Investment < ApplicationRecord
+    ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
+    
     belongs_to :investor, polymorphic: true
     belongs_to :investee_company, foreign_key: "investee_company_id", class_name: "Company"    
 
@@ -36,4 +38,7 @@ class Investment < ApplicationRecord
             investee_company_id: self.investee_company_id).first
     end
 
+    def investment_type_sq
+        self.investment_type.delete(' ')
+    end
 end

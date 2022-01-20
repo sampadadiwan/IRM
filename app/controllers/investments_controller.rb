@@ -1,10 +1,22 @@
 class InvestmentsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => ["search"]
 
   # GET /investments or /investments.json
   def index
     @investments = @investments.order(initial_value: :desc)
   end
+
+  def search
+    params[:query] = params[:query].delete(' ') if params[:query].present? && params[:query].include?("Series")
+    if current_user.is_super?
+      @investments = Investment.search(params[:query], :star => true)
+    else
+      @investments = Investment.search(params[:query], :star => true, with: {:investee_company_id => current_user.company_id})
+    end
+
+    render "index"
+  end
+
 
   # GET /investments/1 or /investments/1.json
   def show

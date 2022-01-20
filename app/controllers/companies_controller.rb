@@ -1,10 +1,21 @@
 class CompaniesController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => ["search"]
 
 
   # GET /companies or /companies.json
   def index
   end
+
+  def search
+    if current_user.is_super?
+      @companies = Company.search(params[:query], :star => true)
+    else
+      @companies = Company.search(params[:query], :star => true, :with => {:id => current_user.company_id})
+    end
+
+    render "index"
+  end
+
 
   # GET /companies/1 or /companies/1.json
   def show; end

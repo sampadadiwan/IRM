@@ -1,9 +1,19 @@
 class InvestorsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => ["search"]
 
   # GET /investors or /investors.json
   def index
     @investors = @investors.order(:category)
+  end
+
+  def search
+    if current_user.is_super?
+      @investors = Investor.search(params[:query], :star => true)
+    else
+      @investors = Investor.search(params[:query], :star => true, with: {:investee_company_id => current_user.company_id})
+    end
+
+    render "index"
   end
 
   # GET /investors/1 or /investors/1.json

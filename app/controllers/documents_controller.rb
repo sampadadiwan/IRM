@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => ["search"]
 
   # GET /documents or /documents.json
   def index
@@ -14,6 +14,17 @@ class DocumentsController < ApplicationController
         end
       end
   end
+
+  def search
+    if current_user.is_super?
+      @documents = Document.search(params[:query], :star => true)
+    else
+      @documents = Document.search(params[:query], :star => true, with: {:owner_id => current_user.company_id})
+    end
+
+    render "index"
+  end
+
 
   # GET /documents/1 or /documents/1.json
   def show

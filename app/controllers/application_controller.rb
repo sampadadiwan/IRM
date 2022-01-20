@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
-
+  before_action :set_search_controller
   before_action :configure_permitted_parameters, if: :devise_controller?
   # skip_before_action :verify_authenticity_token, if: lambda { ENV["skip_authenticity_token"].present? }
 
@@ -21,9 +21,9 @@ class ApplicationController < ActionController::Base
   private
 
   def prepare_exception_notifier
-    # request.env["exception_notifier.exception_data"] = {
-    #   current_user: current_user
-    # }
+    request.env["exception_notifier.exception_data"] = {
+      current_user: current_user
+    }
   end
 
 

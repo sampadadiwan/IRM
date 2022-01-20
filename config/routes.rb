@@ -1,12 +1,28 @@
 Rails.application.routes.draw do
   resources :doc_accesses
-  resources :investors
-  resources :investments
-  resources :documents
+  resources :investors do
+    get 'search', on: :collection
+  end
+  
+  resources :investments do
+    get 'search', on: :collection
+  end
+
+  resources :documents do
+    get 'search', on: :collection
+  end
+
   resources :interests
+  
   devise_for :users
-  resources :companies
-  resources :users
+  resources :companies do
+    get 'search', on: :collection
+  end
+
+  resources :users do
+    get 'search', on: :collection
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

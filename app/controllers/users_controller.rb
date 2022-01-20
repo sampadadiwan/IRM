@@ -1,9 +1,20 @@
 class UsersController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => ["search"]
 
   # GET /users or /users.json
   def index
   end
+
+  def search
+    if current_user.is_super?
+      @users = User.search(params[:query], :star => true)
+    else
+      @users = User.search(params[:query], :star => true, :with => {:company_id => current_user.company_id})
+    end
+
+    render "index"
+  end
+
 
   # GET /users/1 or /users/1.json
   def show; end
