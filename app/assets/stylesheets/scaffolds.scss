@@ -66,3 +66,20 @@ label {
 input[type="file" i] {
   height: calc(1.5em + .75rem + 7px);
 }
+
+
+.tt-dataset {
+  border: 1px solid black;
+  background-color: lightgrey;
+  color: black;
+  cursor: pointer;
+  width: 100%;
+  padding: 10px 10px;
+}
+
+.tt-menu {
+  width: 100%;
+}
+.twitter-typeahead {
+  display: block !important;
+}

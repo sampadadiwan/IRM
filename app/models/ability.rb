@@ -14,7 +14,7 @@ class Ability
       can :manage, Document, owner_type: "Company", owner_id: user.company_id
       can :manage, User, company_id: user.company_id
       can :manage, Investment, investee_company_id: user.company_id
-      can :read, Investor, investee_company_id: user.company_id
+      can :manage, Investor, investee_company_id: user.company_id
       can :manage, DocAccess do |dv|
         dv.owner && dv.owner.id == user.company_id
       end

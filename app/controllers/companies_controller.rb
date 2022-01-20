@@ -10,7 +10,7 @@ class CompaniesController < ApplicationController
     if current_user.is_super?
       @companies = Company.search(params[:query], :star => true)
     else
-      @companies = Company.search(params[:query], :star => true, :with => {:id => current_user.company_id})
+      @companies = Company.search(params[:query], :star => true)
     end
 
     render "index"
