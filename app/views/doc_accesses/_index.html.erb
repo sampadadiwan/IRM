@@ -2,7 +2,7 @@
   <h1 class="h3 mb-0 text-gray-800">Visible To</h1>
 </div>
 
-<table id="doc_visibilities" class="table table-bordered dataTable">
+<table id="doc_accesses" class="table table-bordered dataTable">
   <tr>
     <th>
       Document
@@ -14,8 +14,8 @@
       To
     </th>
   </tr>
-  <% doc_visibilities.each do |doc_visibility| %>
-    <%= render doc_visibility %>
+  <% doc_accesses.each do |doc_access| %>
+    <%= render doc_access %>
   <% end %>
 </table>
 

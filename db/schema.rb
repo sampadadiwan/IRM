@@ -90,13 +90,13 @@ ActiveRecord::Schema.define(version: 2022_01_19_094920) do
     t.string "company_type", limit: 15
   end
 
-  create_table "doc_visibilities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "doc_accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "document_id"
-    t.string "visiblity_type", limit: 30
+    t.string "access_type", limit: 30
     t.string "to"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["document_id"], name: "index_doc_visibilities_on_document_id"
+    t.index ["document_id"], name: "index_doc_access_on_document_id"
   end
 
   create_table "documents", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -118,8 +118,8 @@ ActiveRecord::Schema.define(version: 2022_01_19_094920) do
     t.string "status", limit: 20
     t.string "investment_instrument", limit: 50
     t.integer "quantity"
-    t.decimal "initial_value", precision: 2
-    t.decimal "current_value", precision: 2
+    t.decimal "initial_value", precision: 20
+    t.decimal "current_value", precision: 20
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "category", limit: 25

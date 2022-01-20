@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :doc_visibilities
+  resources :doc_accesses
   resources :investors
   resources :investments
   resources :documents
