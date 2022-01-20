@@ -32,6 +32,9 @@ class InvestorsController < ApplicationController
   # POST /investors or /investors.json
   def create
     @investor = Investor.new(investor_params)
+    @investor.investee_company_id = current_user.company_id if !current_user.is_super?
+
+    puts @investor.errors.full_messages
 
     respond_to do |format|
       if @investor.save
@@ -75,6 +78,7 @@ class InvestorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def investor_params
-      params.require(:investor).permit(:investor_id, :investor_type, :investee_company_id, :category)
+      params.require(:investor).permit(:investor_id, :investor_type, 
+        :investee_company_id, :category)
     end
 end
