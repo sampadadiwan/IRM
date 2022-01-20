@@ -117,12 +117,15 @@ GEM
     importmap-rails (1.0.1)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
+    innertube (1.1.0)
     io-console (0.5.9)
     irb (1.4.1)
       reline (>= 0.3.0)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    joiner (0.6.0)
+      activerecord (>= 6.1.0)
     launchy (2.5.0)
       addressable (~> 2.7)
     letter_opener (1.7.0)
@@ -135,6 +138,7 @@ GEM
     marcel (1.0.2)
     matrix (0.4.2)
     method_source (1.0.0)
+    middleware (0.1.0)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     minitest (5.15.0)
@@ -190,6 +194,7 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     rexml (3.2.5)
+    riddle (2.4.3)
     rubocop (1.24.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -234,6 +239,13 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.0.2)
       railties (>= 6.0.0)
+    thinking-sphinx (5.4.0)
+      activerecord (>= 4.2.0)
+      builder (>= 2.1.2)
+      innertube (>= 1.0.2)
+      joiner (>= 0.3.4)
+      middleware (>= 0.1.0)
+      riddle (~> 2.3)
     thor (1.1.0)
     tilt (2.0.10)
     turbo-rails (1.0.0)
@@ -287,6 +299,7 @@ DEPENDENCIES
   sidekiq
   sprockets-rails
   stimulus-rails
+  thinking-sphinx (~> 5.4)
   turbo-rails
   tzinfo-data
   web-console

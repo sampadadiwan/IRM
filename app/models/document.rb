@@ -1,4 +1,6 @@
 class Document < ApplicationRecord
+    ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
+
     belongs_to :owner, polymorphic: true
     has_one_attached :file
     serialize :visible_to

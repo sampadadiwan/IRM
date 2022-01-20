@@ -1,4 +1,7 @@
 class Company < ApplicationRecord
+
+  ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
+
   has_rich_text :details
   has_many :documents, as: :owner, dependent: :destroy
   # Will have many employees

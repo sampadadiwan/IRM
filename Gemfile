@@ -36,6 +36,7 @@ gem 'dotenv-rails'
 gem 'sidekiq'
 gem 'exception_notification'
 gem 'sassc-rails' 
+gem 'thinking-sphinx', '~> 5.4'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
