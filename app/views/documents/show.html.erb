@@ -34,16 +34,17 @@
    </tr>
 </table>
 
-<turbo-frame>
 
-   <div>
-      <%= link_to "Edit", edit_document_path(@document), {class: "btn btn-primary"} %> |
-      <%= link_to "Back", documents_path, {class: "btn btn-primary"} %> |
-      <%= button_to "Delete", @document, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
-      <%= link_to "Share", new_doc_access_path("doc_access[document_id]": @document.id), {class: "btn btn-primary"} %> |
-   </div>
+      <div>
+         <%= link_to "Edit", edit_document_path(@document), {class: "btn btn-primary"} %> |
+         <%= link_to "Back", documents_path, {class: "btn btn-primary"} %> |
+         <%= button_to "Delete", @document, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+      </div>
 
-   <div id="new_doc_access"></div>
+      <%= turbo_frame_tag "new_doc_access" do %>
+         <%= link_to "Share", new_doc_access_path("doc_access[document_id]": @document.id), { method: :get, class: "btn btn-primary"} %> |
+      <% end %>
+      
+
    <%= render "/doc_accesses/index", doc_accesses: @document.doc_accesses %>
 
-</turbo-frame>

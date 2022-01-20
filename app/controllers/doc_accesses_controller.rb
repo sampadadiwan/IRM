@@ -13,6 +13,16 @@ class DocAccessesController < ApplicationController
   # GET /doc_accesses/new
   def new
     @doc_access = DocAccess.new(doc_access_params)
+    # render partial: "doc_accesses/form.html", locals: {doc_access: @doc_access}
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.append('new_doc_access', partial: "doc_accesses/form", locals: {doc_access: @doc_access})
+        ]
+      end
+      format.html 
+    end
   end
 
   # GET /doc_accesses/1/edit
@@ -25,6 +35,11 @@ class DocAccessesController < ApplicationController
 
     respond_to do |format|
       if @doc_access.save
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append('doc_accesses_table', partial: "doc_accesses/doc_access", locals: {doc_access: @doc_access})
+          ]
+        end
         format.html { redirect_to document_url(@doc_access.document), notice: "Document Access was successfully created." }
         format.json { render :show, status: :created, location: @doc_access }
       else
@@ -52,6 +67,11 @@ class DocAccessesController < ApplicationController
     @doc_access.destroy
 
     respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(@doc_access)
+        ]
+      end
       format.html { redirect_to doc_accesses_url, notice: "Document Access was successfully destroyed." }
       format.json { head :no_content }
     end
