@@ -42,10 +42,13 @@
       </div>
 
       <%= turbo_frame_tag "new_doc_access" do %>
-         <%= link_to "Share", new_doc_access_path("doc_access[document_id]": @document.id), { method: :get, class: "btn btn-primary"} %> 
+         <%= link_to "Share", new_doc_access_path("doc_access[document_id]": @document.id), 
+         {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
+            "title": "Access control for this document"} %> 
       <% end %>
       
 
-   <%= render "/doc_accesses/index", doc_accesses: @document.doc_accesses %>
-
-   <div data-controller="docaccess"></div>
+   <div id="document_access" class="associated_entity">
+      <%= render "/doc_accesses/index", doc_accesses: @document.doc_accesses %>
+      <div data-controller="docaccess"></div>
+   </div>

@@ -19,12 +19,15 @@
 
     <div class="form-group">
       <%= form.label :access_type %>
-      <%= form.select :access_type, DocAccess::VISIBILITY, {}, {class: "form-control"} %>
+      <%= form.select :access_type, DocAccess::VISIBILITY, {}, 
+      { class: "form-control",
+       "data-toggle": "tooltip", "title": "Enable document access to a specific email or a category of investors" } %>
     </div>
 
     <div class="form-group" id="category_form_group" style="visibility: visible">
       <%= form.label :select_category %>
-      <%= form.select :to, Investor::CATEGORIES, {}, {id: "doc_access_to_category", class: "form-control"} %>
+      <%= form.select :to, Investor::CATEGORIES, {}, 
+      {id: "doc_access_to_category", class: "form-control"} %>
     </div>
 
     <div class="form-group" id="email_form_group" style="visibility: visible; disabled: disabled">

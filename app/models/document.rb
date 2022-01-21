@@ -3,9 +3,10 @@ class Document < ApplicationRecord
 
     belongs_to :owner, polymorphic: true
     has_one_attached :file
+    has_many :doc_accesses, dependent: :destroy
+
     serialize :visible_to
     before_validation :sanitize_visible_tos
-    has_many :doc_accesses, dependent: :destroy
 
     USER_TYPES = ["ID Proof", "Bank Statement"]
     COMPANY_TYPES = [""]

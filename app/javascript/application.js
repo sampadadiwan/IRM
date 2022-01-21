@@ -3,3 +3,9 @@ import "@hotwired/turbo-rails"
 import "trix"
 import "@rails/actiontext"
 import "controllers"
+import "@popperjs/core"
+
+
+$( document ).on('turbo:load', function() {
+    $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});
+});

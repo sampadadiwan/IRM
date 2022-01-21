@@ -3,6 +3,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   
   connect() {
+
+
     $( document ).on('turbo:frame-load', function() {
       
       let flag = "disabled";
