@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
-    @user.company_id = current_user.is_super? ? params[:company_id] : current_user.company_id
+    @user.company_id = params[:company_id]
   end
 
   # GET /users/1/edit

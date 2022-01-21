@@ -1,0 +1,25 @@
+<div id="smartwizard">
+    <ul class="nav">
+       <li>
+           <a class="nav-link" href="#step-1">
+              Basic
+           </a>
+       </li>
+       <li>
+           <a class="nav-link" href="#step-2">
+              Details
+           </a>
+       </li>
+    </ul>
+ 
+    <div class="tab-content">
+       <div id="step-1" class="tab-pane" role="tabpanel">
+          <%= render "form", investor: investor%>
+       </div>
+       <div id="step-2" class="tab-pane" role="tabpanel">
+          <%= render "companies/form", company: Company.new%>
+       </div>
+    </div>
+</div>
+
+<div data-controller="wizard"></div>
