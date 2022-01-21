@@ -1,7 +1,7 @@
 <%= form_with(model: investment) do |form| %>
   <% if investment.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(investment.errors.count, "error") %> prohibited this investment from being saved:</h2>
+      <span><%= pluralize(investment.errors.count, "error") %> prohibited this investment from being saved:</span>
 
       <ul>
         <% investment.errors.each do |error| %>
@@ -14,14 +14,14 @@
   
   <div class="form-group">
     <%= form.label :investor %>
-    <%= form.select :investor_id, Company.vcs.map{|c| [c.name, c.id]}, {include_blank: true}, {class: "form-control"} %>
+    <%= form.select :investor_id, Company.vcs.order(:name).map{|c| [c.name, c.id]}, {include_blank: true}, {class: "form-control"} %>
     <%= form.text_field :investor_type, class: "form-control", hidden: true, value: "Company"  %>
   </div>
 
   <% if current_user.role == "Super" %>
   <div class="form-group">
     <%= form.label :investee_company_id %>
-    <%= form.select :investee_company_id, Company.startups.map{|c| [c.name, c.id]}, {include_blank: true}, {class: "form-control"} %>
+    <%= form.select :investee_company_id, Company.startups.order(:name).map{|c| [c.name, c.id]}, {include_blank: true}, {class: "form-control"} %>
   </div>
   <% end %>
 
