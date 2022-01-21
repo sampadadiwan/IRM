@@ -6,6 +6,9 @@ class CompaniesController < ApplicationController
   def index
   end
 
+  def dashboard
+  end
+
   def search
     if current_user.is_super?
       @companies = Company.search(params[:query], :star => true)

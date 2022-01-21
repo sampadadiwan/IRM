@@ -15,8 +15,10 @@ Rails.application.routes.draw do
   resources :interests
   
   devise_for :users
+
   resources :companies do
     get 'search', on: :collection
+    get 'dashboard', on: :collection
   end
 
   resources :users do
