@@ -28,6 +28,23 @@
         </tr>
         <tr>  
           <td>
+            Email
+          </td>
+        <td>
+            <%=@user.email%>
+          </td>
+        </tr>
+        <tr>  
+          <td>
+            Phone
+          </td>
+        <td>
+            <%=@user.phone%>
+          </td>
+        </tr>
+        
+        <tr>  
+          <td>
             Role
           </td>
           <td>
@@ -39,10 +56,8 @@
     
     <div>
       <%= link_to "Edit", edit_user_path(@user), {class: "btn btn-primary"} %> |
-      <%= link_to "Back", users_path, {class: "btn btn-primary"} %> |
-      <%= link_to "New Document", new_document_path(owner_id: @user.id, owner_type: "User"), {class: "btn btn-primary"}  %> 
+      <%= link_to "Back", users_path, {class: "btn btn-primary"} %>
     </div>
   </div>
 </div>
 
-<%= render "documents/index", documents: @user.documents %>
