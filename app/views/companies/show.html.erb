@@ -14,7 +14,7 @@
                Logo
             </td>
             <td>
-               <%= image_tag(@company.logo_url, class: "logo_url") if @company.logo_url %>
+               <%= image_tag(@company.logo_url, class: "logo_url") if @company.logo_url.blank? %>
             </td>
          </tr>
          <tr>
@@ -22,7 +22,7 @@
                Url
             </td>
             <td>
-               <%= link_to @company.url, @company.url %>
+               <%= link_to @company.url, @company.url if @company.url.blank? %>
             </td>
          </tr>
          <tr>

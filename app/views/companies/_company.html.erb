@@ -7,12 +7,11 @@
     <%= link_to company.name, company %>
   </td>  
 <td>
-    <%= link_to company.url, company.url %>
+    <%= link_to company.url, company.url if company.url.blank? %>
   </td>  
 <td>
     <%= company.category %>
   </td>  
-
 <td>
     <%= company.company_type %>
   </td>  

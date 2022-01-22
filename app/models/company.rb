@@ -17,6 +17,17 @@ class Company < ApplicationRecord
   scope :vcs, -> { where(company_type: "VC") }
   scope :startups, -> { where(company_type: "Startup") }
   
+  before_save :check_url
+  def check_url
+    if !self.url.blank? && !(self.url.starts_with?("http") || self.url.starts_with?("https"))
+      self.url = "http://" + self.url 
+    end
+
+    if !self.logo_url.blank? && !(self.logo_url.starts_with?("http") || self.logo_url.starts_with?("https"))
+      self.logo_url = "http://" + self.logo_url 
+    end
+  end
+
   # Setup the person who created this company as belonging to this company
   after_create :setup_owner
   def setup_owner
