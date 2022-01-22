@@ -3,6 +3,8 @@ class Company < ApplicationRecord
   ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
 
   has_rich_text :details
+  
+  has_many :users
   has_many :documents, as: :owner, dependent: :destroy
   # Will have many employees
   has_many :employees, foreign_key: "company_id", class_name: "User"

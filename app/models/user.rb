@@ -6,11 +6,17 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
+  # Typically only for startup companies       
   has_many :documents, as: :owner, dependent: :destroy
-  # Only if this user is an employee of the company
-  belongs_to :company
 
-  ROLES = ["Employee", "Super", "CxO", "Admin"]
+  # Only if this user is an employee of the company
+  belongs_to :company, optional: true
+
+  ROLES = [ "CxO", "Founder", "Angel", "VC", "Admin", "Employee" ]
+
+  ROLES_DESC = { "CxO": "CxO of a Startup", "Founder": "Founder of a Startup", 
+    "Angel": "Angel Investor", "VC": "Venture Capitalist", 
+    "Admin": "Company Admin", "Employee": "Employee" }
   
   scope :cxos, -> { where(role: "CxO") }
   scope :admins, -> { where(role: "Admin") }

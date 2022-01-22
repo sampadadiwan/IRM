@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   resources :interests
   
-  devise_for :users
+  devise_for :users, :controllers => {:registrations => "registrations"}
 
   resources :companies do
     get 'search', on: :collection
