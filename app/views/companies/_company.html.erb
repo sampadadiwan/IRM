@@ -1,7 +1,7 @@
 
 <tr id="<%= dom_id company %>">
 <td>
-    <%= image_tag(company.logo_url, class: "logo_url") %>
+    <%= image_tag(company.logo_url, class: "logo_url") if company.logo_url %>
   </td>  
 <td>
     <%= link_to company.name, company %>

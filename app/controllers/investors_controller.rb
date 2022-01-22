@@ -31,6 +31,11 @@ class InvestorsController < ApplicationController
 
   # POST /investors or /investors.json
   def create
+
+    if(investor_params[:company].present?)
+      logger.debug "Found attached company #{investor_params[:company]}"       
+    end
+
     @investor = Investor.new(investor_params)
     @investor.investee_company_id = current_user.company_id if !current_user.is_super?
 
@@ -41,6 +46,8 @@ class InvestorsController < ApplicationController
         format.html { redirect_to investor_url(@investor), notice: "Investor was successfully created." }
         format.json { render :show, status: :created, location: @investor }
       else
+        logger.debug @investor.errors.full_messages
+        
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @investor.errors, status: :unprocessable_entity }
       end
@@ -79,6 +86,8 @@ class InvestorsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def investor_params
       params.require(:investor).permit(:investor_id, :investor_type, 
-        :investee_company_id, :category)
+          :investee_company_id, :category, 
+          :company=>[:name, :url, :category, :founded, :company_type,
+          :funding_amount, :funding_unit, :details, :logo_url])
     end
 end

@@ -25,7 +25,7 @@ class CompaniesController < ApplicationController
 
   # GET /companies/new
   def new
-    @company = Company.new
+    @company = params[:company].present? ? Company.new(company_params) : Company.new
   end
 
   # GET /companies/1/edit
@@ -33,7 +33,8 @@ class CompaniesController < ApplicationController
 
   # POST /companies or /companies.json
   def create
-    @company = Company.new(company_params)
+    @company =  Company.new(company_params)  
+    @company.created_by = current_user.id
 
     respond_to do |format|
       if @company.save

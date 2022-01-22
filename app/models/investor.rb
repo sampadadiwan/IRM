@@ -5,5 +5,6 @@ class Investor < ApplicationRecord
     belongs_to :investee_company, foreign_key: "investee_company_id", class_name: "Company"    
 
     CATEGORIES = ENV["INVESTMENT_CATEGORIES"].split(",") << "Prospective"
-
+    
+    attr_accessor :company
 end

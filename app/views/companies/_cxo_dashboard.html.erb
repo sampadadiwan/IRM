@@ -1,3 +1,10 @@
+<% if !current_user.company_id.present? %>
+    <div class="alert alert-danger" role="alert">
+        You are not associated with your startup in our database. Step 1.   
+        <a class="btn btn-primary" rel="nofollow" href="<%= new_company_path("company[company_type]": "Startup") %>">Setup Startup →</a>
+    </div>
+<% end %>
+
 <div class="row">
 
     <div class="col-lg-6 mb-4">

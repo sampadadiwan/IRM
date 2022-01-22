@@ -11,15 +11,27 @@
            </a>
        </li>
     </ul>
- 
-    <div class="tab-content">
-       <div id="step-1" class="tab-pane" role="tabpanel">
-          <%= render "form", investor: investor%>
-       </div>
-       <div id="step-2" class="tab-pane" role="tabpanel">
-          <%= render "companies/form", company: Company.new%>
-       </div>
-    </div>
+   
+    <%= form_with(model: investor) do |form| %>
+
+      <div class="tab-content">
+         <div id="step-1" class="tab-pane" role="tabpanel">
+            <%= render "form_fields", investor: investor, form: form %>
+         </div>
+         <div id="step-2" class="tab-pane" role="tabpanel">
+            <%= form.fields_for(:company) do |tf| %>
+               <%= render "companies/form_fields", company: Company.new, form: tf %>
+            <% end %>
+
+            <div class="form-group">
+               <%= form.submit "Save", {class: "btn btn-primary"}%>
+            </div>
+            
+         </div>
+      </div>
+
+    <% end %>
+
 </div>
 
 <div data-controller="wizard"></div>

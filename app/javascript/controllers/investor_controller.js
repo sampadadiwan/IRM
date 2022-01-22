@@ -16,7 +16,7 @@
           // Map the remote source JSON array to a JavaScript object array
           transform: response => $.map(response, company => ({
             display: company.name,
-            value: company.id
+            company: company
           }))
         }
       });
@@ -29,7 +29,13 @@
 
       $('#investor_investor_company_name').on('typeahead:select', function(ev, suggestion) {
         console.log(suggestion);
-        $("#investor_investor_id").val(suggestion.value);
+        $("#investor_investor_id").val(suggestion.company.id);
+        $("#investor_company_name").val(suggestion.company.name);
+        $("#investor_company_url").val(suggestion.company.url);
+        $("#investor_company_category").val(suggestion.company.category);
+        $("#investor_company_logo_url").val(suggestion.company.logo_url);
+        $("#investor_company_company_type").val(suggestion.company.company_type);
+        $("#investor_company_id").val(suggestion.company.id);
       });
 
       console.log("Typeahead: Initialized")

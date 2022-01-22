@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_19_094920) do
+ActiveRecord::Schema.define(version: 2022_01_22_074221) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 2022_01_19_094920) do
     t.text "logo_url"
     t.boolean "active", default: true
     t.string "company_type", limit: 15
+    t.integer "created_by"
   end
 
   create_table "doc_accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
