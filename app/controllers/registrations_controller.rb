@@ -1,11 +1,13 @@
 class RegistrationsController < Devise::RegistrationsController
 
+  prepend_before_action :require_no_authentication, only: [:new, :cancel]
+
     # POST /resource
   def create
     build_resource(sign_up_params)
 
     resource.save
-    puts resource.errors.full_messages
+    logger.debug resource.errors.full_messages
 
 
     yield resource if block_given?
@@ -25,5 +27,15 @@ class RegistrationsController < Devise::RegistrationsController
       respond_with resource
     end
   end
+
+
+  def after_sign_up_path_for(resource)
+    if current_user
+      dashboard_companies_path
+    else 
+      after_sign_in_path_for(resource) if is_navigational_format?
+    end
+  end
+
 
 end

@@ -49,5 +49,18 @@ class User < ApplicationRecord
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
+  def self.allowed_roles(current_user)
+
+    if !current_user || !current_user.company
+      return User::ROLES
+    end
+
+    case current_user.company.company_type 
+    when "Startup"
+      return [ "CxO", "Founder", "Admin", "Employee" ]
+    when "VC"
+      return [ "Angel", "VC", "Admin", "Employee" ]
+    end
+  end
 
 end
