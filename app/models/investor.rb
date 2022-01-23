@@ -6,5 +6,4 @@ class Investor < ApplicationRecord
 
     CATEGORIES = ENV["INVESTMENT_CATEGORIES"].split(",") << "Prospective"
     
-    attr_accessor :company
 end

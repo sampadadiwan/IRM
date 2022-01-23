@@ -39,8 +39,6 @@ class InvestorsController < ApplicationController
     @investor = Investor.new(investor_params)
     @investor.investee_company_id = current_user.company_id if !current_user.is_super?
 
-    puts @investor.errors.full_messages
-
     respond_to do |format|
       if @investor.save
         format.html { redirect_to investor_url(@investor), notice: "Investor was successfully created." }
@@ -86,8 +84,6 @@ class InvestorsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def investor_params
       params.require(:investor).permit(:investor_id, :investor_type, 
-          :investee_company_id, :category, 
-          :company=>[:name, :url, :category, :founded, :company_type,
-          :funding_amount, :funding_unit, :details, :logo_url])
+          :investee_company_id, :category)
     end
 end

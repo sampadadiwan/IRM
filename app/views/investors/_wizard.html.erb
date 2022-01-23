@@ -7,6 +7,11 @@
        </li>
        <li>
            <a class="nav-link" href="#step-2">
+              Search
+           </a>
+       </li>
+       <li>
+           <a class="nav-link" href="#step-3">
               Details
            </a>
        </li>
@@ -19,6 +24,9 @@
             <%= render "form_fields", investor: investor, form: form %>
          </div>
          <div id="step-2" class="tab-pane" role="tabpanel">
+            <%= render "wizard_search", investor: investor, form: form %>
+         </div>
+         <div id="step-3" class="tab-pane" role="tabpanel">
             <%= form.fields_for(:company) do |tf| %>
                <%= render "companies/form_fields", company: Company.new, form: tf %>
             <% end %>

@@ -1,9 +1,9 @@
-  <div class="form-group">
+  <!-- div class="form-group">
     <%= form.label :investor %>
     <%= form.text_field :investor_company_name, class: "form-control typeahead"  %>
     <%= form.text_field :investor_id, class: "form-control", hidden: true   %>
     <%= form.text_field :investor_type, class: "form-control", hidden: true, value: "Company"   %>
-  </div>
+  </div -->
 
   <% if current_user.role == "Super" %>
   <div class="form-group">
@@ -11,6 +11,11 @@
     <%= form.number_field :investee_company_id, class: "form-control"  %>
   </div>
   <% end %>
+
+  <div class="form-group">
+    <%= form.label :investor_type, "Investor Type" %>
+    <%= form.select :investor_type, {"VC/Angel": "Company", "Individual": "User"} , {include_blank: false}, class: "form-control"  %>
+  </div>
 
   <div class="form-group">
     <%= form.label :category %>

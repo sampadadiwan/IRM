@@ -1,0 +1,11 @@
+<div class="form-group" id="search_company_group">
+    <%= form.label :investor, "Search for VC Investor (Company Name)" %>
+    <%= form.text_field :investor_company_name, class: "form-control typeahead"  %>
+    <%= form.text_field :investor_id, class: "form-control", hidden: true   %>
+</div>
+
+<div class="form-group" id="search_user_group">
+    <%= form.label :investor, "Search for Individual Investor (Email, First or Last Name)" %>
+    <%= form.text_field :investor_user_name, class: "form-control typeahead"  %>
+    <%= form.text_field :investor_id, class: "form-control", hidden: true   %>
+</div>
