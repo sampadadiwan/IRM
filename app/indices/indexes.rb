@@ -11,7 +11,7 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
 
   ThinkingSphinx::Index.define :investor, :with => :real_time do
     # fields
-    indexes investor.name, :sortable => true
+    indexes investor_entity.name, :sortable => true
     indexes category, :sortable => true
   
     # attributes

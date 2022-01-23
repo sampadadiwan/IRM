@@ -1,4 +1,11 @@
 FactoryBot.define do
+  factory :investor_access do
+    investor_id { 1 }
+    email { "MyString" }
+    access_type { "MyString" }
+    granted_by { 1 }
+  end
+
   factory :doc_visibility do
     document_id { 1 }
     visiblity_type { "MyString" }
