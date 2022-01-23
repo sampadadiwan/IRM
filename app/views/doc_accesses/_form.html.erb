@@ -2,7 +2,7 @@
 
   <%= form_with(model: doc_access) do |form| %>
     <% if doc_access.errors.any? %>
-      <div style="color: red">
+      <div style="alert alert-danger">
         <h2><%= pluralize(doc_access.errors.count, "error") %> prohibited this doc_access from being saved:</h2>
 
         <ul>

@@ -1,6 +1,6 @@
 <%= form_with(model: investment) do |form| %>
   <% if investment.errors.any? %>
-    <div style="color: red">
+    <div style="alert alert-danger">
       <span><%= pluralize(investment.errors.count, "error") %> prohibited this investment from being saved:</span>
 
       <ul>

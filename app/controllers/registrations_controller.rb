@@ -6,44 +6,13 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     
     build_resource(sign_up_params)
-
-    # A user is allowed to be created in 3 ways
-    # 1. SignUp - no entity_id is present
-    # 2. Logged in user creates a user for his own entity
-    # 3. Logged in user creates a user for investors entity
-
-    if resource.entity_id.present? 
-      # Its ok
-      # entity_id has been sent
-      if current_user
-        if resource.entity_id == current_user.entity_id 
-          # Its ok
-          logger.debug "User being created for same entity as current_user"      
-        else
-          if resource.entity.entity_type == "VC" 
-            # TODO
-            # Prevent user creation if its for a non investor entity
-            
-            # This is ok
-            logger.debug "User created for VC entity. Setting role to Employee"
-            resource.role = "Employee"            
-          else
-            resource.errors.add(:entity_id, "User being created for a #{resource.entity.entity_type} entity")     
-          end
-        end        
-      else
-        # We have a entity_id but no logged in user
-        # This is an error
-        resource.errors.add(:entity_id, "User being created for a entity, without logged in current_user") 
-      end
-    else
-      # Its Ok
-      logger.debug "User created without entity_id"      
-    end
+    # Ensure role is always Employee
+    resource.role = "Employee"
+    # Ensure that users are created only for the same enetity as the logged in user.
+    resource.entity_id = current_user.entity_id if current_user && !current_user.is_super?
 
     resource.save
-    logger.debug resource.errors.full_messages
-
+    
 
     yield resource if block_given?
     if resource.persisted?

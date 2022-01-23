@@ -12,11 +12,13 @@ class User < ApplicationRecord
   # Only if this user is an employee of the entity
   belongs_to :entity, optional: true
 
-  ROLES = [ "CxO", "Founder", "Angel", "VC", "Admin", "Employee" ]
+  # "CxO", "Founder", "Angel", "VC", "Admin",
+  ROLES = [ "Employee" ]
 
-  ROLES_DESC = { "CxO": "CxO of a Startup", "Founder": "Founder of a Startup", 
-    "Angel": "Angel Investor", "VC": "Venture Capitalist", 
-    "Admin": "Entity Admin", "Employee": "Employee" }
+  # "CxO": "CxO of a Startup", "Founder": "Founder of a Startup", 
+  # "Angel": "Angel Investor", "VC": "Venture Capitalist", 
+  # "Admin": "Entity Admin", 
+  ROLES_DESC = { "Employee": "Employee" }
   
   scope :cxos, -> { where(role: "CxO") }
   scope :admins, -> { where(role: "Admin") }
@@ -57,9 +59,9 @@ class User < ApplicationRecord
 
     case current_user.entity.entity_type 
     when "Startup"
-      return [ "CxO", "Founder", "Admin", "Employee" ]
+      return [ "Employee" ]
     when "VC"
-      return [ "Angel", "VC", "Admin", "Employee" ]
+      return [ "Employee" ]
     end
   end
 

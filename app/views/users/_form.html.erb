@@ -1,6 +1,6 @@
 <%= form_with(model: user, data: {"turbo": "false"}) do |form| %>
   <% if user.errors.any? %>
-    <div style="color: red">
+    <div style="alert alert-danger">
       <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
       <ul>
@@ -31,11 +31,6 @@
     <%= form.text_field :phone, class: "form-control" %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :role %>
-    <%= form.select :role, User.allowed_roles(current_user) , {}, {class: "form-control"} %>
-  </div>
-
   <% if !user.id.present? %>
     <div class="form-group">
       <%= form.label :password %>
@@ -47,6 +42,7 @@
       <%= form.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
     </div>
   <% end %>
+
   <%= form.text_field :entity_id, class: "form-control", hidden: true %>
 
 
