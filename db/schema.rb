@@ -140,14 +140,13 @@ ActiveRecord::Schema.define(version: 2022_01_23_131838) do
   end
 
   create_table "investors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "investor_id"
-    t.string "investor_type", limit: 20
+    t.integer "investor_entity_id"
     t.integer "investee_entity_id"
     t.string "category", limit: 50
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["investee_entity_id"], name: "index_investors_on_investee_entity_id"
-    t.index ["investor_id", "investor_type"], name: "index_investors_on_investor"
+    t.index ["investor_entity_id"], name: "index_investors_on_investor_entity_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

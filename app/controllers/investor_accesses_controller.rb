@@ -53,6 +53,12 @@ class InvestorAccessesController < ApplicationController
     @investor_access.destroy
 
     respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(@investor_access)
+        ]
+      end
+      
       format.html { redirect_to investor_accesses_url, notice: "Investor access was successfully destroyed." }
       format.json { head :no_content }
     end

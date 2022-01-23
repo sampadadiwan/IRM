@@ -37,3 +37,7 @@
 
   <%= button_to "Delete", @investor, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
 </div>
+
+<div id="investor_access" class="associated_entity">
+  <%= render "investor_accesses/index", investor_accesses: @investor.investor_accesses %>
+</div>

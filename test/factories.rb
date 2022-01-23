@@ -13,14 +13,14 @@ FactoryBot.define do
   end
 
   factory :investor do
-    investor_id { Entity.vcs.shuffle.first.id }
+    investor_entity_id { Entity.vcs.shuffle.first.id }
     investee_entity_id { Entity.startups.shuffle.first.id }
     category { Investment::CATEGORIES[rand(Investment::CATEGORIES.length)] }
   end
 
   factory :investment do
     investment_type { Investment::TYPES[rand(Investment::TYPES.length)] }
-    investor { Entity.vcs.shuffle.first }
+    investor { Investor.shuffle.first }
     investee_entity_id { Entity.startups.shuffle.first.id }
     investment_instrument { Investment::INSTRUMENTS[rand(Investment::INSTRUMENTS.length)] }
     category { Investment::CATEGORIES[rand(Investment::CATEGORIES.length)] }

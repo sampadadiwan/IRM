@@ -3,14 +3,12 @@
     <%= investment.investment_type %>
 </td>  
 <td>
-    <%= investment.investor.name %>
+    <%= investment.investor.investor_entity.name %>
 </td>  
 <td>
     <%= investment.investee_entity.name %>
 </td>  
-<td>
-    <%= investment.investor_type %>
-</td>  
+
 <% if !params[:prospective] %>
 
     <td>
