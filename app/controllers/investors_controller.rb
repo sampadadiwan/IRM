@@ -32,13 +32,18 @@ class InvestorsController < ApplicationController
   # POST /investors or /investors.json
   def create
 
-    if(investor_params[:entity].present?)
-      logger.debug "Found attached entity #{investor_params[:entity]}"       
-    end
-
     @investor = Investor.new(investor_params)
     @investor.investee_entity_id = current_user.entity_id if !current_user.is_super?
 
+    if investor_params[:investor_id].blank?
+      entity = Entity.create(name: params[:investor][:investor_entity_name], 
+        entity_type: "VC", created_by: current_user.id)
+      
+      @investor.investor_id = entity.id 
+    
+    end
+
+    
     respond_to do |format|
       if @investor.save
         format.html { redirect_to investor_url(@investor), notice: "Investor was successfully created." }

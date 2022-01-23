@@ -1,6 +1,7 @@
 class Entity < ApplicationRecord
 
   ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
+  validates :name, presence: true
 
   has_rich_text :details
   
@@ -29,7 +30,7 @@ class Entity < ApplicationRecord
   end
 
   # Setup the person who created this entity as belonging to this entity
-  after_create :setup_owner
+  # after_create :setup_owner
   def setup_owner
     if self.created_by.present?
       owner = User.find(self.created_by)

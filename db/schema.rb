@@ -79,16 +79,11 @@ ActiveRecord::Schema.define(version: 2022_01_22_074221) do
   create_table "entities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "url"
-    t.string "category", limit: 100
-    t.date "founded"
-    t.float "funding_amount"
-    t.string "funding_unit", limit: 10
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.text "logo_url"
     t.boolean "active", default: true
     t.string "entity_type", limit: 15
     t.integer "created_by"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "doc_accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
