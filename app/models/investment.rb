@@ -2,7 +2,7 @@ class Investment < ApplicationRecord
     ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
     
     belongs_to :investor, polymorphic: true
-    belongs_to :investee_company, foreign_key: "investee_company_id", class_name: "Company"    
+    belongs_to :investee_entity, foreign_key: "investee_entity_id", class_name: "Entity"    
 
     # "Series A,Series B,Series C"
     TYPES = ENV["INVESTMENT_TYPES"].split(",")
@@ -26,7 +26,7 @@ class Investment < ApplicationRecord
             Investor.create!(
                 investor_id: self.investor_id, 
                 investor_type: self.investor_type, 
-                investee_company_id: self.investee_company_id,
+                investee_entity_id: self.investee_entity_id,
                 category: self.category
             )
         end
@@ -35,7 +35,7 @@ class Investment < ApplicationRecord
     def investor_entity
         Investor.where(investor_id: self.investor_id, 
             investor_type: self.investor_type,
-            investee_company_id: self.investee_company_id).first
+            investee_entity_id: self.investee_entity_id).first
     end
 
     def investment_type_sq

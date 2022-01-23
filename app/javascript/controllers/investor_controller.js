@@ -5,7 +5,7 @@
   export default class extends Controller {
     connect() {
       
-      this.setup_company_search();
+      this.setup_entity_search();
       console.log("Typeahead: Initialized")
       
     }
@@ -27,24 +27,24 @@
     }
 
 
-    setup_company_search() {
-      let companies = this.search("companies");
+    setup_entity_search() {
+      let entities = this.search("entities");
       
       // Instantiate the Typeahead UI
-      $('#investor_investor_company_name').typeahead(null, {
+      $('#investor_investor_entity_name').typeahead(null, {
         display: 'display',
-        source: companies
+        source: entities
       });
 
-      $('#investor_investor_company_name').on('typeahead:select', function(ev, suggestion) {
+      $('#investor_investor_entity_name').on('typeahead:select', function(ev, suggestion) {
         console.log(suggestion);
         $("#investor_investor_id").val(suggestion.entity.id);
-        $("#investor_company_name").val(suggestion.entity.name);
-        $("#investor_company_url").val(suggestion.entity.url);
-        $("#investor_company_category").val(suggestion.entity.category);
-        $("#investor_company_logo_url").val(suggestion.entity.logo_url);
-        $("#investor_company_company_type").val(suggestion.entity.company_type);
-        $("#investor_company_id").val(suggestion.entity.id);
+        $("#investor_entity_name").val(suggestion.entity.name);
+        $("#investor_entity_url").val(suggestion.entity.url);
+        $("#investor_entity_category").val(suggestion.entity.category);
+        $("#investor_entity_logo_url").val(suggestion.entity.logo_url);
+        $("#investor_entity_entity_type").val(suggestion.entity.entity_type);
+        $("#investor_entity_id").val(suggestion.entity.id);
       });
 
     }

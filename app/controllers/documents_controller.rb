@@ -3,12 +3,12 @@ class DocumentsController < ApplicationController
 
   # GET /documents or /documents.json
   def index
-      if params[:company_id].present? && current_user.company_id != params[:company_id].to_i
-        c = Company.find(params[:company_id])
+      if params[:entity_id].present? && current_user.entity_id != params[:entity_id].to_i
+        c = Entity.find(params[:entity_id])
         if c.present? 
-          investor = c.investors.where(investor_company_id: current_user.company_id).first
+          investor = c.investors.where(investor_entity_id: current_user.entity_id).first
           if investor.present?
-            @documents = Document.where(owner_type: "Company", owner_id:params[:company_id])            
+            @documents = Document.where(owner_type: "Entity", owner_id:params[:entity_id])            
             @documents = @documents.select{|doc| doc.visible_to.include?(c.categoty)}
           end
         end
@@ -19,7 +19,7 @@ class DocumentsController < ApplicationController
     if current_user.is_super?
       @documents = Document.search(params[:query], :star => true)
     else
-      @documents = Document.search(params[:query], :star => true, with: {:owner_id => current_user.company_id})
+      @documents = Document.search(params[:query], :star => true, with: {:owner_id => current_user.entity_id})
     end
 
     render "index"
@@ -41,8 +41,8 @@ class DocumentsController < ApplicationController
   # POST /documents or /documents.json
   def create
     @document = Document.new(document_params)
-    @document.owner_id = current_user.company_id
-    @document.owner_type = "Company"
+    @document.owner_id = current_user.entity_id
+    @document.owner_type = "Entity"
 
     respond_to do |format|
       if @document.save

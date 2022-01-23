@@ -1,4 +1,4 @@
-class Company < ApplicationRecord
+class Entity < ApplicationRecord
 
   ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
 
@@ -7,15 +7,15 @@ class Company < ApplicationRecord
   has_many :documents, as: :owner, dependent: :destroy
   
   # Will have many employees
-  has_many :employees, foreign_key: "company_id", class_name: "User"
+  has_many :employees, foreign_key: "entity_id", class_name: "User"
     
-  has_many :investors, foreign_key: "investee_company_id"
+  has_many :investors, foreign_key: "investee_entity_id"
 
   TYPES = ["VC", "Startup"]
   FUNDING_UNITS = ["Lakhs", "Crores"]
 
-  scope :vcs, -> { where(company_type: "VC") }
-  scope :startups, -> { where(company_type: "Startup") }
+  scope :vcs, -> { where(entity_type: "VC") }
+  scope :startups, -> { where(entity_type: "Startup") }
   
   before_save :check_url
   def check_url
@@ -28,14 +28,14 @@ class Company < ApplicationRecord
     end
   end
 
-  # Setup the person who created this company as belonging to this company
+  # Setup the person who created this entity as belonging to this entity
   after_create :setup_owner
   def setup_owner
     if self.created_by.present?
       owner = User.find(self.created_by)
       if !owner.is_super?
-        # Set the user belongs to company, only for non super users
-        owner.company_id = self.id
+        # Set the user belongs to entity, only for non super users
+        owner.entity_id = self.id
         owner.save
       end
     end

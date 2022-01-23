@@ -1,7 +1,7 @@
-<% if !current_user.company_id.present? %>
+<% if !current_user.entity_id.present? %>
     <div class="alert alert-danger" role="alert">
         You are not associated with your startup in our database. Step 1.   
-        <a class="btn btn-primary" rel="nofollow" href="<%= new_company_path("company[company_type]": "Startup") %>">Setup Startup →</a>
+        <a class="btn btn-primary" rel="nofollow" href="<%= new_entity_path("entity[entity_type]": "Startup") %>">Setup Startup →</a>
     </div>
 <% end %>
 
@@ -59,7 +59,7 @@
                 <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
                     constantly updated collection of beautiful svg images that you can use
                     completely free and without attribution!</p>
-                <a class="btn btn-primary" rel="nofollow" href="<%= new_user_path(company_id: current_user.company_id) %>">Setup Users →</a>
+                <a class="btn btn-primary" rel="nofollow" href="<%= new_user_path(entity_id: current_user.entity_id) %>">Setup Users →</a>
             </div>
         </div>
 

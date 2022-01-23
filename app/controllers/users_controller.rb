@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     if current_user.is_super?
       @users = User.search(params[:query], :star => true)
     else
-      @users = User.search(params[:query], :star => true, :with => {:company_id => current_user.company_id})
+      @users = User.search(params[:query], :star => true, :with => {:entity_id => current_user.entity_id})
     end
 
     render "index"
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
-    @user.company_id = params[:company_id]
+    @user.entity_id = params[:entity_id]
   end
 
   # GET /users/1/edit

@@ -12,7 +12,7 @@ export default class extends Controller {
     $("#search_user_group").toggle();
     $("#investor_investor_type").on("change", function(){
       console.log("investor_investor_type: change");
-      $("#search_company_group").toggle();
+      $("#search_entity_group").toggle();
       $("#search_user_group").toggle();
     });
 

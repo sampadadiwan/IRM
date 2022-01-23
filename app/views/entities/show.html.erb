@@ -1,0 +1,48 @@
+<p style="color: green;text-align: center"><%= notice %></p>
+
+<div class="card shadow mb-4">
+
+   <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary"><%= link_to @entity.name, @entity %></h6>
+   </div>
+
+   <div class="card-body">
+
+      <table class="table table-bordered dataTable">
+         <tr>
+            <td>
+               Url
+            </td>
+            <td>
+               <%= link_to @entity.url, @entity.url if @entity.url.blank? %>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               Category
+            </td>
+            <td>
+               <%= @entity.category %>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               Details
+            </td>
+            <td>
+               <%= @entity.details %>
+            </td>
+         </tr>
+      </table>
+      <div>
+         <%= link_to "Edit", edit_entity_path(@entity), {class: "btn btn-primary"} %> |
+         <%= link_to "Back", entities_path, {class: "btn btn-primary"} %> |
+         <%= link_to "New Document", new_document_path(owner_id: @entity.id, owner_type: "Entity"), {class: "btn btn-primary"}  %> |
+         <%= link_to "New Employee", new_user_path(entity_id: @entity.id), {class: "btn btn-primary"}  %> |
+
+         <%= button_to "Delete", @entity, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+      </div>
+   </div>
+</div>
+
+<%= render "documents/index", documents: @entity.documents %>

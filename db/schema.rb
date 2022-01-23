@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 2022_01_22_074221) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
-  create_table "companies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "entities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "url"
     t.string "category", limit: 100
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 2022_01_22_074221) do
     t.datetime "updated_at", precision: 6, null: false
     t.text "logo_url"
     t.boolean "active", default: true
-    t.string "company_type", limit: 15
+    t.string "entity_type", limit: 15
     t.integer "created_by"
   end
 
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(version: 2022_01_22_074221) do
     t.string "investment_type", limit: 20
     t.integer "investor_id"
     t.string "investor_type", limit: 20
-    t.integer "investee_company_id"
+    t.integer "investee_entity_id"
     t.string "status", limit: 20
     t.string "investment_instrument", limit: 50
     t.integer "quantity"
@@ -124,18 +124,18 @@ ActiveRecord::Schema.define(version: 2022_01_22_074221) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "category", limit: 25
-    t.index ["investee_company_id"], name: "index_investments_on_investee_company_id"
+    t.index ["investee_entity_id"], name: "index_investments_on_investee_entity_id"
     t.index ["investor_id", "investor_type"], name: "index_investments_on_investor"
   end
 
   create_table "investors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "investor_id"
     t.string "investor_type", limit: 20
-    t.integer "investee_company_id"
+    t.integer "investee_entity_id"
     t.string "category", limit: 50
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["investee_company_id"], name: "index_investors_on_investee_company_id"
+    t.index ["investee_entity_id"], name: "index_investors_on_investee_entity_id"
     t.index ["investor_id", "investor_type"], name: "index_investors_on_investor"
   end
 
@@ -155,8 +155,8 @@ ActiveRecord::Schema.define(version: 2022_01_22_074221) do
     t.string "confirmation_token"
     t.datetime "confirmed_at", precision: 6
     t.datetime "confirmation_sent_at", precision: 6
-    t.integer "company_id"
-    t.index ["company_id"], name: "index_users_on_company_id"
+    t.integer "entity_id"
+    t.index ["entity_id"], name: "index_users_on_entity_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

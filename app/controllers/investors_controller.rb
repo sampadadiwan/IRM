@@ -10,7 +10,7 @@ class InvestorsController < ApplicationController
     if current_user.is_super?
       @investors = Investor.search(params[:query], :star => true)
     else
-      @investors = Investor.search(params[:query], :star => true, with: {:investee_company_id => current_user.company_id})
+      @investors = Investor.search(params[:query], :star => true, with: {:investee_entity_id => current_user.entity_id})
     end
 
     render "index"
@@ -32,12 +32,12 @@ class InvestorsController < ApplicationController
   # POST /investors or /investors.json
   def create
 
-    if(investor_params[:company].present?)
-      logger.debug "Found attached company #{investor_params[:company]}"       
+    if(investor_params[:entity].present?)
+      logger.debug "Found attached entity #{investor_params[:entity]}"       
     end
 
     @investor = Investor.new(investor_params)
-    @investor.investee_company_id = current_user.company_id if !current_user.is_super?
+    @investor.investee_entity_id = current_user.entity_id if !current_user.is_super?
 
     respond_to do |format|
       if @investor.save
@@ -84,6 +84,6 @@ class InvestorsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def investor_params
       params.require(:investor).permit(:investor_id, :investor_type, 
-          :investee_company_id, :category)
+          :investee_entity_id, :category)
     end
 end

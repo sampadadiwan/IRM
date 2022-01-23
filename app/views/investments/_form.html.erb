@@ -14,14 +14,14 @@
   
   <div class="form-group">
     <%= form.label :investor %>
-    <%= form.select :investor_id, Company.vcs.order(:name).map{|c| [c.name, c.id]}, {include_blank: true}, {class: "form-control"} %>
-    <%= form.text_field :investor_type, class: "form-control", hidden: true, value: "Company"  %>
+    <%= form.select :investor_id, Entity.vcs.order(:name).map{|c| [c.name, c.id]}, {include_blank: true}, {class: "form-control"} %>
+    <%= form.text_field :investor_type, class: "form-control", hidden: true, value: "Entity"  %>
   </div>
 
   <% if current_user.role == "Super" %>
   <div class="form-group">
-    <%= form.label :investee_company_id %>
-    <%= form.select :investee_company_id, Company.startups.order(:name).map{|c| [c.name, c.id]}, {include_blank: true}, {class: "form-control"} %>
+    <%= form.label :investee_entity_id %>
+    <%= form.select :investee_entity_id, Entity.startups.order(:name).map{|c| [c.name, c.id]}, {include_blank: true}, {class: "form-control"} %>
   </div>
   <% end %>
 

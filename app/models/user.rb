@@ -6,17 +6,17 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
-  # Typically only for startup companies       
+  # Typically only for startup entities       
   has_many :documents, as: :owner, dependent: :destroy
 
-  # Only if this user is an employee of the company
-  belongs_to :company, optional: true
+  # Only if this user is an employee of the entity
+  belongs_to :entity, optional: true
 
   ROLES = [ "CxO", "Founder", "Angel", "VC", "Admin", "Employee" ]
 
   ROLES_DESC = { "CxO": "CxO of a Startup", "Founder": "Founder of a Startup", 
     "Angel": "Angel Investor", "VC": "Venture Capitalist", 
-    "Admin": "Company Admin", "Employee": "Employee" }
+    "Admin": "Entity Admin", "Employee": "Employee" }
   
   scope :cxos, -> { where(role: "CxO") }
   scope :admins, -> { where(role: "Admin") }
@@ -51,11 +51,11 @@ class User < ApplicationRecord
 
   def self.allowed_roles(current_user)
 
-    if !current_user || !current_user.company
+    if !current_user || !current_user.entity
       return User::ROLES
     end
 
-    case current_user.company.company_type 
+    case current_user.entity.entity_type 
     when "Startup"
       return [ "CxO", "Founder", "Admin", "Employee" ]
     when "VC"

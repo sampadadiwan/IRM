@@ -10,33 +10,33 @@ class Ability
     if user.role == "Super"
       can :manage, :all
     elsif user.role == "CxO"
-      can :manage, Company, id: user.company_id 
-      can :manage, Document, owner_type: "Company", owner_id: user.company_id
-      can :manage, User, company_id: user.company_id
-      can :manage, Investment, investee_company_id: user.company_id
-      can :manage, Investor, investee_company_id: user.company_id
+      can :manage, Entity, id: user.entity_id 
+      can :manage, Document, owner_type: "Entity", owner_id: user.entity_id
+      can :manage, User, entity_id: user.entity_id
+      can :manage, Investment, investee_entity_id: user.entity_id
+      can :manage, Investor, investee_entity_id: user.entity_id
       can :manage, DocAccess do |dv|
-        dv.owner && dv.owner.id == user.company_id
+        dv.owner && dv.owner.id == user.entity_id
       end
     elsif user.role == "Admin"
-      can :manage, Company, id: user.company_id 
-      can :manage, Document, owner_type: "Company", owner_id: user.company_id
-      can :manage, User, company_id: user.company_id
-      can :read, Investment, investee_company_id: user.company_id
-      can :read, Investor, investee_company_id: user.company_id
+      can :manage, Entity, id: user.entity_id 
+      can :manage, Document, owner_type: "Entity", owner_id: user.entity_id
+      can :manage, User, entity_id: user.entity_id
+      can :read, Investment, investee_entity_id: user.entity_id
+      can :read, Investor, investee_entity_id: user.entity_id
       can :manage, DocAccess do |dv|
-        dv.owner && dv.owner.id == user.company_id
+        dv.owner && dv.owner.id == user.entity_id
       end
     elsif user.role == "Employee"
-      can :read, Company 
+      can :read, Entity 
       can :show, Document do |doc|
         false
       end
       can :index, Document
-      can :read, Investment, investor_company_id: user.company_id
-      can :read, Investor, investor_company_id: user.company_id
+      can :read, Investment, investor_entity_id: user.entity_id
+      can :read, Investor, investor_entity_id: user.entity_id
     else
-      can :read, Company
+      can :read, Entity
     end
 
   end

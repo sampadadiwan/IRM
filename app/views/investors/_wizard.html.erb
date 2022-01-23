@@ -27,8 +27,8 @@
             <%= render "wizard_search", investor: investor, form: form %>
          </div>
          <div id="step-3" class="tab-pane" role="tabpanel">
-            <%= form.fields_for(:company) do |tf| %>
-               <%= render "companies/form_fields", company: Company.new, form: tf %>
+            <%= form.fields_for(:entity) do |tf| %>
+               <%= render "entities/form_fields", entity: Entity.new, form: tf %>
             <% end %>
 
             <div class="form-group">

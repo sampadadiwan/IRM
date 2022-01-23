@@ -6,15 +6,15 @@ class ApplicationController < ActionController::Base
 
   protected
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :phone, :role, :company_id])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :phone, :role, :entity_id])
   end
 
   def set_search_controller
-    @search_controller = params[:controller] != "home" ? params[:controller] : "companies"
+    @search_controller = params[:controller] != "home" ? params[:controller] : "entities"
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to companies_path, alert: exception.message
+    redirect_to entities_path, alert: exception.message
   end
 
   before_action :prepare_exception_notifier

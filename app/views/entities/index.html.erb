@@ -1,4 +1,4 @@
-<%= render "/companies/stats" %>
+<%= render "/entities/stats" %>
 
 <span>
   <span id="notice"><%= notice %></span>
@@ -7,20 +7,14 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">Companies</h1>
-  <%= link_to "New Company", new_company_path, {class: "btn btn-primary"} %>
+  <%= link_to "New Entity", new_entity_path, {class: "btn btn-primary"} %>
 </div>
 
 
-<table id="companies" class="table table-bordered dataTable">
+<table id="entities" class="table table-bordered dataTable">
   <tr>
     <th>
-      Logo
-    </th>
-    <th>
       Name
-    </th>
-    <th>
-      Url
     </th>
     <th>
       Category
@@ -32,8 +26,8 @@
   </tr>
 
 
-  <% @companies.each do |company| %>
-    <%= render company %>
+  <% @entities.each do |entity| %>
+    <%= render entity %>
   <% end %>
 </table>
 

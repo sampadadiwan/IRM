@@ -1,6 +1,6 @@
-<%= form_with(model: company) do |form| %>
+<%= form_with(model: entity) do |form| %>
   
-  <%= render "form_fields", company: company, form: form %>
+  <%= render "form_fields", entity: entity, form: form %>
 
   <div class="form-group">
     <%= form.submit "Save", {class: "btn btn-primary"} %>

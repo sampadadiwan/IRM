@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   
   devise_for :users, :controllers => {:registrations => "registrations"}
 
-  resources :companies do
+  resources :entities do
     get 'search', on: :collection
     get 'dashboard', on: :collection
   end
@@ -28,5 +28,5 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-  root "companies#dashboard"
+  root "entities#dashboard"
 end
