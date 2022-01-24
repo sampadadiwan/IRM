@@ -1,30 +1,6 @@
 <%= render "/layouts/alerts" %>
 <%= render "/entities/stats" %>
 
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-  <h1 class="h3 mb-0 text-gray-800">Companies</h1>
-  <%= link_to "New Entity", new_entity_path, {class: "btn btn-primary"} %>
-</div>
 
 
-<table id="entities" class="table table-bordered dataTable">
-  <tr>
-    <th>
-      Name
-    </th>
-    <th>
-      Category
-    </th>
-    <th>
-      Type
-    </th>
-  
-  </tr>
-
-
-  <% @entities.each do |entity| %>
-    <%= render entity %>
-  <% end %>
-</table>
-
-
+<%= render "/entities/index", entities: @entities %>

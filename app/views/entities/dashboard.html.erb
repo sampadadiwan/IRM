@@ -85,4 +85,11 @@
     </div>
 
 </div>
-<%= render "cxo_dashboard" %>
+
+<% if current_user.entity %>
+    <% if current_user.entity.entity_type == "Startup" %>
+        <%= render "cxo_dashboard" %>
+    <% else %>
+        <%= render "vc_dashboard" %>
+    <% end %>
+<% end %>

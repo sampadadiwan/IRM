@@ -1,0 +1,4 @@
+<% 
+    @entities = Entity.investor_entities(current_user)
+%>
+<%= render "/entities/index", entities: @entities %>

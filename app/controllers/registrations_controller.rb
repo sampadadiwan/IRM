@@ -8,8 +8,20 @@ class RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     # Ensure role is always Employee
     resource.role = "Employee"
+    
     # Ensure that users are created only for the same enetity as the logged in user.
-    resource.entity_id = current_user.entity_id if current_user && !current_user.is_super?
+    if current_user && !current_user.is_super?
+      resource.entity_id = current_user.entity_id 
+      logger.debug "Setting new user entity to logged in users entity #{current_user.entity_id}"
+    else
+      # Check if this user was invited as an investor
+      ia = InvestorAccess.where(email: resource.email).first
+      if ia
+        # Ensure this user is a user of the investor entity 
+        resource.entity_id = ia.investor.investor_entity_id
+        logger.debug "Setting new user entity to investor entity #{resource.entity_id}"
+      end
+    end
 
     resource.save
     

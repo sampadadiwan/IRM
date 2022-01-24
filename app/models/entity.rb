@@ -11,13 +11,15 @@ class Entity < ApplicationRecord
   has_many :employees, foreign_key: "entity_id", class_name: "User"
     
   has_many :investors, foreign_key: "investee_entity_id"
+  has_many :investor_accesses
 
   TYPES = ["VC", "Startup"]
   FUNDING_UNITS = ["Lakhs", "Crores"]
 
   scope :vcs, -> { where(entity_type: "VC") }
   scope :startups, -> { where(entity_type: "Startup") }
-  
+  scope :investor_entities,  ->(user) { where("investor_accesses.email": user.email).includes(:investor_accesses) }
+
   before_save :check_url
   def check_url
     if !self.url.blank? && !(self.url.starts_with?("http") || self.url.starts_with?("https"))

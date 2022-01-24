@@ -1,0 +1,27 @@
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Entities</h1>
+</div>
+
+
+<table id="entities" class="table table-bordered dataTable">
+  <tr>
+    <th>
+      Name
+    </th>
+    <th>
+      Category
+    </th>
+    <th>
+      Type
+    </th>
+  
+  </tr>
+
+
+  <% entities.each do |entity| %>
+    <%= render entity %>
+  <% end %>
+</table>
+
+

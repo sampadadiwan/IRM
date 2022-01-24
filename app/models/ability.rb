@@ -10,6 +10,9 @@ class Ability
     if user.role == "Super"
       can :manage, :all
     elsif user.role == "Employee"
+      can :show, Entity do |entity|
+        Entity.investor_entities(user).where("entities.id = ?", entity.id).first.present?
+      end
       can :manage, Entity, id: user.entity_id 
       can :manage, Document, owner_type: "Entity", owner_id: user.entity_id
       can :manage, User, entity_id: user.entity_id

@@ -37,12 +37,8 @@
       <div>
          <%= link_to "Edit", edit_entity_path(@entity), {class: "btn btn-primary"} %> |
          <%= link_to "Back", entities_path, {class: "btn btn-primary"} %> |
-         <%= link_to "New Document", new_document_path(owner_id: @entity.id, owner_type: "Entity"), {class: "btn btn-primary"}  %> |
-         <%= link_to "New Employee", new_user_path(entity_id: @entity.id), {class: "btn btn-primary"}  %> |
-
          <%= button_to "Delete", @entity, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
       </div>
    </div>
 </div>
 
-<%= render "documents/index", documents: @entity.documents %>
