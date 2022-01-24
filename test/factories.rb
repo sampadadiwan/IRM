@@ -1,4 +1,11 @@
 FactoryBot.define do
+  factory :note do
+    details { "MyText" }
+    entity_id { 1 }
+    user_id { 1 }
+    investor_id { 1 }
+  end
+
   factory :investor_access do
     investor_id { 1 }
     email { "MyString" }

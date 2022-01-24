@@ -1,6 +1,6 @@
 <tr id="<%= dom_id investor %>">
 <td>
-    <%= investor.investor_entity.name %>
+    <%= link_to investor.investor_entity.name, investor %>
 </td>  
 <td>
     <%= investor.investee_entity.name %>
@@ -9,7 +9,7 @@
     <%= investor.category %>
 </td>  
 <td>
-  <%= link_to "Show", investor , {class: "btn btn-primary"}%>
   <%= link_to "Add Access", new_investor_access_path(investor_id: investor.id) , {class: "btn btn-success"}%>
+  <%= link_to "Add Note", new_note_path(investor_id: investor.id) , {class: "btn btn-success"}%>
 </td>
 </tr>

@@ -5,6 +5,9 @@ class Investor < ApplicationRecord
     belongs_to :investee_entity, foreign_key: "investee_entity_id", class_name: "Entity"    
     has_many :investor_accesses, dependent: :destroy
 
+    delegate :name, to: :investor_entity, prefix: :investor
+    delegate :name, to: :investee_entity, prefix: :investee
+
     CATEGORIES = ENV["INVESTMENT_CATEGORIES"].split(",") << "Prospective"
     
 end

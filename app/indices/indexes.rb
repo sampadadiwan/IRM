@@ -43,6 +43,17 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
     has owner_id, :type => :integer
   end
 
+  
+  ThinkingSphinx::Index.define :note, :with => :real_time do
+    # fields
+    indexes investor.investor_name, :sortable => true
+    indexes details
+    # attributes
+    has created_at, :type => :timestamp
+    has entity_id, :type => :integer
+    has user_id, :type => :integer
+
+  end
 
   ThinkingSphinx::Index.define :investment, :with => :real_time do
     # fields

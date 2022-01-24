@@ -15,6 +15,9 @@ class Ability
       can :manage, User, entity_id: user.entity_id
       can :manage, Investment, investee_entity_id: user.entity_id
       can :manage, Investor, investee_entity_id: user.entity_id
+      can :read, Note, entity_id: user.entity_id
+      can :manage, Note, user_id: user.id
+
       can :manage, InvestorAccess #, investor: {investor_entity_id: user.entity_id}
       can :manage, DocAccess do |dv|
         dv.owner && dv.owner.id == user.entity_id
