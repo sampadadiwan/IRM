@@ -1,8 +1,7 @@
   <div class="form-group">
     <%= form.label :investor %>
     <%= form.text_field :investor_entity_name, class: "form-control typeahead"  %>
-    <%= form.text_field :investor_id, class: "form-control", hidden: true   %>
-    <%= form.text_field :investor_type, class: "form-control", hidden: true, value: "Entity"   %>
+    <%= form.text_field :investor_entity_id, class: "form-control", hidden: true   %>
   </div>
 
   <% if current_user.role == "Super" %>

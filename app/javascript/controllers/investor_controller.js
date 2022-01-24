@@ -38,10 +38,9 @@
 
       $('#investor_investor_entity_name').on('typeahead:select', function(ev, suggestion) {
         console.log(suggestion);
-        $("#investor_investor_id").val(suggestion.entity.id);
+        $("#investor_investor_entity_id").val(suggestion.entity.id);
         $("#investor_entity_name").val(suggestion.entity.name);
         $("#investor_entity_url").val(suggestion.entity.url);
-        $("#investor_entity_category").val(suggestion.entity.category);
         $("#investor_entity_logo_url").val(suggestion.entity.logo_url);
         $("#investor_entity_entity_type").val(suggestion.entity.entity_type);
         $("#investor_entity_id").val(suggestion.entity.id);

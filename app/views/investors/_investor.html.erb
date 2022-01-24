@@ -9,7 +9,7 @@
     <%= investor.category %>
 </td>  
 <td>
-  <%= link_to "Add Access", new_investor_access_path(investor_id: investor.id) , {class: "btn btn-success"}%>
+  <%= link_to "Add Access", new_investor_access_path("investor_access[investor_id]": investor.id) , {class: "btn btn-success"}%>
   <%= link_to "Add Note", new_note_path(investor_id: investor.id) , {class: "btn btn-success"}%>
 </td>
 </tr>

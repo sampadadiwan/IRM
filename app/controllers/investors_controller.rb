@@ -35,11 +35,11 @@ class InvestorsController < ApplicationController
     @investor = Investor.new(investor_params)
     @investor.investee_entity_id = current_user.entity_id if !current_user.is_super?
 
-    if investor_params[:investor_id].blank?
+    if investor_params[:investor_entity_id].blank?
       entity = Entity.create(name: params[:investor][:investor_entity_name], 
         entity_type: "VC", created_by: current_user.id)
       
-      @investor.investor_id = entity.id 
+      @investor.investor_entity_id = entity.id 
     
     end
 
@@ -88,7 +88,7 @@ class InvestorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def investor_params
-      params.require(:investor).permit(:investor_id, :investor_type, 
+      params.require(:investor).permit(:investor_entity_id, 
           :investee_entity_id, :category)
     end
 end
