@@ -9,6 +9,11 @@ class EntitiesController < ApplicationController
   def dashboard
   end
 
+  def investor_view
+    @investments = @entity.investments
+    @documents = @entity.documents.includes(:doc_accesses)
+  end
+
   def search
     if current_user.is_super?
       @entities = Entity.search(params[:query], :star => true)

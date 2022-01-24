@@ -10,7 +10,7 @@ class Ability
     if user.role == "Super"
       can :manage, :all
     elsif user.role == "Employee"
-      can :show, Entity do |entity|
+      can :investor_view, Entity do |entity|
         Entity.investor_entities(user).where("entities.id = ?", entity.id).first.present?
       end
       can :manage, Entity, id: user.entity_id 

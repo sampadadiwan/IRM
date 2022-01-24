@@ -1,0 +1,42 @@
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Investments</h1>
+  <%= link_to "New investment", new_investment_path, {class: "btn btn-primary"}  %>
+</div>
+
+<table id="investments" class="table table-bordered dataTable">
+
+  <tr>
+    <th>
+      Investment Type
+    </th>
+    <th>
+      Investor Company
+    </th>
+    <th>
+      Investee Company
+    </th>
+
+    <% if !params[:prospective] %>
+      <th>
+        Investment Instrument
+      </th>
+      <th>
+        Quantity
+      </th>
+      <th>
+        Initial Value
+      </th>
+      <th>
+        Current Value
+      </th>
+    <% end %>
+    <th>
+    </th>
+  </tr>
+
+  <% investments.each do |investment| %>
+    <%= render investment %>
+  <% end %>
+</table>
+

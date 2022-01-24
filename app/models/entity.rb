@@ -12,6 +12,7 @@ class Entity < ApplicationRecord
     
   has_many :investors, foreign_key: "investee_entity_id"
   has_many :investor_accesses
+  has_many :investments, foreign_key: "investee_entity_id"
 
   TYPES = ["VC", "Startup"]
   FUNDING_UNITS = ["Lakhs", "Crores"]

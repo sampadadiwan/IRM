@@ -7,10 +7,11 @@ FactoryBot.define do
   end
 
   factory :investor_access do
-    investor_id { 1 }
-    email { "MyString" }
-    access_type { "MyString" }
-    granted_by { 1 }
+    investor_id { Investor.all.shuffle.first.id }
+    entity_id { Entity.startups.all.shuffle.first.id }
+    email { User.all.shuffle.first.email }
+    access_type { Investment::CATEGORIES[rand(Investment::CATEGORIES.length)] }
+    granted_by { User.first }
   end
 
   factory :doc_visibility do
