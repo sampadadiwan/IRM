@@ -19,12 +19,12 @@
     
     <div class="form-group">
       <%= form.label :email %>
-      <%= form.text_field :email, class: "form-control"  %>
+      <%= form.text_field :email, class: "form-control", placeholder: "Enter email of the investor to give access to."  %>
     </div>
 
     <div class="form-group">
       <%= form.label :access_type %>
-      <%= form.select :access_type, Investor::CATEGORIES, {}, class: "form-control"  %>
+      <%= form.select :access_type, InvestorAccess::VIEWS, {}, class: "form-control"  %>
     </div>
 
 

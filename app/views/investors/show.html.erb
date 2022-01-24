@@ -39,7 +39,7 @@
 </div>
 
 <%= turbo_frame_tag "new_investor_access" do %>
-    | <%= link_to "Grant Access", new_investor_access_path("investor_access[investor_id]": @investor.id), 
+    | <%= link_to "Grant Cap Table Access", new_investor_access_path("investor_access[investor_id]": @investor.id), 
     {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
       "title": "Who can access your info"} %> 
 <% end %>
