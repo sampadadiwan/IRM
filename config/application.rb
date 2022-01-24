@@ -32,7 +32,7 @@ module InvestorRelationshipManagement
     config.active_job.queue_adapter = :sidekiq
 
     Rails.application.routes.default_url_options[:host]= ENV['HOST']
-
+    
     config.action_mailer.smtp_settings = {
       :address => "email-smtp.us-west-1.amazonaws.com",
       :domain => "InvestorRelationshipManagement.com",

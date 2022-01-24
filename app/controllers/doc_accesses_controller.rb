@@ -1,4 +1,6 @@
 class DocAccessesController < ApplicationController
+  include ActionView::RecordIdentifier
+
   load_and_authorize_resource
   
   # GET /doc_accesses or /doc_accesses.json
@@ -18,6 +20,20 @@ class DocAccessesController < ApplicationController
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.append('new_doc_access', partial: "doc_accesses/form", locals: {doc_access: @doc_access})
+        ]
+      end
+      format.html 
+    end
+  end
+
+  def send_email
+    DocAccessMailer.with(doc_access: @doc_access).notify_access.deliver_later
+    @doc_access.status = "Pending"
+    
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace(dom_id(@doc_access), partial: "doc_accesses/doc_access", locals: {doc_access: @doc_access})
         ]
       end
       format.html 

@@ -3,7 +3,10 @@ Rails.application.routes.draw do
     get 'search', on: :collection
   end
   resources :investor_accesses
-  resources :doc_accesses
+  resources :doc_accesses do 
+    post 'send_email', on: :member
+  end
+
   resources :investors do
     get 'search', on: :collection
   end
