@@ -3,16 +3,18 @@ class DocumentsController < ApplicationController
 
   # GET /documents or /documents.json
   def index
-      if params[:entity_id].present? && current_user.entity_id != params[:entity_id].to_i
-        c = Entity.find(params[:entity_id])
-        if c.present? 
-          investor = c.investors.where(investor_entity_id: current_user.entity_id).first
-          if investor.present?
-            @documents = Document.where(owner_type: "Entity", owner_id:params[:entity_id])            
-            @documents = @documents.select{|doc| doc.visible_to.include?(c.categoty)}
-          end
-        end
-      end
+      # if params[:entity_id].present? && current_user.entity_id != params[:entity_id].to_i
+      #   c = Entity.find(params[:entity_id])
+      #   if c.present? 
+      #     investor = c.investors.where(investor_entity_id: current_user.entity_id).first
+      #     if investor.present?
+      #       @documents = Document.where(owner_type: "Entity", owner_id:params[:entity_id])            
+      #       @documents = @documents.select{|doc| doc.visible_to.include?(c.categoty)}
+      #     end
+      #   end
+      # end
+
+      @documents = @documents.includes(:owner)
   end
 
   def search

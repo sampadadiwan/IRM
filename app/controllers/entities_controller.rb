@@ -10,8 +10,14 @@ class EntitiesController < ApplicationController
   end
 
   def investor_view
-    @investments = @entity.investments
-    @documents = @entity.documents.includes(:doc_accesses)
+    @investor_accesses = @entity.investor_accesses.where(email: current_user.email).order(:access_type)
+    if @investor_accesses.present? 
+      @investments = @entity.investments
+      @documents = @entity.documents.includes(:doc_accesses)
+    else
+      @investments = []
+      @documents = []
+    end
   end
 
   def search
