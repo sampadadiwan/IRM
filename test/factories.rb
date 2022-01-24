@@ -20,7 +20,7 @@ FactoryBot.define do
 
   factory :investment do
     investment_type { Investment::TYPES[rand(Investment::TYPES.length)] }
-    investor { Investor.shuffle.first }
+    investor { Investor.all.shuffle.first }
     investee_entity_id { Entity.startups.shuffle.first.id }
     investment_instrument { Investment::INSTRUMENTS[rand(Investment::INSTRUMENTS.length)] }
     category { Investment::CATEGORIES[rand(Investment::CATEGORIES.length)] }

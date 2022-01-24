@@ -12,7 +12,15 @@ class InvestorAccessesController < ApplicationController
 
   # GET /investor_accesses/new
   def new
-    @investor_access = InvestorAccess.new(investor_id: params[:investor_id])
+    @investor_access = InvestorAccess.new(investor_id: investor_access_params[:investor_id])
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.append('new_investor_access', partial: "investor_accesses/form", locals: {investor_access: @investor_access})
+        ]
+      end
+      format.html 
+    end
   end
 
   # GET /investor_accesses/1/edit
@@ -26,6 +34,12 @@ class InvestorAccessesController < ApplicationController
 
     respond_to do |format|
       if @investor_access.save
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append('investor_accesses_table', partial: "investor_accesses/investor_access", locals: {investor_access: @investor_access})
+          ]
+        end
+        
         format.html { redirect_to investor_access_url(@investor_access), notice: "Investor access was successfully created." }
         format.json { render :show, status: :created, location: @investor_access }
       else

@@ -38,27 +38,6 @@ div.actions {
   display: table; 
 }
 
-#error_explanation {
-  width: 450px;
-  border: 1px solid rgb(233, 105, 105);
-  padding: 7px 7px 0;
-  margin-bottom: 20px;
-  background-color: #f0f0f0; }
-
-#error_explanation h2 {
-  text-align: left;
-  font-weight: bold;
-  padding: 5px 5px 5px 15px;
-  font-size: 12px;
-  margin: -7px -7px 0;
-  background-color: rgb(233, 105, 105);
-  color: black;
-}
-
-#error_explanation ul li {
-  font-size: 12px;
-  list-style: square; }
-
 label {
   display: block; }
 
@@ -90,4 +69,8 @@ input[type="file" i] {
 
 h1 {
   font-size: 1.8rem !important;
+}
+
+.alert > h2 {
+  font-size: 1.2rem;
 }

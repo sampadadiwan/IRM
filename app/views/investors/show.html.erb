@@ -31,12 +31,18 @@
 </table>
 
 
-<div>
+<div style="display: inline-block;">
   <%= link_to "Edit", edit_investor_path(@investor), {class: "btn btn-primary"} %> |
   <%= link_to "Back", investors_path, {class: "btn btn-primary"} %> |
-
   <%= button_to "Delete", @investor, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
 </div>
+
+<%= turbo_frame_tag "new_investor_access" do %>
+    | <%= link_to "Share", new_investor_access_path("investor_access[investor_id]": @investor.id), 
+    {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
+      "title": "Who can access your info"} %> 
+<% end %>
+      
 
 <div id="investor_access" class="associated_entity">
   <%= render "investor_accesses/index", investor_accesses: @investor.investor_accesses %>

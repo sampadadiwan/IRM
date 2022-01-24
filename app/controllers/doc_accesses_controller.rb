@@ -13,7 +13,6 @@ class DocAccessesController < ApplicationController
   # GET /doc_accesses/new
   def new
     @doc_access = DocAccess.new(doc_access_params)
-    # render partial: "doc_accesses/form.html", locals: {doc_access: @doc_access}
 
     respond_to do |format|
       format.turbo_stream do
