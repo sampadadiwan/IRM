@@ -31,7 +31,8 @@ class InvestorAccessesController < ApplicationController
   def create
     @investor_access = InvestorAccess.new(investor_access_params)
     @investor_access.granted_by = current_user.id
-
+    @investor_access.entity_id = current_user.entity_id
+    
     respond_to do |format|
       if @investor_access.save
         format.turbo_stream do
