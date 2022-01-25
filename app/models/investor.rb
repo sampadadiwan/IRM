@@ -7,7 +7,6 @@ class Investor < ApplicationRecord
     belongs_to :investee_entity, foreign_key: "investee_entity_id", class_name: "Entity"    
     has_many :investor_accesses, dependent: :destroy
 
-    delegate :name, to: :investor_entity, prefix: :investor
     delegate :name, to: :investee_entity, prefix: :investee
 
     CATEGORIES = ENV["INVESTMENT_CATEGORIES"].split(",") << "Prospective"
@@ -22,6 +21,11 @@ class Investor < ApplicationRecord
         where("investors.investee_entity_id": investee_entity_id).
             joins(:investor_accesses).includes(:investor_accesses) 
     }
+
+    before_save :update_name
+    def update_name
+        self.investor_name = self.investor_entity.name
+    end
   
 
 end

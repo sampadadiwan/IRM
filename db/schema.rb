@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_25_154948) do
+ActiveRecord::Schema.define(version: 2022_01_25_164421) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 2022_01_25_154948) do
     t.string "category", limit: 50
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "investor_name"
     t.index ["investee_entity_id"], name: "index_investors_on_investee_entity_id"
     t.index ["investor_entity_id"], name: "index_investors_on_investor_entity_id"
   end
