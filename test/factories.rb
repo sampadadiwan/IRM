@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :note do
     details { "MyText" }
     entity_id { 1 }
-    user_id { 1 }
+    user { 1 }
     investor_id { 1 }
   end
 
@@ -10,11 +10,11 @@ FactoryBot.define do
     investor_id { Investor.all.shuffle.first.id }
     entity_id { Entity.startups.all.shuffle.first.id }
     email { User.all.shuffle.first.email }
-    access_type { Investment::CATEGORIES[rand(Investment::CATEGORIES.length)] }
+    access_type { InvestorAccess::VIEWS[rand(InvestorAccess::VIEWS.length)] }
     granted_by { User.first }
   end
 
-  factory :doc_visibility do
+  factory :doc_access do
     document_id { 1 }
     visiblity_type { "MyString" }
     to { "MyString" }

@@ -10,14 +10,33 @@ class EntitiesController < ApplicationController
   end
 
   def investor_view
-    @investor_accesses = @entity.investor_accesses.where(email: current_user.email).order(:access_type)
-    if @investor_accesses.present? 
-      @investments = @entity.investments.order(initial_value: :desc).
-      joins(:investor, :investee_entity)
-      .includes([:investor=>:investor_entity], :investee_entity)
-      
+    # Get the investor access for this user and this entity
+    @investor_access = InvestorAccess.user_access(current_user)
+                                       .entity_access(@entity.id).first
+    
+    if @investor_access.present? 
+      @investments = @entity.investments.
+          order(initial_value: :desc).
+          # joins(:investor, :investee_entity).
+          includes([:investor=>:investor_entity], :investee_entity)
+
+      case @investor_access.access_type
+        when InvestorAccess::ALL
+          # Do nothing - we got all the investments
+          logger.debug "Access to investor #{current_user.email} to ALL Entty #{@entity.id} investments"
+        when InvestorAccess::SELF
+          # Got all the investments for this investor
+          logger.debug "Access to investor #{current_user.email} to SELF Entty #{@entity.id} investments"
+          @investments = @investments.where(investor_id: @investor_access.investor_id)
+        when InvestorAccess::SUMMARY
+          # Show summary page
+          logger.debug "Access to investor #{current_user.email} to SUMMARY Entty #{@entity.id} investments"
+      end
+
+      # get the documents      
       @documents = @entity.documents.includes(:doc_accesses)
     else
+      logger.debug "No access to investor #{current_user.email} to Entty #{@entity.id} investments"
       @investments = []
       @documents = []
     end

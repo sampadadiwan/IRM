@@ -18,6 +18,8 @@ class Investment < ApplicationRecord
     scope :prospective, -> { where(investor_type: "Prospective") }
     scope :shareholders, -> { where(investor_type: "Shareholder") }
 
+    
+
     def investment_type_sq
         self.investment_type.delete(' ')
     end

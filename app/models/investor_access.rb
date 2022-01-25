@@ -11,6 +11,7 @@ class InvestorAccess < ApplicationRecord
     VIEWS = [ALL, SELF, SUMMARY]
 
     scope :user_access,  ->(user) { where("investor_accesses.email": user.email) }
+    scope :entity_access,  ->(entity_id) { where("investor_accesses.entity_id": entity_id) }
 
 
     after_create :send_notification, :update_user
