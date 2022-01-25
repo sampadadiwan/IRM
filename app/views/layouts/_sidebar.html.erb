@@ -19,18 +19,14 @@
                     <span>Dashboard</span></a>
             </li>
 
-
+            <% if current_user && current_user.is_startup? %>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
            
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="/entities">
-                    <i class="fas fa-fw fa-lightbulb"></i>
-                    <span>Entities</span>
-                </a>
-
+                
                 <a class="nav-link" href="/investments">
                     <i class="fas fa-fw fa-rupee-sign"></i>
                     <span>Investments</span>
@@ -41,19 +37,27 @@
                     <span>Investors</span>
                 </a>
 
-                <a class="nav-link collapsed" href="/users">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>Users</span>
-                </a>
                 <a class="nav-link collapsed" href="/documents">
                     <i class="fas fa-fw fa-file"></i>
                     <span>Documents</span>
                 </a>
+
+            </li>
+
+            <% end %>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <li class="nav-item">
+                
+                <a class="nav-link collapsed" href="/users">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Users</span>
+                </a>
                
             </li>
 
-
-            
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

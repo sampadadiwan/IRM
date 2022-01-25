@@ -88,8 +88,10 @@
       }
 
       .footer {
+        background-color: #4e73df;
+        color: white;
         clear: both;
-        margin-top: 10px;
+        margin-top: 0px;
         text-align: center;
         width: 100%; 
       }
@@ -97,7 +99,7 @@
         .footer p,
         .footer span,
         .footer a {
-          color: #999999;
+          color: white;
           font-size: 12px;
           text-align: center; 
       }
@@ -366,6 +368,13 @@
                 <tr>
                   <td class="content-block">
                     <span class="apple-link">IRM</span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="content-block">
+                    <%= link_to "Login", new_user_session_url() %> | 
+                    <%= link_to "SignUp", new_user_registration_url() %>
                   </td>
                 </tr>
               </table>
