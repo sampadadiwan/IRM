@@ -78,6 +78,6 @@ class DocumentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def document_params
-      params.require(:document).permit(:name,:owner_id, :owner_type, :file, :visible_to=>[])
+      params.require(:document).permit(:name,:owner_id, :owner_type, :file, :text)
     end
 end

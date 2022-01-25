@@ -1,6 +1,6 @@
 class DocAccess < ApplicationRecord
     belongs_to :document
-    delegate :owner, :to => :document, :allow_nil => true
+    delegate :owner, :to => :document
     broadcasts_to :document
 
     VISIBILITY = ["Category", "Email"]

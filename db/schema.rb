@@ -88,7 +88,6 @@ ActiveRecord::Schema.define(version: 2022_01_24_091150) do
 
   create_table "documents", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 100
-    t.string "visible_to", default: "--- []\n"
     t.string "text", default: "--- []\n"
     t.integer "owner_id"
     t.string "owner_type", limit: 20

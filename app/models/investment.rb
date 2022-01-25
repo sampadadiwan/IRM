@@ -21,4 +21,11 @@ class Investment < ApplicationRecord
     def investment_type_sq
         self.investment_type.delete(' ')
     end
+
+    def accessible?(user)
+        # Either investment belongs to the investor
+        self.investor.investor_entity_id == user.entity_id ||
+        # Or he is an investor in the entity
+        user.investor_entity(self.investor.investee_entity_id).present?
+    end
 end
