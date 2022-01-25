@@ -65,8 +65,12 @@ class User < ApplicationRecord
     end
   end
 
-  def investor_entities
-    Entity.investor_entities(self)
+  def investor_entity(entity_id)
+    Entity.user_investor_entities(self).where("entities.id": entity_id).first
+  end
+
+  def investor(investee_entity_id)
+    Investor.includes(:investee_entity).user_investors(self).where("entities.id": investee_entity_id).first
   end
 
 end

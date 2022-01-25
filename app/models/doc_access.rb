@@ -4,4 +4,7 @@ class DocAccess < ApplicationRecord
     broadcasts_to :document
 
     VISIBILITY = ["Category", "Email"]
+
+    scope :email_access,  ->(user) { where("doc_accesses.to": user.email) }
+    scope :category_access,  ->(category) { where("doc_accesses.to": category) }    
 end

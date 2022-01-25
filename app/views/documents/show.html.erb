@@ -34,7 +34,7 @@
    </tr>
 </table>
 
-<% if current_user.entity_id == @document.id %>
+<% if current_user.entity_id == @document.owner_id %>
    <div style="display: inline-block;">
       <%= link_to "Edit", edit_document_path(@document), {class: "btn btn-primary"} %> |
       <%= link_to "Back", documents_path, {class: "btn btn-primary"} %> |

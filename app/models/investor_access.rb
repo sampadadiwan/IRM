@@ -10,6 +10,9 @@ class InvestorAccess < ApplicationRecord
     SUMMARY = "Summary Of Investments"
     VIEWS = [ALL, SELF, SUMMARY]
 
+    scope :user_access,  ->(user) { where("investor_accesses.email": user.email) }
+
+
     after_create :send_notification
     def send_notification
         InvestorAccessMailer.with(investor_access:self).notify_access.deliver_later

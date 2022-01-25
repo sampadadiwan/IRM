@@ -1,4 +1,4 @@
 <% 
-    @entities = Entity.investor_entities(current_user)
+    @entities = Entity.user_investor_entities(current_user)
 %>
 <%= render "/entities/index", entities: @entities %>
