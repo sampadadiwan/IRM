@@ -21,7 +21,7 @@ class Document < ApplicationRecord
                 logger.debug "Document #{self.id} accessible by category #{investor.category} #{user.email}"
                 true
             else
-                logger.debug "Document #{self.id} NOT accessible by category #{investor.category} #{user.email}"
+                logger.debug "Document #{self.id} NOT accessible by #{user.email}"
                 false
             end
         end        
