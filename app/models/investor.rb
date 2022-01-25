@@ -1,4 +1,6 @@
 class Investor < ApplicationRecord
+    has_paper_trail
+    
     ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
     
     belongs_to :investor_entity, foreign_key: "investor_entity_id", class_name: "Entity"

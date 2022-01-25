@@ -1,5 +1,6 @@
 class Note < ApplicationRecord
-
+    has_paper_trail
+    
     ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
 
     has_rich_text :details

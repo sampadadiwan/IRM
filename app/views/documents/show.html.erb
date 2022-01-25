@@ -2,7 +2,7 @@
 <table class="table table-bordered dataTable">
    <tr>
       <td>
-         Name
+         Download
       </td>
       <td>
          <%= link_to @document.name, rails_blob_path(@document.file, disposition: 'attachment') if @document.file.attached? %>

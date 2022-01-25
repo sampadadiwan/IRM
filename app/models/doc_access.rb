@@ -1,4 +1,6 @@
 class DocAccess < ApplicationRecord
+    has_paper_trail
+    
     belongs_to :document
     delegate :owner, :to => :document
     broadcasts_to :document
