@@ -7,9 +7,10 @@ FactoryBot.define do
   end
 
   factory :investor_access do
-    investor_id { Investor.all.shuffle.first.id }
+    investor = Investor.all.shuffle.first
+    investor_id { investor.id }
     entity_id { Entity.startups.all.shuffle.first.id }
-    email { User.all.shuffle.first.email }
+    email { investor.investor_entity.employees.shuffle.first.email }
     access_type { InvestorAccess::VIEWS[rand(InvestorAccess::VIEWS.length)] }
     granted_by { User.first }
   end

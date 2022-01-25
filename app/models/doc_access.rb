@@ -7,4 +7,6 @@ class DocAccess < ApplicationRecord
 
     scope :email_access,  ->(user) { where("doc_accesses.to": user.email) }
     scope :category_access,  ->(category) { where("doc_accesses.to": category) }    
+    
+    
 end

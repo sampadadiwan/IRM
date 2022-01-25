@@ -26,4 +26,17 @@ class Document < ApplicationRecord
             end
         end        
     end
+
+    def self.documents_for(current_user, entity)
+        
+        
+        
+        investor = entity.investors.for_email(current_user).first
+        documents = Document.where(owner_id:entity.id).joins(:doc_accesses)
+                            .where("doc_accesses.to" => [current_user.email, investor.category])
+                                    
+
+        documents
+
+    end
 end
