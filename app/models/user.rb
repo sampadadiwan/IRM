@@ -29,7 +29,7 @@ class User < ApplicationRecord
     first_name + " " + last_name
   end
 
-  before_create :setup_role
+  before_create :setup_defaults
 
   def name
     self.full_name
@@ -39,8 +39,12 @@ class User < ApplicationRecord
     first_name + " " + last_name
   end
 
-  def setup_role
+  def setup_defaults
     self.role ||= "Employee"
+
+    self.is_investor = self.entity.entity_type == "VC" || InvestorAccess.user_access(self).first.present?
+    
+    self.is_startup = self.entity.entity_type == "Startup"    
   end
 
   def is_super?

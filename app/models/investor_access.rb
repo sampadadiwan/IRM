@@ -13,8 +13,14 @@ class InvestorAccess < ApplicationRecord
     scope :user_access,  ->(user) { where("investor_accesses.email": user.email) }
 
 
-    after_create :send_notification
+    after_create :send_notification, :update_user
     def send_notification
         InvestorAccessMailer.with(investor_access:self).notify_access.deliver_later
+    end
+
+    def update_user
+        u = User.where(email: self.email).first
+        u.is_investor = true
+        u.save
     end
 end

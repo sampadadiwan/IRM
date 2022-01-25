@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_24_091150) do
+ActiveRecord::Schema.define(version: 2022_01_25_075852) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 2022_01_24_091150) do
 
   create_table "documents", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 100
+    t.string "visible_to", default: "--- []\n"
     t.string "text", default: "--- []\n"
     t.integer "owner_id"
     t.string "owner_type", limit: 20
@@ -180,6 +181,8 @@ ActiveRecord::Schema.define(version: 2022_01_24_091150) do
     t.datetime "confirmed_at", precision: 6
     t.datetime "confirmation_sent_at", precision: 6
     t.integer "entity_id"
+    t.boolean "is_investor", default: false
+    t.boolean "is_startup", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["entity_id"], name: "index_users_on_entity_id"
