@@ -75,7 +75,7 @@ class InvestorsController < ApplicationController
     @investor.destroy
 
     respond_to do |format|
-      format.html { redirect_to investors_url, notice: "Investor was successfully destroyed." }
+      format.html { redirect_to investors_url, notice: "Investor was successfully deleted." }
       format.json { head :no_content }
     end
   end

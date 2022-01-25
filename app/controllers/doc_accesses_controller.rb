@@ -87,7 +87,7 @@ class DocAccessesController < ApplicationController
           turbo_stream.remove(@doc_access)
         ]
       end
-      format.html { redirect_to doc_accesses_url, notice: "Document Access was successfully destroyed." }
+      format.html { redirect_to doc_accesses_url, notice: "Document Access was successfully deleted." }
       format.json { head :no_content }
     end
   end

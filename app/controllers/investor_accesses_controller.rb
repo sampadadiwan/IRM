@@ -74,7 +74,7 @@ class InvestorAccessesController < ApplicationController
         ]
       end
       
-      format.html { redirect_to investor_accesses_url, notice: "Investor access was successfully destroyed." }
+      format.html { redirect_to investor_accesses_url, notice: "Investor access was successfully deleted." }
       format.json { head :no_content }
     end
   end
