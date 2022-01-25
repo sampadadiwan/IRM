@@ -21,7 +21,9 @@ class InvestorAccess < ApplicationRecord
 
     def update_user
         u = User.where(email: self.email).first
-        u.is_investor = true
-        u.save
+        if u.present?
+            u.is_investor = true
+            u.save
+        end
     end
 end

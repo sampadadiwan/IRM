@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :note do
-    details { "MyText" }
-    entity_id { 1 }
-    user { 1 }
-    investor_id { 1 }
+    investor { Investor.all.shuffle.first }
+    details { Faker::Quotes::Rajnikanth.joke }
+    entity_id { investor.investee_entity_id }
+    user { investor.investee_entity.employees.shuffle.first }
   end
 
   factory :investor_access do

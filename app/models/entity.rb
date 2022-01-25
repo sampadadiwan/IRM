@@ -11,11 +11,11 @@ class Entity < ApplicationRecord
   has_many :employees, foreign_key: "entity_id", class_name: "User"
 
   # List of investors who are invested in this entity
-  has_many :investors, foreign_key: "investee_entity_id"
+  has_many :investors, foreign_key: "investee_entity_id", dependent: :destroy
   has_many :investor_entities, through: :investors
 
   # List of investors where this entity is an investor
-  has_many :investees, foreign_key: "investor_entity_id", class_name: "Investor"
+  has_many :investees, foreign_key: "investor_entity_id", class_name: "Investor", dependent: :destroy
   has_many :investee_entities, through: :investees
 
   has_many :investor_accesses
