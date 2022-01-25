@@ -7,7 +7,9 @@ class NotesController < ApplicationController
       @notes = @notes.where(investor_id: params[:investor_id])
     end
 
-    @notes = @notes.order("notes.id desc")
+    @notes = @notes.with_all_rich_text.includes(:user, :investor=>:investor_entity).
+                    joins(:user, :investor).
+                    order("notes.id desc").page params[:page]
   end
 
   def search

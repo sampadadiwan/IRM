@@ -8,6 +8,7 @@ class DocumentsController < ApplicationController
   end
 
   def search
+    @entity = current_user.entity
     if current_user.is_super?
       @documents = Document.search(params[:query], :star => true)
     else

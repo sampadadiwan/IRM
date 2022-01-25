@@ -5,11 +5,13 @@ class InvestmentsController < ApplicationController
   def index
     @entity = current_user.entity
     @investments = @investments.order(initial_value: :desc).
-    joins(:investor, :investee_entity).
-    includes([:investor=>:investor_entity], :investee_entity)
+                    joins(:investor, :investee_entity).
+                    includes([:investor=>:investor_entity], :investee_entity).
+                    page params[:page]
   end
 
   def search
+    @entity = current_user.entity
     params[:query] = params[:query].delete(' ') if params[:query].present? && params[:query].include?("Series")
     if current_user.is_super?
       @investments = Investment.search(params[:query], :star => true)

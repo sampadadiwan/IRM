@@ -39,6 +39,7 @@ gem 'sassc-rails'
 gem 'thinking-sphinx', '~> 5.4'
 gem "aws-sdk-s3", require: false
 gem 'paper_trail'
+gem 'kaminari'
 
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
