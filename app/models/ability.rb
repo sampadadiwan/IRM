@@ -24,7 +24,9 @@ class Ability
       can :manage, User, entity_id: user.entity_id
 
       can :show, Investment do |inv|        
+        # Either investment belongs to the investor
         inv.investor.investor_entity_id == user.entity_id ||
+        # Or he is an investor in the entity
         user.investor_entities.where("entities.id = ?", inv.investor.investee_entity_id).first.present?
       end
       can :manage, Investment, investee_entity_id: user.entity_id

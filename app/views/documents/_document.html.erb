@@ -3,9 +3,11 @@
       <%= link_to document.name, document %>
   </td>  
   <td>
-      <%= document.created_at %>
+      <%= l document.created_at %>
   </td>  
+  <% if params[:show_doc_owner].present? %>
   <td>
       <%= link_to document.owner.name, document.owner %>
   </td>  
+  <% end %>
 </tr>
