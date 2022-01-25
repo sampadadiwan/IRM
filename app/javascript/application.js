@@ -9,3 +9,4 @@ import "@popperjs/core"
 $( document ).on('turbo:load', function() {
     $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});
 });
+

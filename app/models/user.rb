@@ -65,4 +65,8 @@ class User < ApplicationRecord
     end
   end
 
+  def investor_entities
+    Entity.investor_entities(self)
+  end
+
 end

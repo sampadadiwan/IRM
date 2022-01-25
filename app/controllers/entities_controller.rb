@@ -12,7 +12,10 @@ class EntitiesController < ApplicationController
   def investor_view
     @investor_accesses = @entity.investor_accesses.where(email: current_user.email).order(:access_type)
     if @investor_accesses.present? 
-      @investments = @entity.investments
+      @investments = @entity.investments.order(initial_value: :desc).
+      joins(:investor, :investee_entity)
+      .includes([:investor=>:investor_entity], :investee_entity)
+      
       @documents = @entity.documents.includes(:doc_accesses)
     else
       @investments = []

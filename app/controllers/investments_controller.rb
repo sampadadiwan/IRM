@@ -3,7 +3,10 @@ class InvestmentsController < ApplicationController
 
   # GET /investments or /investments.json
   def index
-    @investments = @investments.order(initial_value: :desc).joins(:investor, :investee_entity).includes([:investor=>:investor_entity], :investee_entity)
+    @entity = current_user.entity
+    @investments = @investments.order(initial_value: :desc).
+    joins(:investor, :investee_entity).
+    includes([:investor=>:investor_entity], :investee_entity)
   end
 
   def search
