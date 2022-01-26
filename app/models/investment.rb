@@ -27,15 +27,27 @@ class Investment < ApplicationRecord
     end
 
     def accessible?(user)
-        # Either investment belongs to the investor
-        self.investor.investor_entity_id == user.entity_id ||
-        # Or he is an investor in the entity
-        user.investor_entity(self.investor.investee_entity_id).present?
+        # Either investment belongs to the investee
+        if self.investee_entity_id == user.entity_id
+            true
+        else
+            # Or he is an investor in the entity and has been given access
+            ia = InvestorAccess.user_access(user).entity_access(self.investee_entity_id).first
+            case ia.access_type
+                # Access to the entire cap table
+                when InvestorAccess::ALL
+                    true
+                # Access to only the investors investments
+                when InvestorAccess::SELF
+                    self.investor.investor_entity_id == user.entity_id
+            end                
+        end
+        
     end
 
     def self.investments_for(current_user, entity)
 
-        investments = []
+        investments = Investment.none
         # Get the investor access for this user and this entity
         investor_access = InvestorAccess.user_access(current_user)
                                         .entity_access(entity.id).first
@@ -48,15 +60,15 @@ class Investment < ApplicationRecord
 
             case investor_access.access_type
                 when InvestorAccess::ALL
-                # Do nothing - we got all the investments
-                logger.debug "Access to investor #{current_user.email} to ALL Entity #{entity.id} investments"
+                    # Do nothing - we got all the investments
+                    logger.debug "Access to investor #{current_user.email} to ALL Entity #{entity.id} investments"
                 when InvestorAccess::SELF
-                # Got all the investments for this investor
-                logger.debug "Access to investor #{current_user.email} to SELF Entity #{entity.id} investments"
-                investments = investments.where(investor_id: investor_access.investor_id)
+                    # Got all the investments for this investor
+                    logger.debug "Access to investor #{current_user.email} to SELF Entity #{entity.id} investments"
+                    investments = investments.where(investor_id: investor_access.investor_id)
                 when InvestorAccess::SUMMARY
-                # Show summary page
-                logger.debug "Access to investor #{current_user.email} to SUMMARY Entity #{entity.id} investments"
+                    # Show summary page
+                    logger.debug "Access to investor #{current_user.email} to SUMMARY Entity #{entity.id} investments"
             end
         else
             logger.debug "No access to investor #{current_user.email} to Entity #{entity.id} investments"            
