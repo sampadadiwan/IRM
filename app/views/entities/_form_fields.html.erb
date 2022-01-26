@@ -35,6 +35,29 @@
     <%= form.rich_text_area :details, class: "form-control trix-content"  %>
   </div>
 
+
+  <% if entity.entity_type == "Startup" %>
+    <div class="form-group">
+      <%= form.label :investor_categories %>
+      <%= form.text_field :investor_categories, class: "form-control", 
+        placeholder: "Comma separated list of investor categories e.x #{Investment::INVESTOR_CATEGORIES.join(",")}"  %>
+      <small class="text-muted">Leave this blank to use defaults.</small>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :investment_types %>
+      <%= form.text_field :investment_types, class: "form-control",
+        placeholder: "Comma separated list of investment types e.x #{Investment::INVESTMENT_TYPES.join(",")}"  %>
+      <small class="text-muted">Leave this blank to use defaults.</small>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :instrument_types %>
+      <%= form.text_field :instrument_types, class: "form-control",
+        placeholder: "Comma separated list of instruments e.x #{Investment::INSTRUMENT_TYPES.join(",")}"  %>
+      <small class="text-muted">Leave this blank to use defaults.</small>
+    </div>
+  <% end %>
   
   <%= form.text_field :id, class: "form-control", hidden: true   %>
   <div data-controller="entityform"></div>

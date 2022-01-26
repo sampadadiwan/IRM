@@ -9,7 +9,11 @@ class Investor < ApplicationRecord
 
     delegate :name, to: :investee_entity, prefix: :investee
 
-    CATEGORIES = ENV["INVESTMENT_CATEGORIES"].split(",") << "Prospective"
+    INVESTOR_CATEGORIES = ENV["INVESTOR_CATEGORIES"].split(",") << "Prospective"
+
+    def self.INVESTOR_CATEGORIES(entity=nil)
+        Investment.INVESTOR_CATEGORIES(entity) << "Prospective"
+    end
     
     scope :for_email,  ->(user) {
         where("investor_accesses.email": user.email).

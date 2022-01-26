@@ -29,7 +29,7 @@ class Entity < ApplicationRecord
   scope :startups, -> { where(entity_type: "Startup") }
   scope :user_investor_entities,  ->(user) { where("investor_accesses.email": user.email).includes(:investor_accesses) }
   
-  before_save :check_url
+  before_save :check_url, :scrub_defaults
   def check_url
     if !self.url.blank? && !(self.url.starts_with?("http") || self.url.starts_with?("https"))
       self.url = "http://" + self.url 
@@ -38,6 +38,12 @@ class Entity < ApplicationRecord
     if !self.logo_url.blank? && !(self.logo_url.starts_with?("http") || self.logo_url.starts_with?("https"))
       self.logo_url = "http://" + self.logo_url 
     end
+  end
+
+  def scrub_defaults
+    self.investor_categories = self.investor_categories.split(",").map(&:strip).join(",") if self.investor_categories
+    self.investment_types = self.investment_types.split(",").map(&:strip).join(",") if self.investment_types
+    self.instrument_types = self.instrument_types.split(",").map(&:strip).join(",") if self.instrument_types
   end
 
   # Setup the person who created this entity as belonging to this entity

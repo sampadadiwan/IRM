@@ -7,20 +7,28 @@ class Investment < ApplicationRecord
     belongs_to :investee_entity, foreign_key: "investee_entity_id", class_name: "Entity"    
 
     # "Series A,Series B,Series C"
-    TYPES = ENV["INVESTMENT_TYPES"].split(",")
+    INVESTMENT_TYPES = ENV["INVESTMENT_TYPES"].split(",")
 
     # "Equity,Preferred,Debt,ESOPs"
-    INSTRUMENTS = ENV["INVESTMENT_INSTRUMENTS"].split(",")
-    
-    STATUS_TYPES = ["Shareholder", "Prospective"]
+    INSTRUMENT_TYPES = ENV["INSTRUMENT_TYPES"].split(",")
     
     # "Lead Investor,Co-Investor,Founder,Individual,Employee"
-    CATEGORIES = ENV["INVESTMENT_CATEGORIES"].split(",")
+    INVESTOR_CATEGORIES = ENV["INVESTOR_CATEGORIES"].split(",")
 
     scope :prospective, -> { where(investor_type: "Prospective") }
     scope :shareholders, -> { where(investor_type: "Shareholder") }
 
-    
+    # These functions override the defaults based on entities customization
+    def self.INVESTMENT_TYPES(entity=nil)
+        entity && entity.investment_types.present? ? entity.investment_types.split(",").map(&:strip) : INVESTMENT_TYPES 
+    end
+    def self.INVESTOR_CATEGORIES(entity=nil)
+        entity && entity.investor_categories.present? ? entity.investor_categories.split(",").map(&:strip) : INVESTOR_CATEGORIES 
+    end
+    def self.INSTRUMENT_TYPES(entity=nil)
+        entity && entity.instrument_types.present? ? entity.instrument_types.split(",").map(&:strip) : INSTRUMENT_TYPES 
+    end
+
 
     def investment_type_sq
         self.investment_type.delete(' ')

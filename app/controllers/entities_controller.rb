@@ -85,6 +85,7 @@ class EntitiesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def entity_params
     params.require(:entity).permit(:name, :url, :category, :founded, :entity_type,
-                                    :funding_amount, :funding_unit, :details, :logo_url)
+                                    :funding_amount, :funding_unit, :details, :logo_url,
+                                  :investor_categories, :investment_types, :instrument_types)
   end
 end

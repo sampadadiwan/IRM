@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_25_164421) do
+ActiveRecord::Schema.define(version: 2022_01_26_082444) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -110,6 +110,9 @@ ActiveRecord::Schema.define(version: 2022_01_25_164421) do
     t.boolean "active", default: true
     t.string "entity_type", limit: 15
     t.integer "created_by"
+    t.string "investor_categories"
+    t.string "investment_types"
+    t.string "instrument_types"
   end
 
   create_table "investments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
