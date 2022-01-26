@@ -4,7 +4,14 @@ class DocumentsController < ApplicationController
   # GET /documents or /documents.json
   def index
       @entity = current_user.entity
-      @documents = @documents.includes(:owner)
+      if params[:entity_id].present?
+        @entity = Entity.find(params[:entity_id])
+        @documents = Document.documents_for(current_user, @entity)
+      else
+        @documents = @documents.includes(:owner)
+      end
+
+      @documents = @documents.page params[:page]
   end
 
   def search

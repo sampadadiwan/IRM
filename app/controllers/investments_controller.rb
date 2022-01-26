@@ -3,11 +3,18 @@ class InvestmentsController < ApplicationController
 
   # GET /investments or /investments.json
   def index
-    @entity = current_user.entity
-    @investments = @investments.order(initial_value: :desc).
-                    joins(:investor, :investee_entity).
-                    includes([:investor=>:investor_entity], :investee_entity).
-                    page params[:page]
+    
+    if params[:entity_id].present?
+      @entity = Entity.find(params[:entity_id])
+      @investments = Investment.investments_for(current_user, @entity)
+    else
+      @entity = current_user.entity
+      @investments = @investments.order(initial_value: :desc).                    
+                    includes([:investor=>:investor_entity], :investee_entity)
+                    
+    end
+    
+    @investments = @investments.joins(:investor, :investee_entity).page params[:page]
   end
 
   def search
