@@ -1,5 +1,5 @@
 <h2><%= @doc_access.document.name %></h2>
 
 <p>
-  The document <%= link_to @doc_access.document.name, @doc_access.document.file.url(expires_in: 24.hours)  %> has been shared with you by <%= @doc_access.document.owner.name %>
+  The document <%= link_to @doc_access.document.name, @doc_access.document  %> has been shared with you by <%= @doc_access.document.owner.name %>
 </p>
