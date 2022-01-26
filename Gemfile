@@ -32,14 +32,22 @@ gem "redis", "~> 4.0"
 
 gem 'devise'
 gem 'cancancan'
+
 gem 'dotenv-rails'
 gem 'sidekiq'
 gem 'exception_notification'
 gem 'sassc-rails' 
+
 gem 'thinking-sphinx', '~> 5.4'
 gem "aws-sdk-s3", require: false
+
 gem 'paper_trail'
 gem 'kaminari'
+
+# Charting gems
+gem "chartkick"
+gem 'groupdate'
+gem 'hightop'
 
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]

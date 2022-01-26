@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-lg-6 mb-4">
+
+        <!-- Illustrations -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Investment By Type</h6>
+            </div>
+            <div class="card-body">
+                <%= investment_by_investment_type(entity)  %>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <!-- Approach -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Instruments</h6>
+            </div>
+            <div class="card-body">
+                <%= investment_by_intrument(entity)  %>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <!-- Approach -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Investors</h6>
+            </div>
+            <div class="card-body">
+                <%= investment_by_investor(entity)  %>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <!-- Approach -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Investors</h6>
+            </div>
+            <div class="card-body">
+                <%= count_by_investor(entity)  %>
+            </div>
+        </div>
+    </div>
+
+</div>
