@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  namespace :admin do
+      resources :investors
+      resources :users
+      resources :notes
+      resources :entities
+      resources :investor_accesses
+      resources :documents
+      resources :doc_accesses
+      resources :investments
+
+      root to: "investors#index"
+    end
   resources :notes do
     get 'search', on: :collection
   end

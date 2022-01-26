@@ -49,6 +49,8 @@ gem "chartkick"
 gem 'groupdate'
 gem 'hightop'
 
+gem "administrate"
+gem 'administrate-field-active_storage'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
