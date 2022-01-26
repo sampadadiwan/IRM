@@ -33,9 +33,7 @@ class Ability
       can :manage, Note, user_id: user.id
 
       can :manage, InvestorAccess #, investor: {investor_entity_id: user.entity_id}
-      can :manage, DocAccess do |dv|
-        dv.owner && dv.owner.id == user.entity_id
-      end
+      can :manage, DocAccess, entity_id: user.entity_id
     else
       can :read, Entity
     end

@@ -1,11 +1,22 @@
 class DocAccessesController < ApplicationController
   include ActionView::RecordIdentifier
 
-  load_and_authorize_resource
+  load_and_authorize_resource :except => ["search"]
   
   # GET /doc_accesses or /doc_accesses.json
   def index
-    @doc_accesses = DocAccess.all
+    @doc_accesses = @doc_accesses.includes(:document).joins(:document).page params[:page]
+  end
+
+  def search
+    @entity = current_user.entity
+    if current_user.is_super?
+      @doc_accesses = DocAccess.search(params[:query], :star => true)
+    else
+      @doc_accesses = DocAccess.search(params[:query], :star => true, with: {:entity_id => current_user.entity_id})
+    end
+
+    render "index"
   end
 
   # GET /doc_accesses/1 or /doc_accesses/1.json
@@ -47,6 +58,7 @@ class DocAccessesController < ApplicationController
   # POST /doc_accesses or /doc_accesses.json
   def create
     @doc_access = DocAccess.new(doc_access_params)
+    @doc_access.entity_id = current_user.entity_id
 
     respond_to do |format|
       if @doc_access.save

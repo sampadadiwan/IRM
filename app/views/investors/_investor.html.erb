@@ -10,5 +10,6 @@
 </td>  
 <td>
   <%= link_to "Add Note", new_note_path(investor_id: investor.id) , {class: "btn btn-success"}%>
+  <%= link_to "View Notes", notes_path(investor_id: investor.id) , {class: "btn btn-success"}%>
 </td>
 </tr>

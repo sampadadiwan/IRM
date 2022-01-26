@@ -11,12 +11,18 @@ Rails.application.routes.draw do
 
       root to: "investors#index"
     end
+  
   resources :notes do
     get 'search', on: :collection
   end
-  resources :investor_accesses
+  
+  resources :investor_accesses do
+    get 'search', on: :collection
+  end
+
   resources :doc_accesses do 
     post 'send_email', on: :member
+    get 'search', on: :collection
   end
 
   resources :investors do

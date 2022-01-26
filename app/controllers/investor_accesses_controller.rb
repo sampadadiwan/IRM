@@ -3,12 +3,25 @@ class InvestorAccessesController < ApplicationController
 
   # GET /investor_accesses or /investor_accesses.json
   def index
-    @investor_accesses = InvestorAccess.all
+    @investor_accesses = @investor_accesses.joins(:investor).
+                          includes(:investor).page params[:page]
   end
 
   # GET /investor_accesses/1 or /investor_accesses/1.json
   def show
   end
+
+  def search
+    @entity = current_user.entity
+    if current_user.is_super?
+      @investor_accesses = InvestorAccess.search(params[:query], :star => true)
+    else
+      @investor_accesses = InvestorAccess.search(params[:query], :star => true, with: {:entity_id => current_user.entity_id})
+    end
+
+    render "index"
+  end
+
 
   # GET /investor_accesses/new
   def new

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_26_082444) do
+ActiveRecord::Schema.define(version: 2022_01_26_145800) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -83,7 +83,9 @@ ActiveRecord::Schema.define(version: 2022_01_26_082444) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "status", limit: 10
+    t.integer "entity_id"
     t.index ["document_id"], name: "index_doc_access_on_document_id"
+    t.index ["entity_id"], name: "index_doc_accesses_on_entity_id"
   end
 
   create_table "documents", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
