@@ -12,7 +12,7 @@ class Ability
     elsif user.role == "Employee"
       can :investor_view, Entity do |entity|
         user.investor_entity(entity.id).present?
-      end      
+      end
       can :manage, Entity, id: user.entity_id 
       
       can :show, Document do |doc|

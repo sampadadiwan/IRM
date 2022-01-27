@@ -44,9 +44,9 @@ class User < ApplicationRecord
   def setup_defaults
     self.role ||= "Employee"
 
-    self.is_investor = self.entity.entity_type == "VC" || InvestorAccess.user_access(self).first.present?
+    self.is_investor = self.entity && self.entity.entity_type == "VC" || InvestorAccess.user_access(self).first.present?
     
-    self.is_startup = self.entity.entity_type == "Startup"    
+    self.is_startup = self.entity.entity_type == "Startup" if self.entity
   end
 
   def is_super?

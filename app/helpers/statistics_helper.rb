@@ -1,9 +1,6 @@
 module StatisticsHelper
     def investment_by_investment_type(entity)
       bar_chart Investment.where(investee_entity_id: entity.id).group(:investment_type).sum(:initial_value), 
-    #   xtitle: "Investment Amount",
-    #   ytitle: "Type",
-      defer: true,
       prefix: '₹'
     end
 
@@ -12,7 +9,6 @@ module StatisticsHelper
         bar_chart Investment.where(investee_entity_id: entity.id).group(:investment_instrument).sum(:initial_value), 
         #   xtitle: "Investment Amount",
         #   ytitle: "Type",
-        defer: true,
         prefix: '₹'
     end
 
@@ -22,7 +18,6 @@ module StatisticsHelper
       #   xtitle: "Investment Amount",
       #   ytitle: "Type",
         donut: true,
-        defer: true,
         prefix: '₹'
     end
 
@@ -32,7 +27,6 @@ module StatisticsHelper
       #   xtitle: "Investment Amount",
       #   ytitle: "Type",
         donut: true,
-        defer: true,
         prefix: '₹'
     end
 end
