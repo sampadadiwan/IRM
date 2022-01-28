@@ -5,7 +5,7 @@
          Download
       </td>
       <td>
-         <%= link_to @document.name, rails_blob_path(@document.file, disposition: 'attachment') if @document.file.attached? %>
+         <%= link_to @document.name, @document.file.expiring_url() if @document.file.exists? %>
       </td>
    </tr>
    <tr>

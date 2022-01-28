@@ -1,5 +1,16 @@
 Given(/^there is a user "([^"]*)"$/) do |arg1|
-  @entity = FactoryBot.create(:entity, entity_type: "Startup")  
+  @user = FactoryBot.build(:user, entity: @entity)
+  key_values(@user, arg1)
+  @user.save!
+  puts "\n####User####\n"
+  puts @user.to_json
+end
+
+
+Given('there is a user {string} for an entity {string}') do |arg1, arg2|
+  @entity = FactoryBot.create(:entity)  
+  key_values(@entity, arg2)
+
   @user = FactoryBot.build(:user, entity: @entity)
   key_values(@user, arg1)
   @user.save!

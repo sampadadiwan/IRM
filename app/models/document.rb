@@ -4,9 +4,22 @@ class Document < ApplicationRecord
     ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
 
     belongs_to :owner, polymorphic: true
-    has_one_attached :file
+    
     has_many :doc_accesses, dependent: :destroy
     has_rich_text :text
+
+    has_attached_file :file,
+                      :bucket => proc { |attachment| attachment.instance.id % 2 == 0 ? "altx.dev" : "altx.dev.new" }
+                          
+    validates_attachment_content_type :file, content_type: [/\Aimage\/.*\Z/, /\Avideo\/.*\Z/, /\Aaudio\/.*\Z/, /\Aapplication\/.*\Z/]
+    
+    validates_attachment :file, presence: true,
+                        size: { in: 0..10.megabytes }
+
+    # create custom interpolation rule to make directory from the owner name
+    Paperclip.interpolates :document_directory do |file, _|
+        file.instance.owner.name.parameterize
+    end
 
     def accessible_by?(category_or_email)
         self.doc_accesses.where(to: category_or_email).first.present?

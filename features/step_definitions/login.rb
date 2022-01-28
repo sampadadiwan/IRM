@@ -12,8 +12,8 @@ Given(/^I am at the login page$/) do
   end
   
   When(/^I fill the password incorrectly and submit the login page$/) do
-    fill_in('email', with: @user.email)
-    fill_in('password', with: "Wrong pass")
+    fill_in('user_email', with: @user.email)
+    fill_in('user_password', with: "Wrong pass")
     click_on("Log in")
     sleep(1)
   end
