@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_28_063201) do
+ActiveRecord::Schema.define(version: 2022_01_28_124610) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 2022_01_28_063201) do
     t.string "investor_categories"
     t.string "investment_types"
     t.string "instrument_types"
+    t.string "s3_bucket"
   end
 
   create_table "investments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

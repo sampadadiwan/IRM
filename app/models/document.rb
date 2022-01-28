@@ -9,8 +9,11 @@ class Document < ApplicationRecord
     has_rich_text :text
 
     has_attached_file :file,
-                      :bucket => proc { |attachment| attachment.instance.id % 2 == 0 ? "altx.dev" : "altx.dev.new" }
-                          
+        :s3_permissions => nil,
+        :bucket => proc { |attachment| 
+            attachment.instance.owner.s3_bucket.present? ? attachment.instance.owner.s3_bucket : ENV["AWS_S3_BUCKET"] 
+        }
+
     validates_attachment_content_type :file, content_type: [/\Aimage\/.*\Z/, /\Avideo\/.*\Z/, /\Aaudio\/.*\Z/, /\Aapplication\/.*\Z/]
     
     validates_attachment :file, presence: true,
