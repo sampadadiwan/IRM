@@ -1,11 +1,13 @@
 FactoryBot.define do
   factory :deal_activity do
-    deal { nil }
-    deal_investor { nil }
-    by_date { "2022-01-29" }
-    status { "MyString" }
-    completed { false }
-    entity_id { 1 }
+    title { Faker::Company.catch_phrase }
+    details { Faker::Quotes::Rajnikanth.joke }
+    deal { Deal.all.shuffle.first }
+    deal_investor { deal.deal_investors.shuffle.first }
+    by_date { Date.today + rand(10).days }
+    status {  }
+    completed { [true, false][rand(2)] }
+    entity_id { deal.entity_id }
   end
 
   factory :deal_investor do

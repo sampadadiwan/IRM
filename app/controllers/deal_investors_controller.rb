@@ -9,6 +9,14 @@ class DealInvestorsController < ApplicationController
     @deal_investors = @deal_investors.page params[:page]
   end
 
+  def search
+    @entity = current_user.entity
+    @deal_investors = DealInvestor.search(params[:query], :star => true, with: {:entity_id => current_user.entity_id})
+
+    render "index"
+  end
+
+
   # GET /deal_investors/1 or /deal_investors/1.json
   def show
   end

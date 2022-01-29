@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
-  resources :deal_activities
-  resources :deal_investors
-  resources :deals
+  resources :deal_activities do
+    get 'search', on: :collection
+  end
+  resources :deal_investors do
+    get 'search', on: :collection
+  end
+  resources :deals do
+    get 'search', on: :collection
+  end
+  
   namespace :admin do
       resources :investors
       resources :users

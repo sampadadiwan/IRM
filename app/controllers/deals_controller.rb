@@ -5,6 +5,13 @@ class DealsController < ApplicationController
   def index
   end
 
+  def search
+    @entity = current_user.entity
+    @deals = Deal.search(params[:query], :star => true, with: {:entity_id => current_user.entity_id})
+
+    render "index"
+  end
+
   # GET /deals/1 or /deals/1.json
   def show
   end
