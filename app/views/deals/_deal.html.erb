@@ -1,0 +1,20 @@
+
+<tr id="<%= dom_id deal %>">
+<td>
+    <%= deal.entity.name %>
+</td>  
+<td>
+    <%= deal.name %>
+</td>  
+<td>
+    <%= deal.amount %>
+</td>  
+<td>
+    <%= deal.status %>
+</td>  
+<td>
+  <%= link_to "Show", deal , {class: "btn btn-primary"}%>
+  <%= link_to "Add Investor", new_deal_investor_path(deal_id: deal.id) , {class: "btn btn-success"}%>
+  <%= link_to "View Activity", deal_activities_path(deal_id: deal.id) , {class: "btn btn-success"}%>
+</td>
+</tr>

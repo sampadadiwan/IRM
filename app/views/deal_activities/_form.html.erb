@@ -1,0 +1,42 @@
+<%= form_with(model: deal_activity) do |form| %>
+  <% if deal_activity.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(deal_activity.errors.count, "error") %> prohibited this deal_activity from being saved:</h2>
+
+      <ul>
+        <% deal_activity.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.text_field :deal_id, class: "form-control", hidden: true  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :deal_investor_id %>
+    <%= form.text_field :deal_investor, class: "form-control", disabled: "disabled", value: deal_activity.investor_name  %>
+    <%= form.text_field :deal_investor_id, class: "form-control", hidden: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :by_date %>
+    <%= form.date_field :by_date, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :status %>
+    <%= form.text_field :status, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :completed %>
+    <%= form.check_box :completed, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>

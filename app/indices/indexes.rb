@@ -93,3 +93,37 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
     has initial_value, :type => :bigint
     
   end
+
+
+  ThinkingSphinx::Index.define :deal, :with => :real_time do
+    # fields
+    indexes name, :sortable => true
+    indexes status
+    
+    # attributes
+    has created_at, :type => :timestamp
+    has entity_id, :type => :integer
+  end
+
+  ThinkingSphinx::Index.define :deal_investor, :with => :real_time do
+    # fields
+    indexes deal_name, :sortable => true
+    indexes investor_name
+    indexes status
+
+    # attributes
+    has created_at, :type => :timestamp
+    has entity_id, :type => :integer
+  end
+
+  ThinkingSphinx::Index.define :deal_activity, :with => :real_time do
+    # fields
+    indexes deal_name, :sortable => true
+    indexes investor_name
+    
+    # attributes
+    has created_at, :type => :timestamp
+    has entity_id, :type => :integer
+    has completed, :type => :boolean
+
+  end

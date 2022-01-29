@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :deal_activities
+  resources :deal_investors
+  resources :deals
   namespace :admin do
       resources :investors
       resources :users

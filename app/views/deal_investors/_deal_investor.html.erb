@@ -1,0 +1,24 @@
+<tr id="<%= dom_id deal_investor %>">
+<td>
+    <%= deal_investor.deal_name %>
+</td>  
+<td>
+    <%= link_to deal_investor.investor_name, deal_investor %>
+</td>  
+<td>
+    <%= deal_investor.status %>
+</td>  
+<td>
+    <%= deal_investor.primary_amount %>
+</td>  
+<td>
+    <%= deal_investor.secondary_investment %>
+</td>  
+<td>
+    <%= deal_investor.entity_name %>
+</td>  
+<td>
+  <%= link_to "Add Activity", new_deal_activity_path(deal_id: deal_investor.deal_id, deal_investor_id: deal_investor.id ) , {class: "btn btn-success"}%>
+  <%= link_to "View Activity", deal_activities_path(deal_id: deal_investor.deal_id, deal_investor_id: deal_investor.id) , {class: "btn btn-success"}%>
+</td>
+</tr>

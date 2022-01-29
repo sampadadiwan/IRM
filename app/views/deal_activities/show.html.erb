@@ -1,0 +1,63 @@
+<%= render "/layouts/alerts" %>
+
+<table class="table table-bordered dataTable">
+
+          <tr>
+        <td>
+          Deal
+        </td>
+        <td>
+          <%= @deal_activity.deal_name %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Deal Investor
+        </td>
+        <td>
+          <%= @deal_activity.investor_name %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          By Date
+        </td>
+        <td>
+          <%= @deal_activity.by_date %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Status
+        </td>
+        <td>
+          <%= @deal_activity.status %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Completed
+        </td>
+        <td>
+          <%= @deal_activity.completed ? "Yes" : "No" %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Entity
+        </td>
+        <td>
+          <%= @deal_activity.entity_name %>
+        </td>    
+      </tr>
+    
+  
+</table>
+
+
+<div>
+  <%= link_to "Edit", edit_deal_activity_path(@deal_activity), {class: "btn btn-primary"} %> |
+  <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
+
+  <%= button_to "Delete", @deal_activity, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+</div>

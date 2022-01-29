@@ -1,0 +1,43 @@
+<%= form_with(model: deal_investor) do |form| %>
+  <% if deal_investor.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(deal_investor.errors.count, "error") %> prohibited this deal_investor from being saved:</h2>
+
+      <ul>
+        <% deal_investor.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :deal_id %>
+    <%= form.text_field :deal_name, class: "form-control", disabled: "disabled", value: deal_investor.deal.name  %>
+    <%= form.text_field :deal_id, class: "form-control", hidden: true  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :investor_id %>
+    <%= form.select :investor_id, current_user.entity.investors.includes(:investor_entity).order("entities.name").map{|c| [c.investor_name, c.id]}, {include_blank: true}, {class: "form-control"} %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :status %>
+    <%= form.select :status, DealInvestor::STATUS, {}, {class: "form-control"} %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :primary_amount %>
+    <%= form.text_field :primary_amount, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :secondary_investment %>
+    <%= form.text_field :secondary_investment, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>

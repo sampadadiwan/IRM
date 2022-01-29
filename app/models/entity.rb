@@ -5,7 +5,7 @@ class Entity < ApplicationRecord
   validates :name, presence: true
 
   has_rich_text :details
-  
+  has_many :deals, dependent: :destroy  
   has_many :documents, as: :owner, dependent: :destroy
   
   # Will have many employees

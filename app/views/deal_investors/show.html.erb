@@ -1,0 +1,68 @@
+<%= render "/layouts/alerts" %>
+
+<table class="table table-bordered dataTable">
+
+          <tr>
+        <td>
+          Deal
+        </td>
+        <td>
+          <%= @deal_investor.deal_name %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Investor
+        </td>
+        <td>
+          <%= @deal_investor.investor_name %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Status
+        </td>
+        <td>
+          <%= @deal_investor.status %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Primary Amount
+        </td>
+        <td>
+          <%= @deal_investor.primary_amount %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Secondary Investment
+        </td>
+        <td>
+          <%= @deal_investor.secondary_investment %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Entity
+        </td>
+        <td>
+          <%= @deal_investor.entity_name %>
+        </td>    
+      </tr>
+    
+  
+</table>
+
+
+<div>
+  <%= link_to "Edit", edit_deal_investor_path(@deal_investor), {class: "btn btn-primary"} %> |
+  <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
+  <%= link_to "New Deal Activity", new_deal_activity_path(deal_id: @deal_investor.deal_id, deal_investor_id: @deal_investor.id), {class: "btn btn-success"}  %> |
+
+  <%= button_to "Delete", @deal_investor, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+</div>
+
+<div id="deal_activities" class="associated_entity">
+  <%= render "/deal_activities/index", deal_activities: @deal_investor.deal_activities %>
+</div>

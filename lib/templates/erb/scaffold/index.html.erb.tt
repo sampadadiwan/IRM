@@ -1,8 +1,8 @@
-<%= render "/layouts/alerts" %>
+<%%= render "/layouts/alerts" %>
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-  <h1 class="h3 mb-0 text-gray-800"><%= human_name.pluralize %></h1>
-  <%%= link_to "New <%= human_name %>", <%= new_helper(type: :path) %>, {class: "btn btn-primary"}  %>
+  <h1 class="h3 mb-0 text-gray-800"><%= human_name.pluralize.titleize %></h1>
+  <%%= link_to "New <%= human_name.titleize %>", <%= new_helper(type: :path) %>, {class: "btn btn-primary"}  %>
 </div>
 
 <table id="<%= plural_table_name %>" class="table table-bordered dataTable">

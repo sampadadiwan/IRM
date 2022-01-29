@@ -1,0 +1,34 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Deal Investors</h1>
+  <%= link_to "New Deal Investor", new_deal_investor_path, {class: "btn btn-primary"}  %>
+</div>
+
+<table id="deal_investors" class="table table-bordered dataTable">
+  <tr>
+    <th>
+      <strong>Deal</strong>
+    </th>
+    <th>
+      <strong>Investor</strong>
+    </th>
+    <th>
+      <strong>Status</strong>
+    </th>
+    <th>
+      <strong>Primary Amount</strong>
+    </th>
+    <th>
+      <strong>Secondary Investment</strong>
+    </th>
+    <th>
+      <strong>Entity</strong>
+    </th>
+
+    <th>
+    <th>
+  </tr>
+
+  <% deal_investors.each do |deal_investor| %>
+    <%= render deal_investor %>
+  <% end %>
+</table>

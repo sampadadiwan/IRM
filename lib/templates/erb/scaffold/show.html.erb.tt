@@ -1,4 +1,4 @@
-<%= render "/layouts/alerts" %>
+<%%= render "/layouts/alerts" %>
 
 <table class="table table-bordered dataTable">
 
@@ -8,7 +8,7 @@
           <%= attribute.human_name.titleize %>
         </td>
         <td>
-          <%%= <%= singular_name %>.<%= attribute.column_name %> %>
+          <%%= @<%= singular_name %>.<%= attribute.column_name %> %>
         </td>    
       </tr>
     <% end %>

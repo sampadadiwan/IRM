@@ -1,0 +1,35 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Deal Activities</h1>
+</div>
+
+<table id="deal_activities" class="table table-bordered dataTable">
+
+  <tr>
+    <th>
+      <strong>Deal</strong>
+    </th>
+    <th>
+      <strong>Deal Investor</strong>
+    </th>
+    <th>
+      <strong>By Date</strong>
+    </th>
+    <th>
+      <strong>Status</strong>
+    </th>
+    <th>
+      <strong>Completed</strong>
+    </th>
+    <th>
+      <strong>Entity</strong>
+    </th>
+
+    <th>
+    <th>
+  </tr>
+
+  <% deal_activities.each do |deal_activity| %>
+    <%= render deal_activity %>
+  <% end %>
+</table>
+

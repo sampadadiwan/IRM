@@ -1,4 +1,30 @@
 FactoryBot.define do
+  factory :deal_activity do
+    deal { nil }
+    deal_investor { nil }
+    by_date { "2022-01-29" }
+    status { "MyString" }
+    completed { false }
+    entity_id { 1 }
+  end
+
+  factory :deal_investor do
+    deal { Deal.all.shuffle.first }
+    investor { deal.entity.investors.shuffle.first }
+    status { DealInvestor::STATUS[ rand(DealInvestor::STATUS.length) ] }
+    primary_amount { (rand(10) + 2) * 1000000 }
+    secondary_investment { (rand(10) + 2) * 1000000 }
+    entity { deal.entity }
+  end
+
+
+  factory :deal do
+    entity { Entity.startups.all.shuffle.first }
+    name { ["Series A", "Series B", "Series C", "Series D"][rand(4)] }
+    amount { (rand(10) + 2) * 10000000 }
+    status { "Open" }
+  end
+
   factory :note do
     investor { Investor.all.shuffle.first }
     details { Faker::Quotes::Rajnikanth.joke }

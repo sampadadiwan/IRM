@@ -13,7 +13,7 @@ Scenario Outline: User Registration Successfully
   When I fill and submit the login page
   Then I should see the "<msg2>"
   Examples:
-  	|user		     |msg1											|msg2		  |
+  	|user		         |msg1											                                              |msg2		  |
   	|role=Employee	 |A message with a confirmation link has been sent to your email address.	|Signed in successfully	|
     |role=Employee   |A message with a confirmation link has been sent to your email address. |Signed in successfully  |
     |role=Employee	 |A message with a confirmation link has been sent to your email address.	|Signed in successfully	|

@@ -1,0 +1,30 @@
+<%= render "/layouts/alerts" %>
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Deals</h1>
+  <%= link_to "New Deal", new_deal_path, {class: "btn btn-primary"}  %>
+</div>
+
+<table id="deals" class="table table-bordered dataTable">
+  <tr>
+    <th>
+      <strong>Entity</strong>
+    </th>
+    <th>
+      <strong>Name</strong>
+    </th>
+    <th>
+      <strong>Amount</strong>
+    </th>
+    <th>
+      <strong>Status</strong>
+    </th>
+
+    <th>
+    <th>
+  </tr>
+  <% @deals.each do |deal| %>
+    <%= render deal %>
+  <% end %>
+</table>
+

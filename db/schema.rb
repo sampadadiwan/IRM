@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_28_124610) do
+ActiveRecord::Schema.define(version: 2022_01_29_072946) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -74,6 +74,44 @@ ActiveRecord::Schema.define(version: 2022_01_28_124610) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "deal_activities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "deal_id", null: false
+    t.bigint "deal_investor_id", null: false
+    t.date "by_date"
+    t.string "status", limit: 20
+    t.boolean "completed"
+    t.integer "entity_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["deal_id"], name: "index_deal_activities_on_deal_id"
+    t.index ["deal_investor_id"], name: "index_deal_activities_on_deal_investor_id"
+    t.index ["entity_id"], name: "index_deal_activities_on_entity_id"
+  end
+
+  create_table "deal_investors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "deal_id", null: false
+    t.bigint "investor_id", null: false
+    t.string "status", limit: 20
+    t.decimal "primary_amount", precision: 10
+    t.decimal "secondary_investment", precision: 10
+    t.bigint "entity_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["deal_id"], name: "index_deal_investors_on_deal_id"
+    t.index ["entity_id"], name: "index_deal_investors_on_entity_id"
+    t.index ["investor_id"], name: "index_deal_investors_on_investor_id"
+  end
+
+  create_table "deals", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.string "name", limit: 100
+    t.decimal "amount", precision: 10
+    t.string "status", limit: 20
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["entity_id"], name: "index_deals_on_entity_id"
   end
 
   create_table "doc_accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -213,4 +251,10 @@ ActiveRecord::Schema.define(version: 2022_01_28_124610) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "deal_activities", "deal_investors"
+  add_foreign_key "deal_activities", "deals"
+  add_foreign_key "deal_investors", "deals"
+  add_foreign_key "deal_investors", "entities"
+  add_foreign_key "deal_investors", "investors"
+  add_foreign_key "deals", "entities"
 end
