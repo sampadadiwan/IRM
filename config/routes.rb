@@ -49,6 +49,7 @@ Rails.application.routes.draw do
 
   resources :users do
     get 'search', on: :collection
+    get 'welcome', on: :collection
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

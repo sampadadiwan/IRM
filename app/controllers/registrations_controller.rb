@@ -45,6 +45,8 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
 
+  protected
+
   def after_sign_up_path_for(resource)
     if current_user
       dashboard_entities_path
@@ -53,5 +55,9 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  
+  def after_inactive_sign_up_path_for(resource)
+    welcome_users_path
+  end
 
 end

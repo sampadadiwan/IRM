@@ -36,6 +36,7 @@ class Ability
       can :manage, DocAccess, entity_id: user.entity_id
     else
       can :read, Entity
+      can :welcome, User
     end
 
   end

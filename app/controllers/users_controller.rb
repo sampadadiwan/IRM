@@ -1,8 +1,12 @@
 class UsersController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
+  before_action :authenticate_user!, :except => ["welcome"]
+  load_and_authorize_resource :except => ["search", "welcome"]
 
   # GET /users or /users.json
   def index
+  end
+  
+  def welcome
   end
 
   def search
