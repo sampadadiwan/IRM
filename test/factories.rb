@@ -1,4 +1,10 @@
 FactoryBot.define do
+  factory :deal_message do
+    user { nil }
+    content { nil }
+    deal_investor { nil }
+  end
+
   factory :deal_activity do
     title { Faker::Company.catch_phrase }
     details { Faker::Quotes::Rajnikanth.joke }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_29_084457) do
+ActiveRecord::Schema.define(version: 2022_01_29_133047) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -104,6 +104,15 @@ ActiveRecord::Schema.define(version: 2022_01_29_084457) do
     t.index ["deal_id"], name: "index_deal_investors_on_deal_id"
     t.index ["entity_id"], name: "index_deal_investors_on_entity_id"
     t.index ["investor_id"], name: "index_deal_investors_on_investor_id"
+  end
+
+  create_table "deal_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "deal_investor_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["deal_investor_id"], name: "index_deal_messages_on_deal_investor_id"
+    t.index ["user_id"], name: "index_deal_messages_on_user_id"
   end
 
   create_table "deals", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -258,5 +267,7 @@ ActiveRecord::Schema.define(version: 2022_01_29_084457) do
   add_foreign_key "deal_investors", "deals"
   add_foreign_key "deal_investors", "entities"
   add_foreign_key "deal_investors", "investors"
+  add_foreign_key "deal_messages", "deal_investors"
+  add_foreign_key "deal_messages", "users"
   add_foreign_key "deals", "entities"
 end

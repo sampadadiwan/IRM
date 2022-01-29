@@ -1,0 +1,22 @@
+<%= render "/layouts/alerts" %>
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Deal Messages</h1>
+</div>
+
+<table id="deal_messages" class="table table-bordered dataTable">
+  <tr>
+    <th>
+      <strong>User</strong>
+    </th>
+    <th>
+      <strong>Content</strong>
+    </th>
+    <th>
+    <th>
+  </tr>
+  <% @deal_messages.each do |deal_message| %>
+    <%= render deal_message %>
+  <% end %>
+</table>
+

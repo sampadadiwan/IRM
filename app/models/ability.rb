@@ -17,6 +17,11 @@ class Ability
       can :manage, Deal, entity_id: user.entity_id 
       can :manage, DealInvestor, entity_id: user.entity_id       
       can :manage, DealActivity, entity_id: user.entity_id 
+      can :manage, DealMessage, DealMessage.user_messages(user) do |msg| 
+        msg.user_id == user.id ||
+        msg.deal_investor.entity_id == user.entity_id ||
+        msg.deal_investor.investor.investor_entity_id == user.entity_id          
+      end
 
       can :show, Document do |doc|
         doc.accessible?(user) 
