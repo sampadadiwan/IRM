@@ -6,6 +6,7 @@ class DealInvestorsController < ApplicationController
     if params[:deal_id].present?
       @deal_investors = @deal_investors.where(deal_id: params[:deal_id])
     end
+    @deal_investors = @deal_investors.page params[:page]
   end
 
   # GET /deal_investors/1 or /deal_investors/1.json

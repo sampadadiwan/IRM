@@ -120,6 +120,8 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
     # fields
     indexes deal_name, :sortable => true
     indexes investor_name
+    indexes title
+    indexes details
     
     # attributes
     has created_at, :type => :timestamp

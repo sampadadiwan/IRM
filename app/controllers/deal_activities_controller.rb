@@ -10,6 +10,8 @@ class DealActivitiesController < ApplicationController
     if params[:deal_investor_id].present?
       @deal_activities = @deal_activities.where(deal_investor_id: params[:deal_investor_id])
     end
+
+    @deal_activities = @deal_activities.page params[:page]
   end
 
   # GET /deal_activities/1 or /deal_activities/1.json
@@ -72,6 +74,7 @@ class DealActivitiesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def deal_activity_params
-      params.require(:deal_activity).permit(:deal_id, :deal_investor_id, :by_date, :status, :completed, :entity_id)
+      params.require(:deal_activity).permit(:deal_id, :deal_investor_id, :by_date, :status, 
+                    :title, :details, :completed, :entity_id)
     end
 end
