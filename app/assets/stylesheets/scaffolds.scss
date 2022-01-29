@@ -79,3 +79,17 @@ h1 {
 .navigation__link {
   font-size: 1rem;
 }
+
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #d1d3f5 !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #d1d3f5 !important;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #d1d3f5 !important;
+}

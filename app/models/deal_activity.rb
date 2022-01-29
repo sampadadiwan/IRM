@@ -11,4 +11,8 @@ class DealActivity < ApplicationRecord
   delegate :name, to: :deal, prefix: :deal
 
   
+  def completed_status
+    completed ? "Yes" : "No"
+  end
+
 end
