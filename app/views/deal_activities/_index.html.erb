@@ -3,39 +3,41 @@
 </div>
 
 <table id="deal_activities" class="table table-bordered dataTable">
+  <thead>
+    <tr>
+      <th>
+        Sequence
+      </th>
+      <th>
+        Activity
+      </th>
+      <th>
+        Deal
+      </th>
+      <th>
+        Deal Investor
+      </th>
+      <th>
+        By Date
+      </th>
+      <th>
+        Status
+      </th>
+      <th>
+        Completed
+      </th>
+      <th>
+        Days
+      </th>
 
-  <tr>
-    <th>
-      Sequence
-    </th>
-    <th>
-      Activity
-    </th>
-    <th>
-      Deal
-    </th>
-    <th>
-      Deal Investor
-    </th>
-    <th>
-      By Date
-    </th>
-    <th>
-      Status
-    </th>
-    <th>
-      Completed
-    </th>
-    <th>
-      Days
-    </th>
-
-    <th>
-    <th>
-  </tr>
-
-  <% deal_activities.each do |deal_activity| %>
-    <%= render deal_activity %>
-  <% end %>
+      <th>
+      <th>
+    </tr>
+  </thead>
+  <tbody id="deal_activities_tbody">
+    <% deal_activities.each do |deal_activity| %>
+      <%= render deal_activity %>
+    <% end %>
+  </tbody>
 </table>
 

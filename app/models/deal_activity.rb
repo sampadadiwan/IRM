@@ -1,5 +1,7 @@
 class DealActivity < ApplicationRecord
   has_paper_trail
+  acts_as_list scope: :deal_investor, column: :sequence
+
   ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
 
   default_scope { order(by_date: :asc) }

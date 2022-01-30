@@ -21,10 +21,12 @@ class DealInvestor < ApplicationRecord
   def create_activites
     seq = 1
     DealActivity.templates(self.deal).each do |template|
-      exists = DealActivity.where(deal_id: self.deal_id, deal_investor_id: self.id).
-                            where(title: template.title).first.present?
+      existing_activity = DealActivity.where(deal_id: self.deal_id, deal_investor_id: self.id).
+                            where(title: template.title).first
       
-      if !exists
+      if existing_activity.present?
+        existing_activity.update(sequence: template.sequence, days: template.days)
+      else
         DealActivity.create(deal_id: self.deal_id, deal_investor_id: self.id, 
                             entity_id: self.entity_id, title: template.title, 
                             sequence: template.sequence, days: template.days)

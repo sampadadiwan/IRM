@@ -1,5 +1,6 @@
 class DealActivitiesController < ApplicationController
   load_and_authorize_resource :except => ["search"]
+  skip_before_action :verify_authenticity_token, only: [:update_sequence]
 
   # GET /deal_activities or /deal_activities.json
   def index
@@ -9,6 +10,8 @@ class DealActivitiesController < ApplicationController
 
     if params[:deal_investor_id].present?
       @deal_activities = @deal_activities.where(deal_investor_id: params[:deal_investor_id])
+    elsif params[:templates].present?
+      @deal_activities = @deal_activities.where(deal_investor_id: nil).order(sequence: :asc)
     end
 
     @deal_activities = @deal_activities.page params[:page]
@@ -64,6 +67,10 @@ class DealActivitiesController < ApplicationController
     end
   end
 
+  def update_sequence
+    @deal_activity.set_list_position(params[:sequence].to_i + 1)
+  end
+
   # DELETE /deal_activities/1 or /deal_activities/1.json
   def destroy
     @deal_activity.destroy
@@ -83,6 +90,6 @@ class DealActivitiesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def deal_activity_params
       params.require(:deal_activity).permit(:deal_id, :deal_investor_id, :by_date, :status, 
-                    :title, :details, :completed, :entity_id)
+                    :title, :details, :completed, :entity_id, :days)
     end
 end

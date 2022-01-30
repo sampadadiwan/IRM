@@ -1,5 +1,8 @@
-<tr id="<%= dom_id deal_activity %>">
+<tr id="<%= dom_id deal_activity %>" class="item">
 <td>
+    <% if params[:templates].present? %>
+    <i class="fas fa-arrows-alt handle"></i>
+    <% end %>
     <%= deal_activity.sequence %>
 </td>  
 <td>

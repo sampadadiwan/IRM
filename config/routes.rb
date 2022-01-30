@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :deal_messages
   resources :deal_activities do
     get 'search', on: :collection
+    post 'update_sequence', on: :member
   end
   resources :deal_investors do
     get 'search', on: :collection
