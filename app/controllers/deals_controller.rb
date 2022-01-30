@@ -14,11 +14,17 @@ class DealsController < ApplicationController
 
   # GET /deals/1 or /deals/1.json
   def show
+    if params[:grid_view].present?
+      render "grid_view"
+    else
+      render "show"
+    end    
   end
 
   # GET /deals/new
   def new
     @deal = Deal.new
+    @deal.activity_list = Deal::ACTIVITIES
   end
 
   # GET /deals/1/edit
@@ -72,6 +78,6 @@ class DealsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def deal_params
-      params.require(:deal).permit(:entity_id, :name, :amount, :status)
+      params.require(:deal).permit(:entity_id, :name, :amount, :status, :activity_list)
     end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_30_063243) do
+ActiveRecord::Schema.define(version: 2022_01_30_121331) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 2022_01_30_063243) do
 
   create_table "deal_activities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "deal_id", null: false
-    t.bigint "deal_investor_id", null: false
+    t.bigint "deal_investor_id"
     t.date "by_date"
     t.string "status", limit: 20
     t.boolean "completed"
@@ -87,6 +87,8 @@ ActiveRecord::Schema.define(version: 2022_01_30_063243) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "title"
     t.text "details"
+    t.integer "sequence"
+    t.integer "days"
     t.index ["deal_id"], name: "index_deal_activities_on_deal_id"
     t.index ["deal_investor_id"], name: "index_deal_activities_on_deal_investor_id"
     t.index ["entity_id"], name: "index_deal_activities_on_entity_id"
@@ -140,6 +142,7 @@ ActiveRecord::Schema.define(version: 2022_01_30_063243) do
     t.string "status", limit: 20
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "activity_list"
     t.index ["entity_id"], name: "index_deals_on_entity_id"
   end
 

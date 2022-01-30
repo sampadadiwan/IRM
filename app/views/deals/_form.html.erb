@@ -28,6 +28,13 @@
   </div>
 
   <div class="form-group">
+    <%= form.label :activity_list %>
+    <%= form.text_area :activity_list, class: "form-control"  %>
+    <small class="text-muted">List of activities, for each deal investor. Leave this as it is to allow defaults. Or customize the steps for this deal</small>
+
+  </div>
+
+  <div class="form-group">
     <%= form.submit "Save", {class: "btn btn-primary"}%>
   </div>
 <% end %>

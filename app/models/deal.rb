@@ -3,9 +3,36 @@ class Deal < ApplicationRecord
   ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
 
   belongs_to :entity
-  has_many :deal_investors
+  
+  has_many :deal_investors, dependent: :destroy
   has_many :investors, through: :deal_investors
-  has_many :deal_activities
+  
+  has_many :deal_activities, dependent: :destroy
+  
+  has_many :deal_docs, dependent: :destroy
   
   STATUS = ["Open", "Closed"]
+  ACTIVITIES = Rack::Utils.parse_nested_query(ENV["DEAL_ACTIVITIES"].gsub(":","=").gsub(",","&"))
+
+  before_create :set_defaults
+  def set_defaults
+    self.activity_list ||= ACTIVITIES.to_json
+  end
+
+  def create_activites
+    self.deal_investors.each do |i|
+      i.create_activites
+    end
+  end
+
+  def create_activity_template
+    seq = 1
+    Deal::ACTIVITIES.each do |title, days|
+      # Note that if deal_investor_id = nil then this is a template
+      DealActivity.create!(deal_id: self.id, deal_investor_id: nil, status: "Template",
+        entity_id: self.entity_id, title: title, sequence: seq, days: days.to_i)
+      seq += 1
+    end
+  end
+  
 end

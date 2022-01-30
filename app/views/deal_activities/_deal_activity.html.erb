@@ -1,12 +1,15 @@
 <tr id="<%= dom_id deal_activity %>">
 <td>
+    <%= deal_activity.sequence %>
+</td>  
+<td>
     <%= link_to deal_activity.title, deal_activity %>
 </td>  
 <td>
     <%= link_to deal_activity.deal_name, deal_activity.deal %>
 </td>  
 <td>
-    <%= link_to deal_activity.investor_name, deal_activity.deal_investor %>
+    <%= link_to deal_activity.investor_name, deal_activity.deal_investor if deal_activity.deal_investor %>
 </td>  
 <td>
     <%= deal_activity.by_date %>
@@ -18,7 +21,7 @@
     <%= deal_activity.completed_status %>
 </td>  
 <td>
-    <%= deal_activity.entity_name %>
+    <%= deal_activity.days %>
 </td>  
 <td>
   <%= link_to "New Doc", new_deal_doc_path("deal_doc[deal_id]": deal_activity.deal_id, "deal_doc[deal_activity_id]": deal_activity.id) , {class: "btn btn-success"}%>
