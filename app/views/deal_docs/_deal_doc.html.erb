@@ -1,0 +1,40 @@
+<tr>
+  <th>
+    <strong>Name</strong>
+  </th>
+  <th>
+    <strong>Deal</strong>
+  </th>
+  <th>
+    <strong>Deal Investor</strong>
+  </th>
+  <th>
+    <strong>Deal Activity</strong>
+  </th>
+  <th>
+    <strong>User</strong>
+  </th>
+
+  <th>
+  <th>
+</tr>
+<tr id="<%= dom_id deal_doc %>">
+<td>
+    <%= deal_doc.name %>
+</td>  
+<td>
+    <%= deal_doc.deal_id %>
+</td>  
+<td>
+    <%= deal_doc.deal_investor_id %>
+</td>  
+<td>
+    <%= deal_doc.deal_activity_id %>
+</td>  
+<td>
+    <%= deal_doc.user_id %>
+</td>  
+<td>
+  <%= link_to "Show", deal_doc , {class: "btn btn-primary"}%>
+</td>
+</tr>

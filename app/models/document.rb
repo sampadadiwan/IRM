@@ -19,11 +19,7 @@ class Document < ApplicationRecord
     validates_attachment :file, presence: true,
                         size: { in: 0..10.megabytes }
 
-    # create custom interpolation rule to make directory from the owner name
-    Paperclip.interpolates :document_directory do |file, _|
-        file.instance.owner.name.parameterize
-    end
-
+    
     def accessible_by?(category_or_email)
         self.doc_accesses.where(to: category_or_email).first.present?
     end

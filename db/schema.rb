@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_29_133047) do
+ActiveRecord::Schema.define(version: 2022_01_30_063243) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -90,6 +90,24 @@ ActiveRecord::Schema.define(version: 2022_01_29_133047) do
     t.index ["deal_id"], name: "index_deal_activities_on_deal_id"
     t.index ["deal_investor_id"], name: "index_deal_activities_on_deal_investor_id"
     t.index ["entity_id"], name: "index_deal_activities_on_entity_id"
+  end
+
+  create_table "deal_docs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.bigint "deal_id", null: false
+    t.bigint "deal_investor_id"
+    t.bigint "deal_activity_id"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "file_file_name"
+    t.string "file_content_type"
+    t.bigint "file_file_size"
+    t.datetime "file_updated_at", precision: 6
+    t.index ["deal_activity_id"], name: "index_deal_docs_on_deal_activity_id"
+    t.index ["deal_id"], name: "index_deal_docs_on_deal_id"
+    t.index ["deal_investor_id"], name: "index_deal_docs_on_deal_investor_id"
+    t.index ["user_id"], name: "index_deal_docs_on_user_id"
   end
 
   create_table "deal_investors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -264,6 +282,10 @@ ActiveRecord::Schema.define(version: 2022_01_29_133047) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "deal_activities", "deal_investors"
   add_foreign_key "deal_activities", "deals"
+  add_foreign_key "deal_docs", "deal_activities"
+  add_foreign_key "deal_docs", "deal_investors"
+  add_foreign_key "deal_docs", "deals"
+  add_foreign_key "deal_docs", "users"
   add_foreign_key "deal_investors", "deals"
   add_foreign_key "deal_investors", "entities"
   add_foreign_key "deal_investors", "investors"

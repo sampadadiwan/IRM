@@ -6,7 +6,8 @@ class DealInvestor < ApplicationRecord
   belongs_to :investor
   belongs_to :entity
 
-  has_many :deal_activities
+  has_many :deal_activities, dependent: :destroy
+  has_many :deal_messages, dependent: :destroy
 
   delegate :investor_name, to: :investor
   delegate :name, to: :entity, prefix: :entity

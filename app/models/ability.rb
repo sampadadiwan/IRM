@@ -23,6 +23,16 @@ class Ability
         msg.deal_investor.investor.investor_entity_id == user.entity_id          
       end
 
+      can :manage, DealDoc, DealDoc.user_deal_docs(user) do |doc| 
+        doc.user_id == user.id ||
+        doc.deal.entity_id == user.entity_id ||
+        (doc.deal_investor && 
+          (doc.deal_investor.entity_id == user.entity_id ||
+           doc.deal_investor.investor.investor_entity_id == user.entity_id)
+        )          
+      end
+
+
       can :show, Document do |doc|
         doc.accessible?(user) 
       end

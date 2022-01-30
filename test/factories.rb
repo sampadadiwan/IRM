@@ -1,8 +1,16 @@
 FactoryBot.define do
-  factory :deal_message do
-    user { nil }
-    content { nil }
+  factory :deal_doc do
+    name { "MyString" }
+    deal { nil }
     deal_investor { nil }
+    deal_activity { nil }
+    user { nil }
+  end
+
+  factory :deal_message do
+    deal_investor { DealInvestor.all.shuffle.first }
+    user { deal_investor.investor.investor_entity.employees.shuffle.first }
+    content { Faker::Quotes::Rajnikanth.joke }
   end
 
   factory :deal_activity do

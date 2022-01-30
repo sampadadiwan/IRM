@@ -4,7 +4,7 @@
     <%= deal.entity.name %>
 </td>  
 <td>
-    <%= deal.name %>
+    <%= link_to deal.name, deal %>
 </td>  
 <td>
     <%= deal.amount %>
@@ -16,5 +16,6 @@
   <%= link_to "Show", deal , {class: "btn btn-primary"}%>
   <%= link_to "Add Investor", new_deal_investor_path(deal_id: deal.id) , {class: "btn btn-success"}%>
   <%= link_to "View Activity", deal_activities_path(deal_id: deal.id) , {class: "btn btn-success"}%>
+  <%= link_to "Add Document", new_deal_doc_path("deal_doc[deal_id]": deal.id) , {class: "btn btn-primary"}%>
 </td>
 </tr>
