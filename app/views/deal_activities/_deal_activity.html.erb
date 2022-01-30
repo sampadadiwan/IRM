@@ -22,5 +22,7 @@
 </td>  
 <td>
   <%= link_to "Show", deal_activity , {class: "btn btn-primary"}%>
+  <%= link_to "New Doc", new_deal_doc_path("deal_doc[deal_id]": deal_activity.deal_id, "deal_doc[deal_activity_id]": deal_activity.id) , {class: "btn btn-success"}%>
+  <%= link_to "View Docs", deal_docs_path(deal_activity_id: deal_activity.id) , {class: "btn btn-primary"}%>
 </td>
 </tr>

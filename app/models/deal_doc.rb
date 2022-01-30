@@ -10,6 +10,7 @@ class DealDoc < ApplicationRecord
 
   delegate :investor_name, to: :deal_investor
   delegate :name, to: :deal, prefix: :deal
+  delegate :title, to: :deal_activity, prefix: :deal_activity
 
 
   has_attached_file :file,
@@ -31,4 +32,14 @@ class DealDoc < ApplicationRecord
                                       joins(:deal, :deal_investor=>[:investor]).
                                       includes(:deal, :deal_investor=>:investor) }
                                                   
+
+
+
+
+  before_save :update_deal_investor
+  def update_deal_investor
+      if self.deal_activity.present?
+            self.deal_investor_id = self.deal_activity.deal_investor_id 
+      end
+  end
 end

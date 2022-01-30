@@ -22,5 +22,7 @@
   <%= link_to "View Activity", deal_activities_path(deal_id: deal_investor.deal_id, deal_investor_id: deal_investor.id) , {class: "btn btn-primary"}%>
   <%= link_to "New Message", new_deal_message_path("deal_message[deal_investor_id]": deal_investor.id) , {class: "btn btn-success"}%>
   <%= link_to "View Messages", deal_messages_path(deal_investor_id: deal_investor.id) , {class: "btn btn-primary"}%>
+  <%= link_to "New Doc", new_deal_doc_path("deal_doc[deal_id]": deal_investor.deal_id, "deal_doc[deal_investor_id]": deal_investor.id) , {class: "btn btn-success"}%>
+  <%= link_to "View Docs", deal_docs_path(deal_investor_id: deal_investor.id) , {class: "btn btn-primary"}%>
 </td>
 </tr>
