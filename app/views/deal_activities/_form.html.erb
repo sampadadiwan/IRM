@@ -35,25 +35,28 @@
 
 
   <div class="form-group">
-    <%= form.label :by_date %>
-    <%= form.date_field :by_date, class: "form-control"  %>
-  </div>
-
-  <div class="form-group">
     <%= form.label :days %>
     <%= form.number_field :days, class: "form-control"  %>
   </div>
-
 
   <div class="form-group">
     <%= form.label :status %>
     <%= form.text_field :status, class: "form-control"  %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :completed %>
-    <%= form.check_box :completed, class: "form-control form-checkbox"  %>
-  </div>
+  <% if deal_activity.deal_investor_id.present? %>
+
+    <div class="form-group">
+      <%= form.label :by_date %>
+      <%= form.date_field :by_date, class: "form-control"  %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :completed %>
+      <%= form.check_box :completed, class: "form-control form-checkbox"  %>
+    </div>
+
+  <% end %>
 
   <div class="form-group">
     <%= form.submit "Save", {class: "btn btn-primary"}%>

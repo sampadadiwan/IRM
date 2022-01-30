@@ -1,7 +1,16 @@
 <%= render "/layouts/alerts" %>
 
 <table class="table table-bordered dataTable">
-
+      </tr>
+          <tr>
+        <td>
+          Sequence
+        </td>
+        <td>
+          <%= @deal_activity.sequence %>
+        </td>    
+      </tr>
+      
       <tr>
         <td>
           Title
@@ -33,6 +42,16 @@
         <td>
           <%= @deal_activity.investor_name %>
         </td>    
+      </tr>
+          <tr>
+        <td>
+          Days
+        </td>
+        <td>
+          <%= @deal_activity.days %>
+        </td>    
+      </tr>
+      
       </tr>
           <tr>
         <td>
