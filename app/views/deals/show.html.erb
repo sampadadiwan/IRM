@@ -42,7 +42,7 @@
 <div>
   <%= link_to "Edit", edit_deal_path(@deal), {class: "btn btn-primary"} %> |
   <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
-
+  <%= link_to "Activity Template", deal_activities_path(deal_id: @deal.id, template: true) , {class: "btn btn-success"}%> |
   <%= button_to "Delete", @deal, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
 </div>
 

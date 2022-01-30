@@ -10,7 +10,9 @@ class DealActivitiesController < ApplicationController
 
     if params[:deal_investor_id].present?
       @deal_activities = @deal_activities.where(deal_investor_id: params[:deal_investor_id])
-    elsif params[:templates].present?
+    end
+    
+    if params[:template].present?
       @deal_activities = @deal_activities.where(deal_investor_id: nil).order(sequence: :asc)
     end
 

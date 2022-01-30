@@ -4,7 +4,7 @@ class DealActivity < ApplicationRecord
 
   ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
 
-  default_scope { order(by_date: :asc) }
+  default_scope { order(sequence: :asc) }
 
   belongs_to :deal
   belongs_to :deal_investor, optional: true
