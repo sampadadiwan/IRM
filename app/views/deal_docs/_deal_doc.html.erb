@@ -4,13 +4,13 @@
     <%= deal_doc.name %>
 </td>  
 <td>
-    <%= deal_doc.deal_name %>
+    <%= link_to deal_doc.deal_name, deal_doc.deal %>
 </td>  
 <td>
-    <%= deal_doc.investor_name if deal_doc.deal_investor_id %>
+    <%= link_to deal_doc.investor_name, deal_doc.deal_investor if deal_doc.deal_investor_id %>
 </td>  
 <td>
-    <%= deal_doc.deal_activity_title if deal_doc.deal_activity_id %>
+    <%= link_to deal_doc.deal_activity_title, deal_doc.deal_activity if deal_doc.deal_activity_id %>
 </td>  
 <td>
     <%= deal_doc.user.name %>
