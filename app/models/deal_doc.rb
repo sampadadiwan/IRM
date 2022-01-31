@@ -29,7 +29,7 @@ class DealDoc < ApplicationRecord
   scope :user_deal_docs,  ->(user) { where("deal_docs.user_id =? OR deals.entity_id=? OR 
                                             deal_investors.entity_id=? OR investors.investor_entity_id=?", 
                                       user.id, user.entity_id, user.entity_id, user.entity_id).
-                                      joins(:deal, :deal_investor=>[:investor]).
+                                      left_outer_joins(:deal, :deal_investor=>[:investor]).
                                       includes(:deal, :deal_investor=>:investor) }
                                                   
 
