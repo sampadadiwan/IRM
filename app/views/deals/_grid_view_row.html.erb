@@ -1,9 +1,9 @@
 <tr id="<%=dom_id(deal_investor)%>">
     <td>        
-        <div class="btn-group">
-            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="dropdown">
+            <span type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= deal_investor.investor_name %>
-            </button>
+            </span>
             <div class="dropdown-menu">
                 <%= link_to "View Docs", deal_docs_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
                 <%= link_to "View Msgs", deal_messages_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>

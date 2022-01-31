@@ -1,0 +1,30 @@
+<div class="chat_container clearfix">
+
+    <div class="chat">
+    
+      <div class="chat-header clearfix">
+        
+        <div class="chat-about">
+          <div class="chat-with">Chat with <%=deal_investor.investor_name%></div>
+          <div class="chat-num-messages"><%= deal_messages.count %> messages</div>
+        </div>
+      </div> <!-- end chat-header -->
+      
+
+      <div class="chat-history">
+        
+        <ul id="chat-msg-list">
+            <% deal_messages.each do |msg| %>          
+            <%= render "deal_messages/conversation_msg", msg: msg %>          
+            <% end %>  
+        </ul>
+        
+      </div> <!-- end chat-history -->
+      
+      <div class="chat-message clearfix">
+        <%= render "deal_messages/form", deal_message: DealMessage.new(deal_investor_id: deal_investor.id) %>
+      </div>
+      
+    </div> <!-- end chat -->
+    
+</div> <!-- end container -->

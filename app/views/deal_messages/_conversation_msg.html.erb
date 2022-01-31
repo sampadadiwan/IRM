@@ -1,0 +1,22 @@
+<% 
+    my_msg = msg.user.entity_id == current_user.entity_id
+    msg_class = my_msg ? 'other-message float-right' : 'my-message' 
+    li_class = my_msg ? 'clearfix' : ''
+    div_class = my_msg ? 'align-right' : ''            
+%>
+
+<li class="<%= li_class %>">
+    <div class="message-data <%= div_class%> ">
+        <% if my_msg %>
+        <span class="message-data-time" ><%= l msg.created_at %></span> &nbsp; &nbsp;
+        <span class="message-data-name" ><%= msg.user.name %></span> 
+        <% else %>
+        <span class="message-data-name" ><%= msg.user.name %></span> 
+        <span class="message-data-time" ><%= l msg.created_at %></span> &nbsp; &nbsp;                
+        <% end %>
+    </div>
+
+    <div class="message  <%= msg_class %>">
+        <%= msg.content %>
+    </div>
+</li>

@@ -21,12 +21,14 @@ class DealActivity < ApplicationRecord
 
   scope :templates,  ->(deal) { where(deal_id: deal.id).where(deal_investor_id:nil) }
 
+  before_save :set_defaults
+
+  def set_defaults
+    self.status = "Template" if self.deal_investor_id == nil
+  end
   
   def completed_status
     self.completed ? "Yes" : "No"
-  end
-
-  def due_by
   end
 
   def summary

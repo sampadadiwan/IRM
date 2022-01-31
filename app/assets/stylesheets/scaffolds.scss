@@ -106,14 +106,16 @@ h1 {
   cursor: grab;
 }
 
-.dropdown-menu.show {
-  background-color: #1cc88a;
-}
-.dropdown-item {
-  color: white !important;
-}
+.btn-group {
+  .dropdown-menu.show {
+    background-color: #1cc88a;
+  }
+  .dropdown-item {
+    color: white !important;
+  }
 
-.dropdown-item:focus, .dropdown-item:hover {
-  font-weight: bold;
-  background-color: #2ca87b !important;
+  .dropdown-item:focus, .dropdown-item:hover {
+    font-weight: bold;
+    background-color: #2ca87b !important;
+  }
 }
