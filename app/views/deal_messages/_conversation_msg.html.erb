@@ -1,11 +1,11 @@
 <% 
     my_msg = msg.user.entity_id == msg.deal_investor.entity_id
-    msg_class = my_msg ? 'other-message float-right' : 'my-message' 
+    msg_class = my_msg ? 'other-message float-right' : 'my-message float-left' 
     li_class = my_msg ? 'clearfix' : ''
     div_class = my_msg ? 'align-right' : ''            
 %>
 
-<li class="<%= li_class %>">
+<li class="<%= li_class %>" style="overflow: auto;">
     <div class="message-data <%= div_class%> ">
         <% if my_msg %>
         <span class="message-data-time" ><%= l msg.created_at %></span> &nbsp; &nbsp;
@@ -19,4 +19,5 @@
     <div class="message  <%= msg_class %>">
         <%= msg.content %>
     </div>
+    <div></div>
 </li>

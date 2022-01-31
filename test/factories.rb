@@ -8,8 +8,9 @@ FactoryBot.define do
   end
 
   factory :deal_message do
+    
     deal_investor { DealInvestor.all.shuffle.first }
-    user { deal_investor.investor.investor_entity.employees.shuffle.first }
+    user { (rand(2) > 0) ? deal_investor.investor.investor_entity.employees.shuffle.first : deal_investor.investor.investee_entity.employees.shuffle.first }
     content { Faker::Quotes::Rajnikanth.joke }
   end
 

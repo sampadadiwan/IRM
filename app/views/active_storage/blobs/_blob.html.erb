@@ -7,8 +7,10 @@
     <% if caption = blob.try(:caption) %>
       <%= caption %>
     <% else %>
-      <span class="attachment__name"><%= blob.filename %></span>
-      <span class="attachment__size"><%= number_to_human_size blob.byte_size %></span>
+      <div class="attachment__name">Download: <%= link_to blob.filename, rails_blob_path(blob) %></div>
+      <div class="attachment__size"><%= number_to_human_size blob.byte_size %></div>
     <% end %>
   </figcaption>
 </figure>
+
+

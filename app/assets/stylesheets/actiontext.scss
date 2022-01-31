@@ -33,6 +33,20 @@
 .trix-content action-text-attachment .attachment {
   padding: 0 !important;
   max-width: 100% !important;
+  display: block;
+}
+
+.trix-content .attachment__caption {
+  text-align: left;
+  color: white;
+}
+
+.trix-content .attachment--file {
+  border: 0px;
+}
+
+.trix-content .attachment__caption .attachment__name + .attachment__size::before {
+  content: '';
 }
 
 trix-editor {

@@ -11,8 +11,8 @@ $gray: #92959E;
 
 .chat_container {
   margin: 0 auto;
-//   width: 750px;
-//   background: #444753;
+  max-width: 1200px;
+  background: #444753;
   border-radius: 5px;
 }
 
@@ -58,13 +58,14 @@ $gray: #92959E;
   }
   
   .chat-history {
-    padding: 30px 30px 20px;
+    padding: 10px;
     border-bottom: 2px solid white;
     // overflow-y: scroll;
-    // height: 575px;
+    // max-height: 540px;
 
     ul, ol {
         list-style: none;
+        padding: 0px;
     }
     
     .message-data {
@@ -83,8 +84,8 @@ $gray: #92959E;
       font-size: 16px;
       border-radius: 7px;
       margin-bottom: 30px;
-      max-width: 98%;
-      min-width: 80%;
+      max-width: 99%;
+      min-width: 70%;
       position: relative;
       
       &:after {
@@ -118,7 +119,7 @@ $gray: #92959E;
   }
   
   .chat-message {
-    padding: 30px;
+    padding: 20px;
     
     textarea {
       width: 100%;
