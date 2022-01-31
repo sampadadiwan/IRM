@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
   resources :deals do
     get 'search', on: :collection
+    post 'start_deal', on: :member
   end
   
   namespace :admin do
@@ -69,4 +70,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "entities#dashboard"
+
+  require 'sidekiq/web'
+    authenticate :user do
+      mount Sidekiq::Web => '/sidekiq'
+    end
 end

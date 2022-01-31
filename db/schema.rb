@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_30_121331) do
+ActiveRecord::Schema.define(version: 2022_01_31_034820) do
 
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -143,6 +143,8 @@ ActiveRecord::Schema.define(version: 2022_01_30_121331) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "activity_list"
+    t.date "start_date"
+    t.date "end_date"
     t.index ["entity_id"], name: "index_deals_on_entity_id"
   end
 

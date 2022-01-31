@@ -12,8 +12,11 @@ class DealActivitiesController < ApplicationController
       @deal_activities = @deal_activities.where(deal_investor_id: params[:deal_investor_id])
     end
     
+    # Show only templates
     if params[:template].present?
       @deal_activities = @deal_activities.where(deal_investor_id: nil).order(sequence: :asc)
+    else
+      @deal_activities = @deal_activities.where("deal_investor_id is not null").order(sequence: :asc)
     end
 
     @deal_activities = @deal_activities.page params[:page]

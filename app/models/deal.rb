@@ -34,5 +34,11 @@ class Deal < ApplicationRecord
       seq += 1
     end
   end
+
+  def start_deal
+    self.start_date = Date.today
+    self.save
+    GenerateDealActivitiesJob.perform_later(self.id)
+  end
   
 end

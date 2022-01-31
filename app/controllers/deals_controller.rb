@@ -31,6 +31,10 @@ class DealsController < ApplicationController
   def edit
   end
 
+  def start_deal
+    @deal.start_deal
+  end
+
   # POST /deals or /deals.json
   def create
     @deal = Deal.new(deal_params)
