@@ -17,7 +17,6 @@ class DealInvestor < ApplicationRecord
 
   STATUS = ["Active", "Pending", "Declined"]
 
-  after_create :create_activites
   def create_activites
     start_date = self.deal.start_date    
     by_date = nil
