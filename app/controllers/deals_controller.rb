@@ -39,7 +39,7 @@ class DealsController < ApplicationController
           turbo_stream.replace('deal_show', partial: "deals/show", locals: {deal: @deal})
         ]
       end
-      format.html 
+      format.html { redirect_to deal_url(@deal), notice: "Deal was successfully started." }
     end
   end
 

@@ -25,6 +25,7 @@ class Deal < ApplicationRecord
     end
   end
 
+  after_create :create_activity_template
   def create_activity_template
     seq = 1
     Deal::ACTIVITIES.each do |title, days|
