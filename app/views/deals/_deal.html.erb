@@ -4,7 +4,7 @@
     <%= deal.entity.name %>
 </td>  
 <td>
-    <%= link_to deal.name, deal %>
+    <%= link_to deal.name, deal_path(deal, grid_view: true) %>
 </td>  
 <td>
     <%= deal.amount %>

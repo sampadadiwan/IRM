@@ -76,6 +76,21 @@ class DealActivitiesController < ApplicationController
     @deal_activity.set_list_position(params[:sequence].to_i + 1)
   end
 
+  def toggle_completed
+    @deal_activity.completed = !@deal_activity.completed 
+    @deal_activity.save
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace( helpers.dom_id(@deal_activity.deal_investor), partial: "deals/grid_view_row", 
+                                locals: {deal_investor: @deal_activity.deal_investor} )
+        ]
+      end
+      format.html { redirect_to deal_activity_url(@deal_activity), notice: "Activity was successfully updated." }
+    end
+  end
+
   # DELETE /deal_activities/1 or /deal_activities/1.json
   def destroy
     @deal_activity.destroy
