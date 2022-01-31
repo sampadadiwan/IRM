@@ -14,15 +14,15 @@
 </td>  
 <td>
   <div class="btn-group">
-    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Action
     </button>
     <div class="dropdown-menu">
-        <%= link_to "Show", deal , {class: "btn btn-sm btn-success"}%>
-        <%= link_to "Add Investor", new_deal_investor_path(deal_id: deal.id) , {class: "btn btn-sm btn-primary"}%>
-        <%= link_to "View Activity", deal_activities_path(deal_id: deal.id) , {class: "btn btn-sm btn-success"}%>
-        <%= link_to "Add Doc", new_deal_doc_path("deal_doc[deal_id]": deal.id) , {class: "btn btn-sm btn-primary"}%>
-        <%= link_to "View Docs", deal_docs_path(deal_id: deal.id) , {class: "btn btn-sm btn-success"}%>
+        <%= link_to "Show", deal , {class: "dropdown-item"}%>
+        <%= link_to "Add Investor", new_deal_investor_path(deal_id: deal.id) , {class: "dropdown-item"}%>
+        <%= link_to "View Activity", deal_activities_path(deal_id: deal.id) , {class: "dropdown-item"}%>
+        <%= link_to "Add Doc", new_deal_doc_path("deal_doc[deal_id]": deal.id) , {class: "dropdown-item"}%>
+        <%= link_to "View Docs", deal_docs_path(deal_id: deal.id) , {class: "dropdown-item"}%>
     </div>
   </div>
 </td>

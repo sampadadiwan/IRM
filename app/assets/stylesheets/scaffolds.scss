@@ -107,5 +107,13 @@ h1 {
 }
 
 .dropdown-menu.show {
-  background-color: lightblue;
+  background-color: #1cc88a;
+}
+.dropdown-item {
+  color: white !important;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+  font-weight: bold;
+  background-color: #2ca87b !important;
 }

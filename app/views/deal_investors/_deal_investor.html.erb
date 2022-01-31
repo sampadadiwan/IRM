@@ -19,15 +19,15 @@
 </td>  
 <td>
   <div class="btn-group">
-    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Action
     </button>
     <div class="dropdown-menu">
-        <%= link_to "View Activity", deal_activities_path(deal_id: deal_investor.deal_id, deal_investor_id: deal_investor.id) , {class: "btn btn-sm btn-primary"}%>
-        <%= link_to "New Message", new_deal_message_path("deal_message[deal_investor_id]": deal_investor.id) , {class: "btn btn-sm btn-success"}%>
-        <%= link_to "View Messages", deal_messages_path(deal_investor_id: deal_investor.id) , {class: "btn btn-sm btn-primary"}%>
-        <%= link_to "New Doc", new_deal_doc_path("deal_doc[deal_id]": deal_investor.deal_id, "deal_doc[deal_investor_id]": deal_investor.id) , {class: "btn btn-sm btn-success"}%>
-        <%= link_to "View Docs", deal_docs_path(deal_investor_id: deal_investor.id) , {class: "btn btn-sm btn-primary"}%>                
+        <%= link_to "View Activity", deal_activities_path(deal_id: deal_investor.deal_id, deal_investor_id: deal_investor.id) , {class: "dropdown-item"}%>
+        <%= link_to "New Message", new_deal_message_path("deal_message[deal_investor_id]": deal_investor.id) , {class: "dropdown-item"}%>
+        <%= link_to "View Messages", deal_messages_path(deal_investor_id: deal_investor.id) , {class: "dropdown-item"}%>
+        <%= link_to "New Doc", new_deal_doc_path("deal_doc[deal_id]": deal_investor.deal_id, "deal_doc[deal_investor_id]": deal_investor.id) , {class: "dropdown-item"}%>
+        <%= link_to "View Docs", deal_docs_path(deal_investor_id: deal_investor.id) , {class: "dropdown-item"}%>                
     </div>
   </div>
 </td>
