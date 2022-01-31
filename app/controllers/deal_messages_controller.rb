@@ -32,7 +32,6 @@ class DealMessagesController < ApplicationController
       if @deal_message.save
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.append('chat-msg-list', partial: "deal_messages/conversation_msg", locals: {msg: @deal_message}),
             turbo_stream.replace('deal_message_form', partial: "deal_messages/form", 
                 locals: {deal_message: DealMessage.new(deal_investor_id: @deal_message.deal_investor_id)})
           ]
