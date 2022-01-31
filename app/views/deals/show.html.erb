@@ -1,51 +1,9 @@
+
 <%= render "/layouts/alerts" %>
 
-<table class="table table-bordered dataTable">
-
-          <tr>
-        <td>
-          Entity
-        </td>
-        <td>
-          <%= @deal.entity.name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Name
-        </td>
-        <td>
-          <%= @deal.name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Amount
-        </td>
-        <td>
-          <%= @deal.amount %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Status
-        </td>
-        <td>
-          <%= @deal.status %>
-        </td>    
-      </tr>
-    
-  
-</table>
-
-
-<div>
-  <%= link_to "Edit", edit_deal_path(@deal), {class: "btn btn-primary"} %> |
-  <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
-  <%= link_to "Activity Template", deal_activities_path(deal_id: @deal.id, template: true) , {class: "btn btn-success"}%> |
-  <%= button_to "Delete", @deal, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
-</div>
+<%= render "/deals/show", deal: @deal %>
 
 <div id="deal_investors" class="associated_entity">
   <%= render "/deal_investors/index", deal_investors: @deal.deal_investors %>
 </div>
+

@@ -33,6 +33,14 @@ class DealsController < ApplicationController
 
   def start_deal
     @deal.start_deal
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace('deal_show', partial: "deals/show", locals: {deal: @deal})
+        ]
+      end
+      format.html 
+    end
   end
 
   # POST /deals or /deals.json

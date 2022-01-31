@@ -19,17 +19,28 @@ class DealInvestor < ApplicationRecord
 
   after_create :create_activites
   def create_activites
+    start_date = self.deal.start_date    
+    by_date = nil
     seq = 1
+    days_to_completion = 0
+
     DealActivity.templates(self.deal).each do |template|
+
+      if start_date
+        days_to_completion += template.days
+        by_date = start_date + days_to_completion.days
+      end
+
       existing_activity = DealActivity.where(deal_id: self.deal_id, deal_investor_id: self.id).
                             where(title: template.title).first
       
       if existing_activity.present?
-        existing_activity.update(sequence: template.sequence, days: template.days)
+        existing_activity.update(sequence: template.sequence, days: template.days, by_date: by_date)
       else
         DealActivity.create(deal_id: self.deal_id, deal_investor_id: self.id, 
                             entity_id: self.entity_id, title: template.title, 
-                            sequence: template.sequence, days: template.days)
+                            sequence: template.sequence, days: template.days,
+                            by_date: by_date)
       end
       
       seq += 1
