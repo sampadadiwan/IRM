@@ -12,7 +12,6 @@
         <%= link_to access_right.owner.name, access_right.owner %>
     </td>  
     <td>
-        <%= link_to "Show", access_right , {class: "btn btn-primary"}%>
         <%= button_to "Delete", access_right, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>    
     </td>
 </tr>

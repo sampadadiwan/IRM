@@ -19,8 +19,8 @@
     </button>
     <div class="dropdown-menu">
         <%= link_to "Show", deal , {class: "dropdown-item"}%>
-        <%= link_to "Add Investor", new_deal_investor_path(deal_id: deal.id) , {class: "dropdown-item"}%>
-        <%= link_to "View Investors", deal_investors_path(deal_id: deal.id) , {class: "dropdown-item"}%>
+        <%= link_to "Add Access", new_access_right_path(deal_id: deal.id) , {class: "dropdown-item"}%>
+        <%= link_to "View Access", access_rights_path(deal_id: deal.id) , {class: "dropdown-item"}%>
         <%= link_to "View Activity", deal_activities_path(deal_id: deal.id) , {class: "dropdown-item"}%>
         <%= link_to "Add Doc", new_deal_doc_path("deal_doc[deal_id]": deal.id) , {class: "dropdown-item"}%>
         <%= link_to "View Docs", deal_docs_path(deal_id: deal.id) , {class: "dropdown-item"}%>
