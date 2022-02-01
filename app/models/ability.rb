@@ -10,7 +10,7 @@ class Ability
     if user.role == "Super"
       can :manage, :all
     elsif user.role == "Employee"
-      can :investor_view, Entity do |entity|
+      can :investor_view, Entity.user_investor_entities(user) do |entity|
         user.investor_entity(entity.id).present?
       end
       can :manage, Entity, id: user.entity_id 
@@ -18,6 +18,7 @@ class Ability
       can :manage, Deal, entity_id: user.entity_id 
       can :manage, DealInvestor, entity_id: user.entity_id       
       can :manage, DealActivity, entity_id: user.entity_id 
+      
       can :manage, DealMessage, DealMessage.user_messages(user) do |msg| 
         msg.user_id == user.id ||
         msg.deal_investor.entity_id == user.entity_id ||

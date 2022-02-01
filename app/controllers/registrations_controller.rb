@@ -15,11 +15,10 @@ class RegistrationsController < Devise::RegistrationsController
       logger.debug "Setting new user entity to logged in users entity #{current_user.entity_id}"
     else
       # Check if this user was invited as an investor
-      ia = InvestorAccess.where(email: resource.email).first
-      if ia
+      ar = AccessRight.user_access(resource).first
+      if ar
         # Ensure this user is a user of the investor entity 
-        resource.entity_id = ia.investor.investor_entity_id
-        logger.debug "Setting new user entity to investor entity #{resource.entity_id}"
+        ar.update_user
       end
     end
 

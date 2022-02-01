@@ -35,45 +35,38 @@ class Investment < ApplicationRecord
     end
 
     def accessible?(user)
-        # Either investment belongs to the investee
-        if self.investee_entity_id == user.entity_id
-            true
-        else
-            # Or he is an investor in the entity and has been given access
-            ia = InvestorAccess.user_access(user).entity_access(self.investee_entity_id).first
-            case ia.access_type
-                # Access to the entire cap table
-                when InvestorAccess::ALL
-                    true
-                # Access to only the investors investments
-                when InvestorAccess::SELF
-                    self.investor.investor_entity_id == user.entity_id
-            end                
-        end
-        
+        investor = Investor.for(user, self.investee_entity).first
+        access_right = AccessRight.investments.for(self.investee_entity).user_or_investor_access(user, investor).first
+
+        self.investee_entity_id == user.entity_id || 
+        self.investor.investor_entity_id == user.entity_id || 
+        (access_right.present? && access_right.metadata == "All")
     end
 
     def self.investments_for(current_user, entity)
 
         investments = Investment.none
-        # Get the investor access for this user and this entity
-        investor_access = InvestorAccess.user_access(current_user)
-                                        .entity_access(entity.id).first
         
-        if investor_access.present? 
+        # Is this user from an investor
+        investor = Investor.for(current_user, entity).first
+
+        # Get the investor access for this user and this entity
+        access_right = AccessRight.investments.user_or_investor_access(current_user, investor).first
+        
+        if access_right.present? 
             investments = entity.investments.
                 order(initial_value: :desc).
                 # joins(:investor, :investee_entity).
                 includes([:investor=>:investor_entity], :investee_entity)
 
-            case investor_access.access_type
-                when InvestorAccess::ALL
+            case access_right.metadata
+                when AccessRight::ALL
                     # Do nothing - we got all the investments
                     logger.debug "Access to investor #{current_user.email} to ALL Entity #{entity.id} investments"
-                when InvestorAccess::SELF
+                when AccessRight::SELF
                     # Got all the investments for this investor
                     logger.debug "Access to investor #{current_user.email} to SELF Entity #{entity.id} investments"
-                    investments = investments.where(investor_id: investor_access.investor_id)
+                    investments = investments.where(investor_id: investor.id)
                 when InvestorAccess::SUMMARY
                     # Show summary page
                     logger.debug "Access to investor #{current_user.email} to SUMMARY Entity #{entity.id} investments"

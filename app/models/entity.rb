@@ -19,7 +19,7 @@ class Entity < ApplicationRecord
   has_many :investees, foreign_key: "investor_entity_id", class_name: "Investor", dependent: :destroy
   has_many :investee_entities, through: :investees
 
-  has_many :investor_accesses
+  has_many :access_rights
   has_many :investments, foreign_key: "investee_entity_id"
 
   TYPES = ["VC", "Startup"]
@@ -27,7 +27,7 @@ class Entity < ApplicationRecord
 
   scope :vcs, -> { where(entity_type: "VC") }
   scope :startups, -> { where(entity_type: "Startup") }
-  scope :user_investor_entities,  ->(user) { where("investor_accesses.email": user.email).includes(:investor_accesses) }
+  scope :user_investor_entities,  ->(user) { where("access_rights.access_to": user.email).includes(:access_rights) }
   
   before_save :check_url, :scrub_defaults
   def check_url

@@ -21,39 +21,29 @@ class Document < ApplicationRecord
                         size: { in: 0..10.megabytes }
 
     
-    def accessible_by?(category_or_email)
-        self.doc_accesses.where(to: category_or_email).first.present?
-    end
-
     def accessible?(user)
-        if accessible_by?(user.email)
-            logger.debug "Document #{self.id} accessible by email #{user.email}"
-            true
-        else
-            # Find the investor
-            investor = Investor.for_email_and_entity(user, self.owner_id).first
-            if investor.present? && accessible_by?(investor.category)
-                logger.debug "Document #{self.id} accessible by category #{investor.category} #{user.email}"
-                true
-            else
-                logger.debug "Document #{self.id} NOT accessible by #{user.email}"
-                false
-            end
-        end        
+        investor = Investor.for(user, self.owner).first
+        access_right = AccessRight.for(self).user_or_investor_access(user, investor).first
+
+        self.owner_id == user.entity_id ||
+            access_right.present?
+        
     end
 
     def self.documents_for(current_user, entity)
         
-        investor = entity.investors.for_email(current_user).first
+        # Is this user from an investor
+        investor = Investor.for(current_user, entity).first
 
-        if investor.present?
+        if investor.present? 
 
-            documents = Document.where(owner_id:entity.id).joins(:doc_accesses)
-                            .where("doc_accesses.to" => [current_user.email, investor.category])
+            documents = entity.documents.joins(:access_rights)
+                            .where("access_rights.access_to=? or access_rights.access_to_investor_id=?", 
+                                current_user.email, investor.id)
         
         else
-            documents = Document.where(owner_id:entity.id).joins(:doc_accesses)
-                            .where("doc_accesses.to" => [current_user.email])
+            documents = entity.documents.joins(:access_rights)
+                            .where("access_rights.access_to=?", current_user.email)
         
         end
 
