@@ -52,15 +52,23 @@
        <%= button_to "Delete", @document, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %> |
    </div>
 
-   <%= turbo_frame_tag "new_doc_access" do %>
-      <%= link_to "Share", new_doc_access_path("doc_access[document_id]": @document.id), 
-      {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
-         "title": "Access control for this document"} %> 
+   <%= turbo_frame_tag "new_access_right" do %>
+      
+      | <%= link_to "Grant Access", 
+      new_access_right_path("access_right[owner_id]": @document.id,
+                            "access_right[access_type]": "Document",
+                            "access_right[owner_type]": "Document"), 
+            {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
+            "title": "Who can access this document"} %> 
+
+
    <% end %>
       
 
-   <div id="document_access" class="associated_entity">
-      <%= render "/doc_accesses/index", doc_accesses: @document.doc_accesses %>
-      <div data-controller="docaccess"></div>
+   <div id="access_rights" class="associated_entity">
+      <%= render "/access_rights/index", access_rights: @document.access_rights %>
    </div>
+
+   <div data-controller="docaccess"></div>
+
 <% end %>

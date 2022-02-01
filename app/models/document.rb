@@ -5,7 +5,8 @@ class Document < ApplicationRecord
 
     belongs_to :owner, polymorphic: true
     
-    has_many :doc_accesses, dependent: :destroy
+    has_many :access_rights, as: :owner, dependent: :destroy
+
     has_rich_text :text
 
     has_attached_file :file,

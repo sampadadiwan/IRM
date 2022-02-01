@@ -1,7 +1,14 @@
 class AccessRight < ApplicationRecord
+  has_paper_trail
+    
+  ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
+
   belongs_to :owner, polymorphic: true
   belongs_to :entity
   belongs_to :investor, foreign_key: :access_to_investor_id, optional: true
+
+  delegate :name, to: :entity, prefix: :entity
+  delegate :name, to: :owner, prefix: :owner
 
   scope :investments, -> { where(access_type: "Investment") }
   scope :documents, -> { where(access_type: "Document") }

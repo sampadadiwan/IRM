@@ -129,3 +129,17 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
     has completed, :type => :boolean
 
   end
+
+  ThinkingSphinx::Index.define :access_right, :with => :real_time do
+    # fields
+    indexes owner_name, :sortable => true
+    indexes entity.name
+    indexes investor.investor_name
+    indexes access_to
+    indexes access_type
+    
+    # attributes
+    has created_at, :type => :timestamp
+    has entity_id, :type => :integer
+    
+  end

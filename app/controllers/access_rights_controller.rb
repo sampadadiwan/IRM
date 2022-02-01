@@ -5,6 +5,14 @@ class AccessRightsController < ApplicationController
   def index
   end
 
+
+  def search
+    @entity = current_user.entity
+    @access_rights = AccessRight.search(params[:query], :star => false, with: {:entity_id => current_user.entity_id})
+    render "index"
+  end
+
+
   # GET /access_rights/1 or /access_rights/1.json
   def show
   end
