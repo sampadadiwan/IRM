@@ -51,6 +51,7 @@ class Ability
       can :read, Note, entity_id: user.entity_id
       can :manage, Note, user_id: user.id
 
+      can :manage, AccessRight, entity_id: user.entity_id
       can :manage, InvestorAccess #, investor: {investor_entity_id: user.entity_id}
       can :manage, DocAccess, entity_id: user.entity_id
     else

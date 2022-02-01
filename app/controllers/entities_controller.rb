@@ -18,7 +18,7 @@ class EntitiesController < ApplicationController
     if current_user.is_super?
       @entities = Entity.search(params[:query], :star => true)
     else
-      @entities = Entity.search(params[:query], :star => true)
+      @entities = Entity.search(params[:query], :star => false)
     end
 
     render "index"

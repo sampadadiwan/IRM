@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_01_052533) do
+ActiveRecord::Schema.define(version: 2022_02_01_063419) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2022_02_01_052533) do
     t.string "metadata"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "entity_id", null: false
+    t.index ["entity_id"], name: "index_access_rights_on_entity_id"
     t.index ["owner_type", "owner_id"], name: "index_access_rights_on_owner"
   end
 
@@ -295,6 +297,7 @@ ActiveRecord::Schema.define(version: 2022_02_01_052533) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "access_rights", "entities"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "deal_activities", "deal_investors"

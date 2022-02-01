@@ -6,6 +6,24 @@
 </div>
 
 <table id="access_rights" class="table table-bordered dataTable">
+  <tr>
+    <th>
+      For
+    </th>
+    <th>
+      Access To
+    </th>
+    <th>
+      Access Type
+    </th>
+    <th>
+      Metadata
+    </th>
+
+    <th>
+    <th>
+  </tr>
+
   <% @access_rights.each do |access_right| %>
     <%= render access_right %>
   <% end %>

@@ -7,6 +7,7 @@ namespace :irm do
     desc "Cleans p DB - DELETES everything -  watch out"
     task :emptyDB => :environment do
         PaperTrail::Version.delete_all
+        AccessRight.delete_all
         InvestorAccess.delete_all
         DocAccess.delete_all
         InvestorAccess.delete_all

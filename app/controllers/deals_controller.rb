@@ -7,7 +7,7 @@ class DealsController < ApplicationController
 
   def search
     @entity = current_user.entity
-    @deals = Deal.search(params[:query], :star => true, with: {:entity_id => current_user.entity_id})
+    @deals = Deal.search(params[:query], :star => false, with: {:entity_id => current_user.entity_id})
 
     render "index"
   end

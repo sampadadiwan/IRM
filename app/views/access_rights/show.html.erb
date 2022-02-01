@@ -7,7 +7,7 @@
           Owner
         </td>
         <td>
-          <%= @access_right.owner_id %>
+          <%= @access_right.owner.name %>
         </td>    
       </tr>
           <tr>
@@ -15,15 +15,7 @@
           Access To
         </td>
         <td>
-          <%= @access_right.access_to %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Access To Investor
-        </td>
-        <td>
-          <%= @access_right.access_to_investor_id %>
+          <%= @access_right.access_to_label   %>
         </td>    
       </tr>
           <tr>

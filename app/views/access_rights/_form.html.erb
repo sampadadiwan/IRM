@@ -12,8 +12,16 @@
   <% end %>
 
   <div class="form-group">
-    <%= form.label :owner_id %>
-    <%= form.text_field :owner_id, class: "form-control"  %>
+    <%= form.label :access_for %>
+    <%= form.select :access_type, ["Investment", "Document", "Deal"], {include_blank: true}, class: "form-control", disabled: "disabled"  %>
+    <%= form.text_field :access_type, class: "form-control", hidden: true  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :for %>
+    <%= form.text_field :owner_name, class: "form-control", disabled: "disabled", value: access_right.owner.name  %>
+    <%= form.text_field :owner_id, class: "form-control", hidden: true  %>
+    <%= form.text_field :owner_type, class: "form-control", hidden: true  %>
   </div>
 
   <div class="form-group">
@@ -24,11 +32,6 @@
   <div class="form-group">
     <%= form.label :access_to_investor_id %>
     <%= form.select :access_to_investor_id, current_user.entity.investors.includes(:investor_entity).order("entities.name").map{|c| [c.investor_name, c.id]}, {include_blank: true}, {class: "form-control"} %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :access_type %>
-    <%= form.select :access_type, ["Investment", "Document", "Deal"], {include_blank: true}, class: "form-control"  %>
   </div>
 
   <div class="form-group">

@@ -80,8 +80,8 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
 
   ThinkingSphinx::Index.define :investment, :with => :real_time do
     # fields
-    indexes investor.name, :sortable => true
-    indexes investment_type_sq, :sortable => true
+    indexes investor.investor_name, :sortable => true
+    indexes investment_type, :sortable => true
     indexes investment_instrument
     indexes category
     

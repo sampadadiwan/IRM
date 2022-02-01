@@ -1,9 +1,8 @@
 class AccessRightsController < ApplicationController
-  before_action :set_access_right, only: %i[ show edit update destroy ]
+  load_and_authorize_resource :except => ["search"]
 
   # GET /access_rights or /access_rights.json
   def index
-    @access_rights = AccessRight.all
   end
 
   # GET /access_rights/1 or /access_rights/1.json
@@ -12,7 +11,7 @@ class AccessRightsController < ApplicationController
 
   # GET /access_rights/new
   def new
-    @access_right = AccessRight.new
+    @access_right = AccessRight.new(access_right_params)
   end
 
   # GET /access_rights/1/edit
@@ -22,6 +21,7 @@ class AccessRightsController < ApplicationController
   # POST /access_rights or /access_rights.json
   def create
     @access_right = AccessRight.new(access_right_params)
+    @access_right.entity_id = current_user.entity_id
 
     respond_to do |format|
       if @access_right.save
@@ -36,6 +36,7 @@ class AccessRightsController < ApplicationController
 
   # PATCH/PUT /access_rights/1 or /access_rights/1.json
   def update
+    @access_right.entity_id = current_user.entity_id    
     respond_to do |format|
       if @access_right.update(access_right_params)
         format.html { redirect_to access_right_url(@access_right), notice: "Access right was successfully updated." }
@@ -52,6 +53,11 @@ class AccessRightsController < ApplicationController
     @access_right.destroy
 
     respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(@access_right)
+        ]
+      end
       format.html { redirect_to access_rights_url, notice: "Access right was successfully destroyed." }
       format.json { head :no_content }
     end
@@ -65,6 +71,7 @@ class AccessRightsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def access_right_params
-      params.require(:access_right).permit(:owner_id, :owner_type, :access_to, :access_to_investor_id, :access_type, :metadata)
+      params.require(:access_right).permit(:owner_id, :owner_type, :access_to, 
+        :access_to_investor_id, :access_type, :metadata)
     end
 end

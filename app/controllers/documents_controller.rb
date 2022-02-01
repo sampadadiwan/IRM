@@ -19,7 +19,7 @@ class DocumentsController < ApplicationController
     if current_user.is_super?
       @documents = Document.search(params[:query], :star => true)
     else
-      @documents = Document.search(params[:query], :star => true, with: {:owner_id => current_user.entity_id})
+      @documents = Document.search(params[:query], :star => false, with: {:owner_id => current_user.entity_id})
     end
 
     render "index"

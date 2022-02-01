@@ -11,7 +11,7 @@ class InvestorsController < ApplicationController
     if current_user.is_super?
       @investors = Investor.search(params[:query], :star => true)
     else
-      @investors = Investor.search(params[:query], :star => true, with: {:investee_entity_id => current_user.entity_id})
+      @investors = Investor.search(params[:query], :star => false, with: {:investee_entity_id => current_user.entity_id})
     end
 
     render "index"
