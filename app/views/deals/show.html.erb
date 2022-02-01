@@ -12,8 +12,25 @@
   <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
   <%= link_to "Activity Template", deal_activities_path(deal_id: @deal.id, template: true) , {class: "btn btn-success"}%> |
   <%= button_to "Delete", @deal, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+
+
+   <%= turbo_frame_tag "new_access_right" do %>
+      
+      | <%= link_to "Grant Access", 
+      new_access_right_path("access_right[owner_id]": @deal.id,
+                            "access_right[access_type]": "Deal",
+                            "access_right[owner_type]": "Deal"), 
+            {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
+            "title": "Who can access this deal"} %> 
+
+
+   <% end %>
+      
 </div>
 
+<div id="access_rights" class="associated_entity">
+  <%= render "/access_rights/index", access_rights: @deal.access_rights %>
+</div>
 
 
 <div id="deal_investors" class="associated_entity">

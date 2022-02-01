@@ -10,7 +10,8 @@ class Deal < ApplicationRecord
   has_many :deal_activities, dependent: :destroy
   
   has_many :deal_docs, dependent: :destroy
-  
+  has_many :access_rights, as: :owner, dependent: :destroy
+
   STATUS = ["Open", "Closed"]
   ACTIVITIES = Rack::Utils.parse_nested_query(ENV["DEAL_ACTIVITIES"].gsub(":","=").gsub(",","&"))
 

@@ -21,10 +21,11 @@
     </th>
   </tr>
 
-  <% access_rights.each do |access_right| %>
-    <tbody id="access_rights_table_body">
-      <%= render access_right, access_right: access_right %>
-    </tbody>
-  <% end %>
+  <tbody id="access_rights_table_body">
+    <% access_rights.each do |access_right| %>
+        <%= render access_right, access_right: access_right %>
+    <% end %>
+  </tbody>
+
 </table>
 
