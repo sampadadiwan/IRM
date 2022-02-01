@@ -1,0 +1,30 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Access Rights</h1>
+</div>
+
+<table id="access_rights_table" class="table table-bordered dataTable">
+  <tr>
+    <th>
+      Access To
+    </th>
+    <th>
+      Access Type
+    </th>
+    <th>
+      Metadata
+    </th>
+    <th>
+      For
+    </th>
+    
+    <th>
+    <th>
+  </tr>
+
+  <% access_rights.each do |access_right| %>
+    <tbody id="access_rights_table_body">
+      <%= render access_right, access_right: access_right %>
+    </tbody>
+  <% end %>
+</table>
+

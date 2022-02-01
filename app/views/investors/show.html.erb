@@ -37,13 +37,19 @@
   <%= button_to "Delete", @investor, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %> 
 </div>
 
-<%= turbo_frame_tag "new_investor_access" do %>
-    | <%= link_to "Grant Cap Table Access", new_investor_access_path("investor_access[investor_id]": @investor.id), 
+<%= turbo_frame_tag "new_access_right" do %>
+
+    | <%= link_to "Grant Cap Table Access", 
+      new_access_right_path("access_right[access_to_investor_id]": @investor.id, 
+                            "access_right[owner_id]": @investor.investee_entity_id,
+                            "access_right[access_type]": "Investment",
+                            "access_right[owner_type]": "Entity"), 
     {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
-      "title": "Who can access your info"} %> 
+      "title": "Who can access your investments"} %> 
+
 <% end %>
       
 
-<div id="investor_access" class="associated_entity">
-  <%= render "investor_accesses/index", investor_accesses: @investor.investor_accesses %>
+<div id="access_rights" class="associated_entity">
+  <%= render "access_rights/index", access_rights: @investor.access_rights %>
 </div>

@@ -12,6 +12,14 @@ class AccessRightsController < ApplicationController
   # GET /access_rights/new
   def new
     @access_right = AccessRight.new(access_right_params)
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.append('new_access_right', partial: "access_rights/form", locals: {access_right: @access_right, hide_owner: true})
+        ]
+      end
+      format.html 
+    end
   end
 
   # GET /access_rights/1/edit
@@ -24,7 +32,13 @@ class AccessRightsController < ApplicationController
     @access_right.entity_id = current_user.entity_id
 
     respond_to do |format|
-      if @access_right.save
+      if @access_right.save   
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.prepend('access_rights_table_body', partial: "access_rights/access_right", locals: {access_right: @access_right})
+          ]
+        end
+             
         format.html { redirect_to access_right_url(@access_right), notice: "Access right was successfully created." }
         format.json { render :show, status: :created, location: @access_right }
       else
