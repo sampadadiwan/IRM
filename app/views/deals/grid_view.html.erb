@@ -1,15 +1,15 @@
-<div style="overflow-x:scroll">
-<table id="deal_grid_View" class="table table-bordered dataTable" >
-    <tr>
-        <th>Investor</th>
-        <th>Primary</th>
-        <th>Secondary</th>
-        <% DealActivity.templates(@deal).each do |deal| %>
-            <th> <small class="text-muted"><%= deal.title %></small> </th>
+<div id="deal_grid_div">
+    <table id="deal_grid_view" class="table table-bordered dataTable" >
+        <tr>
+            <th>Investor</th>
+            <th>Primary</th>
+            <th>Secondary</th>
+            <% DealActivity.templates(@deal).each do |deal| %>
+                <th> <small class="text-muted"><%= deal.title %></small> </th>
+            <% end %>
+        </tr>
+        <% @deal.deal_investors.each do |deal_investor| %>
+            <%= render "deals/grid_view_row", deal_investor: deal_investor %>
         <% end %>
-    </tr>
-    <% @deal.deal_investors.each do |deal_investor| %>
-        <%= render "deals/grid_view_row", deal_investor: deal_investor %>
-    <% end %>
-</table>
+    </table>
 </div>

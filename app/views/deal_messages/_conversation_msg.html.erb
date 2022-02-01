@@ -9,9 +9,9 @@
     <div class="message-data <%= div_class%> ">
         <% if my_msg %>
         <span class="message-data-time" ><%= l msg.created_at %></span> &nbsp; &nbsp;
-        <span class="message-data-name" ><%= msg.user.name %></span> 
+        <span class="message-data-name" ><%= link_to msg.user.name, msg.user %></span> 
         <% else %>
-        <span class="message-data-name" ><%= msg.user.name %></span> 
+        <span class="message-data-name" ><%= link_to msg.user.name, msg.user %></span> 
         <span class="message-data-time" ><%= l msg.created_at %></span> &nbsp; &nbsp;                
         <% end %>
     </div>

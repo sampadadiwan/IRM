@@ -67,15 +67,15 @@ FactoryBot.define do
   factory :investor do
     investor_entity_id { Entity.vcs.shuffle.first.id }
     investee_entity_id { Entity.startups.shuffle.first.id }
-    category { Investment::CATEGORIES[rand(Investment::CATEGORIES.length)] }
+    category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
   end
 
   factory :investment do
-    investment_type { Investment::TYPES[rand(Investment::TYPES.length)] }
+    investment_type { Investment::INVESTMENT_TYPES[rand(Investment::INVESTMENT_TYPES.length)] }
     investor { Investor.all.shuffle.first }
     investee_entity_id { Entity.startups.shuffle.first.id }
-    investment_instrument { Investment::INSTRUMENTS[rand(Investment::INSTRUMENTS.length)] }
-    category { Investment::CATEGORIES[rand(Investment::CATEGORIES.length)] }
+    investment_instrument { Investment::INSTRUMENT_TYPES[rand(Investment::INSTRUMENT_TYPES.length)] }
+    category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
     quantity { rand(10) * 100 + rand(10) * 10 }
     initial_value { quantity * rand(10) * 10 }
     current_value {  }

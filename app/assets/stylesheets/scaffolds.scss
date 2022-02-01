@@ -119,3 +119,8 @@ h1 {
     background-color: #2ca87b !important;
   }
 }
+
+#deal_grid_div {
+  overflow-x:scroll;
+  min-height:400px;
+}

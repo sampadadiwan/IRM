@@ -14,6 +14,7 @@ class Ability
         user.investor_entity(entity.id).present?
       end
       can :manage, Entity, id: user.entity_id 
+      
       can :manage, Deal, entity_id: user.entity_id 
       can :manage, DealInvestor, entity_id: user.entity_id       
       can :manage, DealActivity, entity_id: user.entity_id 
@@ -38,7 +39,7 @@ class Ability
       end
       can :manage, Document, owner_type: "Entity", owner_id: user.entity_id
       
-
+      can :read, User
       can :manage, User, entity_id: user.entity_id
 
       can :show, Investment do |inv|        
