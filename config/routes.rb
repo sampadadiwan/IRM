@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :access_rights
   resources :deal_docs
   resources :deal_messages
   resources :deal_activities do

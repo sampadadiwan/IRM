@@ -1,4 +1,12 @@
 FactoryBot.define do
+  factory :access_right do
+    owner { nil }
+    access_to { "MyString" }
+    access_to_investor_id { 1 }
+    access_type { "MyString" }
+    metadata { "MyString" }
+  end
+
   factory :deal_doc do
     name { "MyString" }
     deal { nil }

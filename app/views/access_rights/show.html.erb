@@ -1,0 +1,55 @@
+<%= render "/layouts/alerts" %>
+
+<table class="table table-bordered dataTable">
+
+          <tr>
+        <td>
+          Owner
+        </td>
+        <td>
+          <%= @access_right.owner_id %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Access To
+        </td>
+        <td>
+          <%= @access_right.access_to %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Access To Investor
+        </td>
+        <td>
+          <%= @access_right.access_to_investor_id %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Access Type
+        </td>
+        <td>
+          <%= @access_right.access_type %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Metadata
+        </td>
+        <td>
+          <%= @access_right.metadata %>
+        </td>    
+      </tr>
+    
+  
+</table>
+
+
+<div>
+  <%= link_to "Edit", edit_access_right_path(@access_right), {class: "btn btn-primary"} %> |
+  <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
+
+  <%= button_to "Delete", @access_right, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+</div>

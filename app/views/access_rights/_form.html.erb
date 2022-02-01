@@ -1,0 +1,42 @@
+<%= form_with(model: access_right) do |form| %>
+  <% if access_right.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(access_right.errors.count, "error") %> prohibited this access_right from being saved:</h2>
+
+      <ul>
+        <% access_right.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :owner_id %>
+    <%= form.text_field :owner_id, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :access_to %>
+    <%= form.text_field :access_to, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :access_to_investor_id %>
+    <%= form.select :access_to_investor_id, current_user.entity.investors.includes(:investor_entity).order("entities.name").map{|c| [c.investor_name, c.id]}, {include_blank: true}, {class: "form-control"} %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :access_type %>
+    <%= form.select :access_type, ["Investment", "Document", "Deal"], {include_blank: true}, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :metadata %>
+    <%= form.text_field :metadata, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>
