@@ -15,13 +15,23 @@ class InvestmentPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || 
-    # belongs to this users entity
-    user.entity_id == record.investee_entity_id ||
-    # Has been given :all_investment_access  
-    user.has_role?(:all_investment_access, record.investee_entity) ||
-    # or :some_investment_access and is the investor
-    (user.has_role?(:some_investment_access, record.investee_entity) && record.investor.investor_entity_id == user.entity_id)
+    if user.has_role?(:super) || user.entity_id == record.investee_entity_id ||
+      # belongs to this users entity
+      true
+    end
+    ar = AccessRight.for(record.investee_entity).for_access_type("Investment").user_access(user).first
+    # User has been given :all_investment_access  
+    if ar.present? 
+      ar.metadata == "All" ? true : record.investor_entity_id == user.entity_id
+    end
+
+    investor = Investor.where(investor_entity_id: user.entity_id, investee_entity_id: record.entity_id).first
+    ar = AccessRight.for(record.investee_entity).for_access_type("Investment")
+    # Investor has been given access
+    if investor.present? && ar.investor_access(investor).first.present?
+      access = ar.investor_access(investor).first
+      access.metadata == "All" ? true : record.investor_entity_id == user.entity_id
+    end
   end
 
   def create?

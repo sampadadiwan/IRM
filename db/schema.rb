@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_02_073138) do
+ActiveRecord::Schema.define(version: 2022_02_02_150633) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
     t.bigint "owner_id", null: false
-    t.string "access_to", limit: 30
+    t.string "access_to_email", limit: 30
+    t.string "access_to_category", limit: 20
     t.integer "access_to_investor_id"
     t.string "access_type", limit: 15
     t.string "metadata"

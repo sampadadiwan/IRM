@@ -1,6 +1,7 @@
 class Entity < ApplicationRecord
   resourcify
   has_paper_trail
+
   
   ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
   validates :name, presence: true
@@ -58,6 +59,12 @@ class Entity < ApplicationRecord
         owner.save
       end
     end
+  end
+
+
+  def self.invested_entities(user)
+    Entity.joins(:investors).where("investors.investor_entity_id": user.entity_id).joins(:access_rights).merge(AccessRight.for_access_type("Investment"))
+    #Entity.joins(:access_rights).merge(AccessRight.for_access_type("Investment")).merge(AccessRight.user_access(user))
   end
 
 end

@@ -14,15 +14,15 @@ export default class extends Controller {
       let reverse = "";
 
       $("#category_form_group").toggle();
-      $('#access_right_category').prop('disabled', flag);
+      $('#access_right_access_to_category').prop('disabled', flag);
 
       $("#access_right_email_or_cat").on("change", function(){
 
         $("#email_form_group").toggle();
-        $('#access_right_email').prop('disabled', flag);
+        $('#access_right_access_to_email').prop('disabled', flag);
 
         $("#category_form_group").toggle();
-        $('#access_right_category').prop('disabled', reverse);
+        $('#access_right_access_to_category').prop('disabled', reverse);
 
         
         
