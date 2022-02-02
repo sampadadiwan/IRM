@@ -12,7 +12,9 @@ class Investor < ApplicationRecord
 
     scope :for, -> (vc_user, startup_entity) { where(investee_entity_id: startup_entity.id, 
                                                      investor_entity_id: vc_user.entity_id) }
-
+    
+    scope :for_vc, -> (vc_user) { where(investor_entity_id: vc_user.entity_id) }
+   
     INVESTOR_CATEGORIES = ENV["INVESTOR_CATEGORIES"].split(",") << "Prospective"
 
     def self.INVESTOR_CATEGORIES(entity=nil)

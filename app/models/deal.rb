@@ -43,4 +43,50 @@ class Deal < ApplicationRecord
     GenerateDealActivitiesJob.perform_later(self.id)
   end
   
+
+
+  def accessible?(user)
+    investor = Investor.for(user, self.entity).first
+    access_right = AccessRight.for(self).user_or_investor_access(user, investor).first
+
+    self.owner_id == user.entity_id ||
+        access_right.present?
+    
+  end
+
+
+  def self.deals_for(current_user, entity)
+        
+    # Is this user from an investor
+    investor = Investor.for(current_user, entity).first
+
+    if investor.present? 
+
+        deals = entity.deals.joins(:access_rights)
+                        .where("access_rights.access_to=? or access_rights.access_to_investor_id=?", 
+                            current_user.email, investor.id)
+    
+    else
+        deals = entity.deals.joins(:access_rights)
+                        .where("access_rights.access_to=?", current_user.email)
+    
+    end
+
+    deals
+
+  end
+
+
+  def self.deals_for_vc(current_user)
+        
+    investors = Investor.for_vc(current_user)
+
+    deals = Deal.joins(:access_rights)
+                .where("access_rights.access_to=? or access_rights.access_to_investor_id in (?)", 
+                        current_user.email, investors.collect(&:id))
+   
+    deals
+
+  end
+
 end

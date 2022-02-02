@@ -3,6 +3,13 @@ class AccessRightsController < ApplicationController
 
   # GET /access_rights or /access_rights.json
   def index
+    if params[:deal_id].present?
+      @access_rights = @access_rights.deals.where(owner_id: params[:deal_id])
+    end
+
+    if params[:access_to_investor_id].present?
+      @access_rights = @access_rights.deals.where(access_to_investor_id: params[:access_to_investor_id])
+    end
   end
 
 

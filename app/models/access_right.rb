@@ -23,6 +23,7 @@ class AccessRight < ApplicationRecord
   scope :user_access, -> (user) { where("access_to=?", user.email) }
   scope :for_access_type, -> (type) { where("access_type=?", type) }
   scope :investor_access, -> (investor) { where("(access_to_investor_id=? OR access_to=?)", investor.id, investor.category) }
+  
   scope :user_or_investor_access, -> (user, investor) {
     user_access(user).or((investor_access(investor)))
   }

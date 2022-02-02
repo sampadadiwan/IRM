@@ -3,6 +3,13 @@ class DealsController < ApplicationController
 
   # GET /deals or /deals.json
   def index
+    if params[:other_deals].present?
+      @deals = Deal.deals_for_vc(current_user)
+    else
+      @deals = @deals.includes(:entity)
+    end
+
+    @deals = @deals.page params[:page]
   end
 
   def search
