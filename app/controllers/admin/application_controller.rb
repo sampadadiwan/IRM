@@ -9,7 +9,7 @@ module Admin
     before_action :authenticate_admin
 
     def authenticate_admin
-      redirect_to '/', alert: 'Not authorized.' unless current_user && current_user.has_role?(:super)?
+      redirect_to '/', alert: 'Not authorized.' unless current_user && current_user.has_role?(:super)
     end
 
     # Override this value to specify the number of elements to display at a time

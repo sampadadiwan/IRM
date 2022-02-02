@@ -16,7 +16,7 @@ class NotesController < ApplicationController
   end
 
   def search
-    if current_user.has_role?(:super)?
+    if current_user.has_role?(:super)
       @notes = Note.search(params[:query], :star => true)
     else
       @notes = Note.search(params[:query], :star => true, with: {entity_id: current_user.entity_id} )

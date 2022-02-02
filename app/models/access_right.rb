@@ -50,7 +50,7 @@ class AccessRight < ApplicationRecord
       u = User.where(email: self.access_to).first
       if u.present?
           # Mark the user as an investor 
-          u.is_investor = true
+          u.add_role(:investor)
           u.save
 
           # Ensure that the entity giving this access right, has this users entity as an investor

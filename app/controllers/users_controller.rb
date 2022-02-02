@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    if current_user.has_role? :super
+    if current_user.has_role?(:super)
       @users = User.search(params[:query], :star => true)
     else
       @users = User.search(params[:query], :star => true, :with => {:entity_id => current_user.entity_id})

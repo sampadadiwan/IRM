@@ -13,15 +13,13 @@ class UserDashboard < Administrate::BaseDashboard
     id: Field::Number,
     first_name: Field::String,
     last_name: Field::String,
-    role: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     email: Field::String,
     phone: Field::String,
     active: Field::Boolean,
     confirmed_at: Field::DateTime,
-    is_investor: Field::Boolean,
-    is_startup: Field::Boolean,
+    
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -34,10 +32,7 @@ class UserDashboard < Administrate::BaseDashboard
     first_name
     last_name
     email
-    role
     active
-    is_investor
-    is_startup
     created_at
     entity    
   ].freeze
@@ -50,15 +45,13 @@ class UserDashboard < Administrate::BaseDashboard
     id
     first_name
     last_name
-    role
     created_at
     updated_at
     email
     phone
     active
     confirmed_at
-    is_investor
-    is_startup
+   
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -68,12 +61,10 @@ class UserDashboard < Administrate::BaseDashboard
     entity
     first_name
     last_name
-    role
     email
     phone
     active
-    is_investor
-    is_startup
+  
   ].freeze
 
   # COLLECTION_FILTERS

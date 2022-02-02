@@ -10,7 +10,7 @@ class RegistrationsController < Devise::RegistrationsController
     resource.add_role :employee
     
     # Ensure that users are created only for the same enetity as the logged in user.
-    if current_user && !current_user.has_role?(:super)?
+    if current_user && !current_user.has_role?(:super)
       resource.entity_id = current_user.entity_id 
       logger.debug "Setting new user entity to logged in users entity #{current_user.entity_id}"
     else

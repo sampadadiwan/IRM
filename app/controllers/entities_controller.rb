@@ -23,7 +23,7 @@ class EntitiesController < ApplicationController
   end
 
   def search
-    if current_user.has_role? :super
+    if current_user.has_role?(:super)
       @entities = Entity.search(params[:query], :star => true)
     else
       @entities = Entity.search(params[:query], :star => false)

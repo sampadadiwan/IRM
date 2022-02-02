@@ -39,7 +39,7 @@ class InvestmentsController < ApplicationController
   def search
     @entity = current_user.entity
     # params[:query] = params[:query].delete(' ') if params[:query].present? && params[:query].include?("Series")
-    if current_user.has_role? :super
+    if current_user.has_role?(:super)
       @investments = Investment.search(params[:query], :star => true)
     else
       @investments = Investment.search(params[:query], :star => false, with: {:investee_entity_id => current_user.entity_id})

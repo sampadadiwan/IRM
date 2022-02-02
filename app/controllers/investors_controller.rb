@@ -10,7 +10,7 @@ class InvestorsController < ApplicationController
   end
 
   def search
-    if current_user.has_role? :super
+    if current_user.has_role?(:super)
       @investors = Investor.search(params[:query], :star => true)
     else
       @investors = Investor.search(params[:query], :star => false, with: {:investee_entity_id => current_user.entity_id})
@@ -39,7 +39,7 @@ class InvestorsController < ApplicationController
   def create
 
     @investor = Investor.new(investor_params)
-    @investor.investee_entity_id = current_user.entity_id if !current_user.has_role?(:super)?
+    @investor.investee_entity_id = current_user.entity_id if !current_user.has_role?(:super)
     authorize @investor
 
     if investor_params[:investor_entity_id].blank?

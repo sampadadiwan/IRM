@@ -41,7 +41,7 @@ class DocumentsController < ApplicationController
 
   def search
     @entity = current_user.entity
-    if current_user.has_role?(:super)?
+    if current_user.has_role?(:super)
       @documents = Document.search(params[:query], :star => true)
     else
       @documents = Document.search(params[:query], :star => false, with: {:owner_id => current_user.entity_id})
