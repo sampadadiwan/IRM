@@ -20,17 +20,7 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
     has investee_entity_id, :type => :integer
   end
 
-  ThinkingSphinx::Index.define :investor_access, :with => :real_time do
-    # fields
-    indexes investor_entity.name, :sortable => true
-    indexes email, :sortable => true
-    indexes access_type, :sortable => true
-
-    # attributes
-    has created_at, :type => :timestamp
-    has entity_id, :type => :integer
-  end
-
+ 
   ThinkingSphinx::Index.define :user, :with => :real_time do
     # fields
     indexes first_name, :sortable => true
@@ -54,19 +44,6 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
     has owner_id, :type => :integer
   end
 
-  ThinkingSphinx::Index.define :doc_access, :with => :real_time do
-    # fields
-    indexes document.name, :sortable => true
-    indexes to, :sortable => true
-    indexes access_type, :sortable => true
-
-    # attributes
-    has created_at, :type => :timestamp
-    has entity_id, :type => :integer
-  end
-
-
-  
   ThinkingSphinx::Index.define :note, :with => :real_time do
     # fields
     indexes investor.investor_name, :sortable => true

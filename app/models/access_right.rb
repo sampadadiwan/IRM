@@ -29,7 +29,7 @@ class AccessRight < ApplicationRecord
   }
 
   def access_to_label
-    self.access_to.present? ? self.access_to + " (Individual)" : self.investor.investor_name + " (Employees)"
+    self.access_to.present? ? self.access_to  : self.investor.investor_name + " (Employees)"
   end
 
   before_save :strip_fields

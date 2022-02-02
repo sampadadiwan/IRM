@@ -19,7 +19,8 @@
       | <%= link_to "Grant Access", 
       new_access_right_path("access_right[owner_id]": @deal.id,
                             "access_right[access_type]": "Deal",
-                            "access_right[owner_type]": "Deal"), 
+                            "access_right[owner_type]": "Deal",
+                            "access_right[entity_id]": @deal.entity_id), 
             {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
             "title": "Who can access this deal"} %> 
 
@@ -31,4 +32,6 @@
 <div id="access_rights" class="associated_entity">
   <%= render "/access_rights/index", access_rights: @deal.access_rights %>
 </div>
+
+<div data-controller="access"></div>
 

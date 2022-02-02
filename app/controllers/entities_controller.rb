@@ -8,6 +8,13 @@ class EntitiesController < ApplicationController
   end
 
   def dashboard
+    @entities = Entity.with_role(:all_investment_access, current_user). 
+                or(Entity.with_role(:self_investment_access, current_user))
+  end
+
+  def my_investments
+    @entities = Entity.with_role(:all_investment_access, current_user).
+                or(Entity.with_role(:some_investment_access, current_user))
   end
 
   def investor_view
@@ -28,18 +35,16 @@ class EntitiesController < ApplicationController
 
   # GET /entities/1 or /entities/1.json
   def show
-    authorize @entity
+    
   end
 
   # GET /entities/new
   def new
-    @entity = params[:entity].present? ? Entity.new(entity_params) : Entity.new
-    authorize @entity
   end
 
   # GET /entities/1/edit
   def edit
-    authorize @entity
+    
   end
 
   # POST /entities or /entities.json
@@ -61,7 +66,7 @@ class EntitiesController < ApplicationController
 
   # PATCH/PUT /entities/1 or /entities/1.json
   def update
-    authorize @entity
+    
     respond_to do |format|
       if @entity.update(entity_params)
         format.html { redirect_to entity_url(@entity), notice: "Entity was successfully updated." }
@@ -75,7 +80,7 @@ class EntitiesController < ApplicationController
 
   # DELETE /entities/1 or /entities/1.json
   def destroy
-    authorize @entity
+    
     @entity.destroy
 
     respond_to do |format|
@@ -89,6 +94,7 @@ class EntitiesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_entity
     @entity = Entity.find(params[:id])
+    authorize @entity
   end
 
   # Only allow a list of trusted parameters through.

@@ -1,8 +1,11 @@
 class AccessRightsController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
+  before_action :set_access_right, :only => ["show", "update", "destroy", "edit"] 
 
   # GET /access_rights or /access_rights.json
   def index
+
+    @access_rights = policy_scope(AccessRight)
+
     if params[:deal_id].present?
       @access_rights = @access_rights.deals.where(owner_id: params[:deal_id])
     end
@@ -22,11 +25,14 @@ class AccessRightsController < ApplicationController
 
   # GET /access_rights/1 or /access_rights/1.json
   def show
+    authorize @access_right
   end
 
   # GET /access_rights/new
   def new
     @access_right = AccessRight.new(access_right_params)
+    authorize @access_right
+
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
@@ -39,12 +45,14 @@ class AccessRightsController < ApplicationController
 
   # GET /access_rights/1/edit
   def edit
+    authorize @access_right
   end
 
   # POST /access_rights or /access_rights.json
   def create
     @access_right = AccessRight.new(access_right_params)
     @access_right.entity_id = current_user.entity_id
+    authorize @access_right
 
     respond_to do |format|
       if @access_right.save   
@@ -65,7 +73,9 @@ class AccessRightsController < ApplicationController
 
   # PATCH/PUT /access_rights/1 or /access_rights/1.json
   def update
+    authorize @access_right
     @access_right.entity_id = current_user.entity_id    
+    
     respond_to do |format|
       if @access_right.update(access_right_params)
         format.html { redirect_to access_right_url(@access_right), notice: "Access right was successfully updated." }
@@ -79,6 +89,7 @@ class AccessRightsController < ApplicationController
 
   # DELETE /access_rights/1 or /access_rights/1.json
   def destroy
+    authorize @access_right
     @access_right.destroy
 
     respond_to do |format|
@@ -101,6 +112,6 @@ class AccessRightsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def access_right_params
       params.require(:access_right).permit(:owner_id, :owner_type, :access_to, 
-        :access_to_investor_id, :access_type, :metadata)
+        :access_to_investor_id, :access_type, :metadata, :entity_id)
     end
 end

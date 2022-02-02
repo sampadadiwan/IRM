@@ -15,7 +15,13 @@ class InvestmentPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || user.entity_id == record.investee_entity_id 
+    user.has_role?(:super) || 
+    # belongs to this users entity
+    user.entity_id == record.investee_entity_id ||
+    # Has been given :all_investment_access  
+    user.has_role?(:all_investment_access, record.investee_entity) ||
+    # or :some_investment_access and is the investor
+    (user.has_role?(:some_investment_access, record.investee_entity) && record.investor.investor_entity_id == user.entity_id)
   end
 
   def create?

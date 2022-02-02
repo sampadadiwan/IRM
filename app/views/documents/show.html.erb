@@ -57,7 +57,8 @@
       | <%= link_to "Grant Access", 
       new_access_right_path("access_right[owner_id]": @document.id,
                             "access_right[access_type]": "Document",
-                            "access_right[owner_type]": "Document"), 
+                            "access_right[owner_type]": "Document",
+                            "access_right[entity_id]": @document.owner_id), 
             {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
             "title": "Who can access this document"} %> 
 
@@ -69,6 +70,6 @@
       <%= render "/access_rights/index", access_rights: @document.access_rights %>
    </div>
 
-   <div data-controller="docaccess"></div>
+   <div data-controller="access"></div>
 
 <% end %>

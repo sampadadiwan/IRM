@@ -4,22 +4,27 @@ export default class extends Controller {
   
   connect() {
 
+    console.log("Access javascript");
 
     $( document ).on('turbo:frame-load', function() {
       
+      console.log("Access javascript loaded");
+
       let flag = "disabled";
       let reverse = "";
 
-      $("#email_form_group").toggle();
-      $('#doc_access_to_email').prop('disabled', flag);
+      $("#category_form_group").toggle();
+      $('#access_right_category').prop('disabled', flag);
 
-      $("#doc_access_access_type").on("change", function(){
-
-        $("#category_form_group").toggle();
-        $('#doc_access_to_category').prop('disabled', flag);
+      $("#access_right_email_or_cat").on("change", function(){
 
         $("#email_form_group").toggle();
-        $('#doc_access_to_email').prop('disabled', reverse);
+        $('#access_right_email').prop('disabled', flag);
+
+        $("#category_form_group").toggle();
+        $('#access_right_category').prop('disabled', reverse);
+
+        
         
         console.log("Changed");
         [flag, reverse] = [reverse, flag];

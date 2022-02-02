@@ -14,6 +14,31 @@ class DocumentsController < ApplicationController
       @documents = @documents.page params[:page]
   end
 
+  def investor_documents
+
+    if params[:entity_id].present?
+     
+      @entity = Entity.find(params[:entity_id])
+    
+      if current_user.has_role?(:all_investment_access, @entity)
+        # Can view all
+        @documents = @entity.documents
+      elsif current_user.has_role?(:self_investment_access, @entity)
+        # Can view only his documents
+        @documents = @entity.documents.where("investors.investor_entity_id=?", current_user.entity_id)
+      else
+        # Can view none
+        @documents = Investment.none
+      end      
+    
+    end
+    
+    @documents = @documents.order(initial_value: :desc).joins(:investor, :investee_entity).page params[:page]
+
+    render "index"
+  end
+
+
   def search
     @entity = current_user.entity
     if current_user.is_super?

@@ -43,7 +43,8 @@
       new_access_right_path("access_right[access_to_investor_id]": @investor.id, 
                             "access_right[owner_id]": @investor.investee_entity_id,
                             "access_right[access_type]": "Investment",
-                            "access_right[owner_type]": "Entity"), 
+                            "access_right[owner_type]": "Entity",
+                            "access_right[entity_id]": current_user.entity_id), 
     {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
       "title": "Who can access your investments"} %> 
 
@@ -53,3 +54,6 @@
 <div id="access_rights" class="associated_entity">
   <%= render "access_rights/index", access_rights: @investor.access_rights.investments %>
 </div>
+
+
+<div data-controller="access"></div>

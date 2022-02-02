@@ -1,20 +1,39 @@
 class InvestmentsController < ApplicationController
   before_action :set_investment, :only => ["show", "update", "destroy", "edit"] 
-  
+  after_action :verify_authorized, except: [:index, :search, :investor_investments]
+
   # GET /investments or /investments.json
-  def index
-    
+  def index    
+    @entity = current_user.entity
+    @investments = policy_scope(Investment)                        
+    @investments = @investments.order(initial_value: :desc).
+                                joins(:investor, :investee_entity).
+                                page params[:page]
+
+  end
+
+  def investor_investments
+
     if params[:entity_id].present?
+     
       @entity = Entity.find(params[:entity_id])
-      # @investments = Investment.investments_for(current_user, @entity)
-    else
-      @entity = current_user.entity
-      # @investments = @investments.order(initial_value: :desc).                    
-      #               includes([:investor=>:investor_entity], :investee_entity)
-                    
+    
+      if current_user.has_role?(:all_investment_access, @entity)
+        # Can view all
+        @investments = @entity.investments
+      elsif current_user.has_role?(:self_investment_access, @entity)
+        # Can view only his investments
+        @investments = @entity.investments.where("investors.investor_entity_id=?", current_user.entity_id)
+      else
+        # Can view none
+        @investments = Investment.none
+      end      
+    
     end
-    @investments = policy_scope(Investment)
-    @investments = @investments.joins(:investor, :investee_entity).page params[:page]
+    
+    @investments = @investments.order(initial_value: :desc).joins(:investor, :investee_entity).page params[:page]
+
+    render "index"
   end
 
   def search
