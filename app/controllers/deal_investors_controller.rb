@@ -1,8 +1,10 @@
 class DealInvestorsController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
+  before_action :set_deal_investor, :only => ["show", "update", "destroy", "edit"] 
 
   # GET /deal_investors or /deal_investors.json
   def index
+    @deal_investors = policy_scope(DealInvestor)
+
     if params[:deal_id].present?
       @deal_investors = @deal_investors.where(deal_id: params[:deal_id])
     end
@@ -19,22 +21,27 @@ class DealInvestorsController < ApplicationController
 
   # GET /deal_investors/1 or /deal_investors/1.json
   def show
+    authorize @deal_investor
   end
 
   # GET /deal_investors/new
   def new
-    @deal_investor = DealInvestor.new(deal_id: params[:deal_id])
+    @deal_investor = DealInvestor.new(deal_investor_params)
+    authorize @deal_investor
   end
 
   # GET /deal_investors/1/edit
   def edit
+    authorize @deal_investor
   end
 
   # POST /deal_investors or /deal_investors.json
   def create
     @deal_investor = DealInvestor.new(deal_investor_params)
     @deal_investor.entity_id = current_user.entity_id
-    
+    authorize @deal_investor.deal
+    authorize @deal_investor
+
     respond_to do |format|
       if @deal_investor.save
         format.html { redirect_to deal_investor_url(@deal_investor), notice: "Deal investor was successfully created." }
@@ -48,6 +55,8 @@ class DealInvestorsController < ApplicationController
 
   # PATCH/PUT /deal_investors/1 or /deal_investors/1.json
   def update
+    authorize @deal_investor
+
     respond_to do |format|
       if @deal_investor.update(deal_investor_params)
         format.html { redirect_to deal_investor_url(@deal_investor), notice: "Deal investor was successfully updated." }
@@ -61,6 +70,7 @@ class DealInvestorsController < ApplicationController
 
   # DELETE /deal_investors/1 or /deal_investors/1.json
   def destroy
+    authorize @deal_investor
     @deal_investor.destroy
 
     respond_to do |format|

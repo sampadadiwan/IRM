@@ -1,8 +1,10 @@
 class DealsController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
+  before_action :set_deal, :only => ["show", "update", "destroy", "edit", "start_deal"] 
 
   # GET /deals or /deals.json
   def index
+    @deals = policy_scope(Deal)
+
     if params[:other_deals].present?
       @deals = Deal.deals_for_vc(current_user)
     else
@@ -21,6 +23,7 @@ class DealsController < ApplicationController
 
   # GET /deals/1 or /deals/1.json
   def show
+    authorize @deal
     if params[:grid_view].present?
       render "grid_view"
     else
@@ -30,16 +33,20 @@ class DealsController < ApplicationController
 
   # GET /deals/new
   def new
-    @deal = Deal.new
+    @deal = Deal.new(deal_params)
     @deal.activity_list = Deal::ACTIVITIES
+    authorize @deal
   end
 
   # GET /deals/1/edit
   def edit
+    authorize @deal
   end
 
   def start_deal
+    authorize @deal
     @deal.start_deal
+    
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
@@ -54,7 +61,8 @@ class DealsController < ApplicationController
   def create
     @deal = Deal.new(deal_params)
     @deal.entity_id = current_user.entity_id
-    
+    authorize @deal
+
     respond_to do |format|
       if @deal.save
         format.html { redirect_to deal_url(@deal), notice: "Deal was successfully created." }
@@ -68,6 +76,8 @@ class DealsController < ApplicationController
 
   # PATCH/PUT /deals/1 or /deals/1.json
   def update
+    authorize @deal
+
     respond_to do |format|
       if @deal.update(deal_params)
         format.html { redirect_to deal_url(@deal), notice: "Deal was successfully updated." }
@@ -81,6 +91,7 @@ class DealsController < ApplicationController
 
   # DELETE /deals/1 or /deals/1.json
   def destroy
+    authorize @deal
     @deal.destroy
 
     respond_to do |format|

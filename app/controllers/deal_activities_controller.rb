@@ -1,9 +1,12 @@
 class DealActivitiesController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
+  before_action :set_deal_activity, :only => ["show", "update", "destroy", "edit", "update_sequence", "toggle_completed"] 
   skip_before_action :verify_authenticity_token, only: [:update_sequence]
 
   # GET /deal_activities or /deal_activities.json
   def index
+
+    @deal_activities = policy_scope(DealActivity)
+    
     if params[:deal_id].present?
       @deal_activities = @deal_activities.where(deal_id: params[:deal_id])
     end
@@ -32,22 +35,26 @@ class DealActivitiesController < ApplicationController
 
   # GET /deal_activities/1 or /deal_activities/1.json
   def show
+    authorize @deal_activity
   end
 
   # GET /deal_activities/new
   def new
     @deal_activity = DealActivity.new(deal_id: params[:deal_id], deal_investor_id: params[:deal_investor_id])
+    authorize @deal_activity
   end
 
   # GET /deal_activities/1/edit
   def edit
+    authorize @deal_activity
   end
 
   # POST /deal_activities or /deal_activities.json
   def create
     @deal_activity = DealActivity.new(deal_activity_params)
     @deal_activity.entity_id = current_user.entity_id
-    
+    authorize @deal_activity
+
     respond_to do |format|
       if @deal_activity.save
         format.html { redirect_to deal_activity_url(@deal_activity), notice: "Deal activity was successfully created." }
@@ -61,6 +68,8 @@ class DealActivitiesController < ApplicationController
 
   # PATCH/PUT /deal_activities/1 or /deal_activities/1.json
   def update
+    authorize @deal_activity
+
     respond_to do |format|
       if @deal_activity.update(deal_activity_params)
         format.html { redirect_to deal_activity_url(@deal_activity), notice: "Deal activity was successfully updated." }
@@ -73,10 +82,12 @@ class DealActivitiesController < ApplicationController
   end
 
   def update_sequence
+    authorize @deal_activity, :update?
     @deal_activity.set_list_position(params[:sequence].to_i + 1)
   end
 
   def toggle_completed
+    authorize @deal_activity, :update?
     @deal_activity.completed = !@deal_activity.completed 
     @deal_activity.save
 
@@ -93,6 +104,7 @@ class DealActivitiesController < ApplicationController
 
   # DELETE /deal_activities/1 or /deal_activities/1.json
   def destroy
+    authorize @deal_activity
     @deal_activity.destroy
 
     respond_to do |format|

@@ -17,6 +17,11 @@ class DealInvestor < ApplicationRecord
 
   STATUS = ["Active", "Pending", "Declined"]
 
+  before_save :set_investor_entity_id
+  def set_investor_entity_id
+    self.investor_entity_id = self.investor.investor_entity_id
+  end
+
   def create_activites
     start_date = self.deal.start_date    
     by_date = nil

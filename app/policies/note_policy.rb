@@ -1,4 +1,4 @@
-class DealPolicy < ApplicationPolicy
+class NotePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.has_role?(:super)
@@ -28,10 +28,6 @@ class DealPolicy < ApplicationPolicy
 
   def update?
     create?
-  end
-
-  def start_deal?
-    update?
   end
 
   def edit?

@@ -19,7 +19,6 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def create?
-    puts "###### #{user.entity_id}, #{record.owner_id} #{record.owner_type}"
     user.has_role?(:super) || (user.entity_id == record.owner_id && record.owner_type == "Entity")
   end
 

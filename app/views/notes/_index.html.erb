@@ -1,7 +1,8 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">Notes</h1>
   <% if params[:investor_id].present? %>
-    <%= link_to "New Note", new_note_path(investor_id: params[:investor_id]), {class: "btn btn-primary"}  %>
+    <%= link_to "New Note", new_note_path("note[investor_id]": params[:investor_id], "note[entity_id]": current_user.entity_id), 
+        {class: "btn btn-primary"}  %>
   <% end %>
 </div>
 

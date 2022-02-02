@@ -1,10 +1,10 @@
-class DealPolicy < ApplicationPolicy
+class DealMessagePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.has_role?(:super)
         scope.all
       else
-        scope.where(entity_id: user.entity_id)
+        scope.where("deal_investors.entity_id": user.entity_id).joins(:deal_investor)
       end
     end
   end
@@ -15,11 +15,11 @@ class DealPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || (user.entity_id == record.entity_id)
+    user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
   end
 
   def create?
-    user.has_role?(:super) || (user.entity_id == record.entity_id)
+    user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
   end
 
   def new?
@@ -28,10 +28,6 @@ class DealPolicy < ApplicationPolicy
 
   def update?
     create?
-  end
-
-  def start_deal?
-    update?
   end
 
   def edit?

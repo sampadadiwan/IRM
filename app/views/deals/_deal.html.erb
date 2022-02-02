@@ -21,7 +21,7 @@
         <%= link_to "Show", deal , {class: "dropdown-item"}%>
         <div class="dropdown-divider"></div>
 
-        <%= link_to "Add Investor", new_deal_investor_path(deal_id: deal.id) , {class: "dropdown-item"}%>
+        <%= link_to "Add Investor", new_deal_investor_path("deal_investor[deal_id]": deal.id, "deal_investor[entity_id]": current_user.entity_id) , {class: "dropdown-item"}%>
         <%= link_to "View Investors", deal_investors_path(deal_id: deal.id) , {class: "dropdown-item"}%>        
         <div class="dropdown-divider"></div>
         

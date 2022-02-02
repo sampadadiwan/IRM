@@ -1,8 +1,11 @@
 class NotesController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
+  before_action :set_note, :only => ["show", "update", "destroy", "edit"] 
 
   # GET /notes or /notes.json
   def index
+
+    @notes = policy_scope(Note)
+
     if params[:investor_id]
       @notes = @notes.where(investor_id: params[:investor_id])
     end
@@ -24,15 +27,18 @@ class NotesController < ApplicationController
 
   # GET /notes/1 or /notes/1.json
   def show
+    authorize @note
   end
 
   # GET /notes/new
   def new
-    @note = Note.new(investor_id: params[:investor_id])
+    @note = Note.new(note_params)
+    authorize @note
   end
 
   # GET /notes/1/edit
   def edit
+    authorize @note
   end
 
   # POST /notes or /notes.json
@@ -40,7 +46,8 @@ class NotesController < ApplicationController
     @note = Note.new(note_params)
     @note.user_id = current_user.id
     @note.entity_id = current_user.entity_id
-    
+    authorize @note
+
     respond_to do |format|
       if @note.save
         format.html { redirect_to note_url(@note), notice: "Note was successfully created." }
@@ -54,6 +61,7 @@ class NotesController < ApplicationController
 
   # PATCH/PUT /notes/1 or /notes/1.json
   def update
+    authorize @note
     respond_to do |format|
       if @note.update(note_params)
         format.html { redirect_to note_url(@note), notice: "Note was successfully updated." }
@@ -67,6 +75,7 @@ class NotesController < ApplicationController
 
   # DELETE /notes/1 or /notes/1.json
   def destroy
+    authorize @note
     @note.destroy
 
     respond_to do |format|

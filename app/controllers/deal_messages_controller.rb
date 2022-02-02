@@ -1,11 +1,13 @@
 class DealMessagesController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
+  before_action :set_deal_activity, :only => ["show", "update", "destroy", "edit"] 
 
   # GET /deal_messages or /deal_messages.json
   def index
+
+    @deal_messages = policy_scope(DealMessage)
     if params[:deal_investor_id]
       @deal_investor = DealInvestor.find(params[:deal_investor_id])
-      @deal_messages = DealMessage.accessible_by(current_ability).where(deal_investor_id: params[:deal_investor_id]) 
+      @deal_messages = @deal_messages.where(deal_investor_id: params[:deal_investor_id]) 
     else
       @deal_messages = DealMessage.none
     end
@@ -13,20 +15,24 @@ class DealMessagesController < ApplicationController
 
   # GET /deal_messages/1 or /deal_messages/1.json
   def show
+    authorize @deal_message
   end
 
   # GET /deal_messages/new
   def new
+    authorize @deal_message
   end
 
   # GET /deal_messages/1/edit
   def edit
+    authorize @deal_message
   end
 
   # POST /deal_messages or /deal_messages.json
   def create
     @deal_message = DealMessage.new(deal_message_params)
     @deal_message.user_id = current_user.id 
+    authorize @deal_message
 
     respond_to do |format|
       if @deal_message.save
@@ -47,6 +53,8 @@ class DealMessagesController < ApplicationController
 
   # PATCH/PUT /deal_messages/1 or /deal_messages/1.json
   def update
+    authorize @deal_message
+
     respond_to do |format|
       if @deal_message.update(deal_message_params)
         format.html { redirect_to deal_message_url(@deal_message), notice: "Deal message was successfully updated." }
@@ -60,6 +68,7 @@ class DealMessagesController < ApplicationController
 
   # DELETE /deal_messages/1 or /deal_messages/1.json
   def destroy
+    authorize @deal_message
     @deal_message.destroy
 
     respond_to do |format|
