@@ -34,15 +34,6 @@ Rails.application.routes.draw do
     get 'search', on: :collection
   end
   
-  resources :investor_accesses do
-    get 'search', on: :collection
-  end
-
-  resources :doc_accesses do 
-    post 'send_email', on: :member
-    get 'search', on: :collection
-  end
-
   resources :investors do
     get 'search', on: :collection
   end

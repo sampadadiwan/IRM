@@ -162,17 +162,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_025551) do
     t.index ["entity_id"], name: "index_deals_on_entity_id"
   end
 
-  create_table "doc_accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "document_id"
-    t.string "access_type", limit: 30
-    t.string "to"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "status", limit: 10
-    t.integer "entity_id"
-    t.index ["document_id"], name: "index_doc_access_on_document_id"
-    t.index ["entity_id"], name: "index_doc_accesses_on_entity_id"
-  end
 
   create_table "documents", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 100
@@ -223,19 +212,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_025551) do
     t.string "category", limit: 25
     t.index ["investee_entity_id"], name: "index_investments_on_investee_entity_id"
     t.index ["investor_id", "investor_type"], name: "index_investments_on_investor"
-  end
-
-  create_table "investor_accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "investor_id"
-    t.string "email"
-    t.string "access_type", limit: 30
-    t.integer "granted_by"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "entity_id"
-    t.index ["email"], name: "index_investor_accesses_on_email"
-    t.index ["entity_id"], name: "index_investor_accesses_on_entity_id"
-    t.index ["investor_id"], name: "index_investor_accesses_on_investor_id"
   end
 
   create_table "investors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
