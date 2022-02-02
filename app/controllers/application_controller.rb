@@ -1,9 +1,14 @@
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+  after_action :verify_authorized, except: [:index, :search]
+  after_action :verify_policy_scoped, only: [:index]
+
+  
   before_action :authenticate_user!
   before_action :set_search_controller
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_paper_trail_whodunnit
-
+  
   # skip_before_action :verify_authenticity_token, if: lambda { ENV["skip_authenticity_token"].present? }
 
   protected
@@ -15,8 +20,8 @@ class ApplicationController < ActionController::Base
     @search_controller = params[:controller] != "home" ? params[:controller] : "entities"
   end
 
-  rescue_from CanCan::AccessDenied do |exception|
-    redirect_to entities_path, alert: exception.message
+  rescue_from Pundit::NotAuthorizedError do |exception|
+    redirect_to dashboard_entities_path, alert: "Access Denied"
   end
 
   before_action :prepare_exception_notifier

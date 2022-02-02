@@ -1,16 +1,18 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, :except => ["welcome"]
-  load_and_authorize_resource :except => ["search", "welcome"]
+  before_action :set_user, :only => ["show", "update", "destroy", "edit"]  
+  after_action :verify_authorized, except: [:welcome]
 
   # GET /users or /users.json
   def index
+    @users = policy_scope(User)
   end
   
   def welcome
   end
 
   def search
-    if current_user.is_super?
+    if current_user.has_role? :super
       @users = User.search(params[:query], :star => true)
     else
       @users = User.search(params[:query], :star => true, :with => {:entity_id => current_user.entity_id})
@@ -21,20 +23,26 @@ class UsersController < ApplicationController
 
 
   # GET /users/1 or /users/1.json
-  def show; end
+  def show
+    authorize @user
+  end
 
   # GET /users/new
   def new
     @user = User.new
     @user.entity_id = params[:entity_id]
+    authorize @user
   end
 
   # GET /users/1/edit
-  def edit; end
+  def edit
+    authorize @user
+  end
 
   
   # PATCH/PUT /users/1 or /users/1.json
   def update
+    authorize @user
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to user_url(@user), notice: "User was successfully updated." }
@@ -48,6 +56,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
+    authorize @user
     @user.destroy
 
     respond_to do |format|

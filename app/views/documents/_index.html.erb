@@ -1,7 +1,8 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">Documents</h1>
-  <%= link_to "New Document", new_document_path, {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
+  <%= link_to "New Document", new_document_path("document[owner_id]":current_user.entity_id, "document[owner_type]": "Entity"), 
+      {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
 
 </div>
 

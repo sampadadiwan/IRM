@@ -1,14 +1,16 @@
 class InvestorsController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
+  before_action :set_investor, :only => ["show", "update", "destroy", "edit"] 
+  # after_action :verify_authorized, except: [:search]
 
   # GET /investors or /investors.json
   def index
+    @investors = policy_scope(Investor)
     @investors = @investors.order(:category).joins(:investor_entity, :investee_entity).
         includes(:investor_entity, :investee_entity).page params[:page]
   end
 
   def search
-    if current_user.is_super?
+    if current_user.has_role? :super
       @investors = Investor.search(params[:query], :star => true)
     else
       @investors = Investor.search(params[:query], :star => false, with: {:investee_entity_id => current_user.entity_id})
@@ -19,15 +21,18 @@ class InvestorsController < ApplicationController
 
   # GET /investors/1 or /investors/1.json
   def show
+    authorize @investor
   end
 
   # GET /investors/new
   def new
-    @investor = Investor.new
+    @investor = Investor.new(investor_params)
+    authorize @investor
   end
 
   # GET /investors/1/edit
   def edit
+    authorize @investor
   end
 
   # POST /investors or /investors.json
@@ -35,6 +40,7 @@ class InvestorsController < ApplicationController
 
     @investor = Investor.new(investor_params)
     @investor.investee_entity_id = current_user.entity_id if !current_user.is_super?
+    authorize @investor
 
     if investor_params[:investor_entity_id].blank?
       entity = Entity.create(name: params[:investor][:investor_entity_name], 
@@ -60,6 +66,7 @@ class InvestorsController < ApplicationController
 
   # PATCH/PUT /investors/1 or /investors/1.json
   def update
+    authorize @investor
     respond_to do |format|
       if @investor.update(investor_params)
         format.html { redirect_to investor_url(@investor), notice: "Investor was successfully updated." }
@@ -73,6 +80,7 @@ class InvestorsController < ApplicationController
 
   # DELETE /investors/1 or /investors/1.json
   def destroy
+    authorize @investor
     @investor.destroy
 
     respond_to do |format|

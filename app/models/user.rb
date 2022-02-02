@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  rolify
   has_paper_trail
   
   ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
@@ -42,35 +43,17 @@ class User < ApplicationRecord
   end
 
   def setup_defaults
-    self.role ||= "Employee"
-
-    self.is_investor = self.entity && self.entity.entity_type == "VC" || InvestorAccess.user_access(self).first.present?
-    
-    self.is_startup = self.entity.entity_type == "Startup" if self.entity
+    self.add_role :employee
+    self.add_role :investor if self.entity && self.entity.entity_type == "VC" || InvestorAccess.user_access(self).first.present?    
+    self.add_role :startup if self.entity.entity_type == "Startup" if self.entity
   end
 
-  def is_super?
-    self.role == "Super"
-  end
-
+  
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
-  def self.allowed_roles(current_user)
-
-    if !current_user || !current_user.entity
-      return User::ROLES
-    end
-
-    case current_user.entity.entity_type 
-    when "Startup"
-      return [ "Employee" ]
-    when "VC"
-      return [ "Employee" ]
-    end
-  end
-
+  
   def investor_entity(entity_id)
     Entity.user_investor_entities(self).where("entities.id": entity_id).first
   end

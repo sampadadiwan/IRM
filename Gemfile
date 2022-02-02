@@ -31,7 +31,9 @@ gem "jbuilder"
 gem "redis", "~> 4.0"
 
 gem 'devise'
-gem 'cancancan'
+gem "pundit", git: "https://github.com/varvet/pundit.git" 
+gem "rolify"
+
 
 gem 'dotenv-rails'
 gem 'sidekiq'

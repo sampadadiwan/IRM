@@ -7,6 +7,7 @@ class Investor < ApplicationRecord
     belongs_to :investee_entity, foreign_key: "investee_entity_id", class_name: "Entity"    
     has_many :investor_accesses, dependent: :destroy
     has_many :access_rights, foreign_key: :access_to_investor_id, dependent: :destroy
+    has_many :deal_investors, dependent: :destroy
 
     delegate :name, to: :investee_entity, prefix: :investee
 

@@ -1,16 +1,16 @@
 class DocumentsController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
+  before_action :set_document, :only => ["show", "update", "destroy", "edit"] 
 
   # GET /documents or /documents.json
   def index
       @entity = current_user.entity
       if params[:entity_id].present?
         @entity = Entity.find(params[:entity_id])
-        @documents = Document.documents_for(current_user, @entity)
+        # @documents = Document.documents_for(current_user, @entity)
       else
-        @documents = @documents.includes(:owner)
+        # @documents = @documents.includes(:owner)
       end
-
+      @documents = policy_scope(Document)
       @documents = @documents.page params[:page]
   end
 
@@ -28,14 +28,18 @@ class DocumentsController < ApplicationController
 
   # GET /documents/1 or /documents/1.json
   def show
+    authorize @document
   end
 
   # GET /documents/new
   def new
+    @document = Document.new(document_params)
+    authorize @document
   end
 
   # GET /documents/1/edit
   def edit
+    authorize @document
   end
 
   # POST /documents or /documents.json
@@ -43,6 +47,7 @@ class DocumentsController < ApplicationController
     @document = Document.new(document_params)
     @document.owner_id = current_user.entity_id
     @document.owner_type = "Entity"
+    authorize @document
 
     respond_to do |format|
       if @document.save
@@ -57,6 +62,7 @@ class DocumentsController < ApplicationController
 
   # PATCH/PUT /documents/1 or /documents/1.json
   def update
+    authorize @document
     respond_to do |format|
       if @document.update(document_params)
         format.html { redirect_to document_url(@document), notice: "Document was successfully updated." }
@@ -70,6 +76,7 @@ class DocumentsController < ApplicationController
 
   # DELETE /documents/1 or /documents/1.json
   def destroy
+    authorize @document
     @document.destroy
 
     respond_to do |format|

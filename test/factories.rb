@@ -1,4 +1,8 @@
 FactoryBot.define do
+  factory :role do
+    
+  end
+
   factory :access_right do
     owner { nil }
     access_to { "MyString" }

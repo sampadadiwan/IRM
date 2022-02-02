@@ -2,7 +2,7 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">Investors</h1>
-  <%= link_to "New Investor", new_investor_path, {class: "btn btn-primary"}  %>
+  <%= link_to "New Investor", new_investor_path("investor[investee_entity_id]": current_user.entity_id), {class: "btn btn-primary"}  %>
 </div>
 
 <table id="investors" class="table table-bordered dataTable">

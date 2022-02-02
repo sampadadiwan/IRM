@@ -1,9 +1,10 @@
 class EntitiesController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
-
+  before_action :set_entity, :only => ["show", "update", "destroy", "edit"]  
+  after_action :verify_authorized, except: [:dashboard, :search, :index]
 
   # GET /entities or /entities.json
   def index
+    @entities = policy_scope(Entity)
   end
 
   def dashboard
@@ -15,7 +16,7 @@ class EntitiesController < ApplicationController
   end
 
   def search
-    if current_user.is_super?
+    if current_user.has_role? :super
       @entities = Entity.search(params[:query], :star => true)
     else
       @entities = Entity.search(params[:query], :star => false)
@@ -26,20 +27,26 @@ class EntitiesController < ApplicationController
 
 
   # GET /entities/1 or /entities/1.json
-  def show; end
+  def show
+    authorize @entity
+  end
 
   # GET /entities/new
   def new
     @entity = params[:entity].present? ? Entity.new(entity_params) : Entity.new
+    authorize @entity
   end
 
   # GET /entities/1/edit
-  def edit; end
+  def edit
+    authorize @entity
+  end
 
   # POST /entities or /entities.json
   def create
     @entity =  Entity.new(entity_params)  
     @entity.created_by = current_user.id
+    authorize @entity
 
     respond_to do |format|
       if @entity.save
@@ -54,6 +61,7 @@ class EntitiesController < ApplicationController
 
   # PATCH/PUT /entities/1 or /entities/1.json
   def update
+    authorize @entity
     respond_to do |format|
       if @entity.update(entity_params)
         format.html { redirect_to entity_url(@entity), notice: "Entity was successfully updated." }
@@ -67,6 +75,7 @@ class EntitiesController < ApplicationController
 
   # DELETE /entities/1 or /entities/1.json
   def destroy
+    authorize @entity
     @entity.destroy
 
     respond_to do |format|
