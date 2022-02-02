@@ -53,7 +53,7 @@ class DocumentsController < ApplicationController
 
   # GET /documents/1 or /documents/1.json
   def show
-    authorize @document
+    
   end
 
   # GET /documents/new
@@ -64,16 +64,15 @@ class DocumentsController < ApplicationController
 
   # GET /documents/1/edit
   def edit
-    authorize @document
+    
   end
 
   # POST /documents or /documents.json
   def create
     @document = Document.new(document_params)
-    @document.owner_id = current_user.entity_id
-    @document.owner_type = "Entity"
+    @document.entity_id = current_user.entity_id    
     authorize @document
-
+    
     respond_to do |format|
       if @document.save
         format.html { redirect_to document_url(@document), notice: "Document was successfully created." }
@@ -87,7 +86,7 @@ class DocumentsController < ApplicationController
 
   # PATCH/PUT /documents/1 or /documents/1.json
   def update
-    authorize @document
+    
     respond_to do |format|
       if @document.update(document_params)
         format.html { redirect_to document_url(@document), notice: "Document was successfully updated." }
@@ -101,7 +100,7 @@ class DocumentsController < ApplicationController
 
   # DELETE /documents/1 or /documents/1.json
   def destroy
-    authorize @document
+    
     @document.destroy
 
     respond_to do |format|
@@ -114,10 +113,11 @@ class DocumentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_document
       @document = Document.find(params[:id])
+      authorize @document
     end
 
     # Only allow a list of trusted parameters through.
     def document_params
-      params.require(:document).permit(:name,:owner_id, :owner_type, :file, :text)
+      params.require(:document).permit(:name, :file, :text, :entity_id)
     end
 end

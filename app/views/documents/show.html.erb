@@ -18,18 +18,10 @@
    <tr>
       </td>    
       <td>
-         Owner
+         Entity
       </td>
       <td>
-         <%= link_to @document.owner.name, @document.owner %>
-      </td>
-   </tr>
-   <tr>
-      <td>
-         Owner Type
-      </td>
-      <td>
-         <%= @document.owner_type %>
+         <%= link_to @document.entity.name, @document.entity %>
       </td>
    </tr>
    
@@ -46,7 +38,7 @@
 
 </table>
 
-<% if current_user.entity_id == @document.owner_id %>
+<% if current_user.entity_id == @document.entity_id %>
    <div style="display: inline-block;">
       <%= link_to "Edit", edit_document_path(@document), {class: "btn btn-primary"} %> |
        <%= button_to "Delete", @document, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %> 
@@ -58,7 +50,7 @@
       new_access_right_path("access_right[owner_id]": @document.id,
                             "access_right[access_type]": "Document",
                             "access_right[owner_type]": "Document",
-                            "access_right[entity_id]": @document.owner_id), 
+                            "access_right[entity_id]": @document.entity_id), 
             {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
             "title": "Who can access this document"} %> 
 

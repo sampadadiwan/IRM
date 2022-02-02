@@ -4,7 +4,7 @@ class DocumentPolicy < ApplicationPolicy
       if user.has_role?(:super)
         scope.all
       else
-        scope.where(owner_id: user.entity_id).where(owner_type: "Entity")
+        scope.where(entity_id: user.entity_id)
       end
     end
   end
@@ -15,11 +15,11 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || (user.entity_id == record.owner_id && record.owner_type == "Entity")
+    user.has_role?(:super) || (user.entity_id == record.entity_id)
   end
 
   def create?
-    user.has_role?(:super) || (user.entity_id == record.owner_id && record.owner_type == "Entity")
+    user.has_role?(:super) || (user.entity_id == record.entity_id)
   end
 
   def new?
