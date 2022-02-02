@@ -8,6 +8,7 @@ class Entity < ApplicationRecord
 
   has_rich_text :details
   has_many :deals, dependent: :destroy  
+  has_many :deal_investors, dependent: :destroy  
   has_many :documents, as: :owner, dependent: :destroy
   
   # Will have many employees
@@ -62,7 +63,7 @@ class Entity < ApplicationRecord
   end
 
 
-  def self.invested_entities(user)
+  def self.for_investor(user)
     category_access = Entity.joins(:investors).
       where("investors.investor_entity_id": user.entity_id).
       where("investors.category=access_rights.access_to_category").
@@ -75,7 +76,7 @@ class Entity < ApplicationRecord
       merge(AccessRight.user_access(user)).
       joins(:access_rights) 
 
-    direct_access.or(category_access)
+    direct_access.or(category_access).distinct
   end
 
 end
