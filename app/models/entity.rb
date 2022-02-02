@@ -52,7 +52,7 @@ class Entity < ApplicationRecord
   def setup_owner
     if self.created_by.present?
       owner = User.find(self.created_by)
-      if !owner.is_super?
+      if !owner.has_role?(:super)?
         # Set the user belongs to entity, only for non super users
         owner.entity_id = self.id
         owner.save

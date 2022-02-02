@@ -39,7 +39,7 @@ class InvestorsController < ApplicationController
   def create
 
     @investor = Investor.new(investor_params)
-    @investor.investee_entity_id = current_user.entity_id if !current_user.is_super?
+    @investor.investee_entity_id = current_user.entity_id if !current_user.has_role?(:super)?
     authorize @investor
 
     if investor_params[:investor_entity_id].blank?

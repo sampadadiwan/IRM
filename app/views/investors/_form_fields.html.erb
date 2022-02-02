@@ -10,7 +10,7 @@
     <%= form.text_field :investor_entity_id, class: "form-control", hidden: true   %>
   </div>
 
-  <% if current_user.role == "Super" %>
+  <% if current_user.has_role? :super %>
   <div class="form-group">
     <%= form.label :investee_entity_id %>
     <%= form.number_field :investee_entity_id, class: "form-control"  %>

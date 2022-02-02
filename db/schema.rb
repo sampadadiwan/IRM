@@ -277,7 +277,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_073138) do
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "first_name", limit: 80
     t.string "last_name", limit: 80
-    t.string "role", limit: 10
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "email", default: "", null: false
@@ -291,8 +290,6 @@ ActiveRecord::Schema.define(version: 2022_02_02_073138) do
     t.datetime "confirmed_at", precision: 6
     t.datetime "confirmation_sent_at", precision: 6
     t.integer "entity_id"
-    t.boolean "is_investor"
-    t.boolean "is_startup"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["entity_id"], name: "index_users_on_entity_id"
