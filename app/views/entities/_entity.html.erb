@@ -1,8 +1,7 @@
 
 <tr id="<%= dom_id entity %>">
 <td>
-    <%= link_to entity.name, entity if !vc_view %>
-    <%= link_to entity.name, investor_view_entity_path(entity) if vc_view %>
+    <%= link_to entity.name, entity %>
   </td>  
 <td>
     <%= entity.category %>

@@ -42,6 +42,7 @@
     <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#activities-tab">Activities</a>
     <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#docs-tab">Documents</a>
     <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#chat-tab">Chat</a>
+    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#tranche-tab">Tranche</a>
   </nav>
 
   <% deal_investor = @deal.deal_investors.for(current_user).first %>
@@ -60,6 +61,11 @@
     <div id="chat-tab" class="tab-pane fade">
       <div id="deal_messages" class="associated_entity">
         <%= render "/deal_messages/conversation", deal_investor: deal_investor, deal_messages: deal_investor.deal_messages %>
+      </div>  
+    </div>
+    <div id="tranche-tab" class="tab-pane fade">
+      <div id="deal_investor" class="associated_entity">
+        <%= render "/deal_investors/show", deal_investor: deal_investor %>
       </div>  
     </div>
   </div>

@@ -23,23 +23,29 @@ class EntityPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || user.entity_id == record.id 
+    if user.has_role?(:super) || user.entity_id == record.id 
+      true
+    elsif user.entity_id != record.id  # Entity.for_investor(user).where("entities.id=?", record.id)
+      true
+    else
+      false
+    end
   end
 
   def create?
-    show?
+    user.has_role?(:super)
   end
 
   def new?
-    show?
+    update?
   end
 
   def update?
-    show?
+    user.has_role?(:super) || user.entity_id == record.id 
   end
 
   def edit?
-    show?
+    update?
   end
 
   def destroy?

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, :except => ["welcome"]
   before_action :set_user, :only => ["show", "update", "destroy", "edit"]  
-  after_action :verify_authorized, except: [:welcome]
+  after_action :verify_authorized, except: [:welcome, :index, :search]
 
   # GET /users or /users.json
   def index

@@ -34,10 +34,12 @@
             </td>
          </tr>
       </table>
+      <% if current_user.entity_id == @entity.id %>
       <div>
          <%= link_to "Edit", edit_entity_path(@entity), {class: "btn btn-primary"} %> |
          <%= button_to "Delete", @entity, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
       </div>
+      <% end %>
    </div>
 </div>
 
