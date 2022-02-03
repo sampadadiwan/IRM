@@ -1,10 +1,11 @@
 class EntitiesController < ApplicationController
   before_action :set_entity, :only => ["show", "update", "destroy", "edit"]  
-  after_action :verify_authorized, except: [:dashboard, :search, :index]
+  after_action :verify_authorized, except: [:dashboard, :search, :index, :investor_entities]
 
   # GET /entities or /entities.json
   def index
     @entities = policy_scope(Entity)
+    render "index", locals: {vc_view: false}
   end
 
   def dashboard
@@ -12,9 +13,9 @@ class EntitiesController < ApplicationController
                 or(Entity.with_role(:self_investment_access, current_user))
   end
 
-  def my_investments
-    @entities = Entity.with_role(:all_investment_access, current_user).
-                or(Entity.with_role(:some_investment_access, current_user))
+  def investor_entities
+    @entities = Entity.for_investor(current_user)
+    render "index", locals: {vc_view: true}
   end
 
   def investor_view

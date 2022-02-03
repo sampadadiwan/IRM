@@ -34,15 +34,6 @@ class Investment < ApplicationRecord
         self.investment_type.delete(' ')
     end
 
-    def accessible?(user)
-        investor = Investor.for(user, self.investee_entity).first
-        access_right = AccessRight.investments.for(self.investee_entity).user_or_investor_access(user, investor).first
-
-        self.investee_entity_id == user.entity_id || 
-        self.investor.investor_entity_id == user.entity_id || 
-        (access_right.present? && access_right.metadata == "All")
-    end
-
     def self.investments_for(current_user, entity)
 
         investments = Investment.none

@@ -14,21 +14,9 @@ class InvestmentsController < ApplicationController
 
   def investor_investments
 
-    if params[:entity_id].present?
-     
-      @entity = Entity.find(params[:entity_id])
-    
-      if current_user.has_role?(:all_investment_access, @entity)
-        # Can view all
-        @investments = @entity.investments
-      elsif current_user.has_role?(:self_investment_access, @entity)
-        # Can view only his investments
-        @investments = @entity.investments.where("investors.investor_entity_id=?", current_user.entity_id)
-      else
-        # Can view none
-        @investments = Investment.none
-      end      
-    
+    if params[:entity_id].present?     
+      @entity = Entity.find(params[:entity_id])    
+      @investments = Investment.investments_for(current_user, @entity)      
     end
     
     @investments = @investments.order(initial_value: :desc).joins(:investor, :investee_entity).page params[:page]

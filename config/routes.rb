@@ -53,6 +53,7 @@ Rails.application.routes.draw do
 
   resources :entities do
     get 'search', on: :collection
+    get 'investor_entities', on: :collection
     get 'dashboard', on: :collection
     get 'investor_view', on: :member
   end
