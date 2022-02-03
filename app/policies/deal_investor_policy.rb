@@ -4,7 +4,7 @@ class DealInvestorPolicy < ApplicationPolicy
       if user.has_role?(:super)
         scope.all
       else
-        scope.where(entity_id: user.entity_id)
+        scope.where(entity_id: user.entity_id).or(scope.where(investor_entity_id: user.entity_id))
       end
     end
   end
@@ -15,7 +15,7 @@ class DealInvestorPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || (user.entity_id == record.entity_id)
+    user.has_role?(:super) || (user.entity_id == record.entity_id) || (user.entity_id == record.investor_entity_id)
   end
 
   def create?

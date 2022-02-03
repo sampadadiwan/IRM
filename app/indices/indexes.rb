@@ -88,11 +88,13 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
     # fields
     indexes deal_name, :sortable => true
     indexes investor_name
+    indexes entity_name
     indexes status
 
     # attributes
     has created_at, :type => :timestamp
     has entity_id, :type => :integer
+    has investor_entity_id, :type => :integer
   end
 
   ThinkingSphinx::Index.define :deal_activity, :with => :real_time do

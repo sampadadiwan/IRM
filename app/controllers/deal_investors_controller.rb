@@ -13,7 +13,9 @@ class DealInvestorsController < ApplicationController
 
   def search
     @entity = current_user.entity
-    @deal_investors = DealInvestor.search(params[:query], :star => false, with: {:entity_id => current_user.entity_id})
+    investor_or_investee = "*, IF(investor_entity_id = #{current_user.entity_id} OR entity_id = #{current_user.entity_id}, 1, 0) AS inv"      
+    @deal_investors = DealInvestor.search(params[:query], :star => false, 
+      :select => investor_or_investee, :with => {'inv' => 1}, :sql => {:include => [:investor, :deal]})
 
     render "index"
   end
