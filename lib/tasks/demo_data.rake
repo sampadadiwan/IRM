@@ -52,6 +52,29 @@ namespace :irm do
 
     end
 
+    desc "generates fake Documents for testing"
+    task :generateFakeDocuments => :environment do
+        dnames = "Fact Sheet,Cap Table,Latest Financials,Conversion Stats,Deal Sheet".split(",")
+        files = ["undraw_profile.svg", "undraw_profile_1.svg", "undraw_profile_2.svg", "undraw_profile_3.svg", "undraw_rocket.svg"]
+        begin
+            Entity.startups.each do | e |
+                (0..4).each do |i|
+                    doc = Document.create!(entity: e, name: dnames[i], text: Faker::Quotes::Rajnikanth.joke,
+                                            file: File.new("public/img/#{files[i]}", "r"))
+
+                    (1..5).each do 
+                        inv = e.investors.shuffle.first
+                        AccessRight.create(owner: doc, access_type: "Document", 
+                            entity: e, access_to_category: Investor::INVESTOR_CATEGORIES[rand(Investor::INVESTOR_CATEGORIES.length)])
+                    end
+                end
+            end
+        rescue Exception => exception
+            puts exception.backtrace.join("\n")
+            raise exception
+        end
+    end
+
     desc "generates fake Investments for testing"
     task :generateFakeInvestments => :environment do
 
