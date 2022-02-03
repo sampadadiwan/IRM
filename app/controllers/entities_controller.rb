@@ -18,11 +18,6 @@ class EntitiesController < ApplicationController
     render "index", locals: {vc_view: true}
   end
 
-  def investor_view
-      @investments = Investment.investments_for(current_user, @entity)
-      @documents = Document.documents_for(current_user, @entity)
-  end
-
   def search
     if current_user.has_role?(:super)
       @entities = Entity.search(params[:query], :star => true)
@@ -30,7 +25,7 @@ class EntitiesController < ApplicationController
       @entities = Entity.search(params[:query], :star => false)
     end
 
-    render "index"
+    render "index", locals: {vc_view: true}
   end
 
 

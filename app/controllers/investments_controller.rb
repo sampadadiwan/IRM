@@ -30,7 +30,10 @@ class InvestmentsController < ApplicationController
     if current_user.has_role?(:super)
       @investments = Investment.search(params[:query], :star => true)
     else
-      @investments = Investment.search(params[:query], :star => false, with: {:investee_entity_id => current_user.entity_id})
+      # WE want to find investments that have the current_users entity as either and investor or investee
+      investor_or_investee = "*, IF(investor_entity_id = #{current_user.entity_id} OR investee_entity_id = #{current_user.entity_id}, 1, 0) AS inv"
+      @investments = Investment.search(params[:query], :star => false, 
+        :select => investor_or_investee, :with => {'inv' => 1}, :sql => {:include => [:investor, :investee_entity]})
     end
 
     render "index"

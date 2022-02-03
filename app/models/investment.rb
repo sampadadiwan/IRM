@@ -29,9 +29,8 @@ class Investment < ApplicationRecord
         entity && entity.instrument_types.present? ? entity.instrument_types.split(",").map(&:strip) : INSTRUMENT_TYPES 
     end
 
-
-    def investment_type_sq
-        self.investment_type.delete(' ')
+    def investor_entity_id
+        self.investor.investor_entity_id
     end
 
     def self.investments_for(current_user, entity)
@@ -40,6 +39,9 @@ class Investment < ApplicationRecord
         
         # Is this user from an investor
         investor = Investor.for(current_user, entity).first
+        if !investor
+            return investments
+        end
 
         # Get the investor access for this user and this entity
         access_right = AccessRight.investments.user_or_investor_access(current_user, investor).first

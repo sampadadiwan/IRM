@@ -58,6 +58,7 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
   ThinkingSphinx::Index.define :investment, :with => :real_time do
     # fields
     indexes investor.investor_name, :sortable => true
+    indexes investor.investee_entity.name, :sortable => true
     indexes investment_type, :sortable => true
     indexes investment_instrument
     indexes category
@@ -66,6 +67,7 @@ ThinkingSphinx::Index.define :entity, :with => :real_time do
     # attributes
     has created_at, :type => :timestamp
     has investee_entity_id, :type => :integer
+    has investor_entity_id, :type => :integer
     has quantity, :type => :integer
     has initial_value, :type => :bigint
     
