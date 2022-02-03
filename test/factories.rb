@@ -3,22 +3,6 @@ FactoryBot.define do
     
   end
 
-  factory :access_right do
-    owner { nil }
-    access_to { "MyString" }
-    access_to_investor_id { 1 }
-    access_type { "MyString" }
-    metadata { "MyString" }
-  end
-
-  factory :deal_doc do
-    name { "MyString" }
-    deal { nil }
-    deal_investor { nil }
-    deal_activity { nil }
-    user { nil }
-  end
-
   factory :deal_message do
     
     deal_investor { DealInvestor.all.shuffle.first }
@@ -70,12 +54,6 @@ FactoryBot.define do
     granted_by { User.first }
   end
 
-  factory :doc_access do
-    document_id { 1 }
-    visiblity_type { "MyString" }
-    to { "MyString" }
-  end
-
   factory :investor do
     investor_entity_id { Entity.vcs.shuffle.first.id }
     investee_entity_id { Entity.startups.shuffle.first.id }
@@ -95,14 +73,15 @@ FactoryBot.define do
 
   
   factory :user do
+    
+    entity {Entity.all.shuffle.first}
     first_name { Faker::Name.first_name }
     last_name  { Faker::Name.last_name }
-    email { Faker::Internet.email }
-    password { email }
+    email { first_name + "-#{entity.id}@" + entity.name.parameterize + ".com" }
+    password { "password" }
     phone { Faker::PhoneNumber.cell_phone }
-    role { User::ROLES[rand(User::ROLES.length)] }
     confirmed_at {Time.now}
-    entity {Entity.all.shuffle.first}
+    
   end
 
   factory :entity do

@@ -44,7 +44,7 @@ class User < ApplicationRecord
 
   def setup_defaults
     self.add_role :employee
-    self.add_role :investor if self.entity && self.entity.entity_type == "VC" || InvestorAccess.user_access(self).first.present?    
+    self.add_role :investor if self.entity && self.entity.entity_type == "VC" || AccessRight.user_access(self).first.present?    
     self.add_role :startup if self.entity.entity_type == "Startup" if self.entity
   end
 

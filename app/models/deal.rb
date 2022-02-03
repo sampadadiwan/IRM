@@ -49,10 +49,12 @@ class Deal < ApplicationRecord
     deal_access = Deal.joins(:entity=>:deal_investors).
       where("deal_investors.investor_entity_id=?", user.entity_id).
       joins(:access_rights).
-      where("(access_rights.access_to_investor_id = deal_investors.investor_entity_id 
-        AND (access_rights.access_to_email is null OR access_rights.access_to_email = ''))
-        OR (access_rights.access_to_investor_id = ? 
-          AND access_rights.access_to_email = ?)", user.entity_id, user.email)
+      where("(access_rights.access_to_email = ?) OR
+        (
+          ( access_rights.access_to_email is null OR access_rights.access_to_email = '')
+          AND access_rights.access_to_investor_id = deal_investors.investor_id            
+        )
+        ", user.email)
       merge(AccessRight.for_access_type("Deal"))
       
 

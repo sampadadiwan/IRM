@@ -8,11 +8,9 @@ namespace :irm do
     task :emptyDB => :environment do
         PaperTrail::Version.delete_all
         AccessRight.delete_all
-        InvestorAccess.delete_all
-        DocAccess.delete_all
-        InvestorAccess.delete_all
         DealMessage.delete_all
         DealActivity.delete_all
+        DealDoc.delete_all
         DealInvestor.delete_all
         Deal.delete_all
         Document.delete_all
@@ -28,11 +26,23 @@ namespace :irm do
     task :generateFakeEntities => :environment do
 
         begin
-            (1..10).each do | i |
-                e = FactoryBot.create(:entity)
-                puts "Entity #{e.id}"
-                (1..2).each do 
-                    FactoryBot.create(:user, entity: e)
+            startup_names = ["Urban Company", "PayTm", "Apna", "RazorPay", "Delhivery"]
+            (0..4).each do | i |
+                e = FactoryBot.create(:entity, entity_type: "Startup", name: startup_names[i])
+                puts "Entity #{e.name}"
+                (1..2).each do |j|
+                    user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
+                    puts user.to_json
+                end
+            end
+
+            vc_names = ["Sequoia Capital", "Accel", "Blume Ventures", "Tiger Global Management", "Kalaari Capital"]
+            (0..4).each do | i |
+                e = FactoryBot.create(:entity, entity_type: "VC", name: vc_names[i])
+                puts "Entity #{e.name}"
+                (1..2).each do |j|
+                    user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
+                    puts user.to_json
                 end
             end
         rescue Exception => exception
@@ -48,13 +58,22 @@ namespace :irm do
         begin
             Entity.startups.each do | e |
                 Entity.vcs.each do |vc| 
-                    i = FactoryBot.create(:investor, investee_entity: e, investor_entity: vc)
-                    puts "Investor #{i.id}"
+                    inv = FactoryBot.create(:investor, investee_entity: e, investor_entity: vc)
+                    puts "Investor #{inv.id}"
+
+                    i = FactoryBot.create(:investment, investee_entity: e, investor: inv)
+                    puts "Investment #{i.id}"
+                end
+                
+                
+                (1..5).each do
+                    
                 end
 
-                (1..5).each do
-                    i = FactoryBot.create(:investment, investee_entity: e)
-                    puts "Investment #{i.id}"
+                (1..5).each do 
+                    inv = e.investors.shuffle.first
+                    AccessRight.create(owner: e, access_type: "Investment", metadata: "All", 
+                        entity: e, access_to_category: Investor::INVESTOR_CATEGORIES[rand(Investor::INVESTOR_CATEGORIES.length)])
                 end
             end
         rescue Exception => exception
@@ -78,6 +97,9 @@ namespace :irm do
                         (1..rand(10)).each do
                             msg = FactoryBot.create(:deal_message, deal_investor: di)
                         end
+
+                        AccessRight.create(owner: deal, access_type: "Deal", entity: e, investor: inv)
+
                     end 
                     
                     if rand(2) > 0 
