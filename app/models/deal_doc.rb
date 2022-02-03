@@ -35,6 +35,9 @@ class DealDoc < ApplicationRecord
 
 
 
+  scope :only_deal_docs, -> {where("deal_docs.deal_investor_id is null")}
+  scope :deal_investor_docs, ->(deal_investor) {where("deal_docs.deal_investor_id=?", deal_investor.id)}
+  scope :deal_activity_docs, ->(deal_activity) {where("deal_docs.deal_activity_id=?", deal_activity.id)}
 
   before_save :update_deal_investor
   def update_deal_investor

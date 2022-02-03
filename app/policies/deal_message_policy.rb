@@ -15,11 +15,21 @@ class DealMessagePolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
+    if user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
+    elsif record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
+      true
+    else
+      false
+    end
   end
 
   def create?
-    user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
+    if user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
+    elsif record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
+      true
+    else
+      false
+    end
   end
 
   def new?

@@ -7,7 +7,7 @@
           Name
         </td>
         <td>
-          <%= link_to @deal_doc.name, @deal_doc.file.url %>
+          <%= link_to @deal_doc.name, @deal_doc.file.expiring_url() %>
         </td>    
       </tr>
           <tr>

@@ -1,5 +1,6 @@
 class DealsController < ApplicationController
   before_action :set_deal, :only => ["show", "update", "destroy", "edit", "start_deal"] 
+  after_action :verify_authorized, except: [:index, :search, :investor_deals]
 
   # GET /deals or /deals.json
   def index
@@ -18,6 +19,12 @@ class DealsController < ApplicationController
     @entity = current_user.entity
     @deals = Deal.search(params[:query], :star => false, with: {:entity_id => current_user.entity_id})
 
+    render "index"
+  end
+
+  def investor_deals
+    @deals = Deal.for_investor(current_user)
+    @deals = @deals.page params[:page]
     render "index"
   end
 

@@ -1,0 +1,18 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800"><%= title.blank? ? "Deal Docs" : title %></h1>
+</div>
+
+<table id="deal_docs" class="table table-bordered dataTable">
+  <tr>
+    <th>
+      <strong>Name</strong>
+    </th>
+    <th>
+      <strong>Deal</strong>
+    </th>
+  </tr>
+  <% deal_docs.each do |deal_doc| %>
+    <%= render deal_doc %>
+  <% end %>
+</table>
+

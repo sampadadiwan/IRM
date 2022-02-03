@@ -1,5 +1,5 @@
 class DealDocsController < ApplicationController
-  load_and_authorize_resource :except => ["search"]
+  before_action :set_deal_doc, :only => ["show", "update", "destroy", "edit", "update_sequence", "toggle_completed"] 
 
   # GET /deal_docs or /deal_docs.json
   def index
@@ -21,6 +21,7 @@ class DealDocsController < ApplicationController
   # GET /deal_docs/new
   def new
     @deal_doc = DealDoc.new(deal_doc_params)
+    authorize @deal_doc
   end
 
   # GET /deal_docs/1/edit
@@ -31,6 +32,7 @@ class DealDocsController < ApplicationController
   def create
     @deal_doc = DealDoc.new(deal_doc_params)
     @deal_doc.user_id = current_user.id
+    authorize @deal_doc
 
     respond_to do |format|
       if @deal_doc.save
@@ -70,6 +72,7 @@ class DealDocsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_deal_doc
       @deal_doc = DealDoc.find(params[:id])
+      authorize @deal_doc
     end
 
     # Only allow a list of trusted parameters through.

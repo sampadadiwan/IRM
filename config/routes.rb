@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :deals do
     get 'search', on: :collection
     post 'start_deal', on: :member
+    get 'investor_deals', on: :collection
   end
   
   namespace :admin do

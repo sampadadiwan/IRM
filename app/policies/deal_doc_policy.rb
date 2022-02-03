@@ -1,10 +1,10 @@
-class DealActivityPolicy < ApplicationPolicy
+class DealDocPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.has_role?(:super)
         scope.all
       else
-        scope.where("entity_id=?", user.entity_id)
+        scope.where("deal_investors.entity_id": user.entity_id).joins(:deal_investor)
       end
     end
   end
@@ -15,7 +15,7 @@ class DealActivityPolicy < ApplicationPolicy
   end
 
   def show?
-    if user.has_role?(:super) || (user.entity_id == record.entity_id)
+    if user.has_role?(:super) || (user.entity_id == record.deal.entity_id)
       true
     elsif record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
       true
@@ -23,9 +23,15 @@ class DealActivityPolicy < ApplicationPolicy
       false
     end
   end
-  
+
   def create?
-    user.has_role?(:super) || (user.entity_id == record.entity_id)
+    if user.has_role?(:super) || (user.entity_id == record.deal.entity_id)
+      true
+    elsif record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
+      true
+    else
+      false
+    end
   end
 
   def new?

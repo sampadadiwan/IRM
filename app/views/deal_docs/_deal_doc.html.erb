@@ -1,21 +1,9 @@
 
 <tr id="<%= dom_id deal_doc %>">
 <td>
-    <%= deal_doc.name %>
+    <%= link_to deal_doc.name, deal_doc.file.expiring_url() %>
 </td>  
 <td>
     <%= link_to deal_doc.deal_name, deal_doc.deal %>
 </td>  
-<td>
-    <%= link_to deal_doc.investor_name, deal_doc.deal_investor if deal_doc.deal_investor_id %>
-</td>  
-<td>
-    <%= link_to deal_doc.deal_activity_title, deal_doc.deal_activity if deal_doc.deal_activity_id %>
-</td>  
-<td>
-    <%= deal_doc.user.name %>
-</td>  
-<td>
-  <%= link_to "Show", deal_doc , {class: "btn btn-primary"}%>
-</td>
 </tr>

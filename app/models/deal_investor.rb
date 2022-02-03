@@ -17,6 +17,8 @@ class DealInvestor < ApplicationRecord
 
   STATUS = ["Active", "Pending", "Declined"]
 
+  scope :for, -> (user) { where("investors.investor_entity_id=?", user.entity_id).joins(:investor) }
+
   before_save :set_investor_entity_id
   def set_investor_entity_id
     self.investor_entity_id = self.investor.investor_entity_id

@@ -19,7 +19,8 @@ class DocumentPolicy < ApplicationPolicy
       true
     elsif (user.entity_id == record.entity_id)
       true
-    elsif Document.for_investor(user, record.entity).where("documents.id=?", record.id).first.present?
+    elsif Document.for_investor(user, record.entity).
+          where("documents.id=?", record.id).first.present?
       true 
     else
       false

@@ -3,35 +3,47 @@
 
 <%= render "/deals/show", deal: @deal %>
 
-<div>
-  <%= link_to "Edit", edit_deal_path(@deal), {class: "btn btn-primary"} %> |
-  <% if !@deal.start_date.present?  %>
-    <%= button_to "Start Deal", start_deal_deal_path(@deal), 
-      {"data-turbo": "false", class: "btn btn-primary", form_class: "deleteButton"} %> |
-  <% end %>
-  <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
-  <%= link_to "Activity Template", deal_activities_path(deal_id: @deal.id, template: true) , {class: "btn btn-success"}%> |
-  <%= button_to "Delete", @deal, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+<% if current_user.entity_id == @deal.entity_id %>
+
+  <div>
+    <%= link_to "Edit", edit_deal_path(@deal), {class: "btn btn-primary"} %> |
+    <% if !@deal.start_date.present?  %>
+      <%= button_to "Start Deal", start_deal_deal_path(@deal), 
+        {"data-turbo": "false", class: "btn btn-primary", form_class: "deleteButton"} %> |
+    <% end %>
+    <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
+    <%= link_to "Activity Template", deal_activities_path(deal_id: @deal.id, template: true) , {class: "btn btn-success"}%> |
+    <%= button_to "Delete", @deal, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
 
 
-   <%= turbo_frame_tag "new_access_right" do %>
-      
-      | <%= link_to "Grant Access", 
-      new_access_right_path("access_right[owner_id]": @deal.id,
-                            "access_right[access_type]": "Deal",
-                            "access_right[owner_type]": "Deal",
-                            "access_right[entity_id]": @deal.entity_id), 
-            {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
-            "title": "Who can access this deal"} %> 
+    <%= turbo_frame_tag "new_access_right" do %>
+        
+        | <%= link_to "Grant Access", 
+        new_access_right_path("access_right[owner_id]": @deal.id,
+                              "access_right[access_type]": "Deal",
+                              "access_right[owner_type]": "Deal",
+                              "access_right[entity_id]": @deal.entity_id), 
+              {  method: :get, class: "btn btn-primary", "data-toggle": "tooltip", 
+              "title": "Who can access this deal"} %> 
+    <% end %>
+        
+  </div>
 
+  <div id="access_rights" class="associated_entity">
+    <%= render "/access_rights/index", access_rights: @deal.access_rights %>
+  </div>
 
-   <% end %>
-      
-</div>
-
-<div id="access_rights" class="associated_entity">
-  <%= render "/access_rights/index", access_rights: @deal.access_rights %>
-</div>
-
-<div data-controller="access"></div>
-
+  <div data-controller="access"></div>
+<% else %>
+  <% deal_investor = @deal.deal_investors.for(current_user).first %>
+  <div id="deal_activities" class="associated_entity">
+    <%= render "/deal_activities/index", deal_investor:deal_investor, deal_activities: deal_investor.deal_activities %>
+  </div>
+  <div id="deal_docs" class="associated_entity">
+    <%= render "/deal_docs/index", deal_investor: deal_investor, deal_docs: @deal.deal_docs.only_deal_docs, title: nil %>
+    <%= render "/deal_docs/index", deal_investor: deal_investor, deal_docs: @deal.deal_docs.deal_investor_docs(deal_investor), title: "Investor Docs" %>
+  </div>
+  <div id="deal_messages" class="associated_entity">
+    <%= render "/deal_messages/conversation", deal_investor: deal_investor, deal_messages: deal_investor.deal_messages %>
+  </div>
+<% end %>
