@@ -40,7 +40,7 @@
     <%= render "/deal_activities/index", deal_investor:deal_investor, deal_activities: deal_investor.deal_activities %>
   </div>
   <div id="deal_docs" class="associated_entity">
-    <%= render "/deal_docs/index", deal_investor: deal_investor, deal_docs: @deal.deal_docs.only_deal_docs, title: nil %>
+    <%= render "/deal_docs/index", deal_investor: nil, deal_docs: @deal.deal_docs.only_deal_docs, title: nil %>
     <%= render "/deal_docs/index", deal_investor: deal_investor, deal_docs: @deal.deal_docs.deal_investor_docs(deal_investor), title: "Investor Docs" %>
   </div>
   <div id="deal_messages" class="associated_entity">
