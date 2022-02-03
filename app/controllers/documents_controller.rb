@@ -1,5 +1,6 @@
 class DocumentsController < ApplicationController
   before_action :set_document, :only => ["show", "update", "destroy", "edit"] 
+  after_action :verify_authorized, except: [:index, :search, :investor_documents]
 
   # GET /documents or /documents.json
   def index
@@ -16,24 +17,12 @@ class DocumentsController < ApplicationController
 
   def investor_documents
 
-    if params[:entity_id].present?
-     
+    if params[:entity_id].present?     
       @entity = Entity.find(params[:entity_id])
-    
-      if current_user.has_role?(:all_investment_access, @entity)
-        # Can view all
-        @documents = @entity.documents
-      elsif current_user.has_role?(:self_investment_access, @entity)
-        # Can view only his documents
-        @documents = @entity.documents.where("investors.investor_entity_id=?", current_user.entity_id)
-      else
-        # Can view none
-        @documents = Investment.none
-      end      
-    
+      @documents = Document.for_investor(current_user, @entity)
     end
     
-    @documents = @documents.order(initial_value: :desc).joins(:investor, :investee_entity).page params[:page]
+    @documents = @documents.order(id: :desc).page params[:page]
 
     render "index"
   end

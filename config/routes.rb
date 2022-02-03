@@ -45,6 +45,7 @@ Rails.application.routes.draw do
 
   resources :documents do
     get 'search', on: :collection
+    get 'investor_documents', on: :collection
   end
 
   resources :interests

@@ -15,7 +15,26 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || (user.entity_id == record.entity_id)
+    if user.has_role?(:super) 
+      true
+    elsif (user.entity_id == record.entity_id)
+      true
+    elsif  Document.where("documents.id=?", record.id).merge(AccessRight.for_access_type("Document")).
+            merge(AccessRight.user_access(user)).
+            joins(:access_rights).first.present? 
+
+            true
+    elsif  Document.where("documents.id=?", record.id).
+            joins(:access_rights).
+            merge(AccessRight.for_access_type("Document")).
+            joins(:entity=>:investors).
+            where("investors.investor_entity_id=?", user.entity_id).
+            where("investors.category=access_rights.access_to_category").first.present?
+          
+            true
+    else
+      false
+    end
   end
 
   def create?

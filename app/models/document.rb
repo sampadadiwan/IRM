@@ -44,20 +44,28 @@ class Document < ApplicationRecord
 
     end
 
-    def self.for_investor(user)
-        category_access = Document.joins(:entity=>:investors).
-          where("investors.investor_entity_id": user.entity_id).
-          where("investors.category=access_rights.access_to_category").
+    def self.for_investor(user, entity)
+        category_access = Document.
           joins(:access_rights).
-          merge(AccessRight.for_access_type("Document"))
+          merge(AccessRight.for_access_type("Document")).
+          joins(:entity=>:investors).
+          where("entities.id=?", entity.id).
+          where("investors.investor_entity_id=?", user.entity_id).
+          where("investors.category=access_rights.access_to_category")
           
     
-        direct_access = Document.joins(:entity=>:investors).
+        direct_access = Document.
           merge(AccessRight.for_access_type("Document")).
           merge(AccessRight.user_access(user)).
-          joins(:access_rights) 
-    
-        direct_access.or(category_access).distinct
+          joins(:access_rights). 
+          joins(:entity=>:investors). 
+          where("entities.id=?", entity.id)
+          
+
+        # direct_access
+        # category_access
+        direct_access.or(category_access).distinct        
+        
     end
     
 end
