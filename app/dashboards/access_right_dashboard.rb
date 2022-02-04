@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class InvestorDashboard < Administrate::BaseDashboard
+class AccessRightDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,14 +8,17 @@ class InvestorDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    investor_entity: Field::BelongsTo,
-    investee_entity: Field::BelongsTo,
-    access_rights: Field::HasMany,
+    owner: Field::Polymorphic,
+    entity: Field::BelongsTo,
+    investor: Field::BelongsTo,
     id: Field::Number,
-    category: Field::String,
+    access_to_email: Field::String,
+    access_to_investor_id: Field::Number,
+    access_type: Field::String,
+    metadata: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    investor_name: Field::String,
+    access_to_category: Field::String,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -24,32 +27,40 @@ class InvestorDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    id
-    investor_entity
-    investee_entity
-    category
+    owner
+    entity
+    investor
+    access_to_email
+    access_to_category
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    investor_entity
-    investee_entity
-    access_rights
+    owner
+    entity
+    investor
     id
-    category
+    access_to_email    
+    access_to_category
+    access_type
+    metadata
     created_at
     updated_at
-    investor_name
+    
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    investor_entity
-    investee_entity
-    category
+    owner
+    entity
+    investor
+    access_to_email
+    access_to_category
+    access_type
+    metadata
   ].freeze
 
   # COLLECTION_FILTERS
@@ -64,10 +75,10 @@ class InvestorDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how investors are displayed
+  # Overwrite this method to customize how access rights are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(investor)
-    investor.investor_name
+  def display_resource(access_right)
+    "AccessRight ##{access_right.owner.name}"
   end
 end

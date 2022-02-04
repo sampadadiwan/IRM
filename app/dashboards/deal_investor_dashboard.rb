@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class InvestorDashboard < Administrate::BaseDashboard
+class DealInvestorDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,14 +8,19 @@ class InvestorDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    investor_entity: Field::BelongsTo,
-    investee_entity: Field::BelongsTo,
-    access_rights: Field::HasMany,
+    deal: Field::BelongsTo,
+    investor: Field::BelongsTo,
+    entity: Field::BelongsTo,
+    deal_activities: Field::HasMany,
+    deal_messages: Field::HasMany,
+    deal_docs: Field::HasMany,
     id: Field::Number,
-    category: Field::String,
+    status: Field::String,
+    primary_amount: Field::String.with_options(searchable: false),
+    secondary_investment: Field::String.with_options(searchable: false),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    investor_name: Field::String,
+    investor_entity_id: Field::Number,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -24,32 +29,41 @@ class InvestorDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    id
-    investor_entity
-    investee_entity
-    category
+    deal
+    investor
+    entity
+    status
+    primary_amount
+    secondary_investment
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    investor_entity
-    investee_entity
-    access_rights
+    deal
+    investor
+    entity
     id
-    category
+    status
+    primary_amount
+    secondary_investment
     created_at
     updated_at
-    investor_name
+    deal_activities
+    deal_messages
+    deal_docs
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    investor_entity
-    investee_entity
-    category
+    deal
+    investor
+    entity
+    status
+    primary_amount
+    secondary_investment
   ].freeze
 
   # COLLECTION_FILTERS
@@ -64,10 +78,10 @@ class InvestorDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how investors are displayed
+  # Overwrite this method to customize how deal investors are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(investor)
-    investor.investor_name
+  def display_resource(deal_investor)
+    deal_investor.investor_name
   end
 end

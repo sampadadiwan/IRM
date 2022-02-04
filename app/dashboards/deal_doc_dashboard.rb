@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class InvestorAccessDashboard < Administrate::BaseDashboard
+class DealDocDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,16 +8,19 @@ class InvestorAccessDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    investor: Field::BelongsTo,
-    entity: Field::BelongsTo,
-    investor_entity: Field::HasOne,
-    investee_entity: Field::HasOne,
+    versions: Field::HasMany,
+    deal: Field::BelongsTo,
+    deal_investor: Field::BelongsTo,
+    deal_activity: Field::BelongsTo,
+    user: Field::BelongsTo,
     id: Field::Number,
-    email: Field::String,
-    access_type: Field::String,
-    granted_by: Field::Number,
+    name: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    file_file_name: Field::String,
+    file_content_type: Field::String,
+    file_file_size: Field::Number,
+    file_updated_at: Field::DateTime,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -26,35 +29,44 @@ class InvestorAccessDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    id
-    investor
-    entity
-    access_type
-    email
+    versions
+    deal
+    deal_investor
+    deal_activity
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
+    versions
+    deal
+    deal_investor
+    deal_activity
+    user
     id
-    investor
-    entity
-    email
-    access_type
-    granted_by
+    name
     created_at
     updated_at
+    file_file_name
+    file_content_type
+    file_file_size
+    file_updated_at
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    investor
-    entity
-    email
-    access_type
-    granted_by
+    versions
+    deal
+    deal_investor
+    deal_activity
+    user
+    name
+    file_file_name
+    file_content_type
+    file_file_size
+    file_updated_at
   ].freeze
 
   # COLLECTION_FILTERS
@@ -69,10 +81,10 @@ class InvestorAccessDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how investor accesses are displayed
+  # Overwrite this method to customize how deal docs are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(investor_access)
-  #   "InvestorAccess ##{investor_access.id}"
+  # def display_resource(deal_doc)
+  #   "DealDoc ##{deal_doc.id}"
   # end
 end

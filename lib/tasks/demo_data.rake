@@ -45,6 +45,10 @@ namespace :irm do
                     puts user.to_json
                 end
             end
+
+            user = FactoryBot.create(:user, entity: nil, first_name: "Super", last_name: "Admin", email: "admin@altx.com")
+            user.add_role(:super)
+
         rescue Exception => exception
             puts exception.backtrace.join("\n")
             raise exception

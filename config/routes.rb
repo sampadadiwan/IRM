@@ -23,11 +23,14 @@ Rails.application.routes.draw do
       resources :users
       resources :notes
       resources :entities
-      resources :investor_accesses
       resources :documents
-      resources :doc_accesses
       resources :investments
-
+      resources :access_rights
+      resources :deals
+      resources :deal_investors
+      resources :deal_activities
+      resources :deal_docs
+      resources :deal_messages
       root to: "investors#index"
     end
   

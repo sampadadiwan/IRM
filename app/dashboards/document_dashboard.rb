@@ -8,9 +8,9 @@ class DocumentDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    owner: Field::Polymorphic,
+    entity: Field::Polymorphic,
     file: Field::ActiveStorage.with_options(index_display_preview: false, show_display_preview: false),
-    doc_accesses: Field::HasMany,
+    access_rights: Field::HasMany,
     rich_text_text: RichTextAreaField,
     id: Field::Number,
     name: Field::String,
@@ -28,7 +28,7 @@ class DocumentDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     name
-    owner
+    entity
     created_at
   ].freeze
 
@@ -36,14 +36,14 @@ class DocumentDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
     id
-    owner
+    entity
     rich_text_text
     id
     name
     created_at
     updated_at
     file
-    doc_accesses
+    access_rights
     
   ].freeze
 
