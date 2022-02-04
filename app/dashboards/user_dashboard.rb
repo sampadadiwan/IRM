@@ -8,7 +8,6 @@ class UserDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    documents: Field::HasMany,
     entity: Field::BelongsTo,
     id: Field::Number,
     first_name: Field::String,
@@ -40,7 +39,6 @@ class UserDashboard < Administrate::BaseDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    documents
     entity
     id
     first_name

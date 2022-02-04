@@ -9,9 +9,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
-  # Typically only for startup entities       
-  has_many :documents, as: :owner, dependent: :destroy
-
   # Only if this user is an employee of the entity
   belongs_to :entity, optional: true
 

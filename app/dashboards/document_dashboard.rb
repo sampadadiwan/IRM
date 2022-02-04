@@ -9,7 +9,6 @@ class DocumentDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     entity: Field::Polymorphic,
-    file: Field::ActiveStorage.with_options(index_display_preview: false, show_display_preview: false),
     access_rights: Field::HasMany,
     rich_text_text: RichTextAreaField,
     id: Field::Number,
@@ -42,7 +41,6 @@ class DocumentDashboard < Administrate::BaseDashboard
     name
     created_at
     updated_at
-    file
     access_rights
     
   ].freeze
@@ -53,7 +51,6 @@ class DocumentDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     name
     rich_text_text
-    file
   ].freeze
 
   # COLLECTION_FILTERS
