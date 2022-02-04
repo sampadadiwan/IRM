@@ -60,7 +60,7 @@
     </div>
     <div id="chat-tab" class="tab-pane fade">
       <div id="deal_messages" class="associated_entity">
-        <%= render "/deal_messages/conversation", deal_investor: deal_investor, deal_messages: deal_investor.deal_messages %>
+        <%= render "deal_messages/chats_and_tasks", deal_investor: deal_investor, deal_messages: deal_investor.deal_messages %>
       </div>  
     </div>
     <div id="tranche-tab" class="tab-pane fade">

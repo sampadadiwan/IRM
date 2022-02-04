@@ -18,6 +18,14 @@
 
     <div class="message  <%= msg_class %>">
         <%= msg.content %>
+    
+        <div class="dropdown">
+            <span type="button" class="float-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ...
+            </span>
+            <div class="dropdown-menu">
+                <%= button_to "Add/Remove Task", mark_as_task_deal_message_path(msg), class: "dropdown-item" %>
+            </div>
+        </div>    
     </div>
-    <div></div>
 </li>

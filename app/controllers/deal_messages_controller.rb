@@ -1,5 +1,5 @@
 class DealMessagesController < ApplicationController
-  before_action :set_deal_activity, :only => ["show", "update", "destroy", "edit"] 
+  before_action :set_deal_message, :only => ["show", "update", "destroy", "edit", "mark_as_task"] 
 
   # GET /deal_messages or /deal_messages.json
   def index
@@ -51,6 +51,25 @@ class DealMessagesController < ApplicationController
     end
   end
 
+  def mark_as_task
+    authorize @deal_message
+    @deal_message.is_task = !@deal_message.is_task
+
+    respond_to do |format|
+      if @deal_message.save    
+        format.turbo_stream do
+          render turbo_stream: [
+            if @deal_message.is_task
+              turbo_stream.append('deal_message_tasks', partial: "deal_messages/deal_message", 
+                  locals: {deal_message: @deal_message})
+            else              
+              turbo_stream.remove(@deal_message)                            
+            end
+          ]
+        end
+      end
+    end
+  end
   # PATCH/PUT /deal_messages/1 or /deal_messages/1.json
   def update
     authorize @deal_message

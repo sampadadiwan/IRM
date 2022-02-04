@@ -3,7 +3,9 @@ Rails.application.routes.draw do
     get 'search', on: :collection
   end
   resources :deal_docs
-  resources :deal_messages
+  resources :deal_messages do
+    post 'mark_as_task', on: :member
+  end
   resources :deal_activities do
     get 'search', on: :collection
     post 'update_sequence', on: :member

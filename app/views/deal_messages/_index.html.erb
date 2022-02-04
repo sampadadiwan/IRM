@@ -1,0 +1,9 @@
+<table id="deal_message_tasks" class="table table-bordered dataTable">
+    <tr>
+        <th>From</th>
+        <th>Message</th>
+    </tr>
+    <% deal_messages.each do |msg| %>          
+        <%= render "deal_messages/deal_message", deal_message: msg%>
+    <% end %>
+</table>
