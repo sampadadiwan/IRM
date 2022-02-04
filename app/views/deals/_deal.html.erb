@@ -9,6 +9,13 @@
     <% else %>
         <%= link_to deal.name, deal_path(deal) %>
     <% end %>
+    <div>
+        <% if deal.start_date %>
+            <span class="badge bg-success">Started: <%= l deal.start_date %></span>
+        <% else %>
+            <span class="badge bg-warning">Not Started</span>
+        <% end %>
+    </div>
 </td>  
 <td>
     <%= deal.amount %>

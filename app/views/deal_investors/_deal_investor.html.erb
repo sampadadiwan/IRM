@@ -1,12 +1,12 @@
 <tr id="<%= dom_id deal_investor %>">
 <td>
-    <%= link_to deal_investor.deal_name, deal_investor.deal %>
+    <%= link_to deal_investor.deal_name, deal_investor.deal %>    
 </td>  
 <td>
     <%= link_to deal_investor.investor_name, deal_investor %>
-</td>  
-<td>
-    <%= deal_investor.status %>
+    <div>
+        <span class="badge <%= status_badge(deal_investor) %>"><%= deal_investor.status %></span>
+    </div>
 </td>  
 <td>
     <%= deal_investor.primary_amount %>

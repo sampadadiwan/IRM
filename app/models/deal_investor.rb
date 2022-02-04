@@ -16,6 +16,7 @@ class DealInvestor < ApplicationRecord
   delegate :name, to: :deal, prefix: :deal
 
   STATUS = ["Active", "Pending", "Declined"]
+  
 
   scope :for, -> (user) { where("investors.investor_entity_id=?", user.entity_id).joins(:investor) }
 
