@@ -53,17 +53,6 @@ set :puma_init_active_record, false  # Change to true if using ActiveRecord
 
 namespace :deploy do
 
-  desc "Uploads .env remote servers."
-  task :upload_env do
-    on roles(:app) do
-      rails_env = fetch(:rails_env)
-      puts "Uploading .env files to #{release_path} #{rails_env}"
-      upload!("/data/work/IRM/.env", "#{release_path}", recursive: false)
-      upload!("/data/work/IRM/.env.local", "#{release_path}", recursive: false)
-      upload!("/data/work/IRM/.env.staging", "#{release_path}", recursive: false) if rails_env == :staging
-      upload!("/data/work/IRM/.env.production", "#{release_path}", recursive: false) if rails_env == :production
-    end
-  end
 
   desc "Uploads .env remote servers."
   task :upload_env do
