@@ -11,17 +11,17 @@
     <% end %>
     <div>
         <% if deal.start_date %>
-            <span class="badge bg-success">Started: <%= l deal.start_date %></span>
+            <span class="badge bg-success">Start Date: <%= l deal.start_date %></span>
         <% else %>
             <span class="badge bg-warning">Not Started</span>
         <% end %>
     </div>
 </td>  
 <td>
-    <%= deal.amount %>
+    <%= number_to_currency deal.amount %>
 </td>  
-<td>
-    <%= deal.status %>
+<td>    
+    <span class="badge bg-info"><%= deal.status %></span>
 </td>  
 <% if current_user.entity_id == deal.entity_id %>
 
