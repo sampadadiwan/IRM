@@ -66,7 +66,7 @@ namespace :deploy do
     end
   end
 
-  # before "deploy:assets:precompile", :upload_env
+  before "deploy:assets:precompile", :upload_env
 
   desc 'Initial Deploy'
   task :initial do
