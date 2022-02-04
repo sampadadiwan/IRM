@@ -13,6 +13,7 @@
 
   <div class="form-group">
     <%= form.text_field :deal_id, class: "form-control", hidden: true  %>
+    <%= form.text_field :back_to, class: "form-control", hidden: true, name: "back_to", value: params[:back_to]  %>
   </div>
   
   <% if deal_activity.deal_investor_id.present? %>

@@ -9,6 +9,7 @@
                 <%= link_to "View Docs", deal_docs_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
                 <%= link_to "View Msgs", deal_messages_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
                 <%= link_to "View Activities", deal_activities_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
+                <%= link_to "View Investor", deal_investor_path(id: deal_investor.id), class: "dropdown-item" %>
             </div>
             
         </div>
@@ -22,7 +23,7 @@
     <% deal_investor.deal_activities.each do |activity| %>
         <td>
             
-            <div class="dropdown" data-toggle="tooltip" data-placement="top" title="By: <%= l activity.by_date %>">
+            <div class="dropdown" data-toggle="tooltip" data-placement="right" title="By: <%= l activity.by_date %>">
                 <span class="btn btn-sm dropdown-toggle <%=activity_color(activity)%>" 
                       id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <%= activity.summary %>
@@ -30,7 +31,9 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <%= button_to "Toogle Done", toggle_completed_deal_activity_path(activity), class: "dropdown-item" %>
                     <%= link_to "Show", deal_activity_path(activity), class: "dropdown-item" %>
-                    <%= link_to "Edit", edit_deal_activity_path(activity), class: "dropdown-item" %>
+                    <%= link_to "Edit", edit_deal_activity_path(activity, 
+                                    back_to: deal_path(id: deal_investor.deal_id, grid_view: true)), 
+                                    class: "dropdown-item" %>
                 </div>
             </div>
         </td>

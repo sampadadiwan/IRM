@@ -57,7 +57,10 @@ class DealActivitiesController < ApplicationController
 
     respond_to do |format|
       if @deal_activity.save
-        format.html { redirect_to deal_activity_url(@deal_activity), notice: "Deal activity was successfully created." }
+        format.html {
+          redirect_url = params[:back_to].present? ? params[:back_to] : deal_activity_url(@deal_activity)
+          redirect_to redirect_url, notice: "Deal activity was successfully created." 
+        }
         format.json { render :show, status: :created, location: @deal_activity }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -72,7 +75,10 @@ class DealActivitiesController < ApplicationController
 
     respond_to do |format|
       if @deal_activity.update(deal_activity_params)
-        format.html { redirect_to deal_activity_url(@deal_activity), notice: "Deal activity was successfully updated." }
+        format.html { 
+          redirect_url = params[:back_to].present? ? params[:back_to] : deal_activity_url(@deal_activity)
+          redirect_to redirect_url, notice: "Deal activity was successfully updated." 
+        }
         format.json { render :show, status: :ok, location: @deal_activity }
       else
         format.html { render :edit, status: :unprocessable_entity }

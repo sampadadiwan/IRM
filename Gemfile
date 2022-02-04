@@ -55,7 +55,7 @@ gem "administrate"
 gem 'administrate-field-active_storage'
 
 # For custom buckets in S3 per client
-gem "kt-paperclip", git: "https://github.com/kreeti/kt-paperclip.git"
+gem "kt-paperclip", git: "https://github.com/thimmaiah/kt-paperclip.git"
 
 gem "acts_as_list"
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
