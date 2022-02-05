@@ -7,6 +7,7 @@ class DealMessage < ApplicationRecord
       user.id, user.entity_id, user.entity_id).joins(:deal_investor=>[:investor]).includes(:deal_investor=>:investor) }
 
   scope :tasks, -> {where(is_task: true)}
+  scope :tasks_not_done, -> {where(is_task: true, task_done: false)}
   
   after_create_commit { broadcast_append_to "deal_investor_#{self.deal_investor_id}", target: "deal_investor_#{self.deal_investor_id}",  
                         partial: "deal_messages/conversation_msg", locals: {msg: self} }

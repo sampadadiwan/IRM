@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :deal_docs
   resources :deal_messages do
     post 'mark_as_task', on: :member
+    patch 'task_done', on: :member
   end
   resources :deal_activities do
     get 'search', on: :collection

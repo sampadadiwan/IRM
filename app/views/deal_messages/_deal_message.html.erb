@@ -5,5 +5,11 @@
   </td>  
   <td>
       <%= deal_message.content %>
+  </td>
+  <td>
+      <% checked = deal_message.task_done == 1 ? "checked" : ""%>
+      <%= form_with(model: deal_message, url: task_done_deal_message_path(deal_message)) do |form| %>
+          <%= form.check_box :task_done, class: "form-control task-done-checkbox", onchange:"this.form.requestSubmit();"  %>
+      <% end %>
   </td>  
 </tr>

@@ -27,6 +27,10 @@ class DealMessagePolicy < ApplicationPolicy
     create?
   end
 
+  def task_done?
+    create?
+  end
+
   def create?
     if user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
       true

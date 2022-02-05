@@ -1,5 +1,5 @@
 class DealMessagesController < ApplicationController
-  before_action :set_deal_message, :only => ["show", "update", "destroy", "edit", "mark_as_task"] 
+  before_action :set_deal_message, :only => ["show", "update", "destroy", "edit", "mark_as_task", "task_done"] 
 
   # GET /deal_messages or /deal_messages.json
   def index
@@ -70,6 +70,25 @@ class DealMessagesController < ApplicationController
       end
     end
   end
+
+  def task_done
+    authorize @deal_message
+    @deal_message.task_done = !@deal_message.task_done
+
+    respond_to do |format|
+      if @deal_message.save    
+        format.turbo_stream do
+          render turbo_stream: [
+            if @deal_message.task_done
+              turbo_stream.remove(@deal_message)                                        
+            else
+              turbo_stream.replace(@deal_message)                                        
+            end
+          ]
+        end
+      end
+    end
+  end
   # PATCH/PUT /deal_messages/1 or /deal_messages/1.json
   def update
     authorize @deal_message
@@ -104,6 +123,6 @@ class DealMessagesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def deal_message_params
-      params.require(:deal_message).permit(:user_id, :content, :deal_investor_id)
+      params.require(:deal_message).permit(:user_id, :content, :deal_investor_id, :task_done)
     end
 end
