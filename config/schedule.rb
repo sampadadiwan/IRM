@@ -19,6 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
+set :path, "/home/ubuntu/IRM/current"
 job_type :bundle, 'cd :path && :environment_variable=:environment bundle exec :task'
 
 every 1.day, at: '4:30 am' do

@@ -15,13 +15,13 @@
         <%= link_to deal_activity.investor_name, deal_activity.deal_investor if deal_activity.deal_investor %>
     </td>  
     <td>
-        <%= deal_activity.by_date %>
+        <%= l deal_activity.by_date %>
     </td>  
     <td>
         <%= deal_activity.status %>
     </td>  
     <td>
-        <%= deal_activity.completed_status %>
+        <span class="badge <%= completed_badge(deal_activity) %>"><%= deal_activity.completed_status %></span>
     </td>  
     <td>
         <%= deal_activity.days %>

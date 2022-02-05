@@ -10,4 +10,16 @@ module DealActivitiesHelper
             "btn-outline-secondary"
         end
     end
+
+    def completed_badge(deal_activity)
+        if deal_activity.completed 
+            "bg-success" 
+        elsif deal_activity.by_date < Date.today
+            "bg-danger"
+        elsif deal_activity.by_date == Date.today    
+            "bg-warning"
+        else
+            "bg-info"
+        end
+    end
 end
