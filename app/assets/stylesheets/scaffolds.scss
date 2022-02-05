@@ -133,3 +133,11 @@ h1 {
 .task-done-checkbox {
   width: 25px !important;
 }
+
+.document_video {
+  max-height: 600px;
+  margin: auto;
+  width: 100%;
+}
+
+video { float: none; }

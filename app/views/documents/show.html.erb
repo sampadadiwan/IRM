@@ -1,42 +1,95 @@
 <%= render "/layouts/alerts" %>
-<table class="table table-bordered dataTable">
-   <tr>
-      <td>
-         Download
-      </td>
-      <td>
-         <%= link_to @document.name, @document.file.expiring_url() if @document.file.exists? %>
-      </td>
-   </tr>
-   <tr>
-      <td>
-         Created
-      </td>
-      <td>
-         <%= l @document.created_at, format: :default %>
-   </tr>
-   <tr>
-      </td>    
-      <td>
-         Entity
-      </td>
-      <td>
-         <%= link_to @document.entity.name, @document.entity %>
-      </td>
-   </tr>
-   
-   <% if @document.text.present? %>
-   <tr>
-      <td>
-         Details
-      </td>
-      <td>
-         <%= @document.text %>
-      </td>
-   </tr>
+
+
+<div class="row">
+
+    <div class="col-lg-12 mb-4">
+
+        <!-- Illustrations -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Document</h6>
+            </div>
+            <div class="card-body">
+               <table class="table table-bordered dataTable">
+                  <tr>
+                     <td>
+                        Download
+                     </td>
+                     <td>
+                        <%= link_to @document.name, @document.file.expiring_url() if @document.file.exists? %>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        Created
+                     </td>
+                     <td>
+                        <%= l @document.created_at, format: :default %>
+                  </tr>
+                  <tr>
+                     </td>    
+                     <td>
+                        Entity
+                     </td>
+                     <td>
+                        <%= link_to @document.entity.name, @document.entity %>
+                     </td>
+                  </tr>
+                  
+                  <% if @document.text.present? %>
+                  <tr>
+                     <td>
+                        Details
+                     </td>
+                     <td>
+                        <%= @document.text %>
+                     </td>
+                  </tr>
+                  <% end %>
+
+               </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <% if @document.is_video? %>
+    <div class="col-lg-12 mb-4">
+        <!-- Approach -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Video</h6>
+            </div>
+            <div class="card-body">
+            
+               <video
+                  id="document_video"
+                  class="document_video vjs-fill"
+                  controls="true"
+                  responsive="true"
+                  preload="false"
+                  data-setup="{}"
+               >
+                  <source src="<%= @document.file.expiring_url %>" />
+                  <p class="vjs-no-js">
+                     To view this video please enable JavaScript, and consider upgrading to a
+                     web browser that
+                     <a href="https://videojs.com/html5-video-support/" target="_blank"
+                     >supports HTML5 video</a
+                     >
+                  </p>
+               </video>
+               
+            </div>
+        </div>
+    </div>
    <% end %>
 
-</table>
+</div>
+
+
 
 <% if current_user.entity_id == @document.entity_id %>
    <div style="display: inline-block;">

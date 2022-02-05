@@ -19,7 +19,7 @@ class Document < ApplicationRecord
     validates_attachment_content_type :file, content_type: [/\Aimage\/.*\Z/, /\Avideo\/.*\Z/, /\Aaudio\/.*\Z/, /\Aapplication\/.*\Z/]
     
     validates_attachment :file, presence: true,
-                        size: { in: 0..10.megabytes }
+                        size: { in: 0..10.gigabytes }
 
     
 
@@ -66,6 +66,10 @@ class Document < ApplicationRecord
         # category_access
         direct_access.or(category_access).distinct        
         
+    end
+
+    def is_video? 
+        self.file_content_type =~ /video/
     end
     
 end
