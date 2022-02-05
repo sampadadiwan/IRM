@@ -58,6 +58,8 @@ gem 'administrate-field-active_storage'
 gem "kt-paperclip", git: "https://github.com/thimmaiah/kt-paperclip.git"
 
 gem "acts_as_list"
+gem 'whenever', require: false
+
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
