@@ -132,6 +132,10 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
+    capistrano3-puma (5.0.4)
+      capistrano (~> 3.7)
+      capistrano-bundler
+      puma (>= 4.0, < 6.0)
     capybara (3.36.0)
       addressable
       matrix
@@ -456,6 +460,7 @@ DEPENDENCIES
   capistrano (~> 3.10)
   capistrano-rails (~> 1.6)
   capistrano-rvm
+  capistrano3-puma
   capybara
   capybara-email
   chartkick

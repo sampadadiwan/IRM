@@ -28,3 +28,7 @@ end
 every :reboot do
     bundle "sidekiq"
 end
+
+every :reboot do
+    bundle "rails s"
+end
