@@ -3,7 +3,6 @@
         <div class="dropdown">
             <span type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= deal_investor.investor_name %>      
-                <span class="badge <%= status_badge(deal_investor) %>"><%= deal_investor.status.first %></span>          
             </span>
             <div class="dropdown-menu">
                 <%= link_to "View Docs", deal_docs_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
@@ -12,6 +11,9 @@
                 <%= link_to "View Investor", deal_investor_path(id: deal_investor.id), class: "dropdown-item" %>
             </div>
             
+        </div>
+        <div>
+            <span class="badge <%= status_badge(deal_investor) %>"><%= deal_investor.status %></span>          
         </div>
     </td>
     <td>

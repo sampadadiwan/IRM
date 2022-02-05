@@ -11,7 +11,6 @@
       <%= button_to "Start Deal", start_deal_deal_path(@deal), 
         {"data-turbo": "false", class: "btn btn-primary", form_class: "deleteButton"} %> |
     <% end %>
-    <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
     <%= link_to "Activity Template", deal_activities_path(deal_id: @deal.id, template: true) , {class: "btn btn-success"}%> |
     <%= button_to "Delete", @deal, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
 
