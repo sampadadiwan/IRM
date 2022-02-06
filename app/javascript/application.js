@@ -6,7 +6,6 @@ import "controllers"
 import "@popperjs/core"
 import "chartkick"
 import "Chart.bundle"
-import "./direct_uploads.js"
 
 $( document ).on('turbo:load', function() {
     $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});

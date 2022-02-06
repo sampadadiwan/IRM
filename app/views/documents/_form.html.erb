@@ -16,15 +16,22 @@
     <%= form.text_field :name, class: "form-control"  %>
   </div>
 
-
-  <div class="field" class="form-group">
-    <%= form.label :file %>
-    <%= form.file_field :file, class: "form-control" %>
+  <div class="form-group">
+    <input type="radio" id="doc_type" checked="true" name="upload_type" class="upload_type">
+    <label for="html">Document</label>
+    <input type="radio" id="video_type" name="upload_type" class="upload_type">
+    <label for="css">Video</label>
   </div>
 
-  <div class="field" class="form-group">
+
+  <div class="field" class="form-group" id="document_upload">
+    <%= form.label :file, "Document" %>
+    <%= form.file_field :file, class: "form-control", placeholder: "Upload document" %>
+  </div>
+
+  <div class="field" class="form-group" id="video_upload" >
     <%= form.label :video %>
-    <%= form.file_field :video, class: "form-control", direct_upload: true %>
+    <%= form.file_field :video, class: "form-control", direct_upload: true, placeholder: "Upload video" %>
   </div>
 
   <div class="form-group">
@@ -36,3 +43,5 @@
     <%= form.submit "Save", {class: "btn btn-primary"}%>
   </div>
 <% end %>
+
+<div data-controller="directuploads"></div>

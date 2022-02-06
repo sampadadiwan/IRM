@@ -18,7 +18,7 @@
                      </td>
                      <td>
                         <%= link_to @document.name, @document.file.expiring_url() if @document.file.exists? %>
-                        <%= link_to @document.name, rails_blob_path(@document.video, disposition: "attachment") if @document.video %>                     
+                        <%= link_to @document.name, rails_blob_path(@document.video, disposition: "attachment") if @document.video.present? %>                     
                      </td>
                   </tr>
                   <tr>
