@@ -12,15 +12,15 @@ class Document < ApplicationRecord
     has_one_attached :video, service: :amazon
 
     has_attached_file :file,
-        :s3_permissions => nil,
         :bucket => proc { |attachment| 
             attachment.instance.entity.s3_bucket.present? ? attachment.instance.owner.s3_bucket : ENV["AWS_S3_BUCKET"] 
         }
 
     validates_attachment_content_type :file, content_type: [/\Aimage\/.*\Z/, /\Avideo\/.*\Z/, /\Aaudio\/.*\Z/, /\Aapplication\/.*\Z/]
     
-    validates_attachment :file, #presence: false,
-                        size: { in: 0..10.gigabytes }
+    validates_attachment_size :file, #presence: false,
+                        :less_than => 10.megabytes,
+                        :message => 'must be smaller than 10mb. Use video upload if needed for large video files'
 
     
 
