@@ -37,39 +37,8 @@
   
 <% else %>
 
-  <nav class="nav nav-pills nav-fill nav-justified bg-success"  role="tablist">
-    <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#activities-tab">Activities</a>
-    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#docs-tab">Documents</a>
-    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#chat-tab">Chat</a>
-    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#tranche-tab">Tranche</a>
-  </nav>
-
   <% deal_investor = @deal.deal_investors.for(current_user).first %>
-  <div class="tab-content">
-    <div id="activities-tab" class="tab-pane fade in show active">
-      <div id="deal_activities" class="associated_entity">
-        <%= render "/deal_activities/index", deal_investor:deal_investor, deal_activities: deal_investor.deal_activities %>
-      </div>
-    </div>
-    <div id="docs-tab" class="tab-pane fade">
-      <div id="deal_docs" class="associated_entity">
-        <%= render "/deal_docs/index", deal_investor: nil, deal_docs: @deal.deal_docs.only_deal_docs, title: nil %>
-        <%= render "/deal_docs/index", deal_investor: deal_investor, deal_docs: @deal.deal_docs.deal_investor_docs(deal_investor), title: "Investor Docs" %>
-      </div>     
-    </div>
-    <div id="chat-tab" class="tab-pane fade">
-      <div id="deal_messages" class="associated_entity">
-        <%= render "deal_messages/chats_and_tasks", deal_investor: deal_investor, deal_messages: deal_investor.deal_messages %>
-      </div>  
-    </div>
-    <div id="tranche-tab" class="tab-pane fade">
-      <div id="deal_investor" class="associated_entity">
-        <%= render "/deal_investors/show", deal_investor: deal_investor %>
-      </div>  
-    </div>
-  </div>
-
-
-  
+  <%= render "deal_investors/deal_investor_details", 
+    deal_investor: deal_investor, deal: @deal, show_tranch: true %>
   
 <% end %>

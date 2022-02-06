@@ -3,7 +3,9 @@
         <!-- Illustrations -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Chat</h6>
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <div class="chat-with">Chat between <%=deal_investor.investor_name%> & <%=deal_investor.entity_name%> </div>
+                </h6>
             </div>
             <div class="card-body">
                 <%= render "deal_messages/conversation", deal_messages: deal_messages, deal_investor: deal_investor %>

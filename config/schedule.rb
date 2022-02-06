@@ -28,8 +28,6 @@ end
 
 every :reboot do
     bundle "sidekiq"
-end
-
-every :reboot do
+    rake "ts:rebuild"
     bundle "rails s"
 end

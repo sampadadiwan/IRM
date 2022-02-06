@@ -141,3 +141,18 @@ h1 {
 }
 
 video { float: none; }
+
+
+.nav-link.active {
+  background-color: cornflowerblue !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+
+
+.nav-tabs .nav-link {
+  margin-right: 3px;
+  background-color:lighten($color: cornflowerblue, $amount: 30);
+  color: darkgray;
+}
