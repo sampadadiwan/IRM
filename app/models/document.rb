@@ -9,6 +9,7 @@ class Document < ApplicationRecord
     belongs_to :entity
 
     has_rich_text :text
+    has_one_attached :video, service: :amazon
 
     has_attached_file :file,
         :s3_permissions => nil,
@@ -18,7 +19,7 @@ class Document < ApplicationRecord
 
     validates_attachment_content_type :file, content_type: [/\Aimage\/.*\Z/, /\Avideo\/.*\Z/, /\Aaudio\/.*\Z/, /\Aapplication\/.*\Z/]
     
-    validates_attachment :file, presence: true,
+    validates_attachment :file, #presence: false,
                         size: { in: 0..10.gigabytes }
 
     
