@@ -34,7 +34,7 @@ class Entity < ApplicationRecord
   has_many :documents, as: :owner, dependent: :destroy
 
   # Will have many employees
-  has_many :employees, class_name: "User"
+  has_many :employees, class_name: "User", dependent: :destroy
 
   # List of investors who are invested in this entity
   has_many :investors, foreign_key: "investee_entity_id", dependent: :destroy
@@ -44,8 +44,8 @@ class Entity < ApplicationRecord
   has_many :investees, foreign_key: "investor_entity_id", class_name: "Investor", dependent: :destroy
   has_many :investee_entities, through: :investees
 
-  has_many :access_rights
-  has_many :investments, foreign_key: "investee_entity_id"
+  has_many :access_rights, dependent: :destroy
+  has_many :investments, foreign_key: "investee_entity_id", dependent: :destroy
 
   TYPES = %w[VC Startup].freeze
   FUNDING_UNITS = %w[Lakhs Crores].freeze

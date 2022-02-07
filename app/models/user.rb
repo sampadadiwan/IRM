@@ -46,10 +46,6 @@ class User < ApplicationRecord
   scope :admins, -> { where(role: "Admin") }
   scope :employees, -> { where(role: "Employee") }
 
-  def name
-    "#{first_name} #{last_name}"
-  end
-
   before_create :setup_defaults
 
   def name

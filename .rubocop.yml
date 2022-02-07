@@ -1,4 +1,8 @@
-require: rubocop-rails
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/StringLiterals:
@@ -7,8 +11,54 @@ Style/Documentation:
   Enabled: false
 Layout/LineLength:
   Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Rails/InverseOf:
+  Enabled: false
 AllCops:
+  DisabledByDefault: true
   NewCops: enable
-  Include:
-    - 'app/*'
-    - 'lib/*'
+  Exclude:
+    - 'vendor/**/*'
+    - 'db/**/*'
+    - 'lib/**/*'
+    - 'test/factories.rb'
+
+
+
+# Metrics Cops
+
+Metrics/ClassLength:
+  Description: 'Avoid classes longer than 100 lines of code.'
+  Max: 150
+  Enabled: true
+
+Metrics/ModuleLength:
+  Description: 'Avoid modules longer than 100 lines of code.'
+  Max: 100
+  Enabled: true
+
+Metrics/ParameterLists:
+  Description: 'Pass no more than four parameters into a method.'
+  Max: 4
+  Enabled: true
+
+Metrics/MethodLength:
+  Description: 'Avoid methods longer than 5 lines of code.'
+  StyleGuide: '<https://github.com/bbatsov/ruby-style-guide#short-methods>'
+  Max: 25
+  Enabled: true
+
+Metrics/BlockLength:
+  CountComments: false
+  Max: 15
+  IgnoredMethods:
+    - context
+    - describe
+    - it
+    - shared_examples
+    - shared_examples_for
+    - namespace
+    - draw
+    - configure
+    - group    

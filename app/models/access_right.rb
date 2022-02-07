@@ -65,7 +65,7 @@ class AccessRight < ApplicationRecord
 
   after_create :send_notification, :update_user
   def send_notification
-    AccessRightsMailer.with(access_right: self).notify_access.deliver_later if access_to_email =~ URI::MailTo::EMAIL_REGEXP
+    AccessRightsMailer.with(access_right: self).notify_access.deliver_later if URI::MailTo::EMAIL_REGEXP.match?(access_to_email)
   end
 
   def update_user

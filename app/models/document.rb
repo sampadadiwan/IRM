@@ -22,7 +22,6 @@ class Document < ApplicationRecord
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   has_many :access_rights, as: :owner, dependent: :destroy
-  has_many :investors, as: :owner
   belongs_to :entity
 
   has_rich_text :text
@@ -78,6 +77,6 @@ class Document < ApplicationRecord
   end
 
   def is_video?
-    file_content_type =~ /video/
+    file_content_type.include?('video')
   end
 end

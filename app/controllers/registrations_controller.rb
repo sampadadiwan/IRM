@@ -6,18 +6,7 @@ class RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     # Ensure role is always Employee
     resource.add_role :employee
-
-    # Ensure that users are created only for the same enetity as the logged in user.
-    if current_user && !current_user.has_role?(:super)
-      resource.entity_id = current_user.entity_id
-      logger.debug "Setting new user entity to logged in users entity #{current_user.entity_id}"
-    else
-      # Check if this user was invited as an investor
-      ar = AccessRight.user_access(resource).first
-      # Ensure this user is a user of the investor entity
-      ar&.update_user
-    end
-
+    ensure_entity(resource)
     resource.save
 
     yield resource if block_given?
@@ -51,4 +40,18 @@ class RegistrationsController < Devise::RegistrationsController
   def after_inactive_sign_up_path_for(_resource)
     welcome_users_path
   end
+
+  def ensure_entity(resource)
+    # Ensure that users are created only for the same entity as the logged in user.
+    if current_user && !current_user.has_role?(:super)
+      resource.entity_id = current_user.entity_id
+      logger.debug "Setting new user entity to logged in users entity #{current_user.entity_id}"
+    else
+      # Check if this user was invited as an investor
+      ar = AccessRight.user_access(resource).first
+      # Ensure this user is a user of the investor entity
+      ar&.update_user
+    end
+  end
+
 end

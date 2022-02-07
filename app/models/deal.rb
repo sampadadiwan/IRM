@@ -30,7 +30,7 @@ class Deal < ApplicationRecord
   has_many :access_rights, as: :owner, dependent: :destroy
 
   STATUS = %w[Open Closed].freeze
-  ACTIVITIES = Rack::Utils.parse_nested_query(ENV["DEAL_ACTIVITIES"].gsub(":", "=").gsub(",", "&"))
+  ACTIVITIES = Rack::Utils.parse_nested_query(ENV["DEAL_ACTIVITIES"].tr(":", "=").tr(",", "&"))
 
   before_create :set_defaults
   def set_defaults
