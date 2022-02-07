@@ -38,3 +38,16 @@
     expect(page).to have_content(@investment.quantity)
     expect(page).to have_content(@investment.initial_value)
   end
+
+
+  Then('I should see the investment in all investments page') do
+    visit("/investments")
+    expect(page).to have_content(@investment.investor.investor_name)
+    expect(page).to have_content(@investment.category)
+    expect(page).to have_content(@investment.investment_instrument)
+    expect(page).to have_content(@investment.investment_type)
+    expect(page).to have_content(@investment.quantity)
+    expect(page).to have_content(@investment.initial_value)
+  end
+  
+  

@@ -9,6 +9,8 @@ Scenario Outline: Create new investor
   Then I should see the "<msg>"
   And an investment should be created
   And I should see the investment details on the details page
+  And I should see the investment in all investments page
+  
 
   Examples:
   	|user	    |entity               |investor     |investment     |msg	|
