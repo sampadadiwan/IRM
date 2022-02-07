@@ -1,7 +1,7 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">Investments</h1>
-  <%= link_to "New investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id), 
+  <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id), 
       {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
 </div>
 

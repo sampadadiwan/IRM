@@ -1,0 +1,16 @@
+Feature: Investment
+  Can create and view an investment as a startup
+
+Scenario Outline: Create new investor
+  Given Im logged in as a user "<user>" for an entity "<entity>"
+  Given there is an existing investor "<investor>"
+  And I am at the investments page
+  And I create an investment "<investment>"
+  Then I should see the "<msg>"
+  And an investment should be created
+  And I should see the investment details on the details page
+
+  Examples:
+  	|user	    |entity               |investor     |investment     |msg	|
+  	|  	        |entity_type=Startup  |name=Sequoia |category=Lead Investor;investment_type=Series A;investment_instrument=Equity;quantity=100;initial_value=100     |Investment was successfully created|
+    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_type=Series B;investment_instrument=Preferred;quantity=80;initial_value=800     |Investment was successfully created|

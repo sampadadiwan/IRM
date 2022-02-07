@@ -8,8 +8,11 @@ end
 
 
 Given('there is a user {string} for an entity {string}') do |arg1, arg2|
-  @entity = FactoryBot.create(:entity)  
+  @entity = FactoryBot.build(:entity)  
   key_values(@entity, arg2)
+  @entity.save
+  puts "\n####Entity####\n"
+  puts @entity.to_json
 
   @user = FactoryBot.build(:user, entity: @entity)
   key_values(@user, arg1)

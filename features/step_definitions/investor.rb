@@ -31,7 +31,7 @@
 
   Then('an investor entity should not be created') do
     Entity.where(name: @investor.investor_name).count.should == 1
-    
+
     @investor_entity.name.should == @investor.investor_name
     @investor.investor_entity_id.should == @investor_entity.id
     @investor.investee_entity_id.should == @user.entity_id    
@@ -45,12 +45,21 @@
 
   end
 
+  Given('there is an existing investor {string}') do |arg1|
+    steps %Q{
+        Given there is an existing investor entity "#{arg1}"
+    }
+    @investor = FactoryBot.create(:investor, investor_entity_id: @investor_entity.id, investee_entity_id: @entity.id )
+    puts "\n####Investor####\n"
+    puts @investor.to_json
+  end
   
   Given('there is an existing investor entity {string}') do |arg1|
     @investor_entity = FactoryBot.create(:entity, entity_type: "VC")
     key_values(@investor_entity, arg1)
     @investor_entity.save
-  end
+    puts "\n####Investor Entity####\n"
+    puts @investor_entity.to_json  end
   
   When('I create a new investor {string} for the existing invest entity') do |string|
     click_on("New Investor")
