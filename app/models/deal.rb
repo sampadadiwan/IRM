@@ -1,20 +1,36 @@
+# == Schema Information
+#
+# Table name: deals
+#
+#  id            :integer          not null, primary key
+#  entity_id     :integer          not null
+#  name          :string(100)
+#  amount        :decimal(10, )
+#  status        :string(20)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  activity_list :text(65535)
+#  start_date    :date
+#  end_date      :date
+#
+
 class Deal < ApplicationRecord
   resourcify
   has_paper_trail
-  ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
+  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   belongs_to :entity
-  
+
   has_many :deal_investors, dependent: :destroy
   has_many :investors, through: :deal_investors
-  
+
   has_many :deal_activities, dependent: :destroy
-  
+
   has_many :deal_docs, dependent: :destroy
   has_many :access_rights, as: :owner, dependent: :destroy
 
-  STATUS = ["Open", "Closed"]
-  ACTIVITIES = Rack::Utils.parse_nested_query(ENV["DEAL_ACTIVITIES"].gsub(":","=").gsub(",","&"))
+  STATUS = %w[Open Closed].freeze
+  ACTIVITIES = Rack::Utils.parse_nested_query(ENV["DEAL_ACTIVITIES"].gsub(":", "=").gsub(",", "&"))
 
   before_create :set_defaults
   def set_defaults
@@ -22,9 +38,7 @@ class Deal < ApplicationRecord
   end
 
   def create_activites
-    self.deal_investors.each do |i|
-      i.create_activites
-    end
+    deal_investors.each(&:create_activites)
   end
 
   after_create :create_activity_template
@@ -32,33 +46,30 @@ class Deal < ApplicationRecord
     seq = 1
     Deal::ACTIVITIES.each do |title, days|
       # Note that if deal_investor_id = nil then this is a template
-      DealActivity.create!(deal_id: self.id, deal_investor_id: nil, status: "Template",
-        entity_id: self.entity_id, title: title, sequence: seq, days: days.to_i)
+      DealActivity.create!(deal_id: id, deal_investor_id: nil, status: "Template",
+                           entity_id: entity_id, title: title, sequence: seq, days: days.to_i)
       seq += 1
     end
   end
 
   def start_deal
     self.start_date = Date.today
-    self.save
-    GenerateDealActivitiesJob.perform_later(self.id)
+    save
+    GenerateDealActivitiesJob.perform_later(id)
   end
-  
 
   def self.for_investor(user)
-    deal_access = Deal.joins(:entity=>:deal_investors).
-      where("deal_investors.investor_entity_id=?", user.entity_id).
-      joins(:access_rights).
-      where("(access_rights.access_to_email = ?) OR
+    deal_access = Deal.joins(entity: :deal_investors)
+                      .where("deal_investors.investor_entity_id=?", user.entity_id)
+                      .joins(:access_rights)
+                      .where("(access_rights.access_to_email = ?) OR
         (
           ( access_rights.access_to_email is null OR access_rights.access_to_email = '')
-          AND access_rights.access_to_investor_id = deal_investors.investor_id            
+          AND access_rights.access_to_investor_id = deal_investors.investor_id
         )
         ", user.email)
-      merge(AccessRight.for_access_type("Deal"))
-      
+    merge(AccessRight.for_access_type("Deal"))
 
     deal_access.distinct
   end
-
 end

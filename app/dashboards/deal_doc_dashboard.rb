@@ -20,7 +20,7 @@ class DealDocDashboard < Administrate::BaseDashboard
     file_file_name: Field::String,
     file_content_type: Field::String,
     file_file_size: Field::Number,
-    file_updated_at: Field::DateTime,
+    file_updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

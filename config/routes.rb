@@ -20,31 +20,31 @@ Rails.application.routes.draw do
     post 'start_deal', on: :member
     get 'investor_deals', on: :collection
   end
-  
+
   namespace :admin do
-      resources :investors
-      resources :users
-      resources :notes
-      resources :entities
-      resources :documents
-      resources :investments
-      resources :access_rights
-      resources :deals
-      resources :deal_investors
-      resources :deal_activities
-      resources :deal_docs
-      resources :deal_messages
-      root to: "investors#index"
-    end
-  
+    resources :investors
+    resources :users
+    resources :notes
+    resources :entities
+    resources :documents
+    resources :investments
+    resources :access_rights
+    resources :deals
+    resources :deal_investors
+    resources :deal_activities
+    resources :deal_docs
+    resources :deal_messages
+    root to: "investors#index"
+  end
+
   resources :notes do
     get 'search', on: :collection
   end
-  
+
   resources :investors do
     get 'search', on: :collection
   end
-  
+
   resources :investments do
     get 'search', on: :collection
     get 'investor_investments', on: :collection
@@ -56,8 +56,8 @@ Rails.application.routes.draw do
   end
 
   resources :interests
-  
-  devise_for :users, :controllers => {:registrations => "registrations"}
+
+  devise_for :users, controllers: { registrations: "registrations" }
 
   resources :entities do
     get 'search', on: :collection
@@ -77,7 +77,7 @@ Rails.application.routes.draw do
   root "entities#dashboard"
 
   require 'sidekiq/web'
-    authenticate :user do
-      mount Sidekiq::Web => '/sidekiq'
-    end
+  authenticate :user do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end

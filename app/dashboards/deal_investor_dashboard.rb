@@ -20,7 +20,7 @@ class DealInvestorDashboard < Administrate::BaseDashboard
     secondary_investment: Field::String.with_options(searchable: false),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    investor_entity_id: Field::Number,
+    investor_entity_id: Field::Number
   }.freeze
 
   # COLLECTION_ATTRIBUTES

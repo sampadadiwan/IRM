@@ -23,11 +23,11 @@ set :path, "/home/ubuntu/IRM/current"
 job_type :bundle, 'cd :path && :environment_variable=:environment bundle exec :task'
 
 every 1.day, at: '4:30 am' do
-    rake "ts:rebuild"
+  rake "ts:rebuild"
 end
 
 every :reboot do
-    bundle "sidekiq"
-    rake "ts:rebuild"
-    bundle "rails s"
+  bundle "sidekiq"
+  rake "ts:rebuild"
+  bundle "rails s"
 end

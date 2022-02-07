@@ -9,7 +9,6 @@ class NotePolicy < ApplicationPolicy
     end
   end
 
-
   def index?
     true
   end
@@ -37,5 +36,4 @@ class NotePolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

@@ -9,7 +9,6 @@ class UserPolicy < ApplicationPolicy
     end
   end
 
-
   def index?
     true
   end
@@ -19,27 +18,26 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || user.id == record.id || user.entity_id == record.entity_id 
+    user.has_role?(:super) || user.id == record.id || user.entity_id == record.entity_id
   end
 
   def create?
-    user.has_role?(:super) || user.entity_id == record.entity_id 
+    user.has_role?(:super) || user.entity_id == record.entity_id
   end
 
   def new?
-    user.has_role?(:super) || user.entity_id == record.entity_id 
+    user.has_role?(:super) || user.entity_id == record.entity_id
   end
 
   def update?
-    user.has_role?(:super) || user.id == record.id 
+    user.has_role?(:super) || user.id == record.id
   end
 
   def edit?
-    user.has_role?(:super) || user.id == record.id 
+    user.has_role?(:super) || user.id == record.id
   end
 
   def destroy?
     false
   end
-
 end

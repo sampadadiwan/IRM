@@ -1,37 +1,31 @@
 class DealActivitiesController < ApplicationController
-  before_action :set_deal_activity, :only => ["show", "update", "destroy", "edit", "update_sequence", "toggle_completed"] 
+  before_action :set_deal_activity, only: %w[show update destroy edit update_sequence toggle_completed]
   skip_before_action :verify_authenticity_token, only: [:update_sequence]
 
   # GET /deal_activities or /deal_activities.json
   def index
+    @deal_activities = policy_scope(DealActivity).includes(:deal, deal_investor: :investor)
 
-    @deal_activities = policy_scope(DealActivity)
-    
-    if params[:deal_id].present?
-      @deal_activities = @deal_activities.where(deal_id: params[:deal_id])
-    end
+    @deal_activities = @deal_activities.where(deal_id: params[:deal_id]) if params[:deal_id].present?
 
-    if params[:deal_investor_id].present?
-      @deal_activities = @deal_activities.where(deal_investor_id: params[:deal_investor_id])
-    end
-    
+    @deal_activities = @deal_activities.where(deal_investor_id: params[:deal_investor_id]) if params[:deal_investor_id].present?
+
     # Show only templates
-    if params[:template].present?
-      @deal_activities = @deal_activities.where(deal_investor_id: nil).order(sequence: :asc)
-    else
-      @deal_activities = @deal_activities.where("deal_investor_id is not null").order(sequence: :asc)
-    end
+    @deal_activities = if params[:template].present?
+                         @deal_activities.where(deal_investor_id: nil).order(sequence: :asc)
+                       else
+                         @deal_activities.where.not(deal_investor_id: nil).order(sequence: :asc)
+                       end
 
     @deal_activities = @deal_activities.page params[:page]
   end
 
   def search
     @entity = current_user.entity
-    @deal_activities = DealActivity.search("#{params[:query]}", :star => false, with: {:entity_id => current_user.entity_id})
+    @deal_activities = DealActivity.search(params[:query].to_s, star: false, with: { entity_id: current_user.entity_id })
 
     render "index"
   end
-
 
   # GET /deal_activities/1 or /deal_activities/1.json
   def show
@@ -57,10 +51,10 @@ class DealActivitiesController < ApplicationController
 
     respond_to do |format|
       if @deal_activity.save
-        format.html {
-          redirect_url = params[:back_to].present? ? params[:back_to] : deal_activity_url(@deal_activity)
-          redirect_to redirect_url, notice: "Deal activity was successfully created." 
-        }
+        format.html do
+          redirect_url = params[:back_to].presence || deal_activity_url(@deal_activity)
+          redirect_to redirect_url, notice: "Deal activity was successfully created."
+        end
         format.json { render :show, status: :created, location: @deal_activity }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -75,10 +69,10 @@ class DealActivitiesController < ApplicationController
 
     respond_to do |format|
       if @deal_activity.update(deal_activity_params)
-        format.html { 
-          redirect_url = params[:back_to].present? ? params[:back_to] : deal_activity_url(@deal_activity)
-          redirect_to redirect_url, notice: "Deal activity was successfully updated." 
-        }
+        format.html do
+          redirect_url = params[:back_to].presence || deal_activity_url(@deal_activity)
+          redirect_to redirect_url, notice: "Deal activity was successfully updated."
+        end
         format.json { render :show, status: :ok, location: @deal_activity }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -94,14 +88,14 @@ class DealActivitiesController < ApplicationController
 
   def toggle_completed
     authorize @deal_activity, :update?
-    @deal_activity.completed = !@deal_activity.completed 
+    @deal_activity.completed = !@deal_activity.completed
     @deal_activity.save
 
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.replace( helpers.dom_id(@deal_activity.deal_investor), partial: "deals/grid_view_row", 
-                                locals: {deal_investor: @deal_activity.deal_investor} )
+          turbo_stream.replace(helpers.dom_id(@deal_activity.deal_investor), partial: "deals/grid_view_row",
+                                                                             locals: { deal_investor: @deal_activity.deal_investor })
         ]
       end
       format.html { redirect_to deal_activity_url(@deal_activity), notice: "Activity was successfully updated." }
@@ -120,14 +114,15 @@ class DealActivitiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_deal_activity
-      @deal_activity = DealActivity.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def deal_activity_params
-      params.require(:deal_activity).permit(:deal_id, :deal_investor_id, :by_date, :status, 
-                    :title, :details, :completed, :entity_id, :days)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_deal_activity
+    @deal_activity = DealActivity.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def deal_activity_params
+    params.require(:deal_activity).permit(:deal_id, :deal_investor_id, :by_date, :status,
+                                          :title, :details, :completed, :entity_id, :days)
+  end
 end

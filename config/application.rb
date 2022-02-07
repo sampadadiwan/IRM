@@ -31,25 +31,24 @@ module InvestorRelationshipManagement
 
     config.active_job.queue_adapter = :sidekiq
 
-    Rails.application.routes.default_url_options[:host]= ENV['HOST']
-    
+    Rails.application.routes.default_url_options[:host] = ENV['HOST']
+
     config.action_mailer.smtp_settings = {
-      :address => "email-smtp.us-west-1.amazonaws.com",
-      :domain => "InvestorRelationshipManagement.com",
-      :port => 587,
-      :user_name => ENV["SES_SMTP_USERNAME"],
-      :password => ENV["SES_SMTP_PASSWORD"],
-      :authentication => :login,
-      :enable_starttls_auto => true
+      address: "email-smtp.us-west-1.amazonaws.com",
+      domain: "InvestorRelationshipManagement.com",
+      port: 587,
+      user_name: ENV["SES_SMTP_USERNAME"],
+      password: ENV["SES_SMTP_PASSWORD"],
+      authentication: :login,
+      enable_starttls_auto: true
     }
 
-
     Rails.application.config.middleware.use ExceptionNotification::Rack,
-        email: {
-          email_prefix: '[Error:] ',
-          sender_address: %{"Support" <#{ENV['SUPPORT_EMAIL']}>},
-          exception_recipients: %{"ERROR" <#{ENV['ERROR_EMAIL']}>}
-        }
+                                            email: {
+                                              email_prefix: '[Error:] ',
+                                              sender_address: %("Support" <#{ENV['SUPPORT_EMAIL']}>),
+                                              exception_recipients: %("ERROR" <#{ENV['ERROR_EMAIL']}>)
+                                            }
 
     # Configs for upload to S3
     config.paperclip_defaults = {
@@ -63,8 +62,6 @@ module InvestorRelationshipManagement
         access_key_id: ENV["AWS_ACCESS_KEY_ID"],
         secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"]
       }
-    } 
-
-
+    }
   end
 end

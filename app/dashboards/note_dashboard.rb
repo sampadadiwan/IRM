@@ -15,7 +15,7 @@ class NoteDashboard < Administrate::BaseDashboard
     id: Field::Number,
     details: Field::Text,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

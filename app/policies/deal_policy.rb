@@ -9,20 +9,17 @@ class DealPolicy < ApplicationPolicy
     end
   end
 
-
   def index?
     true
   end
 
   def show?
-    if user.has_role?(:super) 
+    if user.has_role?(:super)
       true
-    elsif (user.entity_id == record.entity_id)
-      true
-    elsif Deal.for_investor(user).where("deals.id=?", record.id).first.present?
+    elsif user.entity_id == record.entity_id
       true
     else
-      false
+      Deal.for_investor(user).where("deals.id=?", record.id).first.present?
     end
   end
 
@@ -49,5 +46,4 @@ class DealPolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

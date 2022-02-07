@@ -22,7 +22,7 @@ class DealDashboard < Administrate::BaseDashboard
     updated_at: Field::DateTime,
     activity_list: Field::Text,
     start_date: Field::Date,
-    end_date: Field::Date,
+    end_date: Field::Date
   }.freeze
 
   # COLLECTION_ATTRIBUTES

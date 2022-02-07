@@ -9,7 +9,6 @@ class DealActivityPolicy < ApplicationPolicy
     end
   end
 
-
   def index?
     true
   end
@@ -17,13 +16,11 @@ class DealActivityPolicy < ApplicationPolicy
   def show?
     if user.has_role?(:super) || (user.entity_id == record.entity_id)
       true
-    elsif record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
-      true
     else
-      false
+      record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
     end
   end
-  
+
   def create?
     user.has_role?(:super) || (user.entity_id == record.entity_id)
   end
@@ -43,5 +40,4 @@ class DealActivityPolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

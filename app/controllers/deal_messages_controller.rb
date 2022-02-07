@@ -1,13 +1,12 @@
 class DealMessagesController < ApplicationController
-  before_action :set_deal_message, :only => ["show", "update", "destroy", "edit", "mark_as_task", "task_done"] 
+  before_action :set_deal_message, only: %w[show update destroy edit mark_as_task task_done]
 
   # GET /deal_messages or /deal_messages.json
   def index
-
     @deal_messages = policy_scope(DealMessage)
     if params[:deal_investor_id]
       @deal_investor = DealInvestor.find(params[:deal_investor_id])
-      @deal_messages = @deal_messages.where(deal_investor_id: params[:deal_investor_id]) 
+      @deal_messages = @deal_messages.where(deal_investor_id: params[:deal_investor_id])
     else
       @deal_messages = DealMessage.none
     end
@@ -31,15 +30,15 @@ class DealMessagesController < ApplicationController
   # POST /deal_messages or /deal_messages.json
   def create
     @deal_message = DealMessage.new(deal_message_params)
-    @deal_message.user_id = current_user.id 
+    @deal_message.user_id = current_user.id
     authorize @deal_message
 
     respond_to do |format|
       if @deal_message.save
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.replace('deal_message_form', partial: "deal_messages/form", 
-                locals: {deal_message: DealMessage.new(deal_investor_id: @deal_message.deal_investor_id)})
+            turbo_stream.replace('deal_message_form', partial: "deal_messages/form",
+                                                      locals: { deal_message: DealMessage.new(deal_investor_id: @deal_message.deal_investor_id) })
           ]
         end
         format.html { redirect_to deal_message_url(@deal_message), notice: "Deal message was successfully created." }
@@ -56,14 +55,14 @@ class DealMessagesController < ApplicationController
     @deal_message.is_task = !@deal_message.is_task
 
     respond_to do |format|
-      if @deal_message.save    
+      if @deal_message.save
         format.turbo_stream do
           render turbo_stream: [
             if @deal_message.is_task
-              turbo_stream.append('deal_message_tasks', partial: "deal_messages/deal_message", 
-                  locals: {deal_message: @deal_message})
-            else              
-              turbo_stream.remove(@deal_message)                            
+              turbo_stream.append('deal_message_tasks', partial: "deal_messages/deal_message",
+                                                        locals: { deal_message: @deal_message })
+            else
+              turbo_stream.remove(@deal_message)
             end
           ]
         end
@@ -76,19 +75,20 @@ class DealMessagesController < ApplicationController
     @deal_message.task_done = !@deal_message.task_done
 
     respond_to do |format|
-      if @deal_message.save    
+      if @deal_message.save
         format.turbo_stream do
           render turbo_stream: [
             if @deal_message.task_done
-              turbo_stream.remove(@deal_message)                                        
+              turbo_stream.remove(@deal_message)
             else
-              turbo_stream.replace(@deal_message)                                        
+              turbo_stream.replace(@deal_message)
             end
           ]
         end
       end
     end
   end
+
   # PATCH/PUT /deal_messages/1 or /deal_messages/1.json
   def update
     authorize @deal_message
@@ -116,13 +116,14 @@ class DealMessagesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_deal_message
-      @deal_message = DealMessage.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def deal_message_params
-      params.require(:deal_message).permit(:user_id, :content, :deal_investor_id, :task_done)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_deal_message
+    @deal_message = DealMessage.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def deal_message_params
+    params.require(:deal_message).permit(:user_id, :content, :deal_investor_id, :task_done)
+  end
 end

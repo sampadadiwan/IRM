@@ -4,11 +4,10 @@ class DealMessagePolicy < ApplicationPolicy
       if user.has_role?(:super)
         scope.all
       else
-        scope.where("deal_investors.entity_id": user.entity_id).joins(:deal_investor)
+        scope.where('deal_investors.entity_id': user.entity_id).joins(:deal_investor)
       end
     end
   end
-
 
   def index?
     true
@@ -16,10 +15,8 @@ class DealMessagePolicy < ApplicationPolicy
 
   def show?
     if user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
-    elsif record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
-      true
     else
-      false
+      record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
     end
   end
 
@@ -34,10 +31,8 @@ class DealMessagePolicy < ApplicationPolicy
   def create?
     if user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
       true
-    elsif record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
-      true
     else
-      false
+      record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
     end
   end
 
@@ -56,5 +51,4 @@ class DealMessagePolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

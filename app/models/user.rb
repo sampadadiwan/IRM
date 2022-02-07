@@ -1,9 +1,31 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :integer          not null, primary key
+#  first_name             :string(80)
+#  last_name              :string(80)
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  email                  :string(255)      default(""), not null
+#  encrypted_password     :string(255)      default(""), not null
+#  reset_password_token   :string(255)
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  phone                  :string(20)
+#  active                 :boolean          default("1")
+#  confirmation_token     :string(255)
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  entity_id              :integer
+#
+
 class User < ApplicationRecord
   rolify
   has_paper_trail
-  
-  ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
-  
+
+  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -13,50 +35,46 @@ class User < ApplicationRecord
   belongs_to :entity, optional: true
 
   # "CxO", "Founder", "Angel", "VC", "Admin",
-  ROLES = [ "Employee" ]
+  ROLES = ["Employee"].freeze
 
-  # "CxO": "CxO of a Startup", "Founder": "Founder of a Startup", 
-  # "Angel": "Angel Investor", "VC": "Venture Capitalist", 
-  # "Admin": "Entity Admin", 
-  ROLES_DESC = { "Employee": "Employee" }
-  
+  # "CxO": "CxO of a Startup", "Founder": "Founder of a Startup",
+  # "Angel": "Angel Investor", "VC": "Venture Capitalist",
+  # "Admin": "Entity Admin",
+  ROLES_DESC = { Employee: "Employee" }.freeze
+
   scope :cxos, -> { where(role: "CxO") }
   scope :admins, -> { where(role: "Admin") }
   scope :employees, -> { where(role: "Employee") }
 
-
   def name
-    first_name + " " + last_name
+    "#{first_name} #{last_name}"
   end
 
   before_create :setup_defaults
 
   def name
-    self.full_name
+    full_name
   end
 
   def full_name
-    first_name + " " + last_name
+    "#{first_name} #{last_name}"
   end
 
   def setup_defaults
-    self.add_role :employee
-    self.add_role :investor if self.entity && self.entity.entity_type == "VC" || AccessRight.user_access(self).first.present?    
-    self.add_role :startup if self.entity.entity_type == "Startup" if self.entity
+    add_role :employee
+    add_role :investor if (entity && entity.entity_type == "VC") || AccessRight.user_access(self).first.present?
+    add_role :startup if entity && (entity.entity_type == "Startup")
   end
 
-  
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
-  
   def investor_entity(entity_id)
-    Entity.user_investor_entities(self).where("entities.id": entity_id).first
+    Entity.user_investor_entities(self).where('entities.id': entity_id).first
   end
 
   def investor(investee_entity_id)
-    Investor.includes(:investee_entity).user_investors(self).where("entities.id": investee_entity_id).first
+    Investor.includes(:investee_entity).user_investors(self).where('entities.id': investee_entity_id).first
   end
-
 end

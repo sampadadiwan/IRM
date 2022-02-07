@@ -1,26 +1,23 @@
 class NotesController < ApplicationController
-  before_action :set_note, :only => ["show", "update", "destroy", "edit"] 
+  before_action :set_note, only: %w[show update destroy edit]
 
   # GET /notes or /notes.json
   def index
-
     @notes = policy_scope(Note)
 
-    if params[:investor_id]
-      @notes = @notes.where(investor_id: params[:investor_id])
-    end
+    @notes = @notes.where(investor_id: params[:investor_id]) if params[:investor_id]
 
-    @notes = @notes.with_all_rich_text.includes(:user, :investor=>:investor_entity).
-                    joins(:user, :investor).
-                    order("notes.id desc").page params[:page]
+    @notes = @notes.with_all_rich_text.includes(:user, investor: :investor_entity)
+                   .joins(:user, :investor)
+                   .order("notes.id desc").page params[:page]
   end
 
   def search
-    if current_user.has_role?(:super)
-      @notes = Note.search(params[:query], :star => true)
-    else
-      @notes = Note.search(params[:query], :star => true, with: {entity_id: current_user.entity_id} )
-    end
+    @notes = if current_user.has_role?(:super)
+               Note.search(params[:query], star: true)
+             else
+               Note.search(params[:query], star: true, with: { entity_id: current_user.entity_id })
+             end
 
     render "index"
   end
@@ -85,13 +82,14 @@ class NotesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_note
-      @note = Note.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def note_params
-      params.require(:note).permit(:details, :entity_id, :user_id, :investor_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_note
+    @note = Note.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def note_params
+    params.require(:note).permit(:details, :entity_id, :user_id, :investor_id)
+  end
 end

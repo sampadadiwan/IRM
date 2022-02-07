@@ -1,22 +1,21 @@
 class DealDocsController < ApplicationController
-  before_action :set_deal_doc, :only => ["show", "update", "destroy", "edit", "update_sequence", "toggle_completed"] 
+  before_action :set_deal_doc, only: %w[show update destroy edit update_sequence toggle_completed]
 
   # GET /deal_docs or /deal_docs.json
   def index
-    if params[:deal_investor_id]
-      @deal_docs = DealDoc.accessible_by(current_ability).where(deal_investor_id: params[:deal_investor_id]) 
-    elsif params[:deal_id]
-      @deal_docs = DealDoc.accessible_by(current_ability).where(deal_id: params[:deal_id])
-    elsif params[:deal_activity_id]
-      @deal_docs = DealDoc.accessible_by(current_ability).where(deal_activity_id: params[:deal_activity_id])        
-    else
-      @deal_docs = DealDoc.none
-    end
+    @deal_docs = if params[:deal_investor_id]
+                   DealDoc.accessible_by(current_ability).where(deal_investor_id: params[:deal_investor_id])
+                 elsif params[:deal_id]
+                   DealDoc.accessible_by(current_ability).where(deal_id: params[:deal_id])
+                 elsif params[:deal_activity_id]
+                   DealDoc.accessible_by(current_ability).where(deal_activity_id: params[:deal_activity_id])
+                 else
+                   DealDoc.none
+                 end
   end
 
   # GET /deal_docs/1 or /deal_docs/1.json
-  def show
-  end
+  def show; end
 
   # GET /deal_docs/new
   def new
@@ -25,8 +24,7 @@ class DealDocsController < ApplicationController
   end
 
   # GET /deal_docs/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /deal_docs or /deal_docs.json
   def create
@@ -69,14 +67,15 @@ class DealDocsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_deal_doc
-      @deal_doc = DealDoc.find(params[:id])
-      authorize @deal_doc
-    end
 
-    # Only allow a list of trusted parameters through.
-    def deal_doc_params
-      params.require(:deal_doc).permit(:name, :file, :deal_id, :deal_investor_id, :deal_activity_id, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_deal_doc
+    @deal_doc = DealDoc.find(params[:id])
+    authorize @deal_doc
+  end
+
+  # Only allow a list of trusted parameters through.
+  def deal_doc_params
+    params.require(:deal_doc).permit(:name, :file, :deal_id, :deal_investor_id, :deal_activity_id, :user_id)
+  end
 end

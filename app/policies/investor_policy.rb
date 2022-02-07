@@ -9,17 +9,16 @@ class InvestorPolicy < ApplicationPolicy
     end
   end
 
-
   def index?
     true
   end
 
   def show?
-    user.has_role?(:super) || user.entity_id == record.investee_entity_id 
+    user.has_role?(:super) || user.entity_id == record.investee_entity_id
   end
 
   def create?
-    user.has_role?(:super) || user.entity_id == record.investee_entity_id 
+    user.has_role?(:super) || user.entity_id == record.investee_entity_id
   end
 
   def new?
@@ -37,5 +36,4 @@ class InvestorPolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

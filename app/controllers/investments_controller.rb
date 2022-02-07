@@ -1,24 +1,22 @@
 class InvestmentsController < ApplicationController
-  before_action :set_investment, :only => ["show", "update", "destroy", "edit"] 
-  after_action :verify_authorized, except: [:index, :search, :investor_investments]
+  before_action :set_investment, only: %w[show update destroy edit]
+  after_action :verify_authorized, except: %i[index search investor_investments]
 
   # GET /investments or /investments.json
-  def index    
+  def index
     @entity = current_user.entity
-    @investments = policy_scope(Investment)                        
-    @investments = @investments.order(initial_value: :desc).
-                                joins(:investor, :investee_entity).
-                                page params[:page]
-
+    @investments = policy_scope(Investment).includes(:investor, :investee_entity)
+    @investments = @investments.order(initial_value: :desc)
+                               .joins(:investor, :investee_entity)
+                               .page params[:page]
   end
 
   def investor_investments
-
-    if params[:entity_id].present?     
-      @entity = Entity.find(params[:entity_id])    
-      @investments = Investment.investments_for(current_user, @entity)      
+    if params[:entity_id].present?
+      @entity = Entity.find(params[:entity_id])
+      @investments = Investment.investments_for(current_user, @entity)
     end
-    
+
     @investments = @investments.order(initial_value: :desc).joins(:investor, :investee_entity).page params[:page]
 
     render "index"
@@ -28,17 +26,16 @@ class InvestmentsController < ApplicationController
     @entity = current_user.entity
     # params[:query] = params[:query].delete(' ') if params[:query].present? && params[:query].include?("Series")
     if current_user.has_role?(:super)
-      @investments = Investment.search(params[:query], :star => true)
+      @investments = Investment.search(params[:query], star: true)
     else
       # WE want to find investments that have the current_users entity as either and investor or investee
       investor_or_investee = "*, IF(investor_entity_id = #{current_user.entity_id} OR investee_entity_id = #{current_user.entity_id}, 1, 0) AS inv"
-      @investments = Investment.search(params[:query], :star => false, 
-        :select => investor_or_investee, :with => {'inv' => 1}, :sql => {:include => [:investor, :investee_entity]})
+      @investments = Investment.search(params[:query], star: false,
+                                                       select: investor_or_investee, with: { 'inv' => 1 }, sql: { include: %i[investor investee_entity] })
     end
 
     render "index"
   end
-
 
   # GET /investments/1 or /investments/1.json
   def show
@@ -99,15 +96,16 @@ class InvestmentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_investment
-      @investment = Investment.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def investment_params
-      params.require(:investment).permit(:investment_type, :investor_id, 
-        :investee_entity_id, :investor_type, :investment_instrument, :quantity, 
-        :category, :initial_value, :current_value, :status)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_investment
+    @investment = Investment.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def investment_params
+    params.require(:investment).permit(:investment_type, :investor_id,
+                                       :investee_entity_id, :investor_type, :investment_instrument, :quantity,
+                                       :category, :initial_value, :current_value, :status)
+  end
 end

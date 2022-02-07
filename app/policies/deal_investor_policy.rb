@@ -9,7 +9,6 @@ class DealInvestorPolicy < ApplicationPolicy
     end
   end
 
-
   def index?
     true
   end
@@ -37,5 +36,4 @@ class DealInvestorPolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

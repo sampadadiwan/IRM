@@ -11,7 +11,7 @@ set :branch, 'main'
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, "/var/www/my_app_name"
 set :deploy_to, "/home/ubuntu/IRM"
-set :ssh_options, forward_agent: :true
+set :ssh_options, forward_agent: true
 set :ssh_options, keys: "/home/thimmaiah/.ssh/altxdev.pem"
 
 # Default value for :format is :airbrussh.
@@ -49,19 +49,18 @@ set :puma_access_log, "#{release_path}/log/puma.error.log"
 set :puma_error_log,  "#{release_path}/log/puma.access.log"
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
-set :puma_init_active_record, false  # Change to true if using ActiveRecord
+set :puma_init_active_record, false # Change to true if using ActiveRecord
 
 namespace :deploy do
-
   desc "Uploads .env remote servers."
   task :upload_env do
     on roles(:app) do
       rails_env = fetch(:rails_env)
-      puts "Uploading .env files to #{release_path} #{rails_env}"
-      upload!("/data/work/IRM/.env", "#{release_path}", recursive: false)
-      upload!("/data/work/IRM/.env.local", "#{release_path}", recursive: false)
-      upload!("/data/work/IRM/.env.staging", "#{release_path}", recursive: false) # if rails_env == :staging
-      upload!("/data/work/IRM/.env.production", "#{release_path}", recursive: false) if rails_env == :production
+      Rails.logger.debug { "Uploading .env files to #{release_path} #{rails_env}" }
+      upload!("/data/work/IRM/.env", release_path.to_s, recursive: false)
+      upload!("/data/work/IRM/.env.local", release_path.to_s, recursive: false)
+      upload!("/data/work/IRM/.env.staging", release_path.to_s, recursive: false) # if rails_env == :staging
+      upload!("/data/work/IRM/.env.production", release_path.to_s, recursive: false) if rails_env == :production
     end
   end
 
@@ -81,19 +80,16 @@ namespace :deploy do
       invoke 'puma:restart'
     end
   end
-
 end
-
 
 namespace :puma do
-    desc 'Create Directories for Puma Pids and Socket'
-    task :make_dirs do
-      on roles(:app) do
-        execute "mkdir #{shared_path}/tmp/sockets -p"
-        execute "mkdir #{shared_path}/tmp/pids -p"
-      end
+  desc 'Create Directories for Puma Pids and Socket'
+  task :make_dirs do
+    on roles(:app) do
+      execute "mkdir #{shared_path}/tmp/sockets -p"
+      execute "mkdir #{shared_path}/tmp/pids -p"
     end
-  
-    # before :start, :make_dirs
+  end
+
+  # before :start, :make_dirs
 end
-         

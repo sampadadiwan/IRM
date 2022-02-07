@@ -1,25 +1,22 @@
 class DealInvestorsController < ApplicationController
-  before_action :set_deal_investor, :only => ["show", "update", "destroy", "edit"] 
+  before_action :set_deal_investor, only: %w[show update destroy edit]
 
   # GET /deal_investors or /deal_investors.json
   def index
-    @deal_investors = policy_scope(DealInvestor)
+    @deal_investors = policy_scope(DealInvestor).includes(:investor, :entity, :deal)
 
-    if params[:deal_id].present?
-      @deal_investors = @deal_investors.where(deal_id: params[:deal_id])
-    end
+    @deal_investors = @deal_investors.where(deal_id: params[:deal_id]) if params[:deal_id].present?
     @deal_investors = @deal_investors.page params[:page]
   end
 
   def search
     @entity = current_user.entity
-    investor_or_investee = "*, IF(investor_entity_id = #{current_user.entity_id} OR entity_id = #{current_user.entity_id}, 1, 0) AS inv"      
-    @deal_investors = DealInvestor.search(params[:query], :star => false, 
-      :select => investor_or_investee, :with => {'inv' => 1}, :sql => {:include => [:investor, :deal]})
+    investor_or_investee = "*, IF(investor_entity_id = #{current_user.entity_id} OR entity_id = #{current_user.entity_id}, 1, 0) AS inv"
+    @deal_investors = DealInvestor.search(params[:query], star: false,
+                                                          select: investor_or_investee, with: { 'inv' => 1 }, sql: { include: %i[investor deal] })
 
     render "index"
   end
-
 
   # GET /deal_investors/1 or /deal_investors/1.json
   def show
@@ -82,13 +79,14 @@ class DealInvestorsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_deal_investor
-      @deal_investor = DealInvestor.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def deal_investor_params
-      params.require(:deal_investor).permit(:deal_id, :investor_id, :status, :primary_amount, :secondary_investment, :entity_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_deal_investor
+    @deal_investor = DealInvestor.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def deal_investor_params
+    params.require(:deal_investor).permit(:deal_id, :investor_id, :status, :primary_amount, :secondary_investment, :entity_id)
+  end
 end

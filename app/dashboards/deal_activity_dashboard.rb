@@ -22,7 +22,7 @@ class DealActivityDashboard < Administrate::BaseDashboard
     title: Field::String,
     details: Field::Text,
     sequence: Field::Number,
-    days: Field::Number,
+    days: Field::Number
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -56,7 +56,7 @@ class DealActivityDashboard < Administrate::BaseDashboard
     deal_investor
     entity
     deal_docs
-    
+
   ].freeze
 
   # FORM_ATTRIBUTES

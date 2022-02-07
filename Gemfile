@@ -31,20 +31,19 @@ gem "jbuilder"
 gem "redis", "~> 4.0"
 
 gem 'devise'
-gem "pundit", git: "https://github.com/varvet/pundit.git" 
+gem "pundit", git: "https://github.com/varvet/pundit.git"
 gem "rolify"
 
-
 gem 'dotenv-rails'
-gem 'sidekiq'
 gem 'exception_notification'
-gem 'sassc-rails' 
+gem 'sassc-rails'
+gem 'sidekiq'
 
-gem 'thinking-sphinx', '~> 5.4'
 gem "aws-sdk-s3", require: false
+gem 'thinking-sphinx', '~> 5.4'
 
-gem 'paper_trail'
 gem 'kaminari'
+gem 'paper_trail'
 
 # Charting gems
 gem "chartkick"
@@ -83,14 +82,16 @@ group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
 end
 
-  gem "faker"
-  gem 'factory_bot_rails'
+gem 'factory_bot_rails'
+gem "faker"
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem "web-console"
-  gem 'rubocop-rails', require: false
+  gem 'annotate'
+  gem 'bullet'
   gem "letter_opener", group: :development
+  gem 'rubocop-rails', require: false
+  gem "web-console"
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
@@ -98,18 +99,18 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
   gem "capistrano", "~> 3.10", require: false
+  gem 'capistrano3-puma', group: :development
   gem "capistrano-rails", "~> 1.6", require: false
   gem 'capistrano-rvm'
-  gem 'capistrano3-puma' , group: :development
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem 'rspec-rails'
   gem 'capybara-email'
-  gem "selenium-webdriver"
-  gem "webdrivers"
   gem 'cucumber-rails', require: false
   gem 'database_cleaner-active_record'
+  gem 'rspec-rails'
+  gem "selenium-webdriver"
+  gem "webdrivers"
 end

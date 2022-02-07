@@ -16,7 +16,7 @@ class DocumentDashboard < Administrate::BaseDashboard
     visible_to: Field::String,
     text: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -42,7 +42,7 @@ class DocumentDashboard < Administrate::BaseDashboard
     created_at
     updated_at
     access_rights
-    
+
   ].freeze
 
   # FORM_ATTRIBUTES

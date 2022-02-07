@@ -1,26 +1,24 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, :except => ["welcome"]
-  before_action :set_user, :only => ["show", "update", "destroy", "edit"]  
-  after_action :verify_authorized, except: [:welcome, :index, :search]
+  before_action :authenticate_user!, except: ["welcome"]
+  before_action :set_user, only: %w[show update destroy edit]
+  after_action :verify_authorized, except: %i[welcome index search]
 
   # GET /users or /users.json
   def index
     @users = policy_scope(User)
   end
-  
-  def welcome
-  end
+
+  def welcome; end
 
   def search
-    if current_user.has_role?(:super)
-      @users = User.search(params[:query], :star => true)
-    else
-      @users = User.search(params[:query], :star => true, :with => {:entity_id => current_user.entity_id})
-    end
+    @users = if current_user.has_role?(:super)
+               User.search(params[:query], star: true)
+             else
+               User.search(params[:query], star: true, with: { entity_id: current_user.entity_id })
+             end
 
     render "index"
   end
-
 
   # GET /users/1 or /users/1.json
   def show
@@ -39,7 +37,6 @@ class UsersController < ApplicationController
     authorize @user
   end
 
-  
   # PATCH/PUT /users/1 or /users/1.json
   def update
     authorize @user

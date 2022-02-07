@@ -13,8 +13,8 @@ require 'rspec/rails'
 # Capybara.default_selector = :xpath
 
 # By default, any exception happening in your Rails application will bubble up
-# to Cucumber so that your scenario will fail. This is a different from how 
-# your application behaves in the production environment, where an error page will 
+# to Cucumber so that your scenario will fail. This is a different from how
+# your application behaves in the production environment, where an error page will
 # be rendered instead.
 #
 # Sometimes we want to override this default behaviour and allow Rails to rescue
@@ -44,7 +44,6 @@ end
 
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
-
 Capybara.run_server = true
 Capybara.server_port = 3000
 Capybara.default_max_wait_time = 5
@@ -56,10 +55,8 @@ Capybara.register_server :puma do |app, port, host|
   end.run.join
 end
 
-
 Capybara.server_host = "localhost"
 Capybara.app_host = 'http://localhost:3000'
-
 
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
@@ -72,18 +69,13 @@ Capybara.configure do |config|
   config.default_driver        = :selenium
 end
 
-
-
 module IRMUtils
-
   def key_values(entity, args)
-    key_val = Hash[args.split(";").map{|kv| kv.split("=")}]
+    key_val = args.split(";").to_h { |kv| kv.split("=") }
     key_val.each do |k, v|
       entity[k] = v
     end
   end
-
 end
-
 
 World(IRMUtils)

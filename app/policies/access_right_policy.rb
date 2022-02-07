@@ -9,7 +9,6 @@ class AccessRightPolicy < ApplicationPolicy
     end
   end
 
-
   def index?
     true
   end
@@ -41,5 +40,4 @@ class AccessRightPolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

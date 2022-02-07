@@ -9,26 +9,21 @@ class InvestmentPolicy < ApplicationPolicy
     end
   end
 
-
   def index?
     true
   end
 
   def show?
-
     if user.has_role?(:super) || user.entity_id == record.investee_entity_id
-      return true
-    elsif Investment.investments_for(user, record.investee_entity).
-          where("investments.id=?", record.id).first.present?
-      return true
+      true
     else
-      return false      
+      Investment.investments_for(user, record.investee_entity)
+                .where("investments.id=?", record.id).first.present?
     end
-
   end
 
   def create?
-    user.has_role?(:super) || user.entity_id == record.investee_entity_id 
+    user.has_role?(:super) || user.entity_id == record.investee_entity_id
   end
 
   def new?
@@ -46,5 +41,4 @@ class InvestmentPolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

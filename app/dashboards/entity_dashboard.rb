@@ -22,7 +22,7 @@ class EntityDashboard < Administrate::BaseDashboard
     created_by: Field::Number,
     investor_categories: Field::String,
     investment_types: Field::String,
-    instrument_types: Field::String,
+    instrument_types: Field::String
   }.freeze
 
   # COLLECTION_ATTRIBUTES

@@ -1,49 +1,44 @@
 class DocumentsController < ApplicationController
-  before_action :set_document, :only => ["show", "update", "destroy", "edit"] 
-  after_action :verify_authorized, except: [:index, :search, :investor_documents]
+  before_action :set_document, only: %w[show update destroy edit]
+  after_action :verify_authorized, except: %i[index search investor_documents]
 
   # GET /documents or /documents.json
   def index
-      @entity = current_user.entity
-      if params[:entity_id].present?
-        @entity = Entity.find(params[:entity_id])
-        # @documents = Document.documents_for(current_user, @entity)
-      else
-        # @documents = @documents.includes(:owner)
-      end
-      @documents = policy_scope(Document)
-      @documents = @documents.page params[:page]
+    @entity = current_user.entity
+    if params[:entity_id].present?
+      @entity = Entity.find(params[:entity_id])
+      # @documents = Document.documents_for(current_user, @entity)
+    else
+      # @documents = @documents.includes(:owner)
+    end
+    @documents = policy_scope(Document)
+    @documents = @documents.page params[:page]
   end
 
   def investor_documents
-
-    if params[:entity_id].present?     
+    if params[:entity_id].present?
       @entity = Entity.find(params[:entity_id])
       @documents = Document.for_investor(current_user, @entity)
     end
-    
+
     @documents = @documents.order(id: :desc).page params[:page]
 
     render "index"
   end
 
-
   def search
     @entity = current_user.entity
-    if current_user.has_role?(:super)
-      @documents = Document.search(params[:query], :star => true)
-    else
-      @documents = Document.search(params[:query], :star => false, with: {:owner_id => current_user.entity_id})
-    end
+    @documents = if current_user.has_role?(:super)
+                   Document.search(params[:query], star: true)
+                 else
+                   Document.search(params[:query], star: false, with: { owner_id: current_user.entity_id })
+                 end
 
     render "index"
   end
 
-
   # GET /documents/1 or /documents/1.json
-  def show
-    
-  end
+  def show; end
 
   # GET /documents/new
   def new
@@ -52,16 +47,14 @@ class DocumentsController < ApplicationController
   end
 
   # GET /documents/1/edit
-  def edit
-    
-  end
+  def edit; end
 
   # POST /documents or /documents.json
   def create
     @document = Document.new(document_params)
-    @document.entity_id = current_user.entity_id    
+    @document.entity_id = current_user.entity_id
     authorize @document
-    
+
     respond_to do |format|
       if @document.save
         format.html { redirect_to document_url(@document), notice: "Document was successfully created." }
@@ -75,7 +68,6 @@ class DocumentsController < ApplicationController
 
   # PATCH/PUT /documents/1 or /documents/1.json
   def update
-    
     respond_to do |format|
       if @document.update(document_params)
         format.html { redirect_to document_url(@document), notice: "Document was successfully updated." }
@@ -89,7 +81,6 @@ class DocumentsController < ApplicationController
 
   # DELETE /documents/1 or /documents/1.json
   def destroy
-    
     @document.destroy
 
     respond_to do |format|
@@ -99,14 +90,15 @@ class DocumentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_document
-      @document = Document.find(params[:id])
-      authorize @document
-    end
 
-    # Only allow a list of trusted parameters through.
-    def document_params
-      params.require(:document).permit(:name, :file, :text, :entity_id, :video)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_document
+    @document = Document.find(params[:id])
+    authorize @document
+  end
+
+  # Only allow a list of trusted parameters through.
+  def document_params
+    params.require(:document).permit(:name, :file, :text, :entity_id, :video)
+  end
 end

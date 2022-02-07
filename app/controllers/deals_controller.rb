@@ -1,23 +1,23 @@
 class DealsController < ApplicationController
-  before_action :set_deal, :only => ["show", "update", "destroy", "edit", "start_deal"] 
-  after_action :verify_authorized, except: [:index, :search, :investor_deals]
+  before_action :set_deal, only: %w[show update destroy edit start_deal]
+  after_action :verify_authorized, except: %i[index search investor_deals]
 
   # GET /deals or /deals.json
   def index
     @deals = policy_scope(Deal)
 
-    if params[:other_deals].present?
-      @deals = Deal.deals_for_vc(current_user)
-    else
-      @deals = @deals.includes(:entity)
-    end
+    @deals = if params[:other_deals].present?
+               Deal.deals_for_vc(current_user)
+             else
+               @deals.includes(:entity)
+             end
 
     @deals = @deals.page params[:page]
   end
 
   def search
     @entity = current_user.entity
-    @deals = Deal.search(params[:query], :star => false, with: {:entity_id => current_user.entity_id})
+    @deals = Deal.search(params[:query], star: false, with: { entity_id: current_user.entity_id })
 
     render "index"
   end
@@ -35,7 +35,7 @@ class DealsController < ApplicationController
       render "grid_view"
     else
       render "show"
-    end    
+    end
   end
 
   # GET /deals/new
@@ -53,11 +53,11 @@ class DealsController < ApplicationController
   def start_deal
     authorize @deal
     @deal.start_deal
-    
+
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.replace('deal_show', partial: "deals/show", locals: {deal: @deal})
+          turbo_stream.replace('deal_show', partial: "deals/show", locals: { deal: @deal })
         ]
       end
       format.html { redirect_to deal_url(@deal), notice: "Deal was successfully started." }
@@ -108,13 +108,14 @@ class DealsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_deal
-      @deal = Deal.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def deal_params
-      params.require(:deal).permit(:entity_id, :name, :amount, :status, :activity_list)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_deal
+    @deal = Deal.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def deal_params
+    params.require(:deal).permit(:entity_id, :name, :amount, :status, :activity_list)
+  end
 end

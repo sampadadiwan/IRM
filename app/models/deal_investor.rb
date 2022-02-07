@@ -1,6 +1,22 @@
+# == Schema Information
+#
+# Table name: deal_investors
+#
+#  id                   :integer          not null, primary key
+#  deal_id              :integer          not null
+#  investor_id          :integer          not null
+#  status               :string(20)
+#  primary_amount       :decimal(10, )
+#  secondary_investment :decimal(10, )
+#  entity_id            :integer          not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  investor_entity_id   :integer
+#
+
 class DealInvestor < ApplicationRecord
   has_paper_trail
-  ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
+  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   belongs_to :deal
   belongs_to :investor
@@ -15,41 +31,39 @@ class DealInvestor < ApplicationRecord
   delegate :name, to: :entity, prefix: :entity
   delegate :name, to: :deal, prefix: :deal
 
-  STATUS = ["Active", "Pending", "Declined"]
-  
+  STATUS = %w[Active Pending Declined].freeze
 
-  scope :for, -> (user) { where("investors.investor_entity_id=?", user.entity_id).joins(:investor) }
+  scope :for, ->(user) { where("investors.investor_entity_id=?", user.entity_id).joins(:investor) }
 
   before_save :set_investor_entity_id
   def set_investor_entity_id
-    self.investor_entity_id = self.investor.investor_entity_id
+    self.investor_entity_id = investor.investor_entity_id
   end
 
   def create_activites
-    start_date = self.deal.start_date    
+    start_date = deal.start_date
     by_date = nil
     seq = 1
     days_to_completion = 0
 
-    DealActivity.templates(self.deal).each do |template|
-
+    DealActivity.templates(deal).each do |template|
       if start_date
         days_to_completion += template.days
         by_date = start_date + days_to_completion.days
       end
 
-      existing_activity = DealActivity.where(deal_id: self.deal_id, deal_investor_id: self.id).
-                            where(title: template.title).first
-      
+      existing_activity = DealActivity.where(deal_id: deal_id, deal_investor_id: id)
+                                      .where(title: template.title).first
+
       if existing_activity.present?
         existing_activity.update(sequence: template.sequence, days: template.days, by_date: by_date)
       else
-        DealActivity.create(deal_id: self.deal_id, deal_investor_id: self.id, 
-                            entity_id: self.entity_id, title: template.title, 
+        DealActivity.create(deal_id: deal_id, deal_investor_id: id,
+                            entity_id: entity_id, title: template.title,
                             sequence: template.sequence, days: template.days,
                             by_date: by_date)
       end
-      
+
       seq += 1
     end
   end

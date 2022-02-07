@@ -8,7 +8,7 @@ Style/Documentation:
 Layout/LineLength:
   Enabled: false
 AllCops:
+  NewCops: enable
   Include:
-    - 'app'
-    - 'config'
-    - 'lib'
+    - 'app/*'
+    - 'lib/*'

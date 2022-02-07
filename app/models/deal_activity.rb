@@ -1,8 +1,27 @@
+# == Schema Information
+#
+# Table name: deal_activities
+#
+#  id               :integer          not null, primary key
+#  deal_id          :integer          not null
+#  deal_investor_id :integer
+#  by_date          :date
+#  status           :string(20)
+#  completed        :boolean
+#  entity_id        :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  title            :string(255)
+#  details          :text(65535)
+#  sequence         :integer
+#  days             :integer
+#
+
 class DealActivity < ApplicationRecord
   has_paper_trail
-  acts_as_list scope: [:deal_investor, :deal], column: :sequence
+  acts_as_list scope: %i[deal_investor deal], column: :sequence
 
-  ThinkingSphinx::Callbacks.append(self, :behaviours => [:real_time])
+  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   default_scope { order(sequence: :asc) }
 
@@ -12,28 +31,25 @@ class DealActivity < ApplicationRecord
 
   has_many :deal_docs, dependent: :destroy
 
-
   delegate :investor_name, to: :deal_investor, allow_nil: true
   delegate :name, to: :entity, prefix: :entity
   delegate :name, to: :deal, prefix: :deal
 
   has_rich_text :details
 
-  scope :templates,  ->(deal) { where(deal_id: deal.id).where(deal_investor_id:nil) }
+  scope :templates, ->(deal) { where(deal_id: deal.id).where(deal_investor_id: nil) }
 
   before_save :set_defaults
 
   def set_defaults
-    self.status = "Template" if self.deal_investor_id == nil
-  end
-  
-  def completed_status
-    self.completed ? "Yes" : "No"
+    self.status = "Template" if deal_investor_id.nil?
   end
 
+  def completed_status
+    completed ? "Yes" : "No"
+  end
 
   def summary
-    self.status.present? ? self.status : completed_status
+    status.presence || completed_status
   end
-
 end

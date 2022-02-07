@@ -1,51 +1,45 @@
 class EntitiesController < ApplicationController
-  before_action :set_entity, :only => ["show", "update", "destroy", "edit"]  
-  after_action :verify_authorized, except: [:dashboard, :search, :index, :investor_entities]
+  before_action :set_entity, only: %w[show update destroy edit]
+  after_action :verify_authorized, except: %i[dashboard search index investor_entities]
 
   # GET /entities or /entities.json
   def index
     @entities = policy_scope(Entity)
-    render "index", locals: {vc_view: false}
+    render "index", locals: { vc_view: false }
   end
 
   def dashboard
-    @entities = Entity.with_role(:all_investment_access, current_user). 
-                or(Entity.with_role(:self_investment_access, current_user))
+    @entities = Entity.with_role(:all_investment_access, current_user)
+                      .or(Entity.with_role(:self_investment_access, current_user))
   end
 
   def investor_entities
     @entities = Entity.for_investor(current_user)
-    render "index", locals: {vc_view: true}
+    render "index", locals: { vc_view: true }
   end
 
   def search
-    if current_user.has_role?(:super)
-      @entities = Entity.search(params[:query], :star => true)
-    else
-      @entities = Entity.search(params[:query], :star => false)
-    end
+    @entities = if current_user.has_role?(:super)
+                  Entity.search(params[:query], star: true)
+                else
+                  Entity.search(params[:query], star: false)
+                end
 
-    render "index", locals: {vc_view: true}
+    render "index", locals: { vc_view: true }
   end
-
 
   # GET /entities/1 or /entities/1.json
-  def show
-    
-  end
+  def show; end
 
   # GET /entities/new
-  def new
-  end
+  def new; end
 
   # GET /entities/1/edit
-  def edit
-    
-  end
+  def edit; end
 
   # POST /entities or /entities.json
   def create
-    @entity =  Entity.new(entity_params)  
+    @entity = Entity.new(entity_params)
     @entity.created_by = current_user.id
     authorize @entity
 
@@ -62,7 +56,6 @@ class EntitiesController < ApplicationController
 
   # PATCH/PUT /entities/1 or /entities/1.json
   def update
-    
     respond_to do |format|
       if @entity.update(entity_params)
         format.html { redirect_to entity_url(@entity), notice: "Entity was successfully updated." }
@@ -76,7 +69,6 @@ class EntitiesController < ApplicationController
 
   # DELETE /entities/1 or /entities/1.json
   def destroy
-    
     @entity.destroy
 
     respond_to do |format|
@@ -96,7 +88,7 @@ class EntitiesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def entity_params
     params.require(:entity).permit(:name, :url, :category, :founded, :entity_type,
-                                    :funding_amount, :funding_unit, :details, :logo_url,
-                                  :investor_categories, :investment_types, :instrument_types)
+                                   :funding_amount, :funding_unit, :details, :logo_url,
+                                   :investor_categories, :investment_types, :instrument_types)
   end
 end

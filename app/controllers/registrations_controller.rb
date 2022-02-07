@@ -1,29 +1,24 @@
 class RegistrationsController < Devise::RegistrationsController
+  prepend_before_action :require_no_authentication, only: %i[new cancel]
 
-  prepend_before_action :require_no_authentication, only: [:new, :cancel]
-
-    # POST /resource
+  # POST /resource
   def create
-    
     build_resource(sign_up_params)
     # Ensure role is always Employee
     resource.add_role :employee
-    
+
     # Ensure that users are created only for the same enetity as the logged in user.
     if current_user && !current_user.has_role?(:super)
-      resource.entity_id = current_user.entity_id 
+      resource.entity_id = current_user.entity_id
       logger.debug "Setting new user entity to logged in users entity #{current_user.entity_id}"
     else
       # Check if this user was invited as an investor
       ar = AccessRight.user_access(resource).first
-      if ar
-        # Ensure this user is a user of the investor entity 
-        ar.update_user
-      end
+      # Ensure this user is a user of the investor entity
+      ar&.update_user
     end
 
     resource.save
-    
 
     yield resource if block_given?
     if resource.persisted?
@@ -43,20 +38,17 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
-
   protected
 
   def after_sign_up_path_for(resource)
     if current_user
       dashboard_entities_path
-    else 
-      after_sign_in_path_for(resource) if is_navigational_format?
+    elsif is_navigational_format?
+      after_sign_in_path_for(resource)
     end
   end
 
-  
-  def after_inactive_sign_up_path_for(resource)
+  def after_inactive_sign_up_path_for(_resource)
     welcome_users_path
   end
-
 end

@@ -17,8 +17,8 @@ class UserDashboard < Administrate::BaseDashboard
     email: Field::String,
     phone: Field::String,
     active: Field::Boolean,
-    confirmed_at: Field::DateTime,
-    
+    confirmed_at: Field::DateTime
+
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -33,7 +33,7 @@ class UserDashboard < Administrate::BaseDashboard
     email
     active
     created_at
-    entity    
+    entity
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -49,7 +49,7 @@ class UserDashboard < Administrate::BaseDashboard
     phone
     active
     confirmed_at
-   
+
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -62,7 +62,7 @@ class UserDashboard < Administrate::BaseDashboard
     email
     phone
     active
-  
+
   ].freeze
 
   # COLLECTION_FILTERS

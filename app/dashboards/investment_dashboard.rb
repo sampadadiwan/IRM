@@ -20,7 +20,7 @@ class InvestmentDashboard < Administrate::BaseDashboard
     current_value: Field::String.with_options(searchable: false),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    category: Field::String,
+    category: Field::String
   }.freeze
 
   # COLLECTION_ATTRIBUTES

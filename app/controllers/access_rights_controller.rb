@@ -1,27 +1,20 @@
 class AccessRightsController < ApplicationController
-  before_action :set_access_right, :only => ["show", "update", "destroy", "edit"] 
+  before_action :set_access_right, only: %w[show update destroy edit]
 
   # GET /access_rights or /access_rights.json
   def index
+    @access_rights = policy_scope(AccessRight).includes(:owner, :investor)
 
-    @access_rights = policy_scope(AccessRight)
+    @access_rights = @access_rights.deals.where(owner_id: params[:deal_id]) if params[:deal_id].present?
 
-    if params[:deal_id].present?
-      @access_rights = @access_rights.deals.where(owner_id: params[:deal_id])
-    end
-
-    if params[:access_to_investor_id].present?
-      @access_rights = @access_rights.deals.where(access_to_investor_id: params[:access_to_investor_id])
-    end
+    @access_rights = @access_rights.deals.where(access_to_investor_id: params[:access_to_investor_id]) if params[:access_to_investor_id].present?
   end
-
 
   def search
     @entity = current_user.entity
-    @access_rights = AccessRight.search(params[:query], :star => false, with: {:entity_id => current_user.entity_id})
+    @access_rights = AccessRight.search(params[:query], star: false, with: { entity_id: current_user.entity_id })
     render "index"
   end
-
 
   # GET /access_rights/1 or /access_rights/1.json
   def show
@@ -36,10 +29,10 @@ class AccessRightsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.append('new_access_right', partial: "access_rights/form", locals: {access_right: @access_right, hide_owner: true})
+          turbo_stream.append('new_access_right', partial: "access_rights/form", locals: { access_right: @access_right, hide_owner: true })
         ]
       end
-      format.html 
+      format.html
     end
   end
 
@@ -55,13 +48,13 @@ class AccessRightsController < ApplicationController
     authorize @access_right
 
     respond_to do |format|
-      if @access_right.save   
+      if @access_right.save
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.prepend('access_rights_table_body', partial: "access_rights/access_right", locals: {access_right: @access_right})
+            turbo_stream.prepend('access_rights_table_body', partial: "access_rights/access_right", locals: { access_right: @access_right })
           ]
         end
-             
+
         format.html { redirect_to access_right_url(@access_right), notice: "Access right was successfully created." }
         format.json { render :show, status: :created, location: @access_right }
       else
@@ -74,8 +67,8 @@ class AccessRightsController < ApplicationController
   # PATCH/PUT /access_rights/1 or /access_rights/1.json
   def update
     authorize @access_right
-    @access_right.entity_id = current_user.entity_id    
-    
+    @access_right.entity_id = current_user.entity_id
+
     respond_to do |format|
       if @access_right.update(access_right_params)
         format.html { redirect_to access_right_url(@access_right), notice: "Access right was successfully updated." }
@@ -104,14 +97,15 @@ class AccessRightsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_access_right
-      @access_right = AccessRight.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def access_right_params
-      params.require(:access_right).permit(:owner_id, :owner_type, :access_to_email, 
-        :access_to_investor_id, :access_type, :metadata, :entity_id, :access_to_category)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_access_right
+    @access_right = AccessRight.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def access_right_params
+    params.require(:access_right).permit(:owner_id, :owner_type, :access_to_email,
+                                         :access_to_investor_id, :access_type, :metadata, :entity_id, :access_to_category)
+  end
 end

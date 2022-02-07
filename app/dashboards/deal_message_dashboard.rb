@@ -13,7 +13,7 @@ class DealMessageDashboard < Administrate::BaseDashboard
     rich_text_content: RichTextAreaField,
     id: Field::Number,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

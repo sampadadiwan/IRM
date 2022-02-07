@@ -18,7 +18,7 @@ class AccessRightDashboard < Administrate::BaseDashboard
     metadata: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    access_to_category: Field::String,
+    access_to_category: Field::String
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -41,13 +41,13 @@ class AccessRightDashboard < Administrate::BaseDashboard
     entity
     investor
     id
-    access_to_email    
+    access_to_email
     access_to_category
     access_type
     metadata
     created_at
     updated_at
-    
+
   ].freeze
 
   # FORM_ATTRIBUTES

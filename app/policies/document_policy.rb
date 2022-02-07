@@ -9,21 +9,18 @@ class DocumentPolicy < ApplicationPolicy
     end
   end
 
-
   def index?
     true
   end
 
   def show?
-    if user.has_role?(:super) 
+    if user.has_role?(:super)
       true
-    elsif (user.entity_id == record.entity_id)
+    elsif user.entity_id == record.entity_id
       true
-    elsif Document.for_investor(user, record.entity).
-          where("documents.id=?", record.id).first.present?
-      true 
     else
-      false
+      Document.for_investor(user, record.entity)
+              .where("documents.id=?", record.id).first.present?
     end
   end
 
@@ -46,5 +43,4 @@ class DocumentPolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

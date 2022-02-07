@@ -15,7 +15,7 @@ class InvestorDashboard < Administrate::BaseDashboard
     category: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    investor_name: Field::String,
+    investor_name: Field::String
   }.freeze
 
   # COLLECTION_ATTRIBUTES
