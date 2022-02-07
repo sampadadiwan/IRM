@@ -90,8 +90,9 @@ group :development do
   gem 'annotate'
   gem 'bullet'
   gem "letter_opener", group: :development
-  gem 'rubocop-rails', require: false
+  gem 'overcommit', '~> 0.58.0'
   gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
   gem "web-console"
 

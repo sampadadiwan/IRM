@@ -53,7 +53,7 @@ class Deal < ApplicationRecord
   end
 
   def start_deal
-    self.start_date = Date.today
+    self.start_date = Time.zone.today
     save
     GenerateDealActivitiesJob.perform_later(id)
   end

@@ -15,16 +15,29 @@ Metrics/AbcSize:
   Enabled: false
 Rails/InverseOf:
   Enabled: false
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+
 AllCops:
-  DisabledByDefault: true
+  # DisabledByDefault: true
   NewCops: enable
   Exclude:
     - 'vendor/**/*'
     - 'db/**/*'
     - 'lib/**/*'
+    - 'features/**/*'
+    - 'bin/**/*'
     - 'test/factories.rb'
 
-
+Rails/HasAndBelongsToMany:
+  Exclude:
+    - 'app/models/role.rb'
+Naming/MethodName:
+  Exclude:
+    - 'app/models/investment.rb'
+    - 'app/models/investor.rb'
 
 # Metrics Cops
 

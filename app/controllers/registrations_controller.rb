@@ -53,5 +53,4 @@ class RegistrationsController < Devise::RegistrationsController
       ar&.update_user
     end
   end
-
 end

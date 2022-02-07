@@ -5,12 +5,12 @@ class DocumentsController < ApplicationController
   # GET /documents or /documents.json
   def index
     @entity = current_user.entity
-    if params[:entity_id].present?
-      @entity = Entity.find(params[:entity_id])
-      # @documents = Document.documents_for(current_user, @entity)
-    else
-      # @documents = @documents.includes(:owner)
-    end
+    # if params[:entity_id].present?
+    #   @entity = Entity.find(params[:entity_id])
+    #   # @documents = Document.documents_for(current_user, @entity)
+    # else
+    #   # @documents = @documents.includes(:owner)
+    # end
     @documents = policy_scope(Document)
     @documents = @documents.page params[:page]
   end

@@ -14,9 +14,7 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def show?
-    if user.has_role?(:super)
-      true
-    elsif user.entity_id == record.entity_id
+    if user.has_role?(:super) || user.entity_id == record.entity_id
       true
     else
       Document.for_investor(user, record.entity)

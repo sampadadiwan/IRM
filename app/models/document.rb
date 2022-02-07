@@ -76,7 +76,7 @@ class Document < ApplicationRecord
     direct_access.or(category_access).distinct
   end
 
-  def is_video?
+  def video?
     file_content_type.include?('video')
   end
 end

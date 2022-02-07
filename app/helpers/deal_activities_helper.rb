@@ -2,9 +2,9 @@ module DealActivitiesHelper
   def activity_color(deal_activity)
     if deal_activity.completed
       "btn-outline-success"
-    elsif deal_activity.by_date < Date.today
+    elsif deal_activity.by_date < Time.zone.today
       "btn-outline-danger"
-    elsif deal_activity.by_date == Date.today
+    elsif deal_activity.by_date == Time.zone.today
       "btn-outline-warning"
     else
       "btn-outline-secondary"
@@ -14,9 +14,9 @@ module DealActivitiesHelper
   def completed_badge(deal_activity)
     if deal_activity.completed
       "bg-success"
-    elsif deal_activity.by_date < Date.today
+    elsif deal_activity.by_date < Time.zone.today
       "bg-danger"
-    elsif deal_activity.by_date == Date.today
+    elsif deal_activity.by_date == Time.zone.today
       "bg-warning"
     else
       "bg-info"

@@ -14,9 +14,7 @@ class DealPolicy < ApplicationPolicy
   end
 
   def show?
-    if user.has_role?(:super)
-      true
-    elsif user.entity_id == record.entity_id
+    if user.has_role?(:super) || user.entity_id == record.entity_id
       true
     else
       Deal.for_investor(user).where("deals.id=?", record.id).first.present?

@@ -1,8 +1,6 @@
 class EntityPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.has_role?(:super)
-      end
       scope.all
     end
   end
