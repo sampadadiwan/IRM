@@ -8,9 +8,9 @@ Scenario Outline: Login Successfully
   Then I should see the "<msg>"
 
   Examples:
-  	|user	      			|entity               |msg	|
-  	|role=Employee  	|entity_type=VC       |Signed in successfully|
-    |role=Employee  	|entity_type=Startup  |Signed in successfully|
+  	|user	      |entity               |msg	|
+  	|  	        |entity_type=VC       |Signed in successfully|
+    |  	        |entity_type=Startup  |Signed in successfully|
 
 Scenario Outline: Login Successfully
   Given there is a user "<user>"
@@ -19,9 +19,9 @@ Scenario Outline: Login Successfully
   Then I should see the "<msg>"
 
   Examples:
-  	|user	      			    |msg	|
-  	|role=Employee  	    |Signed in successfully|
-    |role=Employee  	    |Signed in successfully|
+  	|user	  |msg	|
+  	|  	    |Signed in successfully|
+    |  	    |Signed in successfully|
 
 
 Scenario Outline: Login Incorrectly
@@ -31,6 +31,6 @@ Scenario Outline: Login Incorrectly
   Then I should see the "<msg>"
 
   Examples:
-  	|user		        |msg	|
-  	|role=Employee	|Invalid Email or password|
+  	|user		|msg	|
+  	|	      |Invalid Email or password|
     

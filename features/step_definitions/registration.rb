@@ -10,8 +10,8 @@
       fill_in("user_#{k}", with: @user[k])
     end
   
-    fill_in("user_password", with: @user.email)
-    fill_in("user_password_confirmation", with: @user.email)
+    fill_in("user_password", with: "password")
+    fill_in("user_password_confirmation", with: "password")
 
     find("#register_btn").click
   end

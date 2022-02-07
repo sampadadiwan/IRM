@@ -2,7 +2,7 @@ Feature: Registration
   Registration should work properly
 
 Scenario Outline: User Registration Successfully
-  Given there is an unsaved user "<user>"
+  Given there is an unsaved user "<user>" for an entity "<entity>"
   And I am at the registration page
   When I fill and submit the registration page
   Then I should see the "<msg1>"
@@ -13,8 +13,8 @@ Scenario Outline: User Registration Successfully
   When I fill and submit the login page
   Then I should see the "<msg2>"
   Examples:
-  	|user		         |msg1											                                              |msg2		  |
-  	|role=Employee	 |A message with a confirmation link has been sent to your email address.	|Signed in successfully	|
-    |role=Employee   |A message with a confirmation link has been sent to your email address. |Signed in successfully  |
-    |role=Employee	 |A message with a confirmation link has been sent to your email address.	|Signed in successfully	|
+  	|user		|entity             |msg1											                                              |msg2		  |
+  	| 	    |entity_type=VC     |A message with a confirmation link has been sent to your email address.	|Signed in successfully	|
+    |       |entity_type=Startup|A message with a confirmation link has been sent to your email address. |Signed in successfully  |
+    | 	    |entity_type=VC     |A message with a confirmation link has been sent to your email address.	|Signed in successfully	|
 

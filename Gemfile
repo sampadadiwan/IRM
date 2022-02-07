@@ -106,10 +106,10 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem 'rspec'
+  gem 'rspec-rails'
   gem 'capybara-email'
   gem "selenium-webdriver"
   gem "webdrivers"
   gem 'cucumber-rails', require: false
-  gem 'database_cleaner'
+  gem 'database_cleaner-active_record'
 end

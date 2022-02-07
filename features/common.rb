@@ -33,6 +33,16 @@ Given(/^there is an unsaved user "([^"]*)"$/) do |arg1|
   puts @user.to_json
 end
 
+Given('there is an unsaved user {string} for an entity {string}') do |arg1, arg2|
+  @entity = FactoryBot.create(:entity)  
+  key_values(@entity, arg2)
+
+  @user = FactoryBot.build(:user, entity: @entity)
+  key_values(@user, arg1)
+  puts "\n####User####\n"
+  puts @user.to_json
+end
+
 
 Then(/^I should see the "([^"]*)"$/) do |arg1|
   expect(page).to have_content(arg1)

@@ -77,7 +77,7 @@ FactoryBot.define do
     entity {Entity.all.shuffle.first}
     first_name { Faker::Name.first_name }
     last_name  { Faker::Name.last_name }
-    email { first_name + "@" + entity.name.parameterize + ".com" }
+    email { entity ? first_name.downcase + "@" + entity.name.parameterize + ".com" : Faker::Internet.email }
     password { "password" }
     phone { Faker::PhoneNumber.cell_phone }
     confirmed_at {Time.now}
