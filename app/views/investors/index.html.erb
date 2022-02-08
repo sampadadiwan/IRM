@@ -5,26 +5,30 @@
   <%= link_to "New Investor", new_investor_path("investor[investee_entity_id]": current_user.entity_id), {class: "btn btn-primary"}  %>
 </div>
 
-<table id="investors" class="table table-bordered dataTable">
-  <tr>
-    <th>
-      Investor
-    </th>
-    <th>
-      Investee Entity
-    </th>
-    <th>
-      Category
-    </th>
+<div class="table-responsive">
 
-    <th>
-    </th>
-  </tr>
+  <table id="investors" class="table table-bordered dataTable">
+    <tr>
+      <th>
+        Investor
+      </th>
+      <th>
+        Investee Entity
+      </th>
+      <th class="">
+        Category
+      </th>
 
-  <% @investors.each do |investor| %>
-    <%= render investor %>
-  <% end %>
-</table>
+      <th>
+      </th>
+    </tr>
+
+    <% @investors.each do |investor| %>
+      <%= render investor %>
+    <% end %>
+  </table>
 
 
-<%= paginate @investors %>
+  <%= paginate @investors %>
+
+</div>

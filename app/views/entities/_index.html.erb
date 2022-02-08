@@ -3,26 +3,28 @@
   <h1 class="h3 mb-0 text-gray-800">Entities</h1>
 </div>
 
+<div class="table-responsive">
 
-<table id="entities" class="table table-bordered dataTable">
-  <tr>
-    <th>
-      Name
-    </th>
-    <th>
-      Category
-    </th>
-    <th>
-      Type
-    </th>
-    <th>
-    </th>  
-  </tr>
+  <table id="entities" class="table table-bordered dataTable">
+    <tr>
+      <th>
+        Name
+      </th>
+      <th>
+        Category
+      </th>
+      <th>
+        Type
+      </th>
+      <th>
+      </th>  
+    </tr>
 
 
-  <% entities.each do |entity| %>
-    <%= render "entities/entity", entity: entity, vc_view: vc_view %>
-  <% end %>
-</table>
+    <% entities.each do |entity| %>
+      <%= render "entities/entity", entity: entity, vc_view: vc_view %>
+    <% end %>
+  </table>
 
+</div>
 

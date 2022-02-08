@@ -1,29 +1,31 @@
 <tr id="<%= dom_id deal_activity %>" class="item">
-    <td>
+    <td class="">
         <% if params[:template].present? %>
-        <i class="fas fa-arrows-alt handle"></i>
+            <i class="fas fa-arrows-alt handle"></i>
         <% end %>
         <%= deal_activity.sequence %>
-    </td>  
+    </td>
     <td>
         <%= link_to deal_activity.title, deal_activity %>
-    </td>  
-    <td>
+    </td>
+    <td class="">
         <%= link_to deal_activity.deal_name, deal_activity.deal %>
-    </td>  
-    <td>
+    </td>
+    <td class="">
         <%= link_to deal_activity.investor_name, deal_activity.deal_investor if deal_activity.deal_investor %>
-    </td>  
+    </td>
     <td>
         <%= l deal_activity.by_date if deal_activity.by_date %>
-    </td>  
-    <td>
+    </td>
+    <td class="">
         <%= deal_activity.status %>
-    </td>  
+    </td>
     <td>
-        <span class="badge <%= completed_badge(deal_activity) %>"><%= deal_activity.completed_status %></span>
-    </td>  
-    <td>
+        <span class="badge <%= completed_badge(deal_activity) %>">
+            <%= deal_activity.completed_status %>
+        </span>
+    </td>
+    <td class="">
         <%= deal_activity.days %>
-</td>  
+    </td>
 </tr>

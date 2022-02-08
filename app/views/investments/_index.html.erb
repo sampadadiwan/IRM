@@ -5,36 +5,39 @@
       {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
 </div>
 
-<table id="investments" class="table table-bordered dataTable">
+<div class="table-responsive">
 
-  <tr>
-    <th>
-      Investment Type
-    </th>
-    <th>
-      Investor Company      
-    </th>
-    <th>
-      Investee Company
-    </th>
+  <table id="investments" class="table table-bordered dataTable">
 
-    <% if !params[:prospective] %>
+    <tr>
       <th>
-        Investment Instrument
+        Investment Type
       </th>
       <th>
-        Quantity
+        Investor Company      
       </th>
       <th>
-        Initial Value
+        Investee Company
       </th>
+
+      <% if !params[:prospective] %>
+        <th>
+          Investment Instrument
+        </th>
+        <th>
+          Quantity
+        </th>
+        <th>
+          Initial Value
+        </th>
+      <% end %>
+      <th>
+      </th>
+    </tr>
+
+    <% investments.each do |investment| %>
+      <%= render investment %>
     <% end %>
-    <th>
-    </th>
-  </tr>
+  </table>
 
-  <% investments.each do |investment| %>
-    <%= render investment %>
-  <% end %>
-</table>
-
+</div>

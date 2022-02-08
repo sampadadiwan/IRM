@@ -7,39 +7,42 @@
   <% end %>
 </div>
 
-<table id="deal_activities" class="table table-bordered dataTable">
-  <thead>
-    <tr>
-      <th>
-        Sequence
-      </th>
-      <th>
-        Activity
-      </th>
-      <th>
-        Deal
-      </th>
-      <th>
-        Deal Investor
-      </th>
-      <th>
-        By Date
-      </th>
-      <th>
-        Status
-      </th>
-      <th>
-        Completed
-      </th>
-      <th>
-        Days
-      </th>
-    </tr>
-  </thead>
-  <tbody id="deal_activities_tbody">
-    <% deal_activities.each do |deal_activity| %>
-      <%= render deal_activity %>
-    <% end %>
-  </tbody>
-</table>
+<div class="table-responsive">
 
+  <table id="deal_activities" class="table table-bordered dataTable">
+    <thead>
+      <tr>
+        <th class="">
+          Sequence
+        </th>
+        <th>
+          Activity
+        </th>
+        <th class="">
+          Deal
+        </th>
+        <th class="">
+          Deal Investor
+        </th>
+        <th>
+          By Date
+        </th>
+        <th class="">
+          Status
+        </th>
+        <th>
+          Done
+        </th>
+        <th class="">
+          Days
+        </th>
+      </tr>
+    </thead>
+    <tbody id="deal_activities_tbody">
+      <% deal_activities.each do |deal_activity| %>
+        <%= render deal_activity %>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

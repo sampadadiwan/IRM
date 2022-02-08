@@ -3,26 +3,30 @@
   <%= link_to "New Deal Investor", new_deal_investor_path(deal_id: @deal.id), {class: "btn btn-primary"} if @deal %>
 </div>
 
-<table id="deal_investors" class="table table-bordered dataTable">
-  <tr>
-    <th>
-      Deal
-    </th>
-    <th>
-      Investor
-    </th>
-    <th>
-      Primary Amount
-    </th>
-    <th>
-      Secondary Investment
-    </th>
-    <th>
-      Entity
-    </th>
-  </tr>
+<div class="table-responsive">
 
-  <% deal_investors.each do |deal_investor| %>
-    <%= render deal_investor %>
-  <% end %>
-</table>
+  <table id="deal_investors" class="table table-bordered dataTable">
+    <tr>
+      <th>
+        Deal
+      </th>
+      <th>
+        Investor
+      </th>
+      <th>
+        Primary Amount
+      </th>
+      <th>
+        Secondary Investment
+      </th>
+      <th class="">
+        Entity
+      </th>
+    </tr>
+
+    <% deal_investors.each do |deal_investor| %>
+      <%= render deal_investor %>
+    <% end %>
+  </table>
+
+  </div>

@@ -5,27 +5,31 @@
   <%= link_to "New Deal", new_deal_path("deal[entity_id]": current_user.entity_id), {class: "btn btn-primary"}  %>
 </div>
 
-<table id="deals" class="table table-bordered dataTable">
-  <tr>
-    <th>
-      <strong>Entity</strong>
-    </th>
-    <th>
-      <strong>Name</strong>
-    </th>
-    <th>
-      <strong>Amount</strong>
-    </th>
-    <th>
-      <strong>Status</strong>
-    </th>
+<div class="table-responsive">
 
-    <th>
-    </th>
-  </tr>
-  <% @deals.each do |deal| %>
-    <%= render deal %>
-  <% end %>
-</table>
+  <table id="deals" class="table table-bordered dataTable">
+    <tr>
+      <th>
+        <strong>Entity</strong>
+      </th>
+      <th>
+        <strong>Name</strong>
+      </th>
+      <th>
+        <strong>Amount</strong>
+      </th>
+      <th>
+        <strong>Status</strong>
+      </th>
 
-<%= paginate @deals %>
+      <th>
+      </th>
+    </tr>
+    <% @deals.each do |deal| %>
+      <%= render deal %>
+    <% end %>
+  </table>
+
+  <%= paginate @deals %>
+
+</div>
