@@ -32,6 +32,8 @@ class DealsController < ApplicationController
   def show
     authorize @deal
     if params[:grid_view].present?
+      @deal_investors = @deal.deal_investors.order("deal_investors.primary_amount desc")
+      @deal_investors = @deal_investors.not_declined if params[:all].blank?
       render "grid_view"
     else
       render "show"

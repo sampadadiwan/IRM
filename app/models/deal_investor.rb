@@ -36,6 +36,7 @@ class DealInvestor < ApplicationRecord
   STATUS = %w[Active Pending Declined].freeze
 
   scope :for, ->(user) { where("investors.investor_entity_id=?", user.entity_id).joins(:investor) }
+  scope :not_declined, -> { where("deal_investors.status<>?", "Declined").joins(:investor) }
 
   before_save :set_investor_entity_id
   def set_investor_entity_id

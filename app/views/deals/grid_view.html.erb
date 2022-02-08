@@ -1,3 +1,12 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Deal Grid View</h1>
+    <% if params[:all].blank? %>
+        <%= link_to "All Investors", deal_path(id: @deal.id, grid_view: true, all:true), {class: "btn btn-primary"}  %>
+    <% else %>
+    <%= link_to "Not Declined", deal_path(id: @deal.id, grid_view: true), {class: "btn btn-primary"}  %>
+    <% end %>
+</div>
+
 <div id="deal_grid_div">
     <table id="deal_grid_view" class="table table-bordered dataTable" >
         <tr>
@@ -8,7 +17,7 @@
                 <th> <small class="text-muted"><%= deal.title %></small> </th>
             <% end %>
         </tr>
-        <% @deal.deal_investors.each do |deal_investor| %>
+        <% @deal_investors.each do |deal_investor| %>
             <%= render "deals/grid_view_row", deal_investor: deal_investor %>
         <% end %>
     </table>

@@ -1,66 +1,61 @@
 $primary-color: #FF6B6B;
 $primary-color-hover: scale-color($primary-color, $lightness: 32%);
 
-// body {
-//     color: #768390;
-//     background: #FFF;
-//     font-family: "Effra", Helvetica, sans-serif;
-//     padding: 0;
-//     -webkit-font-smoothing: antialiased;
-// }
-h1,h2,h3,h4,h5,h6 {
-    color: #3D4351;
-    margin-top: 0;
-}
-a {
-    color: $primary-color;
-    &:hover {
-        color: $primary-color-hover;
-        text-decoration: none;
+.activity_timeline {
+
+    h1,h2,h3,h4,h5,h6 {
+        color: #3D4351;
+        margin-top: 0;
     }
-}
-.example-header {
-    background: #3D4351;
-    color: #FFF;
-    font-weight: 300;
-    padding: 3em 1em;
-    text-align: center;
-    h1 {
-        color: #FFF;
-        font-weight: 300;
-        margin-bottom: 20px
-    }
-    p {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        font-weight: 700;
-    }
-}
-.container-fluid {
-    .row {
-        padding: 0 0 4em 0;
-        &:nth-child(even) {
-            background: #F1F4F5;
+    a {
+        color: $primary-color;
+        &:hover {
+            color: $primary-color-hover;
+            text-decoration: none;
         }
     }
-}
-
-.example-title {
-    text-align: center;
-    margin-bottom: 60px;
-    padding: 1em 0;
-    border-bottom: 1px solid #E4EAEC;
-    p {
-        margin: 0 auto;
-        font-size: 16px;
-        max-width: 400px;
+    .example-header {
+        background: #3D4351;
+        color: #FFF;
+        font-weight: 300;
+        padding: 3em 1em;
+        text-align: center;
+        h1 {
+            color: #FFF;
+            font-weight: 300;
+            margin-bottom: 20px
+        }
+        p {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
     }
-}
+    .container-fluid {
+        .row {
+            padding: 0 0 4em 0;
+            &:nth-child(even) {
+                background: #F1F4F5;
+            }
+        }
+    }
 
-/*==================================
-    TIMELINE
-==================================*/
+    .example-title {
+        text-align: center;
+        margin-bottom: 60px;
+        padding: 1em 0;
+        border-bottom: 1px solid #E4EAEC;
+        p {
+            margin: 0 auto;
+            font-size: 16px;
+            max-width: 400px;
+        }
+    }
+
+    /*==================================
+        TIMELINE
+    ==================================*/
 
     /*-- GENERAL STYLES
     ------------------------------*/
@@ -302,3 +297,4 @@ a {
                 background: $primary-color;
             }
         }
+}
