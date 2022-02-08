@@ -57,7 +57,7 @@ Given('there is an existing investor entity {string}') do |arg1|
   puts @investor_entity.to_json
 end
 
-When('I create a new investor {string} for the existing invest entity') do |_string|
+When('I create a new investor {string} for the existing investor entity') do |string|
   click_on("New Investor")
 
   fill_in('investor_investor_entity_name', with: @investor_entity.name)

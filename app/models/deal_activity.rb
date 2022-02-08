@@ -18,10 +18,12 @@
 #
 
 class DealActivity < ApplicationRecord
-  has_paper_trail
-  acts_as_list scope: %i[deal_investor deal], column: :sequence
-
+  # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+
+  tracked except: :create
+
+  acts_as_list scope: %i[deal_investor deal], column: :sequence
 
   default_scope { order(sequence: :asc) }
 

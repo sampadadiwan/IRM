@@ -22,9 +22,7 @@
 
 class User < ApplicationRecord
   rolify
-  has_paper_trail
-
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+  tracked except: :update
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

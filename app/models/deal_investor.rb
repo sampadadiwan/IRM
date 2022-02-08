@@ -15,9 +15,6 @@
 #
 
 class DealInvestor < ApplicationRecord
-  has_paper_trail
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
-
   belongs_to :deal
   belongs_to :investor
   belongs_to :entity

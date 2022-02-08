@@ -22,10 +22,9 @@
 #
 
 class Entity < ApplicationRecord
-  resourcify
-  has_paper_trail
-
+  # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+
   validates :name, presence: true
 
   has_rich_text :details

@@ -20,7 +20,7 @@ Scenario Outline: Create new investor from exiting entity
   Given Im logged in as a user "<user>" for an entity "<entity>"
   Given there is an existing investor entity "<investor>"
   And I am at the investor page
-  When I create a new investor "<investor>" for the existing invest entity
+  When I create a new investor "<investor>" for the existing investor entity
   Then I should see the "<msg>"
   And an investor should be created
   And an investor entity should not be created

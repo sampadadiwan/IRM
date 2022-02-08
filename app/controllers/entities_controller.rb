@@ -9,8 +9,7 @@ class EntitiesController < ApplicationController
   end
 
   def dashboard
-    @entities = Entity.with_role(:all_investment_access, current_user)
-                      .or(Entity.with_role(:self_investment_access, current_user))
+    @entities = Entity.all
   end
 
   def investor_entities
@@ -20,10 +19,8 @@ class EntitiesController < ApplicationController
 
   def search
     @entities = if current_user.has_role?(:super)
-                  Entity.search(params[:query], star: true)
-                else
-                  Entity.search(params[:query], star: false)
                 end
+    Entity.search(params[:query], star: true)
 
     render "index", locals: { vc_view: true }
   end

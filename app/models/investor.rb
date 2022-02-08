@@ -12,8 +12,7 @@
 #
 
 class Investor < ApplicationRecord
-  has_paper_trail
-
+  # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   belongs_to :investor_entity, class_name: "Entity"
