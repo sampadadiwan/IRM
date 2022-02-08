@@ -10,6 +10,9 @@
 
 
 <%= render "investments/charts", entity: current_user.entity %>
+<% activities = PublicActivity::Activity.where(entity_id: current_user.entity_id).limit(10) %>
+<%= render "notifications/timeline", activities: activities if activities %>
+
 
 <div class="row">
 
