@@ -17,7 +17,8 @@
 #
 
 class DealDoc < ApplicationRecord
-  include Traceable
+  include Trackable
+
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
@@ -56,5 +57,9 @@ class DealDoc < ApplicationRecord
   before_save :update_deal_investor
   def update_deal_investor
     self.deal_investor_id = deal_activity.deal_investor_id if deal_activity.present?
+  end
+
+  def to_s
+    name
   end
 end

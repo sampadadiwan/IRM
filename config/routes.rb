@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     get 'search', on: :collection
   end
   resources :deal_docs
+  resources :notifications
+
   resources :deal_messages do
     post 'mark_as_task', on: :member
     patch 'task_done', on: :member

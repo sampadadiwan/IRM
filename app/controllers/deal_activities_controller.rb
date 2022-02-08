@@ -83,13 +83,21 @@ class DealActivitiesController < ApplicationController
 
   def update_sequence
     authorize @deal_activity, :update?
+    DealActivity.public_activity_off
     @deal_activity.set_list_position(params[:sequence].to_i + 1)
+    DealActivity.public_activity_on
+
+    @deal_activity.create_activity key: 'deal_activity.sequence.updated', owner: current_user
   end
 
   def toggle_completed
     authorize @deal_activity, :update?
     @deal_activity.completed = !@deal_activity.completed
+    DealActivity.public_activity_off
     @deal_activity.save
+    DealActivity.public_activity_on
+
+    @deal_activity.create_activity key: 'deal_activity.completed', owner: current_user if @deal_activity.completed
 
     respond_to do |format|
       format.turbo_stream do

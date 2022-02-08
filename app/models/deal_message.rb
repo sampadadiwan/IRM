@@ -12,7 +12,8 @@
 #
 
 class DealMessage < ApplicationRecord
-  include Traceable
+  include Trackable
+
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
@@ -31,5 +32,9 @@ class DealMessage < ApplicationRecord
   after_create_commit do
     broadcast_append_to "deal_investor_#{deal_investor_id}", target: "deal_investor_#{deal_investor_id}",
                                                              partial: "deal_messages/conversation_msg", locals: { msg: self }
+  end
+
+  def to_s
+    content
   end
 end

@@ -15,7 +15,8 @@
 #
 
 class DealInvestor < ApplicationRecord
-  include Traceable
+  include Trackable
+
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
@@ -39,6 +40,10 @@ class DealInvestor < ApplicationRecord
   before_save :set_investor_entity_id
   def set_investor_entity_id
     self.investor_entity_id = investor.investor_entity_id
+  end
+
+  def to_s
+    investor_name
   end
 
   def create_activites

@@ -12,7 +12,7 @@
 #
 
 class Note < ApplicationRecord
-  include Traceable
+  include Trackable
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -21,4 +21,8 @@ class Note < ApplicationRecord
   belongs_to :entity
   belongs_to :user
   belongs_to :investor
+
+  def to_s
+    investor.investor_name
+  end
 end

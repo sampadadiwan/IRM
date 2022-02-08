@@ -22,7 +22,7 @@
 #
 
 class Entity < ApplicationRecord
-  include Traceable
+  include Trackable
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -60,6 +60,10 @@ class Entity < ApplicationRecord
     self.url = "http://#{url}" if url.present? && !(url.starts_with?("http") || url.starts_with?("https"))
 
     self.logo_url = "http://#{logo_url}" if logo_url.present? && !(logo_url.starts_with?("http") || logo_url.starts_with?("https"))
+  end
+
+  def to_s
+    name
   end
 
   def scrub_defaults

@@ -16,7 +16,8 @@
 #
 
 class AccessRight < ApplicationRecord
-  include Traceable
+  include Trackable
+
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   ALL = "All".freeze
@@ -43,6 +44,10 @@ class AccessRight < ApplicationRecord
   scope :user_or_investor_access, lambda { |user, investor|
     user_access(user).or((investor_access(investor)))
   }
+
+  def to_s
+    access_to_label
+  end
 
   def access_to_label
     label = ""

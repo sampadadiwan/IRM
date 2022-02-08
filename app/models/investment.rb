@@ -18,7 +18,7 @@
 #
 
 class Investment < ApplicationRecord
-  include Traceable
+  include Trackable
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -49,6 +49,10 @@ class Investment < ApplicationRecord
 
   def self.INSTRUMENT_TYPES(entity = nil)
     entity && entity.instrument_types.present? ? entity.instrument_types.split(",").map(&:strip) : INSTRUMENT_TYPES
+  end
+
+  def to_s
+    investor.investor_name
   end
 
   delegate :investor_entity_id, to: :investor

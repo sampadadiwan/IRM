@@ -52,7 +52,10 @@ class DealsController < ApplicationController
 
   def start_deal
     authorize @deal
+    Deal.public_activity_off
     @deal.start_deal
+    Deal.public_activity_on
+    @deal.create_activity key: 'deal.started', owner: current_user
 
     respond_to do |format|
       format.turbo_stream do

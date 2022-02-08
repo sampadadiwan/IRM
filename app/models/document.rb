@@ -16,7 +16,7 @@
 #
 
 class Document < ApplicationRecord
-  include Traceable
+  include Trackable
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -37,6 +37,10 @@ class Document < ApplicationRecord
   validates_attachment_size :file, # presence: false,
                             less_than: 10.megabytes,
                             message: 'must be smaller than 10mb. Use video upload if needed for large video files'
+
+  def to_s
+    name
+  end
 
   def self.documents_for(current_user, entity)
     # Is this user from an investor

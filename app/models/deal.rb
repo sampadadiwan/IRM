@@ -15,7 +15,7 @@
 #
 
 class Deal < ApplicationRecord
-  include Traceable
+  include Trackable
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -72,5 +72,9 @@ class Deal < ApplicationRecord
     merge(AccessRight.for_access_type("Deal"))
 
     deal_access.distinct
+  end
+
+  def to_s
+    name
   end
 end

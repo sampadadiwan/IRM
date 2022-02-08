@@ -21,13 +21,15 @@
 #
 
 class User < ApplicationRecord
-  include Traceable
+  include PublicActivity::Model
+  tracked except: :update, owner: proc { |controller, _model| controller.current_user if controller && controller.current_user },
+          entity_id: proc { |controller, _model| controller.current_user.entity_id if controller && controller.current_user }
+  has_many :activities, as: :trackable, class_name: 'PublicActivity::Activity', dependent: :destroy
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   rolify
-  tracked except: :update
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -50,6 +52,10 @@ class User < ApplicationRecord
   scope :employees, -> { where(role: "Employee") }
 
   before_create :setup_defaults
+
+  def to_s
+    full_name
+  end
 
   def name
     full_name

@@ -18,11 +18,13 @@
 #
 
 class DealActivity < ApplicationRecord
-  include Traceable
+  include PublicActivity::Model
+  tracked except: :create, owner: proc { |controller, _model| controller.current_user if controller && controller.current_user },
+          entity_id: proc { |controller, _model| controller.current_user.entity_id if controller && controller.current_user }
+  has_many :activities, as: :trackable, class_name: 'PublicActivity::Activity', dependent: :destroy
+
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
-
-  tracked except: :create
 
   acts_as_list scope: %i[deal_investor deal], column: :sequence
 
@@ -54,5 +56,9 @@ class DealActivity < ApplicationRecord
 
   def summary
     status.presence || completed_status
+  end
+
+  def to_s
+    "#{title} : #{investor_name}"
   end
 end
