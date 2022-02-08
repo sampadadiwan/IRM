@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_08_035401) do
+ActiveRecord::Schema.define(version: 2022_02_08_044430) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "entity_id", null: false
     t.string "access_to_category", limit: 20
+    t.datetime "deleted_at", precision: 6
     t.index ["entity_id"], name: "index_access_rights_on_entity_id"
     t.index ["owner_type", "owner_id"], name: "index_access_rights_on_owner"
   end
@@ -88,8 +89,8 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.text "parameters"
     t.string "recipient_type"
     t.bigint "recipient_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.integer "entity_id"
     t.index ["entity_id"], name: "index_activities_on_entity_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
@@ -125,6 +126,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.text "details"
     t.integer "sequence"
     t.integer "days"
+    t.datetime "deleted_at", precision: 6
     t.index ["deal_id"], name: "index_deal_activities_on_deal_id"
     t.index ["deal_investor_id"], name: "index_deal_activities_on_deal_investor_id"
     t.index ["entity_id"], name: "index_deal_activities_on_entity_id"
@@ -142,6 +144,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.string "file_content_type"
     t.bigint "file_file_size"
     t.datetime "file_updated_at", precision: 6
+    t.datetime "deleted_at", precision: 6
     t.index ["deal_activity_id"], name: "index_deal_docs_on_deal_activity_id"
     t.index ["deal_id"], name: "index_deal_docs_on_deal_id"
     t.index ["deal_investor_id"], name: "index_deal_docs_on_deal_investor_id"
@@ -158,6 +161,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "investor_entity_id"
+    t.datetime "deleted_at", precision: 6
     t.index ["deal_id"], name: "index_deal_investors_on_deal_id"
     t.index ["entity_id"], name: "index_deal_investors_on_entity_id"
     t.index ["investor_entity_id"], name: "index_deal_investors_on_investor_entity_id"
@@ -171,6 +175,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "is_task", default: false
     t.boolean "task_done", default: false
+    t.datetime "deleted_at", precision: 6
     t.index ["deal_investor_id"], name: "index_deal_messages_on_deal_investor_id"
     t.index ["user_id"], name: "index_deal_messages_on_user_id"
   end
@@ -185,6 +190,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.text "activity_list"
     t.date "start_date"
     t.date "end_date"
+    t.datetime "deleted_at", precision: 6
     t.index ["entity_id"], name: "index_deals_on_entity_id"
   end
 
@@ -199,6 +205,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.bigint "file_file_size"
     t.datetime "file_updated_at", precision: 6
     t.bigint "entity_id", null: false
+    t.datetime "deleted_at", precision: 6
     t.index ["entity_id"], name: "index_documents_on_entity_id"
   end
 
@@ -219,6 +226,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.string "investment_types"
     t.string "instrument_types"
     t.string "s3_bucket"
+    t.datetime "deleted_at", precision: 6
   end
 
   create_table "investments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -234,6 +242,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "category", limit: 25
+    t.datetime "deleted_at", precision: 6
     t.index ["investee_entity_id"], name: "index_investments_on_investee_entity_id"
     t.index ["investor_id", "investor_type"], name: "index_investments_on_investor"
   end
@@ -245,6 +254,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "investor_name"
+    t.datetime "deleted_at", precision: 6
     t.index ["investee_entity_id"], name: "index_investors_on_investee_entity_id"
     t.index ["investor_entity_id"], name: "index_investors_on_investor_entity_id"
   end
@@ -256,6 +266,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.integer "investor_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at", precision: 6
     t.index ["entity_id"], name: "index_notes_on_entity_id"
     t.index ["investor_id"], name: "index_notes_on_investor_id"
     t.index ["user_id"], name: "index_notes_on_user_id"
@@ -267,6 +278,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.bigint "resource_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at", precision: 6
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
@@ -288,6 +300,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_035401) do
     t.datetime "confirmed_at", precision: 6
     t.datetime "confirmation_sent_at", precision: 6
     t.integer "entity_id"
+    t.datetime "deleted_at", precision: 6
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["entity_id"], name: "index_users_on_entity_id"

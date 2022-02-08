@@ -17,6 +17,7 @@
 #
 
 class DealDoc < ApplicationRecord
+  include Traceable
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 

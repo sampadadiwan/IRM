@@ -1,6 +1,4 @@
 FactoryBot.define do
-  factory :role do
-  end
 
   factory :deal_message do
     deal_investor { DealInvestor.all.sample }
@@ -42,14 +40,6 @@ FactoryBot.define do
     user { investor.investee_entity.employees.sample }
   end
 
-  factory :investor_access do
-    investor = Investor.all.sample
-    investor_id { investor.id }
-    entity_id { Entity.startups.all.sample.id }
-    email { investor.investor_entity.employees.sample.email }
-    access_type { InvestorAccess::VIEWS[rand(InvestorAccess::VIEWS.length)] }
-    granted_by { User.first }
-  end
 
   factory :investor do
     investor_entity_id { Entity.vcs.sample.id }

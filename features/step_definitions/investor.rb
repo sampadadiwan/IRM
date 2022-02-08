@@ -50,7 +50,7 @@ Given('there is an existing investor {string}') do |arg1|
 end
 
 Given('there is an existing investor entity {string}') do |arg1|
-  @investor_entity = FactoryBot.create(:entity, entity_type: "VC")
+  @investor_entity = FactoryBot.build(:entity, entity_type: "VC")
   key_values(@investor_entity, arg1)
   @investor_entity.save
   puts "\n####Investor Entity####\n"

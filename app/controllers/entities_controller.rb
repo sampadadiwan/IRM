@@ -18,9 +18,7 @@ class EntitiesController < ApplicationController
   end
 
   def search
-    @entities = if current_user.has_role?(:super)
-                end
-    Entity.search(params[:query], star: true)
+    @entities = Entity.search(params[:query], star: true)
 
     render "index", locals: { vc_view: true }
   end

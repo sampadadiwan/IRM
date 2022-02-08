@@ -16,6 +16,7 @@
 #
 
 class AccessRight < ApplicationRecord
+  include Traceable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   ALL = "All".freeze
