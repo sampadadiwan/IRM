@@ -56,7 +56,6 @@ namespace :deploy do
   task :upload_env do
     on roles(:app) do
       rails_env = fetch(:rails_env)
-      Rails.logger.debug { "Uploading .env files to #{release_path} #{rails_env}" }
       upload!("/data/work/IRM/.env", release_path.to_s, recursive: false)
       upload!("/data/work/IRM/.env.local", release_path.to_s, recursive: false)
       upload!("/data/work/IRM/.env.staging", release_path.to_s, recursive: false) # if rails_env == :staging

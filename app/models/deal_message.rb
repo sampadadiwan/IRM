@@ -35,6 +35,6 @@ class DealMessage < ApplicationRecord
   end
 
   def to_s
-    content
+    deal_investor.investor_name
   end
 end
