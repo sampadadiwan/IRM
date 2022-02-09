@@ -4,7 +4,7 @@
   <span>
   <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id), 
       {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
-  <%= link_to investments_path(format: :xlsx), {class: "btn btn-primary"} do %>
+  <%= link_to investments_path(format: :xlsx), {class: "btn btn-success"} do %>
     <i class="fa-lg fa-regular fa-file-excel"></i> Download
   <% end %>
   </span>
