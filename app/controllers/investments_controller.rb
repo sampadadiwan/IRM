@@ -9,6 +9,15 @@ class InvestmentsController < ApplicationController
     @investments = @investments.order(initial_value: :desc)
                                .joins(:investor, :investee_entity)
                                .page params[:page]
+
+    respond_to do |format|
+      format.xlsx do
+        response.headers[
+          'Content-Disposition'
+        ] = "attachment; filename=investments.xlsx"
+      end
+      format.html { render :index }
+    end
   end
 
   def investor_investments

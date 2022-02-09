@@ -77,4 +77,8 @@ class Deal < ApplicationRecord
   def to_s
     name
   end
+
+  def activity_names
+    DealActivity.templates(self).collect(&:title)
+  end
 end

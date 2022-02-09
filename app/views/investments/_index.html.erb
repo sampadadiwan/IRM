@@ -1,8 +1,13 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">Investments</h1>
+  <span>
   <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id), 
       {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
+  <%= link_to investments_path(format: :xlsx), {class: "btn btn-primary"} do %>
+    <i class="fa-lg fa-regular fa-file-excel"></i> Download
+  <% end %>
+  </span>
 </div>
 
 <div class="table-responsive">
@@ -11,18 +16,18 @@
 
     <tr>
       <th>
-        Investment Type
+        Type
       </th>
       <th>
-        Investor Company      
+        Investor      
       </th>
       <th>
-        Investee Company
+        Startup
       </th>
 
       <% if !params[:prospective] %>
         <th>
-          Investment Instrument
+          Instrument
         </th>
         <th>
           Quantity

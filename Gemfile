@@ -61,6 +61,9 @@ gem "paranoia", "~> 2.2"
 gem 'public_activity', github: 'chaps-io/public_activity', branch: 'master'
 gem 'whenever', require: false
 
+gem 'caxlsx'
+gem 'caxlsx_rails'
+
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 

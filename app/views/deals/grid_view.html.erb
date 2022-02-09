@@ -1,10 +1,15 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Deal Grid View</h1>
-    <% if params[:all].blank? %>
-        <%= link_to "All Investors", deal_path(id: @deal.id, grid_view: true, all:true), {class: "btn btn-primary"}  %>
-    <% else %>
-    <%= link_to "Not Declined", deal_path(id: @deal.id, grid_view: true), {class: "btn btn-primary"}  %>
-    <% end %>
+    <span>
+        <% if params[:all].blank? %>
+            <%= link_to "All Investors", deal_path(id: @deal.id, grid_view: true, all:true), {class: "btn btn-primary"}  %>
+        <% else %>
+            <%= link_to "Not Declined", deal_path(id: @deal.id, grid_view: true), {class: "btn btn-primary"}  %>
+        <% end %>
+        <%= link_to deal_path(id: @deal.id, grid_view: true, all:true, format: :xlsx), {class: "btn btn-primary"} do %>
+            <i class="fa-lg fa-regular fa-file-excel"></i> Download
+        <% end %>
+    </span>
 </div>
 
 <div id="deal_grid_div">

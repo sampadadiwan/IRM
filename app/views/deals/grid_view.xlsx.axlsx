@@ -1,0 +1,17 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Deal Sheet") do |sheet|
+  # Create the header row
+  sheet.add_row @activity_names
+  # Create entries for each item
+  @deal_investors.each do |deal_investor|
+    activity_summary = []
+    deal_investor.deal_activities.each do |activity|
+      activity_summary << activity.summary
+    end
+
+    sheet.add_row([deal_investor.investor_name, deal_investor.status,
+                   number_to_currency(deal_investor.primary_amount),
+                   number_to_currency(deal_investor.secondary_investment)] + activity_summary)
+  end
+end

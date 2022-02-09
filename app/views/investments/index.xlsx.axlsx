@@ -1,0 +1,11 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Investments") do |sheet|
+  # Create the header row
+  sheet.add_row ["Type", "Investor", "Category", "Startup", "Instrument", "Quantity", "Initial Value"]
+  # Create entries for each item
+  @investments.each do |investment|
+    sheet.add_row [investment.investment_type, investment.investor.investor_name, investment.category,
+                   investment.investee_entity.name, investment.investment_instrument, investment.quantity, investment.initial_value]
+  end
+end

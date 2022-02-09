@@ -34,7 +34,18 @@ class DealsController < ApplicationController
     if params[:grid_view].present?
       @deal_investors = @deal.deal_investors.order("deal_investors.primary_amount desc")
       @deal_investors = @deal_investors.not_declined if params[:all].blank?
-      render "grid_view"
+
+      respond_to do |format|
+        format.xlsx do
+          @activity_names = %w[Investor Status Primary Secondary] + DealActivity.templates(@deal)
+          response.headers[
+            'Content-Disposition'
+          ] = "attachment; filename=deal.xlsx"
+
+          render "grid_view"
+        end
+        format.html { render "grid_view" }
+      end
     else
       render "show"
     end
