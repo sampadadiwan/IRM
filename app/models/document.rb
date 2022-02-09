@@ -81,6 +81,6 @@ class Document < ApplicationRecord
   end
 
   def video?
-    file_content_type.include?('video')
+    file_content_type&.include?('video')
   end
 end

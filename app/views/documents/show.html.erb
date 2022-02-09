@@ -11,7 +11,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Document</h6>
             </div>
             <div class="card-body">
-               <table class="table table-bordered dataTable">
+               <table class="table table-bordered dataTable ">
                   <tr>
                      <td>
                         Download
@@ -58,7 +58,7 @@
     </div>
 </div>
 <div class="row">
-    <% if @document.video? || @document.video.present? %>
+    <% if  @document.video.present? || @document.video? %>
     <div class="col-lg-12 mb-4">
         <!-- Approach -->
         <div class="card shadow mb-4">
