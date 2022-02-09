@@ -58,3 +58,7 @@ en:
     create: 'User was created'
     update: 'User was updated'
     destroy: 'User was deleted'
+  access_right:
+    create: 'Access was given'
+    update: 'Access was updated'
+    destroy: 'Access was removed'

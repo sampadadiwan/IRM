@@ -32,3 +32,27 @@ Then('I should see the deal in all deals page') do
   expect(page).to have_content(@deal.amount)
   expect(page).to have_content(@deal.status)
 end
+
+Given('I visit the deal details page') do
+  visit(deal_url(@deal))
+end
+
+
+Given('there exists a deal {string} for my startup') do |arg1|
+  @deal = FactoryBot.build(:deal)
+  key_values(@deal, arg1)
+  @deal.save
+  puts "\n####Deal####\n"
+  puts @deal.to_json
+end
+
+Given('when I start the deal') do
+  click_on("Start Deal")
+end
+
+Then('the deal should be started') do
+  @deal.reload
+  @deal.start_date.should_not == nil
+  sleep(1)
+  @deal.deal_activities.should_not == nil
+end
