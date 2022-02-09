@@ -11,8 +11,8 @@ $( document ).on('turbo:load', function() {
     $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});
 
 
-    "use strict"; // Start of use strict
-
+    "use strict"; 
+    
     // Toggle the side navigation
     $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
       $("body").toggleClass("sidebar-toggled");
