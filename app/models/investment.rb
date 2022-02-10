@@ -37,6 +37,8 @@ class Investment < ApplicationRecord
 
   scope :prospective, -> { where(investor_type: "Prospective") }
   scope :shareholders, -> { where(investor_type: "Shareholder") }
+  scope :debt, -> { where(investment_instrument: "Debt") }
+  scope :not_debt, -> { where("investment_instrument <> 'Debt'") }
 
   # These functions override the defaults based on entities customization
   def self.INVESTMENT_TYPES(entity = nil)

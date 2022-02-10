@@ -97,9 +97,8 @@ class DealActivitiesController < ApplicationController
           turbo_stream.replace('deal_activities_frame', partial: "deal_activities/index", locals: { deal_activities: @deal_activities })
         ]
       end
-      format.html {render "index"}
+      format.html { render "index" }
     end
-
   end
 
   def toggle_completed

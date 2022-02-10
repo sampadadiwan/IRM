@@ -1,6 +1,6 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-  <h1 class="h3 mb-0 text-gray-800">Investments</h1>
+  <h1 class="h3 mb-0 text-gray-800">Cap Table</h1>
   <span>
   <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id), 
       {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
@@ -14,35 +14,23 @@
 
   <table id="investments" class="table table-bordered dataTable ">
 
+    
     <tr>
-      <th>
-        Type
-      </th>
-      <th>
-        Investor      
-      </th>
-      <th>
-        Startup
-      </th>
-
-      <% if !params[:prospective] %>
-        <th>
-          Instrument
-        </th>
-        <th>
-          Quantity
-        </th>
-        <th>
-          Initial Value
-        </th>
-      <% end %>
-      <th>
-      </th>
+      <th colspan="7" class="table_divider">Equity</th>
     </tr>
-
-    <% investments.each do |investment| %>
+    <%= render "investments/index_header" %>
+    <% investments.not_debt.each do |investment| %>
       <%= render investment %>
     <% end %>
+
+    <tr>
+      <th colspan="7" class="table_divider">Debt</th>
+    </tr>
+    <%= render "investments/index_header" %>
+    <% investments.debt.each do |investment| %>
+      <%= render investment %>
+    <% end %>
+
   </table>
 
 </div>
