@@ -20,7 +20,7 @@
       <div id="activities-tab" class="tab-pane fade">
         <div id="deal_messages" class="associated_entity">
           <% params[:template] = true %>
-          <%= render "deal_activities/index", deal_activities: deal.deal_activities.templates(deal).with_all_rich_text %>
+          <%= render "deal_activities/index", deal_activities: deal.deal_activities.templates(deal).with_all_rich_text.includes(:deal_investor) %>
         </div>  
       </div>
   </div>
