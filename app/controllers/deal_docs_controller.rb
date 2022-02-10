@@ -1,17 +1,19 @@
 class DealDocsController < ApplicationController
   before_action :set_deal_doc, only: %w[show update destroy edit]
+  after_action :verify_policy_scoped, only: []
 
   # GET /deal_docs or /deal_docs.json
   def index
-    @deal_docs = if params[:deal_investor_id]
-                   DealDoc.accessible_by(current_ability).where(deal_investor_id: params[:deal_investor_id])
-                 elsif params[:deal_id]
-                   DealDoc.accessible_by(current_ability).where(deal_id: params[:deal_id])
-                 elsif params[:deal_activity_id]
-                   DealDoc.accessible_by(current_ability).where(deal_activity_id: params[:deal_activity_id])
-                 else
-                   DealDoc.none
-                 end
+    @deal = Deal.find params[:deal_id]
+    authorize @deal
+
+    @deal_docs = @deal.deal_docs
+    if params[:deal_investor_id]
+      @deal_investor = DealInvestor.find params[:deal_investor_id]
+      @deal_docs = @deal_docs.where(deal_investor_id: @deal_investor.id)
+    else
+      @deal_investor = nil
+    end
   end
 
   # GET /deal_docs/1 or /deal_docs/1.json
