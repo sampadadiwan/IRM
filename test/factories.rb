@@ -38,6 +38,7 @@ FactoryBot.define do
     details { Faker::Quotes::Rajnikanth.joke }
     entity_id { investor.investee_entity_id }
     user { investor.investee_entity.employees.sample }
+    created_at {Time.now - rand(120).days}
   end
 
 

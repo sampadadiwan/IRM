@@ -28,4 +28,18 @@ module StatisticsHelper
               donut: true,
               prefix: '₹'
   end
+
+  def notes_by_month(entity)
+    notes = Note.where(entity_id: entity.id)
+                .group('MONTH(created_at)')
+    group_by_month = notes.count.sort.to_h.transform_keys { |k| I18n.t('date.month_names')[k] }
+    bar_chart group_by_month
+  end
+
+  def investor_interaction(entity)
+    investors = Investor.where("investee_entity_id =? and last_interaction_date > ?", entity.id, Time.zone.today - 6.months)
+                        .group('MONTH(last_interaction_date)')
+    group_by_month = investors.count.sort.to_h.transform_keys { |k| I18n.t('date.month_names')[k] }
+    bar_chart group_by_month
+  end
 end

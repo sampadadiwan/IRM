@@ -32,7 +32,7 @@ class Entity < ApplicationRecord
   has_rich_text :details
   has_many :deals, dependent: :destroy
   has_many :deal_investors, dependent: :destroy
-  has_many :documents, as: :owner, dependent: :destroy
+  has_many :documents, dependent: :destroy
 
   # Will have many employees
   has_many :employees, class_name: "User", dependent: :destroy
@@ -44,6 +44,7 @@ class Entity < ApplicationRecord
   # List of investors where this entity is an investor
   has_many :investees, foreign_key: "investor_entity_id", class_name: "Investor", dependent: :destroy
   has_many :investee_entities, through: :investees
+  has_many :notes, dependent: :destroy
 
   has_many :access_rights, dependent: :destroy
   has_many :investments, foreign_key: "investee_entity_id", dependent: :destroy
@@ -58,7 +59,6 @@ class Entity < ApplicationRecord
   before_save :check_url, :scrub_defaults
   def check_url
     self.url = "http://#{url}" if url.present? && !(url.starts_with?("http") || url.starts_with?("https"))
-
     self.logo_url = "http://#{logo_url}" if logo_url.present? && !(logo_url.starts_with?("http") || logo_url.starts_with?("https"))
   end
 

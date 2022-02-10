@@ -25,4 +25,10 @@ class Note < ApplicationRecord
   def to_s
     investor.investor_name
   end
+
+  after_save :update_investor
+  def update_investor
+    investor.last_interaction_date = created_at
+    investor.save
+  end
 end
