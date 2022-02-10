@@ -3,7 +3,7 @@
     <%= link_to investment.investment_type, investment %>
 </td>  
 <td>
-    <%= investment.investor.investor_name %>
+    <%= link_to investment.investor.investor_name, investment.investor %>
     <div><span class="badge badge-info"><%= investment.category %><span></div>
 </td>  
 <td>
