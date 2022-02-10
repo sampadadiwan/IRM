@@ -70,6 +70,7 @@ class InvestmentsController < ApplicationController
 
     respond_to do |format|
       if @investment.save
+        InvestmentPercentageHoldingJob.perform_later(@investment.id)
         format.html { redirect_to investment_url(@investment), notice: "Investment was successfully created." }
         format.json { render :show, status: :created, location: @investment }
       else
@@ -84,6 +85,7 @@ class InvestmentsController < ApplicationController
     authorize @investment
     respond_to do |format|
       if @investment.update(investment_params)
+        InvestmentPercentageHoldingJob.perform_later(@investment.id)
         format.html { redirect_to investment_url(@investment), notice: "Investment was successfully updated." }
         format.json { render :show, status: :ok, location: @investment }
       else

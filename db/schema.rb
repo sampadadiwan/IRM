@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_08_050052) do
+ActiveRecord::Schema.define(version: 2022_02_10_105426) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -90,8 +90,8 @@ ActiveRecord::Schema.define(version: 2022_02_08_050052) do
     t.text "parameters"
     t.string "recipient_type"
     t.bigint "recipient_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "entity_id"
     t.index ["entity_id"], name: "index_activities_on_entity_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_050052) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "category", limit: 25
     t.datetime "deleted_at", precision: 6
+    t.decimal "percentage_holding", precision: 5, scale: 2
     t.index ["deleted_at"], name: "index_investments_on_deleted_at"
     t.index ["investee_entity_id"], name: "index_investments_on_investee_entity_id"
     t.index ["investor_id", "investor_type"], name: "index_investments_on_investor"

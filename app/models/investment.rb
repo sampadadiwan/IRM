@@ -57,6 +57,15 @@ class Investment < ApplicationRecord
     investor.investor_name
   end
 
+  def update_percentage_holdings
+    entity_investments = Investment.not_debt.where(investee_entity_id: self.investee_entity_id)
+    total_quantity = entity_investments.sum(:quantity)
+    entity_investments.each do |inv|
+      inv.percentage_holding = (inv.quantity * 100.0) / total_quantity
+      inv.save
+    end
+  end
+
   delegate :investor_entity_id, to: :investor
 
   def self.investments_for(current_user, entity)
