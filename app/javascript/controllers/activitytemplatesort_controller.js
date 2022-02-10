@@ -12,9 +12,13 @@ export default class extends Controller {
         onEnd: function(event) {
             console.log(event.item);
             let id = event.item.id.replace("deal_activity_", "");
-            $.post(`/deal_activities/${id}/update_sequence`, {sequence: event.newIndex}, function(result){
-                location.reload();
-            });
+            let url = `/deal_activities/${id}/update_sequence?sequence=${event.newIndex}`;
+
+            // This nonsense is being done to trigger a turbo link call, to update the page inplace
+            $("#deal_activity_sequence").val(event.newIndex);
+            $("#deal_activity_id").val(id);
+            $("#sort_link").attr("href", url);
+            $("#sort_link")[0].click();
         }
     });  
 

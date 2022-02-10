@@ -26,7 +26,7 @@ class DealActivity < ApplicationRecord
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
-  acts_as_list scope: %i[deal_investor deal], column: :sequence
+  acts_as_list scope: [:deal_id, :deal_investor_id], column: :sequence
 
   default_scope { order(sequence: :asc) }
 

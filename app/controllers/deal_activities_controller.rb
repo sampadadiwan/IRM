@@ -87,7 +87,19 @@ class DealActivitiesController < ApplicationController
     @deal_activity.set_list_position(params[:sequence].to_i + 1)
     DealActivity.public_activity_on
 
-    @deal_activity.create_activity key: 'deal_activity.sequence.updated', owner: current_user
+    # @deal_activity.create_activity key: 'deal_activity.sequence.updated', owner: current_user
+    @deal_activities = DealActivity.templates(@deal_activity.deal).includes(:deal).page params[:page]
+    params[:template] = true
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace('deal_activities_frame', partial: "deal_activities/index", locals: { deal_activities: @deal_activities })
+        ]
+      end
+      format.html {render "index"}
+    end
+
   end
 
   def toggle_completed

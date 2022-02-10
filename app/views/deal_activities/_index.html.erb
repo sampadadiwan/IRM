@@ -1,53 +1,57 @@
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<%= turbo_frame_tag "deal_activities_frame" do %>
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <% if params[:template].present? %>
+      <h1 class="h3 mb-0 text-gray-800">Activity Templates</h1>
+      <%= link_to "New Activity Template", new_deal_activity_path(deal_id: params[:deal_id], deal_investor_id: params[:deal_investor_id]), {class: "btn btn-primary"}  if params[:deal_id] %>
+    <% else %>
+      <h1 class="h3 mb-0 text-gray-800">Deal Activities</h1>
+    <% end %>
+  </div>
+
+  <div class="table-responsive">
+
+    <table id="deal_activities" class="table table-bordered dataTable ">
+      <thead>
+        <tr>
+          <th class="">
+            Sequence
+          </th>
+          <th>
+            Activity
+          </th>
+          <th class="">
+            Deal
+          </th>
+          <th class="">
+            Deal Investor
+          </th>
+          <th>
+            By Date
+          </th>
+          <th class="">
+            Status
+          </th>
+          <th>
+            Done
+          </th>
+          <th class="">
+            Days
+          </th>
+        </tr>
+      </thead>
+      <tbody id="deal_activities_tbody">
+        <% deal_activities.each do |deal_activity| %>
+          <%= render deal_activity %>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+
   <% if params[:template].present? %>
-    <h1 class="h3 mb-0 text-gray-800">Activity Templates</h1>
-    <%= link_to "New Activity Template", new_deal_activity_path(deal_id: params[:deal_id], deal_investor_id: params[:deal_investor_id]), {class: "btn btn-primary"}  if params[:deal_id] %>
-  <% else %>
-    <h1 class="h3 mb-0 text-gray-800">Deal Activities</h1>
+      <%= link_to "Change Sequence", update_sequence_deal_activity_path( id: 0, sequence: 0), id: "sort_link", hidden: true %>
+      <div data-controller="activitytemplatesort"></div>
   <% end %>
-</div>
 
-<div class="table-responsive">
-
-  <table id="deal_activities" class="table table-bordered dataTable ">
-    <thead>
-      <tr>
-        <th class="">
-          Sequence
-        </th>
-        <th>
-          Activity
-        </th>
-        <th class="">
-          Deal
-        </th>
-        <th class="">
-          Deal Investor
-        </th>
-        <th>
-          By Date
-        </th>
-        <th class="">
-          Status
-        </th>
-        <th>
-          Done
-        </th>
-        <th class="">
-          Days
-        </th>
-      </tr>
-    </thead>
-    <tbody id="deal_activities_tbody">
-      <% deal_activities.each do |deal_activity| %>
-        <%= render deal_activity %>
-      <% end %>
-    </tbody>
-  </table>
-
-</div>
-
-
-<% if params[:template].present? %>
-    <div data-controller="activitytemplatesort"></div>
 <% end %>

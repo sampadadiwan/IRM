@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
   resources :deal_activities do
     get 'search', on: :collection
-    post 'update_sequence', on: :member
+    get 'update_sequence', on: :member
     post 'toggle_completed', on: :member
   end
   resources :deal_investors do
