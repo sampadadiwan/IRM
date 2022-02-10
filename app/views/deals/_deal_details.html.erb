@@ -1,0 +1,28 @@
+<div class="associated_entity">
+    <nav class="nav nav-tabs nav-fill nav-justified"  role="tablist">
+      <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#deal-tab">Deal</a>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#docs-tab">Documents</a>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#activities-tab">Activities</a>
+    </nav>
+  
+  
+  <div class="tab-content">
+      <div id="deal-tab" class="tab-pane fade in show active">
+        <div id="deal_activities" class="associated_entity">
+          <%= render "/deals/show", deal: deal %>
+        </div>
+      </div>
+      <div id="docs-tab" class="tab-pane fade">
+        <div id="deal_docs" class="associated_entity">
+          <%= render "/deal_docs/index", deal: deal, deal_docs: deal.deal_docs, deal_investor: nil, title: "Deal Docs" %>
+        </div>     
+      </div>
+      <div id="activities-tab" class="tab-pane fade">
+        <div id="deal_messages" class="associated_entity">
+          <% params[:template] = true %>
+          <%= render "deal_activities/index", deal_activities: deal.deal_activities.templates(deal).with_all_rich_text %>
+        </div>  
+      </div>
+  </div>
+  
+  </div>
