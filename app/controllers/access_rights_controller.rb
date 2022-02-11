@@ -49,12 +49,7 @@ class AccessRightsController < ApplicationController
 
     respond_to do |format|
       if @access_right.save
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.prepend('access_rights_table_body', partial: "access_rights/access_right", locals: { access_right: @access_right })
-          ]
-        end
-
+        format.turbo_stream { render :create }
         format.html { redirect_to access_right_url(@access_right), notice: "Access right was successfully created." }
         format.json { render :show, status: :created, location: @access_right }
       else

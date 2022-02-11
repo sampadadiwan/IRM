@@ -1,26 +1,31 @@
-<tr>
-    <th>
-        Type
-    </th>
-    <th>
-        Investor
-    </th>
-    <th>
-        Startup
-    </th>
+<thead>
 
-    <% if !params[:prospective] %>
+    <tr>
         <th>
-            Instrument
+            Type
         </th>
         <th>
-            Quantity
+            Investor
         </th>
         <th>
-            Initial Value
+            Startup
         </th>
-    <% end %>
-    
-    <th>
-    </th>
-</tr>
+
+        <% if !params[:prospective] %>
+            <th>
+                Instrument
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Initial Value
+            </th>
+        <% end %>
+        
+        <th>
+            Action
+        </th>
+    </tr>
+
+</thead>

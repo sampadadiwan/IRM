@@ -1,0 +1,67 @@
+<%= turbo_frame_tag "new_access_right" do %>
+
+  <%= form_with(model: access_right, class: "associated_entity") do |form| %>
+    <% if access_right.errors.any? %>
+      <div class="alert alert-danger">
+        <h2><%= pluralize(access_right.errors.count, "error") %> prohibited this access_right from being saved:</h2>
+
+        <ul>
+          <% access_right.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+  
+    <div class="form-group" <%= hide_owner ? "hidden='hidden'" : "" %>>
+      <%= form.label :access_for %>
+      <%= form.select :access_type, ["Investment", "Document", "Deal"], {include_blank: true}, class: "form-control", disabled: "disabled"  %>
+      <%= form.text_field :access_type, class: "form-control", hidden: true  %>
+    </div>
+
+    <div class="form-group" <%= hide_owner ? "hidden='hidden'" : "" %>>
+      <%= form.label :for %>
+      <%= form.text_field :owner_name, class: "form-control", disabled: "disabled", value: access_right.owner.name  %>
+      <%= form.text_field :owner_id, class: "form-control", hidden: true  %>
+      <%= form.text_field :owner_type, class: "form-control", hidden: true  %>
+    </div>
+
+    <% if access_right.access_type != "Deal" %>
+
+    <div class="form-group">
+      <%= form.label :access_type %>
+      <%= form.select :email_or_cat, ["Specific User", "All Users for Specific Investor", "All Investors of Specific Category"], {}, class: "form-control"  %>
+    </div>
+
+    <div class="form-group" id="category_form_group">
+      <%= form.label :access_to_category, "Select Investor Category" %>
+      <%= form.select :access_to_category, Investor.INVESTOR_CATEGORIES, {:include_blank=>false}, class: "form-control", disabled: "disabled"  %>
+    </div>
+
+    <% end %>
+
+    <div class="form-group" id="email_form_group">
+      <%= form.label :access_to_email, "Enter Email" %>
+      <%= form.text_field :access_to_email, class: "form-control" %>
+    </div>
+
+    <div class="form-group" id="investor_form_group">
+        <%= form.label :access_to_investor_id, "Select Investor" %>
+        <%= form.select :access_to_investor_id, current_user.entity.investors.includes(:investor_entity).order("entities.name").map{|c| [c.investor_name, c.id]}, {include_blank: false}, {class: "form-control"} %>
+    </div>
+
+    <% if access_right.access_type == "Investment" %>
+      <div class="form-group">
+        <%= form.label :metadata, "Select Investment View" %>
+        <%= form.select :metadata, AccessRight::VIEWS, {}, class: "form-control"  %>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.submit "Save", {class: "btn btn-primary"}%>
+    </div>
+  <% end %>
+
+<% end %>
+

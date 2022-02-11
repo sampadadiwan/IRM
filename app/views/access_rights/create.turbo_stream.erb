@@ -1,0 +1,2 @@
+<%= turbo_stream.prepend('access_rights_table_body', partial: "access_rights/access_right", locals: { access_right: @access_right }) %>
+<%= turbo_stream.replace('access_rights_create_message', "<span class='alert alert-info' id='access_rights_create_message'>Granted access to: #{@access_right.to_s}</span>") %>
