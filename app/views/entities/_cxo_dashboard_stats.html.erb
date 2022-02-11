@@ -10,7 +10,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Investors</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= current_user.entity.investors.count %></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= current_user.entity.investors_count %></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-user-tie fa-2x text-gray-300"></i>
@@ -28,7 +28,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Investments</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= number_to_currency current_user.entity.investments.sum(:initial_value) %></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= number_to_currency current_user.entity.total_investments %></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -48,7 +48,7 @@
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%= current_user.entity.documents.count %></div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%= current_user.entity.documents_count %></div>
                                 </div>
                                 <div class="col">
                                     

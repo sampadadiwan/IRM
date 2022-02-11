@@ -25,6 +25,8 @@ class Investment < ApplicationRecord
 
   belongs_to :investor
   belongs_to :investee_entity, class_name: "Entity"
+  counter_culture :investee_entity
+  counter_culture :investee_entity, column_name: 'total_investments', delta_column: 'initial_value'
 
   # "Series A,Series B,Series C"
   INVESTMENT_TYPES = ENV["INVESTMENT_TYPES"].split(",")

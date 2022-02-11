@@ -145,6 +145,11 @@ GEM
     bullet (7.0.1)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
+    bundle-audit (0.1.0)
+      bundler-audit
+    bundler-audit (0.9.0.1)
+      bundler (>= 1.2.0, < 3)
+      thor (~> 1.0)
     capistrano (3.16.0)
       airbrussh (>= 1.0.0)
       i18n
@@ -189,6 +194,9 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
+    counter_culture (2.9.0)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
     crass (1.0.6)
     cucumber (7.1.0)
       builder (~> 3.2, >= 3.2.4)
@@ -242,6 +250,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
+    docile (1.4.0)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
@@ -444,10 +453,16 @@ GEM
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
-    sidekiq (6.3.1)
+    sidekiq (6.4.1)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
+    simplecov (0.21.2)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.12.3)
+    simplecov_json_formatter (0.1.3)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -515,6 +530,7 @@ DEPENDENCIES
   bootsnap
   brakeman
   bullet
+  bundle-audit (~> 0.1.0)
   capistrano (~> 3.10)
   capistrano-rails (~> 1.6)
   capistrano-rvm
@@ -524,6 +540,7 @@ DEPENDENCIES
   caxlsx
   caxlsx_rails
   chartkick
+  counter_culture (~> 2.0)
   cucumber-rails
   database_cleaner-active_record
   debug
@@ -556,7 +573,8 @@ DEPENDENCIES
   rubocop-rspec
   sassc-rails
   selenium-webdriver
-  sidekiq
+  sidekiq (~> 6.4)
+  simplecov
   sprockets-rails
   stimulus-rails
   thinking-sphinx (~> 5.4)

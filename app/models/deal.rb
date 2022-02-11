@@ -21,6 +21,7 @@ class Deal < ApplicationRecord
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   belongs_to :entity
+  counter_culture :entity
 
   has_many :deal_investors, dependent: :destroy
   has_many :investors, through: :deal_investors

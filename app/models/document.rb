@@ -23,6 +23,7 @@ class Document < ApplicationRecord
 
   has_many :access_rights, as: :owner, dependent: :destroy
   belongs_to :entity
+  counter_culture :entity
 
   has_rich_text :text
   has_one_attached :video, service: :amazon

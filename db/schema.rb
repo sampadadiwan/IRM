@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_10_131247) do
+ActiveRecord::Schema.define(version: 2022_02_11_150842) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -234,6 +234,12 @@ ActiveRecord::Schema.define(version: 2022_02_10_131247) do
     t.string "instrument_types"
     t.string "s3_bucket"
     t.datetime "deleted_at", precision: 6
+    t.integer "investors_count", default: 0, null: false
+    t.integer "investments_count", default: 0, null: false
+    t.integer "deals_count", default: 0, null: false
+    t.integer "deal_investors_count", default: 0, null: false
+    t.integer "documents_count", default: 0, null: false
+    t.decimal "total_investments", precision: 20, default: 0
     t.index ["deleted_at"], name: "index_entities_on_deleted_at"
   end
 

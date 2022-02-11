@@ -19,6 +19,8 @@ class Investor < ApplicationRecord
 
   belongs_to :investor_entity, class_name: "Entity"
   belongs_to :investee_entity, class_name: "Entity"
+  counter_culture :investee_entity
+
   has_many :investor_accesses, dependent: :destroy
   has_many :access_rights, foreign_key: :access_to_investor_id, dependent: :destroy
   has_many :deal_investors, dependent: :destroy

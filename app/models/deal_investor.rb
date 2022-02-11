@@ -23,6 +23,7 @@ class DealInvestor < ApplicationRecord
   belongs_to :deal
   belongs_to :investor
   belongs_to :entity
+  counter_culture :entity
 
   has_many :deal_activities, dependent: :destroy
   has_many :deal_messages, dependent: :destroy

@@ -37,7 +37,7 @@ gem "rolify"
 gem 'dotenv-rails'
 gem 'exception_notification'
 gem 'sassc-rails'
-gem 'sidekiq'
+gem 'sidekiq', '~> 6.4'
 
 gem "aws-sdk-s3", require: false
 gem 'thinking-sphinx', '~> 5.4'
@@ -64,6 +64,7 @@ gem 'whenever', require: false
 gem 'ajax-datatables-rails'
 gem 'caxlsx'
 gem 'caxlsx_rails'
+gem 'counter_culture', '~> 2.0'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -106,6 +107,7 @@ group :development do
   gem "binding_of_caller"
 
   gem 'brakeman'
+  gem "bundle-audit", "~> 0.1.0"
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
@@ -126,5 +128,6 @@ group :test do
   gem 'database_cleaner-active_record'
   gem 'rspec-rails'
   gem "selenium-webdriver"
+  gem 'simplecov', require: false, group: :test
   gem "webdrivers"
 end
