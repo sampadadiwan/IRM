@@ -65,6 +65,9 @@ gem 'ajax-datatables-rails'
 gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'counter_culture', '~> 2.0'
+gem 'impressionist'
+
+# gem 'acts-as-taggable-on', '~> 9.0'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -109,6 +112,7 @@ group :development do
   gem 'brakeman'
   gem "bundle-audit", "~> 0.1.0"
 
+  gem 'rails-erd'
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 

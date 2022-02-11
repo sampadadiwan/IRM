@@ -1,6 +1,7 @@
 class DealsController < ApplicationController
   before_action :set_deal, only: %w[show update destroy edit start_deal]
   after_action :verify_authorized, except: %i[index search investor_deals]
+  impressionist actions: [:show]
 
   # GET /deals or /deals.json
   def index

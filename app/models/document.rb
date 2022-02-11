@@ -17,6 +17,7 @@
 
 class Document < ApplicationRecord
   include Trackable
+  is_impressionable
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])

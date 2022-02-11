@@ -1,6 +1,7 @@
 class DealDocsController < ApplicationController
   before_action :set_deal_doc, only: %w[show update destroy edit]
   after_action :verify_policy_scoped, only: []
+  impressionist actions: [:show]
 
   # GET /deal_docs or /deal_docs.json
   def index
