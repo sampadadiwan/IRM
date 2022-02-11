@@ -7,25 +7,30 @@
   
   <div class="table-responsive">
   
-    <table id="investors" class="table table-bordered dataTable ">
-      <tr>
-        <th>
-          Investor
-        </th>
-        <th>
-          Investee Entity
-        </th>
-        <th class="">
-          Category
-        </th>
-  
-        <th>
-        </th>
-      </tr>
-  
-      <% investors.each do |investor| %>
-        <%= render investor %>
-      <% end %>
+    <table id="investors" class="table table-bordered dataTable">
+      <thead>
+        <tr>
+          <th>
+            Investor
+          </th>
+          <th>
+            Investee Entity
+          </th>
+          <th class="">
+            Category
+          </th>
+    
+          <th>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% investors.each do |investor| %>
+          <%= render investor %>
+        <% end %>
+      </tbody>
+    
     </table>
   
   
