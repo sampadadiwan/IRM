@@ -5,7 +5,7 @@ export default class extends Controller {
   connect() {
 
     console.log("Access javascript");
-
+   
     $(document).on('turbo:frame-load', function () {
 
       console.log("Access javascript loaded");

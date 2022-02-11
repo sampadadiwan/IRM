@@ -9,7 +9,7 @@ import "Chart.bundle"
 
 $( document ).on('turbo:load', function() {
     $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});
-
+    $('.toast').toast('show');
 
     "use strict"; 
     
