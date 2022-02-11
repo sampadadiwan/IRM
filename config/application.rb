@@ -43,12 +43,15 @@ module InvestorRelationshipManagement
       enable_starttls_auto: true
     }
 
-    Rails.application.config.middleware.use ExceptionNotification::Rack,
-                                            email: {
-                                              email_prefix: '[Error:] ',
-                                              sender_address: %("Support" <#{ENV['SUPPORT_EMAIL']}>),
-                                              exception_recipients: %("ERROR" <#{ENV['ERROR_EMAIL']}>)
-                                            }
+    unless Rails.env.development?
+      Rails.application.config.middleware.use ExceptionNotification::Rack,
+                                              email: {
+                                                email_prefix: '[Error:] ',
+                                                sender_address: %("Support" <#{ENV['SUPPORT_EMAIL']}>),
+                                                exception_recipients: %("ERROR" <#{ENV['ERROR_EMAIL']}>)
+                                              }
+
+    end
 
     # Configs for upload to S3
     config.paperclip_defaults = {

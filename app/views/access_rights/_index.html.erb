@@ -3,24 +3,26 @@
 </div>
 
   <table id="access_rights_table" class="table table-bordered dataTable ">
-    <tr>
-      <th>
-        Access To
-      </th>
-      <th>
-        Access Type
-      </th>
-      <th>
-        Metadata
-      </th>
-      <th>
-        For
-      </th>
-      
-      <th>
-      </th>
-    </tr>
-
+    <thead>
+      <tr>
+        <th>
+          Access To
+        </th>
+        <th>
+          Access Type
+        </th>
+        <th>
+          Metadata
+        </th>
+        <th>
+          For
+        </th>
+        
+        <th>
+        </th>
+      </tr>
+    </thead>
+    
     <tbody id="access_rights_table_body">
       <% access_rights.each do |access_right| %>
           <%= render access_right, access_right: access_right %>
