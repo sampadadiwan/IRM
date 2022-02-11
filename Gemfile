@@ -113,6 +113,7 @@ group :development do
   gem "bundle-audit", "~> 0.1.0"
 
   gem 'rails-erd'
+  gem 'awesome_print'
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
