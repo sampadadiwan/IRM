@@ -163,3 +163,15 @@ video { float: none; }
   background-color: #4e73df !important;
   color: white !important;
 }
+
+.toast {
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, 0px);
+  z-index: 9999;
+  min-width: 300px !important;
+}
+
+#toasts {
+  width: 100%;
+}

@@ -1,5 +1,7 @@
 <%= turbo_frame_tag "new_access_right" do %>
 
+  <div id="toasts" aria-live="polite" aria-atomic="true" style="position: relative;"></div>
+
   <%= form_with(model: access_right, class: "associated_entity") do |form| %>
     <% if access_right.errors.any? %>
       <div class="alert alert-danger">
@@ -67,7 +69,6 @@
     </div>
   <% end %>
 
-  <div id="toasts" aria-live="polite" aria-atomic="true" style="position: relative;"></div>
 
 <% end %>
 
