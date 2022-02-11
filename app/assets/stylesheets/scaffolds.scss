@@ -149,8 +149,6 @@ video { float: none; }
   font-weight: bold;
 }
 
-
-
 .nav-tabs .nav-link {
   margin-right: 3px;
   background-color:lighten($color: cornflowerblue, $amount: 30);
@@ -159,4 +157,9 @@ video { float: none; }
 
 .table_divider {
   background-color: lightgray;
+}
+
+.toast-header {
+  background-color: #4e73df !important;
+  color: white !important;
 }

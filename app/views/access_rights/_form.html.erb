@@ -27,12 +27,16 @@
       <%= form.text_field :owner_type, class: "form-control", hidden: true  %>
     </div>
 
-    <% if access_right.access_type != "Deal" %>
-
+    <% 
+      types = AccessRight::TYPES 
+      types = types - ["All Investors of Specific Category"] if access_right.access_type == "Deal" 
+    %>
     <div class="form-group">
       <%= form.label :access_type %>
-      <%= form.select :email_or_cat, ["Specific User", "All Users for Specific Investor", "All Investors of Specific Category"], {}, class: "form-control"  %>
+      <%= form.select :email_or_cat, types, {}, class: "form-control"  %>
     </div>
+
+    <% if access_right.access_type != "Deal" %>
 
     <div class="form-group" id="category_form_group">
       <%= form.label :access_to_category, "Select Investor Category" %>

@@ -24,6 +24,7 @@ class AccessRight < ApplicationRecord
   SELF = "Self".freeze
   SUMMARY = "Summary".freeze
   VIEWS = [ALL, SELF, SUMMARY].freeze
+  TYPES = ["Specific User", "All Users for Specific Investor", "All Investors of Specific Category"].freeze
 
   belongs_to :owner, polymorphic: true
   belongs_to :entity
