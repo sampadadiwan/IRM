@@ -112,8 +112,8 @@ group :development do
   gem 'brakeman'
   gem "bundle-audit", "~> 0.1.0"
 
-  gem 'rails-erd'
   gem 'awesome_print'
+  gem 'rails-erd'
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
@@ -136,3 +136,5 @@ group :test do
   gem 'simplecov', require: false, group: :test
   gem "webdrivers"
 end
+
+gem "marginalia", "~> 1.11"

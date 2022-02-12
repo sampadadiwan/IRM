@@ -323,6 +323,9 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.2)
+    marginalia (1.11.1)
+      actionpack (>= 5.2)
+      activerecord (>= 5.2)
     matrix (0.4.2)
     method_source (1.0.0)
     middleware (0.1.0)
@@ -570,6 +573,7 @@ DEPENDENCIES
   kaminari
   kt-paperclip!
   letter_opener
+  marginalia (~> 1.11)
   mysql2 (~> 0.5)
   overcommit (~> 0.58.0)
   paper_trail
