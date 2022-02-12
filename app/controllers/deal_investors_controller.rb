@@ -6,7 +6,6 @@ class DealInvestorsController < ApplicationController
     @deal_investors = policy_scope(DealInvestor).includes(:investor, :entity, :deal)
 
     @deal_investors = @deal_investors.where(deal_id: params[:deal_id]) if params[:deal_id].present?
-    @deal_investors = @deal_investors.page params[:page]
   end
 
   def search

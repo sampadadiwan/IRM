@@ -5,28 +5,33 @@
 
 <div class="table-responsive">
 
-  <table id="deal_investors" class="table table-bordered dataTable ">
-    <tr>
-      <th>
-        Deal
-      </th>
-      <th>
-        Investor
-      </th>
-      <th>
-        Primary Amount
-      </th>
-      <th>
-        Secondary Investment
-      </th>
-      <th class="">
-        Entity
-      </th>
-    </tr>
-
-    <% deal_investors.each do |deal_investor| %>
-      <%= render deal_investor %>
-    <% end %>
+  <table id="deal_investors" class="table table-bordered dataTable jqDataTable">
+    <thead>
+      <tr>
+        <th>
+          Deal
+        </th>
+        <th>
+          Investor
+        </th>
+        <th>
+          Primary Amount
+        </th>
+        <th>
+          Secondary Investment
+        </th>
+        <th class="">
+          Entity
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% deal_investors.each do |deal_investor| %>
+        <%= render deal_investor %>
+      <% end %>
+    </tbody>
   </table>
 
   </div>
+
+  <div data-controller="datatable"></div>

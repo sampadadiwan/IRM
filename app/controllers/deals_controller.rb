@@ -13,7 +13,7 @@ class DealsController < ApplicationController
                @deals.includes(:entity)
              end
 
-    @deals = @deals.page params[:page]
+    # @deals = @deals.page params[:page]
   end
 
   def search

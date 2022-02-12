@@ -7,13 +7,13 @@
   
   <div class="table-responsive">
   
-    <table id="investors" class="table table-bordered dataTable">
+    <table id="investors" class="table table-bordered dataTable jqDataTable">
       <thead>
         <tr>
           <th>
             Investor
           </th>
-          <th class="">
+          <th>
             Category
           </th>
     
@@ -30,7 +30,6 @@
     
     </table>
   
-  
-    <%= paginate investors %>
-  
+    <div data-controller="datatable"></div>
+
   </div>

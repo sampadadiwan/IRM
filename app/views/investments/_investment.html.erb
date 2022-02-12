@@ -17,10 +17,13 @@
     </td>  
     <td>
         <%= investment.quantity %>
-        <% if investment.percentage_holding %>
-        <div><span class="badge badge-info"><%= investment.percentage_holding %>% </span> </div>
-        <% end %>
+        
     </td>  
+    <td>
+        <% if investment.percentage_holding %>
+            <%= investment.percentage_holding %>% 
+        <% end %>
+    </td>
     <td>
         <%= number_to_currency(investment.initial_value, units: "INR")  %>
     </td>  

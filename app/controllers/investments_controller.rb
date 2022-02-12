@@ -8,7 +8,6 @@ class InvestmentsController < ApplicationController
     @investments = policy_scope(Investment).includes(:investor, :investee_entity)
     @investments = @investments.order(initial_value: :desc)
                                .joins(:investor, :investee_entity)
-                               .page params[:page]
 
     respond_to do |format|
       format.xlsx do

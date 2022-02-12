@@ -12,25 +12,17 @@
 
 <div class="table-responsive">
 
-  <table id="investments" class="table table-bordered dataTable ">
+  <table id="investments" class="table table-bordered dataTable jqDataTable">
 
-    
-    <tr>
-      <th colspan="7" class="table_divider">Equity</th>
-    </tr>
     <%= render "investments/index_header" %>
-    <% investments.not_debt.each do |investment| %>
-      <%= render investment %>
-    <% end %>
-
-    <tr>
-      <th colspan="7" class="table_divider">Debt</th>
-    </tr>
-    <%= render "investments/index_header" %>
-    <% investments.debt.each do |investment| %>
-      <%= render investment %>
-    <% end %>
+    <tbody>
+      <% investments.each do |investment| %>
+        <%= render investment %>
+      <% end %>
+    </tbody>
 
   </table>
 
 </div>
+
+<div data-controller="datatable"></div>
