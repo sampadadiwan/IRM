@@ -23,6 +23,8 @@ class DealDoc < ApplicationRecord
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
+  acts_as_taggable_on :tags
+
   belongs_to :deal
   belongs_to :deal_investor, optional: true
   belongs_to :deal_activity, optional: true

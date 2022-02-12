@@ -79,6 +79,7 @@ class DealDocsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def deal_doc_params
-    params.require(:deal_doc).permit(:name, :file, :deal_id, :deal_investor_id, :deal_activity_id, :user_id)
+    params.require(:deal_doc).permit(:name, :file, :deal_id, :deal_investor_id,
+                                     :deal_activity_id, :user_id, :tag_list)
   end
 end
