@@ -56,12 +56,13 @@ gem 'administrate-field-active_storage'
 # For custom buckets in S3 per client
 gem "kt-paperclip", git: "https://github.com/thimmaiah/kt-paperclip.git"
 
-gem "acts_as_list"
 gem "paranoia", "~> 2.2"
 gem 'public_activity', github: 'chaps-io/public_activity', branch: 'master'
 gem 'whenever', require: false
 
-gem 'ajax-datatables-rails'
+gem "acts_as_list"
+gem 'acts-as-taggable-on', '~> 9.0'
+
 gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'counter_culture', '~> 2.0'

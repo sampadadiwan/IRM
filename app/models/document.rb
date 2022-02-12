@@ -22,6 +22,8 @@ class Document < ApplicationRecord
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
+  acts_as_taggable_on :tags
+
   has_many :access_rights, as: :owner, dependent: :destroy
   belongs_to :entity
   counter_culture :entity

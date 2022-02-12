@@ -13,7 +13,7 @@ class DocumentsController < ApplicationController
     #   # @documents = @documents.includes(:owner)
     # end
     @documents = policy_scope(Document)
-    @documents = @documents.page params[:page]
+    @documents = @documents.includes(:tags).page params[:page]
   end
 
   def investor_documents
@@ -32,7 +32,7 @@ class DocumentsController < ApplicationController
     @documents = if current_user.has_role?(:super)
                    Document.search(params[:query], star: true)
                  else
-                   Document.search(params[:query], star: false, with: { owner_id: current_user.entity_id })
+                   Document.search(params[:query], star: false, with: { entity_id: current_user.entity_id })
                  end
 
     render "index"
@@ -100,6 +100,6 @@ class DocumentsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def document_params
-    params.require(:document).permit(:name, :file, :text, :entity_id, :video)
+    params.require(:document).permit(:name, :file, :text, :entity_id, :video, :tag_list)
   end
 end

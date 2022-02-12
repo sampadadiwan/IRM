@@ -36,10 +36,10 @@ end
 ThinkingSphinx::Index.define :document, with: :real_time do
   # fields
   indexes name, sortable: true
-
+  indexes tag_list
   # attributes
   has created_at, type: :timestamp
-  has owner_id, type: :integer
+  has entity_id, type: :integer
 end
 
 ThinkingSphinx::Index.define :note, with: :real_time do
