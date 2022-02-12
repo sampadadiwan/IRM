@@ -14,10 +14,12 @@ class InvestorAccessesTest < ApplicationSystemTestCase
     visit investor_accesses_url
     click_on "New investor access"
 
-    fill_in "Access type", with: @investor_access.access_type
+    check "Approved" if @investor_access.approved
     fill_in "Email", with: @investor_access.email
+    fill_in "Entity", with: @investor_access.entity_id
     fill_in "Granted by", with: @investor_access.granted_by
     fill_in "Investor", with: @investor_access.investor_id
+    fill_in "User", with: @investor_access.user_id
     click_on "Create Investor access"
 
     assert_text "Investor access was successfully created"
@@ -28,10 +30,12 @@ class InvestorAccessesTest < ApplicationSystemTestCase
     visit investor_access_url(@investor_access)
     click_on "Edit this investor access", match: :first
 
-    fill_in "Access type", with: @investor_access.access_type
+    check "Approved" if @investor_access.approved
     fill_in "Email", with: @investor_access.email
+    fill_in "Entity", with: @investor_access.entity_id
     fill_in "Granted by", with: @investor_access.granted_by
     fill_in "Investor", with: @investor_access.investor_id
+    fill_in "User", with: @investor_access.user_id
     click_on "Update Investor access"
 
     assert_text "Investor access was successfully updated"

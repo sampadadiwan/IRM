@@ -17,7 +17,7 @@ class InvestorAccessesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create investor_access" do
     assert_difference("InvestorAccess.count") do
-      post investor_accesses_url, params: { investor_access: { access_type: @investor_access.access_type, email: @investor_access.email, granted_by: @investor_access.granted_by, investor_id: @investor_access.investor_id } }
+      post investor_accesses_url, params: { investor_access: { approved: @investor_access.approved, email: @investor_access.email, entity_id: @investor_access.entity_id, granted_by: @investor_access.granted_by, investor_id: @investor_access.investor_id, user_id: @investor_access.user_id } }
     end
 
     assert_redirected_to investor_access_url(InvestorAccess.last)
@@ -34,7 +34,7 @@ class InvestorAccessesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update investor_access" do
-    patch investor_access_url(@investor_access), params: { investor_access: { access_type: @investor_access.access_type, email: @investor_access.email, granted_by: @investor_access.granted_by, investor_id: @investor_access.investor_id } }
+    patch investor_access_url(@investor_access), params: { investor_access: { approved: @investor_access.approved, email: @investor_access.email, entity_id: @investor_access.entity_id, granted_by: @investor_access.granted_by, investor_id: @investor_access.investor_id, user_id: @investor_access.user_id } }
     assert_redirected_to investor_access_url(@investor_access)
   end
 

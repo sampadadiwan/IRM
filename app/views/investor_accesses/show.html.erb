@@ -1,0 +1,56 @@
+<%= render "/layouts/alerts" %>
+
+  <table class="table table-bordered dataTable">
+
+    <tr>
+      <td>
+        Investor
+      </td>
+      <td>
+        <%= @investor_access.investor.investor_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        User
+      </td>
+      <td>
+        <%= @investor_access.user.name if @investor_access.user %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Email
+      </td>
+      <td>
+        <%= @investor_access.email %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Approved
+      </td>
+      <td>
+        <%= @investor_access.approved ? "Yes" : "No" %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Granted By
+      </td>
+      <td>
+        <%= @investor_access.granter.name %>
+      </td>
+    </tr>
+
+
+  </table>
+
+
+  <div>
+    <%= link_to "Edit" , edit_investor_access_path(@investor_access), {class: "btn btn-primary" } %> |
+      <%= link_to "Back" , :back, {class: "btn btn-primary" } %> |
+
+        <%= button_to "Delete" , @investor_access, method: :delete, class: "btn btn-danger" , form_class: "deleteButton"
+          %>
+  </div>

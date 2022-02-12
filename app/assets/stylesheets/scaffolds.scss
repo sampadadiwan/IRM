@@ -177,5 +177,11 @@ video { float: none; }
 }
 
 .container-fluid {
-  padding-bottom: 30px !important;
+  padding-bottom: 50px !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter input {
+  min-width: 300px;
+  margin-right: 10px;
+  border-radius: 0.4rem; 
 }

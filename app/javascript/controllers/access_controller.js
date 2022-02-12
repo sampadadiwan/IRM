@@ -21,9 +21,6 @@ export default class extends Controller {
             // hide category & disable
             $("#category_form_group").hide();
             $('#access_right_access_to_category').prop('disabled', 'disabled');
-            // Enable and show email and investor
-            $("#email_form_group").show();
-            $('#access_right_access_to_email').prop('disabled', "");
 
             $("#investor_form_group").show();
             $('#access_right_access_to_investor_id').prop('disabled', "");
@@ -33,9 +30,6 @@ export default class extends Controller {
             // hide category & disable
             $("#category_form_group").hide();
             $('#access_right_access_to_category').prop('disabled', 'disabled');
-            // Enable and show email and investor
-            $("#email_form_group").hide();
-            $('#access_right_access_to_email').prop('disabled', "disabled");
 
             $("#investor_form_group").show();
             $('#access_right_access_to_investor_id').prop('disabled', "");
@@ -45,9 +39,6 @@ export default class extends Controller {
             // hide category & disable
             $("#category_form_group").show();
             $('#access_right_access_to_category').prop('disabled', '');
-            // Enable and show email and investor
-            $("#email_form_group").hide();
-            $('#access_right_access_to_email').prop('disabled', "disabled");
 
             $("#investor_form_group").hide();
             $('#access_right_access_to_investor_id').prop('disabled', "disabled");

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :investor_accesses
   resources :access_rights do
     get 'search', on: :collection
   end

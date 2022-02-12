@@ -1,0 +1,42 @@
+<%= form_with(model: investor_access) do |form| %>
+  <% if investor_access.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(investor_access.errors.count, "error") %> prohibited this investor_access from being saved:</h2>
+
+      <ul>
+        <% investor_access.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :investor %>
+    <%= form.text_field :investor_name, class: "form-control", value: investor_access.investor.investor_name, disabled: true %>
+    <%= form.number_field :investor_id, class: "form-control", hidden: true  %>
+  </div>
+
+  <% if investor_access.user %>
+  <div class="form-group">
+    <%= form.label :user %>
+    <%= form.text_field :user_name, class: "form-control", value: investor_access.user.name, disabled: true  %>
+    <%= form.number_field :user_id, class: "form-control", hidden: true  %>
+  </div>
+  <% end %>
+
+
+  <div class="form-group">
+    <%= form.label :email %>
+    <%= form.text_field :email, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :approved %>
+    <%= form.check_box :approved, class: "form-control form-checkbox"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>

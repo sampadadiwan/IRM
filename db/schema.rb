@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_12_093859) do
+ActiveRecord::Schema.define(version: 2022_02_12_121048) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -287,6 +287,23 @@ ActiveRecord::Schema.define(version: 2022_02_12_093859) do
     t.index ["deleted_at"], name: "index_investments_on_deleted_at"
     t.index ["investee_entity_id"], name: "index_investments_on_investee_entity_id"
     t.index ["investor_id", "investor_type"], name: "index_investments_on_investor"
+  end
+
+  create_table "investor_accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "investor_id"
+    t.integer "user_id"
+    t.string "email"
+    t.boolean "approved"
+    t.integer "granted_by"
+    t.integer "entity_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at", precision: 6
+    t.index ["deleted_at"], name: "index_investor_accesses_on_deleted_at"
+    t.index ["email"], name: "index_investor_accesses_on_email"
+    t.index ["entity_id"], name: "index_investor_accesses_on_entity_id"
+    t.index ["investor_id"], name: "index_investor_accesses_on_investor_id"
+    t.index ["user_id"], name: "index_investor_accesses_on_user_id"
   end
 
   create_table "investors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

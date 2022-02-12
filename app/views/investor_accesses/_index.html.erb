@@ -1,0 +1,34 @@
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Investor Accesses</h1>
+</div>
+  
+
+<table id="investor_accesses" class="table table-bordered dataTable">
+
+    <tr>
+        <th>
+            <strong>Investor</strong>
+        </th>
+        <th>
+            <strong>User</strong>
+        </th>
+        <th>
+            <strong>Email</strong>
+        </th>
+        <th>
+            <strong>Approved</strong>
+        </th>
+        <th>
+            <strong>Granted By</strong>
+        </th>
+
+        <th>
+        </tr>th>
+    </tr>
+
+    <% investor_accesses.each do |investor_access| %>
+        <%= render investor_access %>
+    <% end %>
+
+</table>
