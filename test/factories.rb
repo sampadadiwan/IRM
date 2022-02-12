@@ -50,8 +50,8 @@ FactoryBot.define do
 
   factory :investment do
     investment_type { Investment::INVESTMENT_TYPES[rand(Investment::INVESTMENT_TYPES.length)] }
-    investor { Investor.all.sample }
     investee_entity_id { Entity.startups.sample.id }
+    investor { Investor.where(investee_entity_id: investee_entity_id).all.sample }
     investment_instrument { Investment::INSTRUMENT_TYPES[rand(Investment::INSTRUMENT_TYPES.length)] }
     category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
     quantity { (rand(10) * 100) + (rand(10) * 10) }

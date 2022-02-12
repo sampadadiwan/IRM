@@ -23,8 +23,8 @@ namespace :irm do
   desc "generates fake Entity for testing"
   task generateFakeEntities: :environment do
     startup_names = ["Urban Company", "PayTm", "Apna", "RazorPay", "Delhivery"]
-    (0..4).each do |i|
-      e = FactoryBot.create(:entity, entity_type: "Startup", name: startup_names[i])
+    startup_names.each do |name|
+      e = FactoryBot.create(:entity, entity_type: "Startup", name: name)
       puts "Entity #{e.name}"
       (1..2).each do |j|
         user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
@@ -32,9 +32,10 @@ namespace :irm do
       end
     end
 
-    vc_names = ["Sequoia Capital", "Accel", "Blume Ventures", "Tiger Global Management", "Kalaari Capital"]
-    (0..4).each do |i|
-      e = FactoryBot.create(:entity, entity_type: "VC", name: vc_names[i])
+    vc_names = ["Sequoia Capital", "Accel", "Blume Ventures", "Tiger Global Management", "Kalaari Capital", 
+                "Drip Ventures", "Matrix Partners", "Nexus Venture Partners", "Indian Angel Network", "Omidyar Network India"]
+    vc_names.each do |name|
+      e = FactoryBot.create(:entity, entity_type: "VC", name: name)
       puts "Entity #{e.name}"
       (1..2).each do |j|
         user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
@@ -83,9 +84,7 @@ namespace :irm do
         puts "Investment #{i.id}"
       end
 
-      5.times do
-      end
-
+    
       5.times do
         inv = e.investors.sample
         AccessRight.create(owner: e, access_type: "Investment", metadata: "All",
