@@ -13,6 +13,7 @@ ThinkingSphinx::Index.define :investor, with: :real_time do
   # fields
   indexes investor_entity.name, sortable: true
   indexes category, sortable: true
+  indexes tag_list
 
   # attributes
   has investor_type, type: :string

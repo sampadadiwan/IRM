@@ -10,12 +10,11 @@
     <%= form.text_field :investor_entity_id, class: "form-control", hidden: true   %>
   </div>
 
-  <% if current_user.has_role?(:super) %>
   <div class="form-group">
-    <%= form.label :investee_entity_id %>
-    <%= form.number_field :investee_entity_id, class: "form-control"  %>
+    <%= form.label :tags %>
+    <%= form.text_field :tag_list, class: "form-control"  %>
+    <small class="text-muted">Comma separated list of tags to classify the document</small>
   </div>
-  <% end %>
 
   <div class="form-group">
     <%= form.label :category %>

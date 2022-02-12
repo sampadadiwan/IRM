@@ -16,6 +16,7 @@ class Investor < ApplicationRecord
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+  acts_as_taggable_on :tags
 
   belongs_to :investor_entity, class_name: "Entity"
   belongs_to :investee_entity, class_name: "Entity"

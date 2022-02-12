@@ -2,8 +2,11 @@
 <td>
     <%= link_to investor.investor_name, investor %>
 </td>  
-<td class="">
-    <%= investor.category %>
+<td>
+    <%= investor.tag_list %>
+</td>  
+<td>
+  <%= investor.category %>
 </td>  
 <td>
   <%= link_to "Add Note", new_note_path("note[investor_id]": investor.id, "note[entity_id]": investor.investee_entity_id) , {class: "btn btn-sm btn-success"}%>
