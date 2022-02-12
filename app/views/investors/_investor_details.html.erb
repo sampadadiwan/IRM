@@ -1,0 +1,21 @@
+<div class="associated_entity">
+  <nav class="nav nav-tabs nav-fill nav-justified" role="tablist">
+    <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">Access Rights</a>
+    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#deals-tab">Deals</a>
+  </nav>
+
+
+  <div class="tab-content">
+    <div id="access-rights-tab" class="tab-pane fade">
+      <div id="access_rights" class="associated_entity">
+        <%= render "/access_rights/index", access_rights:investor.access_rights %>
+      </div>
+    </div>
+    <div id="deals-tab" class="tab-pane fade">
+      <div id="deals" class="associated_entity">
+        <%= render "/deals/index", deals: investor.deals %>
+      </div>
+    </div>
+  </div>
+
+</div>

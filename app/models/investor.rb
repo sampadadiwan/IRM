@@ -24,6 +24,7 @@ class Investor < ApplicationRecord
   has_many :investor_accesses, dependent: :destroy
   has_many :access_rights, foreign_key: :access_to_investor_id, dependent: :destroy
   has_many :deal_investors, dependent: :destroy
+  has_many :deals, through: :deal_investors
 
   delegate :name, to: :investee_entity, prefix: :investee
 
@@ -43,7 +44,7 @@ class Investor < ApplicationRecord
 
   before_save :update_name
   def update_name
-    self.investor_name ||= investor_entity.name
+    self.investor_name = investor_entity.name + " - " + investee_entity.name 
     self.last_interaction_date ||= Time.zone.today - 10.years
   end
 
