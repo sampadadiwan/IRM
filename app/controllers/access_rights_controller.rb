@@ -100,7 +100,8 @@ class AccessRightsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def access_right_params
-    params.require(:access_right).permit(:owner_id, :owner_type, :access_to_email,
-                                         :access_to_investor_id, :access_type, :metadata, :entity_id, :access_to_category)
+    params.require(:access_right).permit(:owner_id, :owner_type,
+                                         :access_to_investor_id, :access_type, :metadata,
+                                         :entity_id, :access_to_category)
   end
 end

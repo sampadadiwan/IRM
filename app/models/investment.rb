@@ -70,36 +70,53 @@ class Investment < ApplicationRecord
 
   delegate :investor_entity_id, to: :investor
 
-  def self.investments_for(current_user, entity)
-    investments = Investment.none
+  def self.test_investment(current_user, entity)
+    Investment
+      # Ensure the access rights for Investment
+      .joins(investee_entity: %i[investors access_rights])
+      .merge(AccessRight.for_access_type("Investment"))
+      # Ensure that the user is an investor and tis investor has been given access rights
+      .where("entities.id=?", entity.id)
+      .where("investors.investor_entity_id=?", current_user.entity_id)
+      .where("investors.category=access_rights.access_to_category OR access_rights.access_to_investor_id=investors.id")
+      # Ensure this user has investor access
+      .joins(investee_entity: :investor_accesses)
+      .merge(InvestorAccess.approved_for(current_user, entity))
+  end
+
+  def self.for_investor(current_user, entity)
+    investments = Investment
+                  # Ensure the access rights for Investment
+                  .joins(investee_entity: %i[investors access_rights])
+                  .merge(AccessRight.for_access_type("Investment"))
+                  # Ensure that the user is an investor and tis investor has been given access rights
+                  .where("entities.id=?", entity.id)
+                  .where("investors.investor_entity_id=?", current_user.entity_id)
+                  .where("investors.category=access_rights.access_to_category OR access_rights.access_to_investor_id=investors.id")
+                  # Ensure this user has investor access
+                  .joins(investee_entity: :investor_accesses)
+                  .merge(InvestorAccess.approved_for(current_user, entity))
+
+    return investments if investments.blank?
 
     # Is this user from an investor
     investor = Investor.for(current_user, entity).first
-    return investments unless investor
 
     # Get the investor access for this user and this entity
-    access_right = AccessRight.investments.user_or_investor_access(current_user, investor).first
+    access_right = AccessRight.investments.investor_access(investor, entity).first
+    Rails.logger.debug access_right.to_json
 
-    if access_right.present?
-      investments = entity.investments
-                          .order(initial_value: :desc).
-                    # joins(:investor, :investee_entity).
-                    includes([investor: :investor_entity], :investee_entity)
-
-      case access_right.metadata
-      when AccessRight::ALL
-        # Do nothing - we got all the investments
-        logger.debug "Access to investor #{current_user.email} to ALL Entity #{entity.id} investments"
-      when AccessRight::SELF
-        # Got all the investments for this investor
-        logger.debug "Access to investor #{current_user.email} to SELF Entity #{entity.id} investments"
-        investments = investments.where(investor_id: investor.id)
-      when InvestorAccess::SUMMARY
-        # Show summary page
-        logger.debug "Access to investor #{current_user.email} to SUMMARY Entity #{entity.id} investments"
-      end
-    else
-      logger.debug "No access to investor #{current_user.email} to Entity #{entity.id} investments"
+    case access_right.metadata
+    when AccessRight::ALL
+      # Do nothing - we got all the investments
+      logger.debug "Access to investor #{current_user.email} to ALL Entity #{entity.id} investments"
+    when AccessRight::SELF
+      # Got all the investments for this investor
+      logger.debug "Access to investor #{current_user.email} to SELF Entity #{entity.id} investments"
+      investments = investments.where(investor_id: investor.id)
+    when InvestorAccess::SUMMARY
+      # Show summary page
+      logger.debug "Access to investor #{current_user.email} to SUMMARY Entity #{entity.id} investments"
     end
 
     investments

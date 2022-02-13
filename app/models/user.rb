@@ -52,6 +52,7 @@ class User < ApplicationRecord
   scope :employees, -> { where(role: "Employee") }
 
   before_create :setup_defaults
+  after_create :update_investor_access
 
   def to_s
     full_name
@@ -67,8 +68,14 @@ class User < ApplicationRecord
 
   def setup_defaults
     add_role :employee
-    add_role :investor if (entity && entity.entity_type == "VC") || AccessRight.user_access(self).first.present?
+    add_role :investor if (entity && entity.entity_type == "VC") || InvestorAccess.where(user_id: id).first.present?
     add_role :startup if entity && (entity.entity_type == "Startup")
+  end
+
+  # There may be pending investor access given before the user is created.
+  # Ensure those are updated with this users id
+  def update_investor_access
+    InvestorAccess.where(email: email).update(user_id: id)
   end
 
   def send_devise_notification(notification, *args)

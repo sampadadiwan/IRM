@@ -1,7 +1,6 @@
 json.extract! access_right, :id,
               :owner_type,
               :owner_id,
-              :access_to_email,
               :access_to_investor_id,
               :access_type,
               :metadata,

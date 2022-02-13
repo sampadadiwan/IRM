@@ -12,7 +12,6 @@ class AccessRightDashboard < Administrate::BaseDashboard
     entity: Field::BelongsTo,
     investor: Field::BelongsTo,
     id: Field::Number,
-    access_to_email: Field::String,
     access_to_investor_id: Field::Number,
     access_type: Field::String,
     metadata: Field::String,
@@ -30,7 +29,6 @@ class AccessRightDashboard < Administrate::BaseDashboard
     owner
     entity
     investor
-    access_to_email
     access_to_category
   ].freeze
 
@@ -41,7 +39,6 @@ class AccessRightDashboard < Administrate::BaseDashboard
     entity
     investor
     id
-    access_to_email
     access_to_category
     access_type
     metadata
@@ -57,7 +54,6 @@ class AccessRightDashboard < Administrate::BaseDashboard
     owner
     entity
     investor
-    access_to_email
     access_to_category
     access_type
     metadata
