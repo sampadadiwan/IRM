@@ -14,21 +14,21 @@ end
 
 Then('an investor should be created') do
   @investor = Investor.last
-  @investor.investor_name.should == @investor_entity.name
+  @investor.investor_name.include?(@investor_entity.name).should == true
   @investor.category.should == "Founder"
 end
 
 Then('an investor entity should be created') do
   @investor_entity = Entity.last
-  @investor_entity.name.should == @investor.investor_name
+  @investor_entity.name.include?(@investor_entity.name).should == true
   @investor.investor_entity_id.should == @investor_entity.id
   @investor.investee_entity_id.should == @user.entity_id
 end
 
 Then('an investor entity should not be created') do
-  Entity.where(name: @investor.investor_name).count.should == 1
+  Entity.where(name: @investor.investor_name).count.should == 0
 
-  @investor_entity.name.should == @investor.investor_name
+  @investor_entity.name.include?(@investor_entity.name).should == true
   @investor.investor_entity_id.should == @investor_entity.id
   @investor.investee_entity_id.should == @user.entity_id
 end
