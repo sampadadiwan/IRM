@@ -45,7 +45,7 @@ class Investor < ApplicationRecord
 
   before_save :update_name
   def update_name
-    self.investor_name = "#{investor_entity.name} - #{investee_entity.name}"
+    self.investor_name ||= "#{investor_entity.name} - #{investee_entity.name}"
     self.last_interaction_date ||= Time.zone.today - 10.years
   end
 

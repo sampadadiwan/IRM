@@ -11,6 +11,8 @@ $( document ).on('turbo:load', function() {
     $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});
     $('.toast').toast('show');
 
+    $('.select2').select2();
+
     "use strict"; 
     
     // Toggle the side navigation
