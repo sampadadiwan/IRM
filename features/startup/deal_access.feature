@@ -8,8 +8,8 @@ Scenario Outline: Access Deal employee
 
   Examples:
   	|user	    |entity               |deal                     |
-  	|  	        |entity_type=Startup  |name=Series A;amount=100 |
-    |  	        |entity_type=Startup  |name=Series B;amount=120 |
+  	|  	      |entity_type=Startup  |name=Series A;amount=100 |
+    |  	      |entity_type=Startup  |name=Series B;amount=120 |
 
 
 Scenario Outline: Access Deal as Other User
@@ -20,8 +20,8 @@ Scenario Outline: Access Deal as Other User
 
   Examples:
   	|user	    |entity               |deal                     |
-  	|  	        |entity_type=Startup  |name=Series A;amount=100 |
-    |  	        |entity_type=Startup  |name=Series B;amount=120 |
+  	|  	      |entity_type=Startup  |name=Series A;amount=100 |
+    |  	      |entity_type=Startup  |name=Series B;amount=120 |
 
 
 Scenario Outline: Access Deal as Investor without access
@@ -33,8 +33,8 @@ Scenario Outline: Access Deal as Investor without access
 
   Examples:
   	|user	    |entity               |deal                     |
-  	|  	        |entity_type=Startup  |name=Series A;amount=100 |
-    |  	        |entity_type=Startup  |name=Series B;amount=120 |
+  	|  	      |entity_type=Startup  |name=Series A;amount=100 |
+    |  	      |entity_type=Startup  |name=Series B;amount=120 |
 
 
 Scenario Outline: Access Deal as Investor with access
@@ -50,9 +50,9 @@ Scenario Outline: Access Deal as Investor with access
   	|should	    |entity               |deal                     | access_right                                      | investor_access |
   	|true  	    |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=1          | approved=1 |
     |true  	    |entity_type=Startup  |name=Series B;amount=120 | access_type=Deal;access_to_category=Lead Investor | approved=1 |
-	|false      |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=2          | approved=1 |
+	  |false      |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=2          | approved=1 |
     |false      |entity_type=Startup  |name=Series B;amount=120 | access_type=Deal;access_to_category=Co-Investor   | approved=1 |
-	|false      |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=1          | approved=0 |
+	  |false      |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=1          | approved=0 |
     |false      |entity_type=Startup  |name=Series B;amount=120 | access_type=Deal;access_to_category=Lead Investor | approved=0 |
 
 

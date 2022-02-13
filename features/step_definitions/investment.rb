@@ -46,3 +46,33 @@ Then('I should see the investment in all investments page') do
   expect(page).to have_content(@investment.quantity)
   expect(page).to have_content(@investment.initial_value)
 end
+
+
+Given('given there is a investment {string} for the entity') do |arg1|
+  @investment = FactoryBot.build(:investment, investor: @investor, investee_entity: @entity)
+  key_values(@investment, arg1)
+  @investment.save!
+  puts "\n####Investment####\n"
+  puts @investment.to_json
+end
+
+Given('I should have access to the investment') do
+  Pundit.policy(@user, @investment).show?.should == true
+end
+
+
+Given('another user has {string} access to the investment') do |arg|
+  Pundit.policy(@another_user, @investment).show?.to_s.should == arg
+end
+
+Given('investor has access right {string} in the investment') do |arg1|
+  @access_right = AccessRight.new(owner: @entity, entity: @entity)
+  key_values(@access_right, arg1)
+  puts @access_right.to_json
+  
+  @access_right.save
+  puts "\n####Access Right####\n"
+  puts @access_right.to_json
+end
+
+

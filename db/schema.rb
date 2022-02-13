@@ -354,7 +354,7 @@ ActiveRecord::Schema.define(version: 2022_02_12_121048) do
     t.string "tagger_type"
     t.bigint "tagger_id"
     t.string "context", limit: 128
-    t.datetime "created_at"
+    t.datetime "created_at", precision: 6
     t.string "tenant", limit: 128
     t.index ["context"], name: "index_taggings_on_context"
     t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true

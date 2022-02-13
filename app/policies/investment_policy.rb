@@ -17,7 +17,7 @@ class InvestmentPolicy < ApplicationPolicy
     if user.has_role?(:super) || user.entity_id == record.investee_entity_id
       true
     else
-      Investment.investments_for(user, record.investee_entity)
+      Investment.for_investor(user, record.investee_entity)
                 .where("investments.id=?", record.id).first.present?
     end
   end
