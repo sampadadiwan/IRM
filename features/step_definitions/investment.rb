@@ -68,7 +68,6 @@ end
 Given('investor has access right {string} in the investment') do |arg1|
   @access_right = AccessRight.new(owner: @entity, entity: @entity)
   key_values(@access_right, arg1)
-  puts @access_right.to_json
   
   @access_right.save
   puts "\n####Access Right####\n"

@@ -8,6 +8,14 @@ FactoryBot.define do
     entity_id { 1 }
   end
 
+  factory :document do
+    name { "Fact Sheet,Cap Table,Latest Financials,Conversion Stats,Deal Sheet".split(",").sample }
+    text { Faker::Quotes::Rajnikanth.joke }
+    entity { Entity.all.sample }
+    file { File.new("public/img/undraw_profile.svg", "r") }
+  end
+
+
   factory :deal_message do
     deal_investor { DealInvestor.all.sample }
     user { rand(2).positive? ? deal_investor.investor.investor_entity.employees.sample : deal_investor.investor.investee_entity.employees.sample }
