@@ -1,6 +1,9 @@
 class InvestorAccess < ApplicationRecord
   include Trackable
 
+  # Make all models searchable
+  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+
   belongs_to :entity
   belongs_to :investor
   belongs_to :user, optional: true

@@ -7,6 +7,12 @@ class InvestorAccessesController < ApplicationController
     @investor_accesses = policy_scope(InvestorAccess)
   end
 
+  def search
+    @entity = current_user.entity
+    @investor_accesses = InvestorAccess.search(params[:query], star: false, with: { entity_id: current_user.entity_id })
+    render "index"
+  end
+
   # GET /investor_accesses/1 or /investor_accesses/1.json
   def show; end
 

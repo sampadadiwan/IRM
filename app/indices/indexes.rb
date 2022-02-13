@@ -117,3 +117,16 @@ ThinkingSphinx::Index.define :access_right, with: :real_time do
   has created_at, type: :timestamp
   has entity_id, type: :integer
 end
+
+ThinkingSphinx::Index.define :investor_access, with: :real_time do
+  # fields
+  indexes user.name, sortable: true
+  indexes entity.name
+  indexes investor.investor_name
+  indexes email
+
+  # attributes
+  has created_at, type: :timestamp
+  has entity_id, type: :integer
+  has approved, type: :boolean
+end
