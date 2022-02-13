@@ -20,7 +20,6 @@ class DealDashboard < Administrate::BaseDashboard
     status: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    activity_list: Field::Text,
     start_date: Field::Date,
     end_date: Field::Date
   }.freeze

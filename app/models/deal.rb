@@ -36,9 +36,7 @@ class Deal < ApplicationRecord
   ACTIVITIES = Rack::Utils.parse_nested_query(ENV["DEAL_ACTIVITIES"].tr(":", "=").tr(",", "&"))
 
   before_create :set_defaults
-  def set_defaults
-    self.activity_list ||= ACTIVITIES.to_json
-  end
+  def set_defaults; end
 
   def create_activites
     deal_investors.each(&:create_activites)
@@ -62,18 +60,18 @@ class Deal < ApplicationRecord
   end
 
   def self.for_investor(user)
-    deal_access = Deal.joins(entity: :deal_investors)
-                      .where("deal_investors.investor_entity_id=?", user.entity_id)
-                      .joins(:access_rights)
-                      .where("(access_rights.access_to_email = ?) OR
-        (
-          ( access_rights.access_to_email is null OR access_rights.access_to_email = '')
-          AND access_rights.access_to_investor_id = deal_investors.investor_id
-        )
-        ", user.email)
-    merge(AccessRight.for_access_type("Deal"))
-
-    deal_access.distinct
+    Deal
+      # Ensure the access rghts for Document
+      .joins(:access_rights)
+      .merge(AccessRight.for_access_type("Deal"))
+      .joins(entity: :investors)
+      # Ensure that the user is an investor and tis investor has been given access rights
+      .where("investors.investor_entity_id=?", user.entity_id)
+      .where("investors.category=access_rights.access_to_category OR access_rights.access_to_investor_id=investors.id")
+      # Ensure this user has investor access
+      .joins(entity: :investor_accesses)
+      .merge(InvestorAccess.approved_for_user(user))
+      .where("investor_accesses.entity_id = deals.entity_id")
   end
 
   def to_s

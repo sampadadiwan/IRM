@@ -70,20 +70,6 @@ class Investment < ApplicationRecord
 
   delegate :investor_entity_id, to: :investor
 
-  def self.test_investment(current_user, entity)
-    Investment
-      # Ensure the access rights for Investment
-      .joins(investee_entity: %i[investors access_rights])
-      .merge(AccessRight.for_access_type("Investment"))
-      # Ensure that the user is an investor and tis investor has been given access rights
-      .where("entities.id=?", entity.id)
-      .where("investors.investor_entity_id=?", current_user.entity_id)
-      .where("investors.category=access_rights.access_to_category OR access_rights.access_to_investor_id=investors.id")
-      # Ensure this user has investor access
-      .joins(investee_entity: :investor_accesses)
-      .merge(InvestorAccess.approved_for(current_user, entity))
-  end
-
   def self.for_investor(current_user, entity)
     investments = Investment
                   # Ensure the access rights for Investment

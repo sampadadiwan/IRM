@@ -56,3 +56,53 @@ Then('the deal should be started') do
   sleep(1)
   @deal.deal_activities.should_not == nil
 end
+
+
+Given('given there is a deal {string} for the entity') do |arg1|
+  @deal = FactoryBot.build(:deal, entity_id: @entity.id)
+  key_values(@deal, arg1)
+  @deal.save
+end
+
+Given('I should have access to the deal') do
+  Pundit.policy(@user, @deal).show?.should == true
+end
+
+
+Given('I should not have access to the deal') do
+  Pundit.policy(@user, @deal).show?.should == false
+end
+
+Given('another user {string} have access to the deal') do |arg|
+  Pundit.policy(@another_user, @deal).show?.to_s.should == arg
+end
+
+
+Given('another entity is an investor {string} in entity') do |arg|
+  @investor = Investor.new(investor_entity: @another_entity, investee_entity: @entity)  
+  key_values(@investor, arg)
+  @investor.save
+  puts "\n####Investor####\n"
+  puts @investor.to_json
+end
+
+
+Given('another user has investor access {string} in the investor') do |arg|
+  @investor_access = InvestorAccess.new(entity: @entity, investor: @investor, 
+                            email: @another_user.email, granter: @user )
+  key_values(@investor_access, arg)
+
+  @investor_access.save!
+  puts "\n####Investor Access####\n"
+  puts @investor_access.to_json
+end
+
+
+Given('investor has access right {string} in the deal') do |arg1|
+  @access_right = AccessRight.new(owner: @deal, entity: @entity)
+  key_values(@access_right, arg1)
+  @access_right.save!
+  puts "\n####Access Right####\n"
+  puts @access_right.to_json
+end
+

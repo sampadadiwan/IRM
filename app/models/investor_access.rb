@@ -9,6 +9,10 @@ class InvestorAccess < ApplicationRecord
   delegate :name, to: :entity, prefix: :entity
   delegate :investor_name, to: :investor
 
+  scope :approved_for_user, lambda { |user|
+    where("investor_accesses.user_id=? and investor_accesses.approved=?", user.id, true)
+  }
+
   scope :approved_for, lambda { |user, entity|
                          where("investor_accesses.user_id=? and investor_accesses.entity_id=? and investor_accesses.approved=?", user.id, entity.id, true)
                        }

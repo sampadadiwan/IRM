@@ -20,6 +20,22 @@ Given('there is a user {string} for an entity {string}') do |arg1, arg2|
   puts @user.to_json
 end
 
+
+
+Given('there is another user {string} for another entity {string}') do |arg1, arg2|
+  @another_entity = FactoryBot.build(:entity)
+  key_values(@another_entity, arg2)
+  @another_entity.save
+  puts "\n####Another Entity####\n"
+  puts @another_entity.to_json
+
+  @another_user = FactoryBot.build(:user, entity: @another_entity)
+  key_values(@another_user, arg1)
+  @another_user.save!
+  puts "\n####Another User####\n"
+  puts @another_user.to_json
+end
+
 Then(/^the email has the profile in the body$/) do
   current_email.body.should include("Profile")
   current_email.body.should include("Known As")
