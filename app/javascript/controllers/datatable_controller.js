@@ -14,6 +14,7 @@ export default class extends Controller {
         }
       });   
       
+      // Ensure DataTable is destroyed, else it gets duplicated
       $(document).on('turbo:before-cache', function() {     
         table.destroy();
       });

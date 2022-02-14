@@ -7,9 +7,14 @@ import "@popperjs/core"
 import "chartkick"
 import "Chart.bundle"
 
-$(document).on('turbo:before-cache', function() {     // this approach corrects the select 2 to be duplicated when clicking the back button.
-  $('.select2').select2('destroy');
-} );
+$(document).on('turbo:before-cache', function() {     
+  if( $('.select2-container').length > 0 ){
+    // Hack to make sure select2 does not get duplicated due to turbolinks
+    $('#investor_investor_entity_id').select2('destroy');
+    $('#investment_investor_id').select2('destroy');
+    $('#deal_investor_investor_id').select2('destroy');
+  }
+});
 
 $( document ).on('turbo:load', function() {
     $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});
