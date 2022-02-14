@@ -5,8 +5,8 @@ class InvestorsController < ApplicationController
   # GET /investors or /investors.json
   def index
     @investors = policy_scope(Investor)
-    @investors = @investors.order(:category).joins(:investor_entity, :investee_entity)
-                           .includes(:investor_entity, :investee_entity)
+    @investors = @investors.order("investors.id desc").joins(:investor_entity, :investee_entity)
+                           .includes(:investor_entity, :investee_entity, :tags=>:taggings)
   end
 
   def search
@@ -50,7 +50,7 @@ class InvestorsController < ApplicationController
     end
 
     # Sometimes we dont have an investor entity
-    if @investor.investor_entity_id.blank? 
+    if @investor.investor_entity_id.blank?
       e = Entity.new(name: @investor.investor_name, entity_type: "VC")
       @investor.investor_entity = e
     end

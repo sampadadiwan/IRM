@@ -28,6 +28,7 @@ class Investor < ApplicationRecord
   has_many :deals, through: :deal_investors
 
   delegate :name, to: :investee_entity, prefix: :investee
+  validates :category, presence: true
 
   scope :for, lambda { |vc_user, startup_entity|
                 where(investee_entity_id: startup_entity.id,
@@ -45,9 +46,9 @@ class Investor < ApplicationRecord
 
   before_create :update_name
   def update_name
-    self.investor_name ||= "#{investor_entity.name} - #{investee_entity.name}"
+    self.investor_name = "#{investor_entity.name} - #{investee_entity.name}" if self.investor_name.blank?
     self.last_interaction_date ||= Time.zone.today - 10.years
-    if self.investor_entity_id.blank? 
+    if investor_entity_id.blank?
       e = Entity.create(name: self.investor_name, entity_type: "VC")
       self.investor_entity = e
     end

@@ -30,8 +30,8 @@
                         Tags
                      </td>
                      <td>
-                        <%= @document.tag_list.join(", ") %>
-                  </tr>
+                        <%= raw @document.tags.map{|tag| link_to(tag.name, search_documents_path(query: tag.name))}.join(", ") %>
+                     </tr>
                   <tr>
                      <td>
                         Created

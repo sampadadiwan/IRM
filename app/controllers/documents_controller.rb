@@ -13,7 +13,7 @@ class DocumentsController < ApplicationController
     #   # @documents = @documents.includes(:owner)
     # end
     @documents = policy_scope(Document)
-    @documents = @documents.includes(:tags).page params[:page]
+    @documents = @documents.includes(:tags=>:taggings).page params[:page]
   end
 
   def investor_documents

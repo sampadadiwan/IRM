@@ -538,3 +538,8 @@
   
   .select2-container--classic.select2-container--open .select2-dropdown {
     border-color: #5897fb; }
+
+
+  .select2-container--default .select2-results__option--selectable {
+    min-height: 30px !important;
+  }

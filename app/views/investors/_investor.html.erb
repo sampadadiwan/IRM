@@ -3,7 +3,7 @@
     <%= link_to investor.investor_name, investor %>
 </td>  
 <td>
-    <%= investor.tag_list %>
+  <%= raw investor.tags.map{|tag| link_to(tag.name, search_investors_path(query: tag.name))}.join(", ") %>
 </td>  
 <td>
   <%= investor.category %>

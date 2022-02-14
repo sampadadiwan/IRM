@@ -3,8 +3,7 @@
       <%= link_to document.name, document %>
   </td>  
   <td>
-      <%= raw document.tag_list.map{|tag| link_to(tag, search_documents_path(query: tag))}.join(", ") %>
-
+      <%= raw document.tags.map{|tag| link_to(tag.name, search_documents_path(query: tag.name))}.join(", ") %>
   </td>  
   <td>
     <%= l document.created_at %>
