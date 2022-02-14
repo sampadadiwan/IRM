@@ -8,6 +8,8 @@ class AccessRightsController < ApplicationController
     @access_rights = @access_rights.deals.where(owner_id: params[:deal_id]) if params[:deal_id].present?
 
     @access_rights = @access_rights.deals.where(access_to_investor_id: params[:access_to_investor_id]) if params[:access_to_investor_id].present?
+    @access_rights = @access_rights.page params[:page]
+
   end
 
   def search

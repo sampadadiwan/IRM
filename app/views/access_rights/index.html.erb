@@ -1,3 +1,4 @@
 <%= render "/layouts/alerts" %>
 
 <%= render "/access_rights/index", access_rights: @access_rights, access_right: nil %>
+<%= paginate @access_rights %>
