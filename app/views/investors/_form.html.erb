@@ -1,7 +1,7 @@
 
   <%= form_with(model: investor) do |form| %>
     <% if investor.errors.any? %>
-      <div style="alert alert-danger">
+      <div class="alert alert-danger">
         <h2><%= pluralize(investor.errors.count, "error") %> prohibited this investor from being saved:</h2>
 
         <ul>

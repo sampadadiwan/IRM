@@ -47,6 +47,10 @@ class Investor < ApplicationRecord
   def update_name
     self.investor_name ||= "#{investor_entity.name} - #{investee_entity.name}"
     self.last_interaction_date ||= Time.zone.today - 10.years
+    if self.investor_entity_id.blank? 
+      e = Entity.create(name: self.investor_name, entity_type: "VC")
+      self.investor_entity = e
+    end
   end
 
   def to_s

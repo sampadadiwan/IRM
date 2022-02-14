@@ -49,6 +49,12 @@ class InvestorsController < ApplicationController
 
     end
 
+    # Sometimes we dont have an investor entity
+    if @investor.investor_entity_id.blank? 
+      e = Entity.new(name: @investor.investor_name, entity_type: "VC")
+      @investor.investor_entity = e
+    end
+
     respond_to do |format|
       if @investor.save
         format.html { redirect_to investor_url(@investor), notice: "Investor was successfully created." }
@@ -96,7 +102,7 @@ class InvestorsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def investor_params
-    params.require(:investor).permit(:investor_entity_id, :tag_list,
+    params.require(:investor).permit(:investor_entity_id, :tag_list, :investor_name,
                                      :investee_entity_id, :category)
   end
 end
