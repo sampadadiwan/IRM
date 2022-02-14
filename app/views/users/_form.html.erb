@@ -1,6 +1,13 @@
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">User</h6>
+  </div>
+  <div class="card-body">
+
 <%= form_with(model: user, data: {"turbo": "false"}) do |form| %>
   <% if user.errors.any? %>
-    <div style="alert alert-danger">
+    <div class="alert alert-danger">
       <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
       <ul>
@@ -50,3 +57,6 @@
     <%= form.submit "Save", {class: "btn btn-primary"} %>
   </div>
 <% end %>
+
+  </div>
+</div>

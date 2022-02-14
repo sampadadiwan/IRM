@@ -1,3 +1,10 @@
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Deal Doc</h6>
+  </div>
+  <div class="card-body">
+
 <%= form_with(model: deal_doc) do |form| %>
   <% if deal_doc.errors.any? %>
     <div class="alert alert-danger">
@@ -60,3 +67,7 @@
     <%= form.submit "Save", {class: "btn btn-primary"}%>
   </div>
 <% end %>
+
+  </div>
+</div>
+    

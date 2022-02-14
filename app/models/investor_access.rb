@@ -4,6 +4,7 @@ class InvestorAccess < ApplicationRecord
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
+  validates :email, presence: true
   belongs_to :entity
   belongs_to :investor
   belongs_to :user, optional: true

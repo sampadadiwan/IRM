@@ -1,3 +1,10 @@
+
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Document</h6>
+  </div>
+  <div class="card-body">
+
 <%= form_with(model: document) do |form| %>
   <% if document.errors.any? %>
     <div class="alert alert-danger">
@@ -51,3 +58,6 @@
 <% end %>
 
 <div data-controller="directuploads"></div>
+
+  </div>
+  </div>

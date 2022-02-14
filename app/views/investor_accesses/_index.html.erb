@@ -11,33 +11,36 @@
 <%= turbo_frame_tag "new_investor_access" do %>
 <% end %>
 
+<div class="table-responsive">
 
-<table id="investor_accesses" class="table table-bordered dataTable">
-    <thead>
-        <tr>
-            <th>
-                <strong>Investor</strong>
-            </th>
-            <th>
-                <strong>User</strong>
-            </th>
-            <th>
-                <strong>Email</strong>
-            </th>
-            <th>
-                <strong>Approved</strong>
-            </th>
-            <th>
-                <strong>Granted By</strong>
-            </th>
+    <table id="investor_accesses" class="table table-bordered dataTable">
+        <thead>
+            <tr>
+                <th>
+                    <strong>Investor</strong>
+                </th>
+                <th>
+                    <strong>User</strong>
+                </th>
+                <th>
+                    <strong>Email</strong>
+                </th>
+                <th>
+                    <strong>Approved</strong>
+                </th>
+                <th>
+                    <strong>Granted By</strong>
+                </th>
 
-            <th>
+                <th>
+                </tr>
             </tr>
-        </tr>
-    </thead>
-    <tbody id="investor_accesses_table_body">
-        <% investor_accesses.each do |investor_access| %>
-            <%= render investor_access %>
-        <% end %>
-    </tbody>
-</table>
+        </thead>
+        <tbody id="investor_accesses_table_body">
+            <% investor_accesses.each do |investor_access| %>
+                <%= render investor_access %>
+            <% end %>
+        </tbody>
+    </table>
+
+</div>
