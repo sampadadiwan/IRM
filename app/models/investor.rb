@@ -46,10 +46,10 @@ class Investor < ApplicationRecord
 
   before_create :update_name
   def update_name
-    self.investor_name = "#{investor_entity.name} - #{investee_entity.name}" if self.investor_name.blank?
+    self.investor_name = "#{investor_entity.name} - #{investee_entity.name}" if investor_name.blank?
     self.last_interaction_date ||= Time.zone.today - 10.years
     if investor_entity_id.blank?
-      e = Entity.create(name: self.investor_name, entity_type: "VC")
+      e = Entity.create(name: investor_name, entity_type: "VC")
       self.investor_entity = e
     end
   end

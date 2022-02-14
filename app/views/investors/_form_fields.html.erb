@@ -2,7 +2,7 @@
   <div class="form-group">
     <%= form.label :investment_firm %>
     <%= form.select :investor_entity_id, Entity.vcs.order("entities.name").map{|c| [c.name, c.id]}, 
-      {include_blank: true}, {data: { action: "select2:select->investor#handleChange"}, class: "form-control select2"} %>
+      {include_blank: true}, {class: "form-control select2"} %>
     <small class="text-muted">Leave blank if you cannot find the investment firm, and enter name below</small>
   </div>
 

@@ -7,11 +7,16 @@ import "@popperjs/core"
 import "chartkick"
 import "Chart.bundle"
 
+$(document).on('turbo:before-cache', function() {     // this approach corrects the select 2 to be duplicated when clicking the back button.
+  $('.select2').select2('destroy');
+} );
+
 $( document ).on('turbo:load', function() {
     $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});
     $('.toast').toast('show');
 
     $('.select2').select2();
+    
 
     "use strict"; 
     
