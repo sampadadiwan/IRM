@@ -15,33 +15,35 @@
 <%= turbo_frame_tag "new_access_right" do %>
 <% end %>
 
-<table id="access_rights_table" class="table table-bordered dataTable ">
-  <thead>
-    <tr>
-      <th>
-        Access To
-      </th>
-      <th>
-        Access Type
-      </th>
-      <th>
-        Metadata
-      </th>
-      <th>
-        For
-      </th>
+<div class="table-responsive">
 
-      <th>
-      </th>
-    </tr>
-  </thead>
+  <table id="access_rights_table" class="table table-bordered dataTable ">
+    <thead>
+      <tr>
+        <th>
+          Access To
+        </th>
+        <th>
+          Access Type
+        </th>
+        <th>
+          Metadata
+        </th>
+        <th>
+          For
+        </th>
 
-  <tbody id="access_rights_table_body">
-    <% access_rights.each do |access_right| %>
-      <%= render access_right, access_right: access_right %>
-    <% end %>
-  </tbody>
+        <th>
+        </th>
+      </tr>
+    </thead>
 
-</table>
+    <tbody id="access_rights_table_body">
+      <% access_rights.each do |access_right| %>
+        <%= render access_right, access_right: access_right %>
+      <% end %>
+    </tbody>
 
+  </table>
 
+</div>
