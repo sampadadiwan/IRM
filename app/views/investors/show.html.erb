@@ -45,18 +45,6 @@
   <%= link_to "View Notes", notes_path(investor_id: @investor.id), class: "btn btn-success"%> |
   <%= button_to "Delete", @investor, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %> 
 </div>
-
-<%= turbo_frame_tag "new_access_right" do %>
-
-    | <%= link_to "Grant Cap Table Access", 
-      new_access_right_path("access_right[access_to_investor_id]": @investor.id, 
-                            "access_right[owner_id]": @investor.investee_entity_id,
-                            "access_right[access_type]": "Investment",
-                            "access_right[owner_type]": "Entity",
-                            "access_right[entity_id]": current_user.entity_id), 
-    {  method: :get, class: "btn btn-primary" } %> 
-
-<% end %>
       
 
 <div id="access_rights" class="associated_entity">

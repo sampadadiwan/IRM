@@ -8,7 +8,14 @@
   <div class="tab-content">
       <div id="access-rights-tab" class="tab-pane fade in show active">
         <div id="access_rights" class="associated_entity">
-          <%= render "/access_rights/index", access_rights: investor.access_rights %>
+          <% access_right = AccessRight.new(access_to_investor_id: investor.id, 
+              owner_id: investor.investee_entity_id, 
+              access_type: "Investment", 
+              owner_type: "Entity", 
+              owner_id: current_user.entity_id,
+              entity_id: current_user.entity_id) %>
+              
+          <%= render "/access_rights/index", access_rights: investor.access_rights, access_right: access_right %>
         </div>
       </div>
       <div id="investors-tab" class="tab-pane fade">

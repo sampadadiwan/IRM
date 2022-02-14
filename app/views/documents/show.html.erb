@@ -111,21 +111,16 @@
        <%= button_to "Delete", @document, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %> 
    </div>
 
-   <%= turbo_frame_tag "new_access_right" do %>
-      
-      | <%= link_to "Grant Access", 
-      new_access_right_path("access_right[owner_id]": @document.id,
-                            "access_right[access_type]": "Document",
-                            "access_right[owner_type]": "Document",
-                            "access_right[entity_id]": @document.entity_id), 
-            {  method: :get, class: "btn btn-primary" } %> 
+   <%  access_right = AccessRight.new(
+                        owner_id: @document.id, 
+                        access_type: "Document", 
+                        owner_type: "Document", 
+                        owner_id: @document.entity_id,
+                        entity_id: current_user.entity_id) %> 
 
-
-   <% end %>
-   
 
    <div id="access_rights" class="associated_entity">
-      <%= render "/access_rights/index", access_rights: @document.access_rights %>
+      <%= render "/access_rights/index", access_rights: @document.access_rights, access_right: access_right %>
    </div>
 
    <div data-controller="access"></div>

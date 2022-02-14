@@ -1,6 +1,19 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800">Access Rights</h1>
+  <%= link_to "Grant Access", 
+                new_access_right_path(
+                    "access_right[access_to_investor_id]": access_right.access_to_investor_id, 
+                    "access_right[access_type]": access_right.access_type,
+                    "access_right[owner_id]": access_right.owner_id,
+                    "access_right[owner_type]": access_right.owner_type,
+                    "access_right[entity_id]": access_right.entity_id), 
+                    { data: { turbo_frame: 'new_access_right' },
+                    method: :get, class: "btn btn-primary" } if access_right %> 
+
 </div>
+
+<%= turbo_frame_tag "new_access_right" do %>
+<% end %>
 
 <table id="access_rights_table" class="table table-bordered dataTable ">
   <thead>
