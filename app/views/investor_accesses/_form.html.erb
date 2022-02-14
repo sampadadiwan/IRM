@@ -1,3 +1,7 @@
+<%= turbo_frame_tag "new_investor_access" do %>
+
+<div id="toasts" aria-live="polite" aria-atomic="true" style="position: relative;"></div>
+
 <%= form_with(model: investor_access) do |form| %>
   <% if investor_access.errors.any? %>
     <div class="alert alert-danger">
@@ -39,4 +43,6 @@
   <div class="form-group">
     <%= form.submit "Save", {class: "btn btn-primary"}%>
   </div>
+<% end %>
+
 <% end %>

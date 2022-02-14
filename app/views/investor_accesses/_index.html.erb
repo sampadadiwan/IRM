@@ -4,35 +4,40 @@
     <%= link_to "New Investor User", 
         new_investor_access_path("investor_access[investor_id]": investor.id, 
             "investor_access[entity_id]": current_user.entity_id), 
-            {class: "btn btn-primary"} if investor  %> 
+            { data: { turbo_frame: 'new_investor_access' }, class: "btn btn-primary"} if investor  %> 
 </div>
   
 
+<%= turbo_frame_tag "new_investor_access" do %>
+<% end %>
+
+
 <table id="investor_accesses" class="table table-bordered dataTable">
+    <thead>
+        <tr>
+            <th>
+                <strong>Investor</strong>
+            </th>
+            <th>
+                <strong>User</strong>
+            </th>
+            <th>
+                <strong>Email</strong>
+            </th>
+            <th>
+                <strong>Approved</strong>
+            </th>
+            <th>
+                <strong>Granted By</strong>
+            </th>
 
-    <tr>
-        <th>
-            <strong>Investor</strong>
-        </th>
-        <th>
-            <strong>User</strong>
-        </th>
-        <th>
-            <strong>Email</strong>
-        </th>
-        <th>
-            <strong>Approved</strong>
-        </th>
-        <th>
-            <strong>Granted By</strong>
-        </th>
-
-        <th>
+            <th>
+            </tr>
         </tr>
-    </tr>
-
-    <% investor_accesses.each do |investor_access| %>
-        <%= render investor_access %>
-    <% end %>
-
+    </thead>
+    <tbody id="investor_accesses_table_body">
+        <% investor_accesses.each do |investor_access| %>
+            <%= render investor_access %>
+        <% end %>
+    </tbody>
 </table>

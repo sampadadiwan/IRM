@@ -25,6 +25,10 @@ class InvestorAccessPolicy < ApplicationPolicy
     user.has_role?(:super) || user.entity_id == record.entity_id
   end
 
+  def approve?
+    update?
+  end
+
   def edit?
     update?
   end

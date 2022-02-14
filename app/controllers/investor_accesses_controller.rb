@@ -1,5 +1,5 @@
 class InvestorAccessesController < ApplicationController
-  before_action :set_investor_access, only: %i[show edit update destroy]
+  before_action :set_investor_access, only: %i[show edit update destroy approve]
   after_action :verify_authorized, except: %i[index search]
 
   # GET /investor_accesses or /investor_accesses.json
@@ -25,6 +25,20 @@ class InvestorAccessesController < ApplicationController
   # GET /investor_accesses/1/edit
   def edit; end
 
+  def approve
+    @investor_access.approved = !@investor_access.approved
+    @investor_access.save
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace(@investor_access)
+        ]
+      end
+      format.html { redirect_to investor_access_url(@investor_access), notice: "Investor access was successfully approved." }
+      format.json { @investor_access.to_json }
+    end
+  end
+
   # POST /investor_accesses or /investor_accesses.json
   def create
     @investor_access = InvestorAccess.new(investor_access_params)
@@ -35,6 +49,7 @@ class InvestorAccessesController < ApplicationController
 
     respond_to do |format|
       if @investor_access.save
+        format.turbo_stream { render :create }
         format.html { redirect_to investor_access_url(@investor_access), notice: "Investor access was successfully created." }
         format.json { render :show, status: :created, location: @investor_access }
       else

@@ -16,6 +16,9 @@
   </td>
   <td>
     <%= button_to "Delete" , investor_access, method: :delete, class: "btn btn-danger" , 
-        form_class: "deleteButton" %>
+        form_class: "deleteButton" if Pundit.policy(current_user, investor_access).destroy? %>
+    <% label = investor_access.approved ?  "UnApprove" : "Approve" %>
+    <%= button_to label , approve_investor_access_path(investor_access), method: :patch, class: "btn btn-success" , 
+        form_class: "deleteButton" if Pundit.policy(current_user, investor_access).approve? %>
   </td>
 </tr>

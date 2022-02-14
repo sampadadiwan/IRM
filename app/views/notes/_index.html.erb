@@ -7,30 +7,32 @@
   <% end %>
 </div>
 
-<table id="notes" class="table table-bordered dataTable ">
-  <thead>
-    <tr>
-      <th>
-        User
-      </th>
-      <th>
-        Investor
-      </th>
-      <th class="">
-        Details
-      </th>
-      <th>
-      </th>
-    </tr>
-  </thead>
+<div class="table-responsive">
 
-  <tbody></tbody>
-    <% notes.each do |note| %>
-      <%= render note %>
-    <% end %>
-  </tbody>
-  
-</table>
+  <table id="notes" class="table table-bordered dataTable ">
+    <thead>
+      <tr>
+        <th>
+          User
+        </th>
+        <th>
+          Investor
+        </th>
+        <th class="">
+          Details
+        </th>
+        <th>
+        </th>
+      </tr>
+    </thead>
 
+    <tbody></tbody>
+      <% notes.each do |note| %>
+        <%= render note %>
+      <% end %>
+    </tbody>
+    
+  </table>
 
+</div>
 
