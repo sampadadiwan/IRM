@@ -18,7 +18,7 @@
 
 class DealDoc < ApplicationRecord
   include Trackable
-  is_impressionable
+  is_impressionable :counter_cache => true, :unique => :user_id
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
