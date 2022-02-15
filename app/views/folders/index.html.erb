@@ -1,0 +1,33 @@
+<%= render "/layouts/alerts" %>
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Folders</h1>
+  <%= link_to "New Folder", new_folder_path("folder[entity_id]": current_user.entity_id), {class: "btn btn-primary"}  %>
+</div>
+
+<table id="folders" class="table table-bordered dataTable jqDataTable">
+  <thead>
+    <tr>
+      <th>
+        <strong>Name</strong>
+      </th>
+      <th>
+        <strong>Parent Folder</strong>
+      </th>
+      <th>
+        <strong>Full Path</strong>
+      </th>
+      
+      <th>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @folders.each do |folder| %>
+      <%= render folder %>
+    <% end %>
+  </tbody>
+</table>
+
+<div data-controller="datatable"></div>
+

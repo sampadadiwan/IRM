@@ -1,0 +1,36 @@
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Folder</h6>
+  </div>
+  <div class="card-body">
+
+<%= form_with(model: folder) do |form| %>
+  <% if folder.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(folder.errors.count, "error") %> prohibited this folder from being saved:</h2>
+
+      <ul>
+        <% folder.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :parent_folder %>
+    <%= form.select :parent_folder_id, Folder.for(current_user).map{|f| [f.full_path, f.id]} ,{}, class: "form-control select2"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>
+
+  </div>
+</div>

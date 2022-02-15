@@ -1,0 +1,40 @@
+<%= render "/layouts/alerts" %>
+
+<table class="table table-bordered dataTable">
+
+          <tr>
+        <td>
+          Name
+        </td>
+        <td>
+          <%= @folder.name %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Parent Folder
+        </td>
+        <td>
+          <%= @folder.parent&.full_path %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Full Path
+        </td>
+        <td>
+          <%= @folder.full_path %>
+        </td>    
+      </tr>
+        
+  
+</table>
+
+
+<div>
+  <%= link_to "Edit", edit_folder_path(@folder), {class: "btn btn-primary"} %> |
+  <%= link_to "Create Sub Folder", new_folder_path("folder[entity_id]": current_user.entity_id, "folder[parent_folder_id]": @folder.id), 
+        {class: "btn btn-success"}%> |
+
+  <%= button_to "Delete", @folder, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+</div>

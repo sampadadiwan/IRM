@@ -45,6 +45,7 @@ class Entity < ApplicationRecord
   has_many :investees, foreign_key: "investor_entity_id", class_name: "Investor", dependent: :destroy
   has_many :investee_entities, through: :investees
   has_many :notes, dependent: :destroy
+  has_many :folders, dependent: :destroy
 
   has_many :investor_accesses, dependent: :destroy
   has_many :access_rights, dependent: :destroy

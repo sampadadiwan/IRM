@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_12_121048) do
+ActiveRecord::Schema.define(version: 2022_02_15_040946) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -243,6 +243,18 @@ ActiveRecord::Schema.define(version: 2022_02_12_121048) do
     t.index ["deleted_at"], name: "index_entities_on_deleted_at"
   end
 
+  create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", limit: 100
+    t.integer "parent_folder_id"
+    t.text "full_path"
+    t.integer "level"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "entity_id", null: false
+    t.index ["entity_id"], name: "index_folders_on_entity_id"
+    t.index ["parent_folder_id"], name: "index_folders_on_parent_folder_id"
+  end
+
   create_table "impressions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "impressionable_type"
     t.integer "impressionable_id"
@@ -354,7 +366,7 @@ ActiveRecord::Schema.define(version: 2022_02_12_121048) do
     t.string "tagger_type"
     t.bigint "tagger_id"
     t.string "context", limit: 128
-    t.datetime "created_at", precision: 6
+    t.datetime "created_at"
     t.string "tenant", limit: 128
     t.index ["context"], name: "index_taggings_on_context"
     t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
@@ -436,5 +448,6 @@ ActiveRecord::Schema.define(version: 2022_02_12_121048) do
   add_foreign_key "deal_messages", "deal_investors"
   add_foreign_key "deal_messages", "users"
   add_foreign_key "deals", "entities"
+  add_foreign_key "folders", "entities"
   add_foreign_key "taggings", "tags"
 end

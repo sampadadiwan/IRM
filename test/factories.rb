@@ -1,4 +1,11 @@
 FactoryBot.define do
+  factory :folder do
+    name { "MyString" }
+    parent_folder_id { 1 }
+    full_path { "MyText" }
+    level { 1 }
+  end
+
   factory :investor_access do
     investor_id { 1 }
     user_id { 1 }
