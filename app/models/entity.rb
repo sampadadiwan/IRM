@@ -74,6 +74,11 @@ class Entity < ApplicationRecord
     self.instrument_types = instrument_types.split(",").map(&:strip).join(",") if instrument_types
   end
 
+  after_create :setup_root_folder
+  def setup_root_folder
+    Folder.create(name: "/", entity_id: self.id)
+  end
+
   # Setup the person who created this entity as belonging to this entity
   # after_create :setup_owner
   def setup_owner

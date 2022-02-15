@@ -5,7 +5,7 @@ class Folder < ApplicationRecord
 
   before_save :update_level
 
-  scope :for, ->(user) { where("folders.entity_id=?", user.entity_id) }
+  scope :for, ->(user) { where("folders.entity_id=?", user.entity_id).order("full_path asc") }
 
   def update_level
     if parent
