@@ -1,7 +1,8 @@
 class Folder < ApplicationRecord
   belongs_to :parent, class_name: "Folder", foreign_key: :parent_folder_id, optional: true
   belongs_to :entity
-  
+  has_many :documents, dependent: :destroy
+
   before_save :update_level
 
   scope :for, ->(user) { where("folders.entity_id=?", user.entity_id) }

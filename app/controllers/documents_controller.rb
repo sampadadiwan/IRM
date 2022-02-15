@@ -13,7 +13,7 @@ class DocumentsController < ApplicationController
     #   # @documents = @documents.includes(:owner)
     # end
     @documents = policy_scope(Document)
-    @documents = @documents.includes(tags: :taggings).page params[:page]
+    @documents = @documents.joins(:folder).includes(:folder, tags: :taggings).page params[:page]
   end
 
   def investor_documents
@@ -100,6 +100,6 @@ class DocumentsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def document_params
-    params.require(:document).permit(:name, :file, :text, :entity_id, :video, :tag_list)
+    params.require(:document).permit(:name, :file, :text, :entity_id, :video, :tag_list, :folder_id)
   end
 end

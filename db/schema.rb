@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_15_040946) do
+ActiveRecord::Schema.define(version: 2022_02_15_055146) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -212,8 +212,10 @@ ActiveRecord::Schema.define(version: 2022_02_15_040946) do
     t.datetime "file_updated_at", precision: 6
     t.bigint "entity_id", null: false
     t.datetime "deleted_at", precision: 6
+    t.bigint "folder_id", null: false
     t.index ["deleted_at"], name: "index_documents_on_deleted_at"
     t.index ["entity_id"], name: "index_documents_on_entity_id"
+    t.index ["folder_id"], name: "index_documents_on_folder_id"
   end
 
   create_table "entities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -251,6 +253,7 @@ ActiveRecord::Schema.define(version: 2022_02_15_040946) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "entity_id", null: false
+    t.integer "documents_count", default: 0, null: false
     t.index ["entity_id"], name: "index_folders_on_entity_id"
     t.index ["parent_folder_id"], name: "index_folders_on_parent_folder_id"
   end
@@ -448,6 +451,7 @@ ActiveRecord::Schema.define(version: 2022_02_15_040946) do
   add_foreign_key "deal_messages", "deal_investors"
   add_foreign_key "deal_messages", "users"
   add_foreign_key "deals", "entities"
+  add_foreign_key "documents", "folders"
   add_foreign_key "folders", "entities"
   add_foreign_key "taggings", "tags"
 end
