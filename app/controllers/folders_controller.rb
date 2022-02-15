@@ -3,7 +3,7 @@ class FoldersController < ApplicationController
 
   # GET /folders or /folders.json
   def index
-    @folders = policy_scope(Folder).order("full_path")
+    @folders = policy_scope(Folder).order("full_path").includes(:parent)
   end
 
   # GET /folders/1 or /folders/1.json

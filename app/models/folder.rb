@@ -6,6 +6,7 @@ class Folder < ApplicationRecord
   before_save :update_level
   after_create :touch_root
   after_destroy :touch_root
+  before_destroy :destroy_child_folders
 
   scope :for, ->(user) { where("folders.entity_id=?", user.entity_id).order("full_path asc") }
 
@@ -16,6 +17,12 @@ class Folder < ApplicationRecord
     else
       self.level = 0
       self.full_path = "/"
+    end
+  end
+
+  def destroy_child_folders
+    Folder.where(parent_folder_id: self.id).each do |f|
+      f.destroy if f.level != 0
     end
   end
 
