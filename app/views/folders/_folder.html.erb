@@ -1,7 +1,7 @@
 
 <tr id="<%= dom_id folder %>">
 <td>
-    <%= folder.name %>
+    <%= link_to folder.name, documents_path(folder_id: folder.id) %>
 </td>  
 <td>
     <%= folder.parent&.full_path %>
