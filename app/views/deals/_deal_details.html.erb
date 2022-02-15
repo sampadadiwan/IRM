@@ -3,7 +3,10 @@
       <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#deal-tab">Deal</a>
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#docs-tab">Documents</a>
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#activities-tab">Activities</a>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#investors-tab">Investors</a>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#access-tab">Access Rights</a>
     </nav>
+    
   
   
   <div class="tab-content">
@@ -18,11 +21,32 @@
         </div>     
       </div>
       <div id="activities-tab" class="tab-pane fade">
-        <div id="deal_messages" class="associated_entity">
+        <div id="deal_activities" class="associated_entity">
           <% params[:template] = true %>
           <%= render "deal_activities/index", deal_activities: deal.deal_activities.templates(deal).with_all_rich_text.includes(:deal_investor) %>
         </div>  
       </div>
+
+      <div id="investors-tab" class="tab-pane fade">
+        <div id="deal_messages" class="associated_entity">
+          <%= render "deal_investors/index", deal_investors: deal.deal_investors %>
+        </div>  
+      </div>
+
+      <div id="access-tab" class="tab-pane fade">
+        <div id="access_rights" class="associated_entity">
+
+          <%  access_right = AccessRight.new(
+            owner_id: @deal.id, 
+            access_type: "Deal", 
+            owner_type: "Deal", 
+            owner_id: @deal.entity_id,
+            entity_id: current_user.entity_id) %> 
+
+          <%= render "access_rights/index", access_rights: deal.access_rights, access_right: access_right %>
+        </div>  
+      </div>
+
   </div>
   
   </div>

@@ -7,7 +7,11 @@ When('I create a new investor {string}') do |arg1|
   key_values(@investor_entity, arg1)
   click_on("New Investor")
 
-  fill_in('investor_investor_entity_name', with: @investor_entity.name)
+  if (Entity.vcs.count > 0)
+    first('.select2-container', minimum: 1).click
+    find('li.select2-results__option[role="treeitem"]', text: @investor_entity.name).click
+  end
+  fill_in('investor_investor_name', with: @investor_entity.name)
   select("Founder", from: "investor_category")
   click_on("Save")
 end
@@ -26,7 +30,7 @@ Then('an investor entity should be created') do
 end
 
 Then('an investor entity should not be created') do
-  Entity.where(name: @investor.investor_name).count.should == 0
+  Entity.where(name: @investor.investor_name).count.should == 1
 
   @investor_entity.name.include?(@investor_entity.name).should == true
   @investor.investor_entity_id.should == @investor_entity.id
@@ -59,11 +63,11 @@ end
 
 When('I create a new investor {string} for the existing investor entity') do |string|
   click_on("New Investor")
-
-  fill_in('investor_investor_entity_name', with: @investor_entity.name)
-  sleep(1)
-  page.execute_script("$('.tt-suggestion:contains(\"#{@investor_entity.name}\")')[0].click()")
-  sleep(1)
+  
+  fill_in('investor_investor_name', with: @investor_entity.name)
+  
+  first('.select2-container', minimum: 1).click
+  find('li', text: @investor_entity.name).click
   select("Founder", from: "investor_category")
   click_on("Save")
 end

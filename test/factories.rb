@@ -20,6 +20,7 @@ FactoryBot.define do
     text { Faker::Quotes::Rajnikanth.joke }
     entity { Entity.all.sample }
     file { File.new("public/img/undraw_profile.svg", "r") }
+    folder { Folder.first }
   end
 
 

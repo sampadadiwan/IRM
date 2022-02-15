@@ -4,6 +4,8 @@ class Folder < ApplicationRecord
   has_many :documents, dependent: :destroy
 
   before_save :update_level
+  after_create :touch_root
+  after_destroy :touch_root
 
   scope :for, ->(user) { where("folders.entity_id=?", user.entity_id).order("full_path asc") }
 
@@ -15,6 +17,10 @@ class Folder < ApplicationRecord
       self.level = 0
       self.full_path = "/"
     end
+  end
+
+  def touch_root
+    Folder.where(entity_id: entity_id, level: 0).first.touch
   end
 
   def self.build_tree(entity_id)

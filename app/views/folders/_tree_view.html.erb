@@ -1,19 +1,17 @@
 
-<!-- <% cache parent do %> -->
 
-    <ul id="<%=parent%>" >
+<ul id="<%=parent%>" >
 
-        <% folders.each do |id, folder| %>
-            <li class="caret"><%= link_to folder[:details]&.name, documents_path(folder_id: folder[:details]&.id)  %>
-                <ul class="">
-                    <% folder[:children].each do |child_id, child| %>
-                        <li class="caret"><%= link_to child[:details]&.name, documents_path(folder_id: child[:details]&.id) %></li>
-                        <%= render "/folders/tree_view", folders: child[:children], parent: child[:details] %>
-                    <% end %>
-                </ul>
-            </li>
-        <% end %>
+    <% folders.each do |id, folder| %>
+        <li class="caret"><%= link_to folder[:details]&.name, documents_path(folder_id: folder[:details]&.id)  %>
+            <ul class="">
+                <% folder[:children].each do |child_id, child| %>
+                    <li class="caret"><%= link_to child[:details]&.name, documents_path(folder_id: child[:details]&.id) %></li>
+                    <%= render "/folders/tree_view", folders: child[:children], parent: child[:details] %>
+                <% end %>
+            </ul>
+        </li>
+    <% end %>
 
-    </ul>
+</ul>
 
-<!-- <% end %> -->

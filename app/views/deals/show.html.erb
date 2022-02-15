@@ -13,23 +13,10 @@
     <% end %>
     <%= link_to "Activity Template", deal_activities_path(deal_id: @deal.id, template: true) , {class: "btn btn-success"}%> |
     <%= button_to "Delete", @deal, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
-
-
-    <%  access_right = AccessRight.new(
-                        owner_id: @deal.id, 
-                        access_type: "Deal", 
-                        owner_type: "Deal", 
-                        owner_id: @deal.entity_id,
-                        entity_id: current_user.entity_id) %> 
-
+   
   </div>
 
-  <div id="access_rights" class="associated_entity">
-    <%= render "/access_rights/index", access_rights: @deal.access_rights, access_right: access_right %>
-  </div>
-
-  <div data-controller="access"></div>
-
+  <%= render "/deals/deal_details", deal: @deal %>
   
 <% else %>
 
