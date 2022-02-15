@@ -1,0 +1,28 @@
+<div class="associated_entity">
+    <nav class="nav nav-tabs nav-fill nav-justified"  role="tablist">
+      <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">Access Rights</a>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#viewers-tab">Viewed By</a>
+    </nav>
+  
+  
+    <div class="tab-content">
+        <div id="access-rights-tab" class="tab-pane fade in show active">
+          <div id="access_rights" class="associated_entity">
+            <%  access_right = AccessRight.new(
+                owner_id: document.id, 
+                access_type: "Document", 
+                owner_type: "Document", 
+                owner_id: document.entity_id,
+                entity_id: current_user.entity_id) %> 
+
+            <%= render "/access_rights/index", access_rights: document.access_rights, access_right: access_right %>
+          </div>
+        </div>
+        <div id="viewers-tab" class="tab-pane fade">
+          <div id="users" class="associated_entity">
+            <%= render "/users/index", users: document.viewed_by %>
+          </div>     
+        </div>
+    </div>
+  
+  </div>

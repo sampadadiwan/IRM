@@ -17,8 +17,7 @@
 
 class Document < ApplicationRecord
   include Trackable
-  is_impressionable :counter_cache => true,  :unique => :user_id
-
+  include Impressionable
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -85,4 +84,6 @@ class Document < ApplicationRecord
   def video?
     file_content_type&.include?('video')
   end
+
+
 end
