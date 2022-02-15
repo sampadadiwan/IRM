@@ -10,26 +10,29 @@
 
 </div>
 
-<table id="documents" class="table table-bordered dataTable ">
+<div class="table-responsive">
 
-  <tr>
-    <th>
-      Name
-    </th>
-    <th>
-      Folder
-    </th>
-    <th>
-      Tags
-    </th>
-    <th>
-      Created On
-    </th>
-  
-  </tr>
+  <table id="documents" class="table table-bordered dataTable ">
 
-  <% documents.each do |document| %>
-    <%= render document %>
-  <% end %>
-</table>
+    <tr>
+      <th>
+        Name
+      </th>
+      <th>
+        Folder
+      </th>
+      <th>
+        Tags
+      </th>
+      <th>
+        Created On
+      </th>
+    
+    </tr>
 
+    <% documents.each do |document| %>
+      <%= render document %>
+    <% end %>
+  </table>
+
+</div>
