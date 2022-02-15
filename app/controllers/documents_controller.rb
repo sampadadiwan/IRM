@@ -13,6 +13,9 @@ class DocumentsController < ApplicationController
     #   # @documents = @documents.includes(:owner)
     # end
     @documents = policy_scope(Document)
+    if(params[:folder_id].present?)
+      @documents = @documents.where(folder_id: params[:folder_id])
+    end
     @documents = @documents.joins(:folder).includes(:folder, tags: :taggings).page params[:page]
   end
 

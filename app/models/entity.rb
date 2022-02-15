@@ -76,7 +76,7 @@ class Entity < ApplicationRecord
 
   after_create :setup_root_folder
   def setup_root_folder
-    Folder.create(name: "/", entity_id: self.id)
+    Folder.create(name: "/", entity_id: id)
   end
 
   # Setup the person who created this entity as belonging to this entity

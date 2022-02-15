@@ -1,3 +1,2 @@
 <%= render "/layouts/alerts" %>
-<%= render "documents/index", documents: @documents, entity: @entity %>
-<%= paginate @documents %>
+<%= render "documents/tree_view", documents: @documents, entity: @entity %>

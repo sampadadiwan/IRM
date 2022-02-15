@@ -1,0 +1,30 @@
+<div class="row">
+
+    <div class="col-lg-4 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <span class="m-0 font-weight-bold text-primary">Folders</span> 
+                <%= link_to "New Folder", new_folder_path("folder[entity_id]": current_user.entity_id), class: "btn btn-sm btn-primary float-right"  %>               
+            </div>
+            <div class="card-body">
+                <div class="tree_view" data-controller="treeview">
+                    <% folders = Folder.build_tree(current_user.entity_id) %>
+                    <%= render "folders/tree_view", folders: folders , parent: folders.values[0][:details] %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <span class="m-0 font-weight-bold text-primary">Documents</span>
+                <%= link_to "All Documents", documents_path, class: "btn btn-sm btn-primary float-right"  %>               
+            </div>
+            <div class="card-body">
+                <%= render "documents/index", documents: @documents, entity: @entity %>
+                <%= paginate @documents %>
+            </div>
+        </div>
+    </div>
+
+</div>

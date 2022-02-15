@@ -10,8 +10,9 @@ class Folder < ApplicationRecord
   def update_level
     if parent
       self.level = parent.level + 1
-      self.full_path = "#{parent.full_path}/#{name}"
+      self.full_path = self.level == 1 ? "#{parent.full_path}#{name}" : "#{parent.full_path}/#{name}"
     else
+      self.level = 0
       self.full_path = "/"
     end
   end
