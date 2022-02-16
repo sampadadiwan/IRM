@@ -76,4 +76,14 @@ class DealInvestor < ApplicationRecord
       seq += 1
     end
   end
+
+  def messages_viewed(current_user)
+    if current_user.entity_id == investor_entity_id
+      self.unread_messages_investor = 0
+    else
+      self.unread_messages_investee = 0
+    end
+
+    save
+  end
 end

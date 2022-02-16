@@ -29,9 +29,12 @@ class DealMessage < ApplicationRecord
   scope :tasks, -> { where(is_task: true) }
   scope :tasks_not_done, -> { where(is_task: true, task_done: false) }
 
-  after_create_commit do
-    broadcast_append_to "deal_investor_#{deal_investor_id}", target: "deal_investor_#{deal_investor_id}",
-                                                             partial: "deal_messages/conversation_msg", locals: { msg: self }
+  after_create :broadcast_message
+
+  def broadcast_message
+    broadcast_append_to "deal_investor_#{deal_investor_id}",
+                        target: "deal_investor_#{deal_investor_id}",
+                        partial: "deal_messages/conversation_msg", locals: { msg: self }
   end
 
   def to_s
@@ -39,4 +42,17 @@ class DealMessage < ApplicationRecord
   end
 
   def unread(user); end
+
+  after_create :update_message_count
+  def update_message_count
+    if user.entity_id == deal_investor.investee_entity_id
+      deal_investor.unread_messages_investor += 1
+      deal_investor.todays_messages_investor += 1
+    else
+      deal_investor.unread_messages_investee += 1
+      deal_investor.todays_messages_investee += 1
+    end
+
+    deal_investor.save
+  end
 end

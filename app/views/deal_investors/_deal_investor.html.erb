@@ -15,7 +15,7 @@
         <div>
             <span class="badge <%= status_badge(deal_investor) %>">
                 <%= deal_investor.status %>
-            </span>
+            </span>            
         </div>
     </td>
     <td>
@@ -25,6 +25,20 @@
         <%= number_to_currency deal_investor.secondary_investment %>
     </td>
     <td class="">
-        <%= deal_investor.entity_name %>
+        <% if current_user.entity_id == deal_investor.investor_entity_id %>
+            <span class="badge badge-success %>">
+                <%= link_to "Unread: #{deal_investor.unread_messages_investor}", deal_messages_path(deal_investor_id: deal_investor.id) %>
+            </span>
+            <span class="badge badge-info %>">
+                <%= link_to "Todays: #{deal_investor.todays_messages_investor}", deal_messages_path(deal_investor_id: deal_investor.id) %>                
+            </span>
+        <% else %> 
+            <span class="badge badge-success %>">
+                <%= link_to "Unread: #{deal_investor.unread_messages_investee}", deal_messages_path(deal_investor_id: deal_investor.id) %>                
+            </span>
+            <span class="badge badge-info %>">
+                <%= link_to "Todays: #{deal_investor.todays_messages_investee}", deal_messages_path(deal_investor_id: deal_investor.id) %>                
+            </span>   
+        <% end %>
     </td>
 </tr>

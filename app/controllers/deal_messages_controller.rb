@@ -8,7 +8,9 @@ class DealMessagesController < ApplicationController
       @deal_investor = DealInvestor.find(params[:deal_investor_id])
       # Ensure the user has access to the deal investor
       authorize @deal_investor, :show?
-
+      # Mark messages as read
+      @deal_investor.messages_viewed(current_user)
+      # Return the messages
       @deal_messages = @deal_investor.deal_messages.with_all_rich_text.includes(:user)
     else
       @deal_messages = DealMessage.none

@@ -24,6 +24,7 @@ job_type :bundle, 'cd :path && :environment_variable=:environment bundle exec :t
 
 every 1.day, at: '4:30 am' do
   rake "ts:rebuild"
+  runner "ClearMessagesCountJob.new.perform"
 end
 
 every :reboot do
