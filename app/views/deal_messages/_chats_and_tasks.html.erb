@@ -4,7 +4,10 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">
-                    <div class="chat-with">Chat between <%=deal_investor.investor_name%> & <%=deal_investor.entity_name%> </div>
+                    <span class="chat-with">Chat between <%=deal_investor.investor_name%> & <%=deal_investor.entity_name%> </span>
+                    <%= link_to deal_messages_path(deal_investor_id: deal_investor.id), class: "float-right" do %>
+                        <i class="fas fa-expand"></i>
+                    <% end %>
                 </h6>
             </div>
             <div class="card-body">
