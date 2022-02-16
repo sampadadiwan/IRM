@@ -19,7 +19,7 @@
                     <span>Dashboard</span></a>
             </li>
 
-            <% if current_user && current_user.has_role?(:investor) %>
+            <% if current_user && current_user.has_cached_role?(:investor) %>
                 <!-- Divider -->
                 <hr class="sidebar-divider">
                 
@@ -40,7 +40,7 @@
 
             <% end %>
 
-            <% if current_user && current_user.has_role?(:startup) %>
+            <% if current_user && current_user.has_cached_role?(:startup) %>
             <!-- Divider -->
             <hr class="sidebar-divider">
 

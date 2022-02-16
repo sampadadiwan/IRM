@@ -1,7 +1,7 @@
 class DealPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.has_role?(:super)
+      if user.has_cached_role?(:super)
         scope.all
       else
         scope.where(entity_id: user.entity_id)
@@ -14,7 +14,7 @@ class DealPolicy < ApplicationPolicy
   end
 
   def show?
-    if user.has_role?(:super) || user.entity_id == record.entity_id
+    if user.has_cached_role?(:super) || user.entity_id == record.entity_id
       true
     else
       Deal.for_investor(user).where("deals.id=?", record.id).first.present?
@@ -22,7 +22,7 @@ class DealPolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_role?(:super) || (user.entity_id == record.entity_id)
+    user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
   end
 
   def new?

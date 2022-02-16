@@ -1,7 +1,7 @@
 class DealMessagePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.has_role?(:super)
+      if user.has_cached_role?(:super)
         scope.all
       else
         scope.where('deal_investors.entity_id': user.entity_id).joins(:deal_investor)
@@ -14,7 +14,7 @@ class DealMessagePolicy < ApplicationPolicy
   end
 
   def show?
-    if user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
+    if user.has_cached_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
       true
     else
       record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id
@@ -30,7 +30,7 @@ class DealMessagePolicy < ApplicationPolicy
   end
 
   def create?
-    if user.has_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
+    if user.has_cached_role?(:super) || (user.entity_id == record.deal_investor.entity_id)
       true
     else
       record.deal_investor && record.deal_investor.investor_entity_id == user.entity_id

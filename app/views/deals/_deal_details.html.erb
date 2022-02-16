@@ -26,7 +26,7 @@
       </div>
       <div id="docs-tab" class="tab-pane fade in show active">
         <div id="deal_docs" class="associated_entity">
-          <%= render "/deal_docs/index", deal: deal, deal_docs: deal.deal_docs, deal_investor: nil, title: "Deal Docs" %>
+          <%= render "/deal_docs/index", deal: deal, deal_docs: deal.deal_docs.includes(:tags=>:taggings), deal_investor: nil, title: "Deal Docs" %>
         </div>     
       </div>
       <div id="activities-tab" class="tab-pane fade">
@@ -38,7 +38,7 @@
 
       <div id="investors-tab" class="tab-pane fade">
         <div id="deal_messages" class="associated_entity">
-          <%= render "deal_investors/index", deal_investors: deal.deal_investors %>
+          <%= render "deal_investors/index", deal_investors: deal.deal_investors.includes(:investor, :entity) %>
         </div>  
       </div>
 
@@ -52,7 +52,7 @@
             owner_id: @deal.entity_id,
             entity_id: current_user.entity_id) %> 
 
-          <%= render "access_rights/index", access_rights: deal.access_rights, access_right: access_right %>
+          <%= render "access_rights/index", access_rights: deal.access_rights.includes(:investor), access_right: access_right %>
         </div>  
       </div>
 

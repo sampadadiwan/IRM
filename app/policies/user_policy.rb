@@ -1,7 +1,7 @@
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.has_role?(:super)
+      if user.has_cached_role?(:super)
         scope.all
       else
         scope.where(entity_id: user.entity_id)
@@ -18,23 +18,23 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || user.id == record.id || user.entity_id == record.entity_id
+    user.has_cached_role?(:super) || user.id == record.id || user.entity_id == record.entity_id
   end
 
   def create?
-    user.has_role?(:super) || user.entity_id == record.entity_id
+    user.has_cached_role?(:super) || user.entity_id == record.entity_id
   end
 
   def new?
-    user.has_role?(:super) || user.entity_id == record.entity_id
+    user.has_cached_role?(:super) || user.entity_id == record.entity_id
   end
 
   def update?
-    user.has_role?(:super) || user.id == record.id
+    user.has_cached_role?(:super) || user.id == record.id
   end
 
   def edit?
-    user.has_role?(:super) || user.id == record.id
+    user.has_cached_role?(:super) || user.id == record.id
   end
 
   def destroy?

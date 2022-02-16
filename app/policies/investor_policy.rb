@@ -1,7 +1,7 @@
 class InvestorPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.has_role?(:super)
+      if user.has_cached_role?(:super)
         scope.all
       else
         scope.where(investee_entity_id: user.entity_id)
@@ -14,11 +14,11 @@ class InvestorPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_role?(:super) || user.entity_id == record.investee_entity_id
+    user.has_cached_role?(:super) || user.entity_id == record.investee_entity_id
   end
 
   def create?
-    user.has_role?(:super) || user.entity_id == record.investee_entity_id
+    user.has_cached_role?(:super) || user.entity_id == record.investee_entity_id
   end
 
   def new?

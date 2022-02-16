@@ -17,7 +17,7 @@
     </div>
     <div id="docs-tab" class="tab-pane fade">
       <div id="deal_docs" class="associated_entity">
-        <%= render "/deal_docs/index", deal_investor: deal_investor, deal_docs: deal.deal_docs.deal_investor_docs(deal_investor), title: "Investor Docs" %>
+        <%= render "/deal_docs/index", deal_investor: deal_investor, deal_docs: deal.deal_docs.deal_investor_docs(deal_investor).includes(:tags=>:taggings), title: "Investor Docs" %>
       </div>     
     </div>
     <div id="chat-tab" class="tab-pane fade">
