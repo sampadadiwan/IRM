@@ -5,7 +5,6 @@ module DealInvestorsHelper
   end
 
   def message_badge(message_count)
-    message_count > 0 ? "bg-success" : "bg-info"
+    message_count.positive? ? "bg-success" : "bg-info"
   end
-
 end
