@@ -1,12 +1,15 @@
 class DealMessagesController < ApplicationController
   before_action :set_deal_message, only: %w[show update destroy edit mark_as_task task_done]
+  after_action :verify_policy_scoped, only: []
 
   # GET /deal_messages or /deal_messages.json
   def index
-    @deal_messages = policy_scope(DealMessage)
     if params[:deal_investor_id]
       @deal_investor = DealInvestor.find(params[:deal_investor_id])
-      @deal_messages = @deal_messages.where(deal_investor_id: params[:deal_investor_id])
+      # Ensure the user has access to the deal investor
+      authorize @deal_investor, :show?
+
+      @deal_messages = @deal_investor.deal_messages.with_all_rich_text.includes(:user)
     else
       @deal_messages = DealMessage.none
     end

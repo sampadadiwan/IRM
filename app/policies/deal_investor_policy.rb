@@ -14,7 +14,9 @@ class DealInvestorPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_cached_role?(:super) || (user.entity_id == record.entity_id) || (user.entity_id == record.investor_entity_id)
+    user.has_cached_role?(:super) ||
+      (user.entity_id == record.entity_id) ||
+      (user.entity_id == record.investor_entity_id)
   end
 
   def create?

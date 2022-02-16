@@ -16,6 +16,7 @@
 
 class DealInvestor < ApplicationRecord
   include Trackable
+  include Impressionable
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])

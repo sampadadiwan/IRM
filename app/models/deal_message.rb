@@ -37,4 +37,6 @@ class DealMessage < ApplicationRecord
   def to_s
     deal_investor.investor_name
   end
+
+  def unread(user); end
 end

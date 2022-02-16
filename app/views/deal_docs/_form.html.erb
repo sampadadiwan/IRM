@@ -52,6 +52,8 @@
     <%= form.label :deal_investor_id %>
     <%= form.select :deal_investor_id, deal_doc.deal.deal_investors.map{|i| [i.investor_name, i.id]}, 
       {include_blank: true}, class: "form-control", disabled: investor_disabled  %>
+    <%= form.text_field :deal_investor_id, class: "form-control", hidden: true  %>
+
     <small class="text-muted">Leave this blank to allow all deal investors access to this document. Or select and limit it to a specific investor</small>
   </div>
   <% end %>
