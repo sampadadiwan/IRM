@@ -5,13 +5,13 @@
     <% folders.each do |id, folder| %>
         <li>
             <span  class="caret">
-                <%= link_to folder[:details]&.name, documents_path(folder_id: folder[:details]&.id)  %>
+                <%= link_to folder[:details]&.name, documents_path(folder_id: folder[:details]&.id, entity_id: params[:entity_id])  %>
             </span>
             <ul class="">
                 <% folder[:children].each do |child_id, child| %>
                     <li>
                         <span class="caret">
-                            <%= link_to child[:details]&.name, documents_path(folder_id: child[:details]&.id) %>
+                            <%= link_to child[:details]&.name, documents_path(folder_id: child[:details]&.id, entity_id: params[:entity_id]) %>
                         </span>
                         <%= render "/folders/tree_view", folders: child[:children], parent: child[:details] %>
                     </li>                    

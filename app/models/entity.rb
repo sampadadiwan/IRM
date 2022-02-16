@@ -93,11 +93,6 @@ class Entity < ApplicationRecord
   end
 
   def self.for_investor(user)
-    Entity.joins(:investors)
-          .where('investors.investor_entity_id': user.entity_id)
-          .where("investors.category=access_rights.access_to_category")
-          .joins(:access_rights)
-          .merge(AccessRight.for_access_type("Investment"))
-          .distinct
+    Entity.joins(:investor_accesses).where("investor_accesses.user_id=?", user.id)
   end
 end

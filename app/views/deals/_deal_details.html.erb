@@ -49,8 +49,7 @@
             owner_id: @deal.id, 
             access_type: "Deal", 
             owner_type: "Deal", 
-            owner_id: @deal.entity_id,
-            entity_id: current_user.entity_id) %> 
+            entity_id: deal.entity_id) %> 
 
           <%= render "access_rights/index", access_rights: deal.access_rights.includes(:investor), access_right: access_right %>
         </div>  

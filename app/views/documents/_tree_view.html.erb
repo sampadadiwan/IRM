@@ -8,7 +8,8 @@
             </div>
             <div class="card-body">
                 <div class="tree_view">
-                    <% folders = Folder.build_tree(current_user.entity_id) %>
+                    <% entity_id = params[:entity_id].present? ? params[:entity_id] : current_user.entity_id %>
+                    <% folders = Folder.build_tree(entity_id) %>
                     <%= render "folders/tree_view", folders: folders , parent: folders.values[0][:details] %>
                 </div>
             </div>
@@ -18,7 +19,7 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <span class="m-0 font-weight-bold text-primary">Documents</span>
-                <%= link_to "All Documents", documents_path, class: "btn btn-sm btn-primary float-right"  %>               
+                <%= link_to "All Documents", documents_path(entity_id:params[:entity_id]), class: "btn btn-sm btn-primary float-right"  %>               
             </div>
             <div class="card-body">
                 <%= render "documents/index", documents: @documents, entity: @entity %>

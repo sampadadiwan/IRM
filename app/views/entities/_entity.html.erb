@@ -14,7 +14,7 @@
         <%= link_to "Documents", documents_path(entity_id: entity.id) , {class: "btn btn-primary"}%>
         <%= link_to "Investments", investments_path(entity_id: entity.id) , {class: "btn btn-success"}%>
     <% else %>
-        <%= link_to "Documents", investor_documents_documents_path(entity_id: entity.id) , {class: "btn btn-primary"}%>
+        <%= link_to "Documents", documents_path(entity_id: entity.id) , {class: "btn btn-primary"}%>
         <%= link_to "Investments", investor_investments_investments_path(entity_id: entity.id) , {class: "btn btn-success"}%>
     <% end %>
 </td>  

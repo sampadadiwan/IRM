@@ -12,8 +12,7 @@
                 owner_id: document.id, 
                 access_type: "Document", 
                 owner_type: "Document", 
-                owner_id: document.entity_id,
-                entity_id: current_user.entity_id) %> 
+                entity_id: document.entity_id) %> 
 
             <%= render "/access_rights/index", access_rights: document.access_rights, access_right: access_right %>
           </div>

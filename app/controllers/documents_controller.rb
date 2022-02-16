@@ -1,18 +1,21 @@
 class DocumentsController < ApplicationController
   before_action :set_document, only: %w[show update destroy edit]
   after_action :verify_authorized, except: %i[index search investor_documents]
+  after_action :verify_policy_scoped, only: []
+
   impressionist actions: [:show]
 
   # GET /documents or /documents.json
   def index
-    @entity = current_user.entity
-    # if params[:entity_id].present?
-    #   @entity = Entity.find(params[:entity_id])
-    #   # @documents = Document.documents_for(current_user, @entity)
-    # else
-    #   # @documents = @documents.includes(:owner)
-    # end
-    @documents = policy_scope(Document)
+    if params[:entity_id].present?
+      @entity = Entity.find(params[:entity_id])
+      @documents = Document.for_investor(current_user, @entity)
+    else
+      @entity = current_user.entity
+      @documents = policy_scope(Document)
+    end
+
+    @documents = @documents.order(id: :desc)
     @documents = @documents.where(folder_id: params[:folder_id]) if params[:folder_id].present?
     @documents = @documents.joins(:folder).includes(:folder, tags: :taggings).page params[:page]
   end
