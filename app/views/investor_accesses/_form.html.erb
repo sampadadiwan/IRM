@@ -1,13 +1,13 @@
 <%= turbo_frame_tag "new_investor_access" do %>
 
-<div id="toasts" aria-live="polite" aria-atomic="true" style="position: relative;"></div>
 
 
-<div class="card shadow mb-4">
+<div class="dynamic_form card shadow mb-4" data-controller="investoraccess">
   <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-primary">Added Investor User</h6>
   </div>
   <div class="card-body">
+  <div id="toasts" aria-live="polite" aria-atomic="true" style="position: relative;"></div>
 
 <%= form_with(model: investor_access) do |form| %>
   <% if investor_access.errors.any? %>
@@ -49,10 +49,11 @@
 
   <div class="form-group">
     <%= form.submit "Save", {class: "btn btn-primary"}%>
+    <a class="btn btn-danger", data-action="click->investoraccess#close">Close</a>
   </div>
 <% end %>
 
   </div>
-  </div>
+</div>
 
 <% end %>

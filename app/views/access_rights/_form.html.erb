@@ -1,12 +1,11 @@
 <%= turbo_frame_tag "new_access_right" do %>
 
-  <div id="toasts" aria-live="polite" aria-atomic="true" style="position: relative;"></div>
-
-<div class="card shadow mb-4">
+<div class="dynamic_form card shadow mb-4" data-controller="access">
   <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-primary">Grant Access</h6>
   </div>
   <div class="card-body">
+  <div id="toasts" aria-live="polite" aria-atomic="true" style="position: relative;"></div>
 
   <%= form_with(model: access_right, class: "associated_entity") do |form| %>
     <% if access_right.errors.any? %>
@@ -67,6 +66,7 @@
 
     <div class="form-group">
       <%= form.submit "Save", {class: "btn btn-primary"}%>
+      <a class="btn btn-danger", data-action="click->access#close">Close</a>
     </div>
   <% end %>
 

@@ -93,17 +93,11 @@ class Entity < ApplicationRecord
   end
 
   def self.for_investor(user)
-    category_access = Entity.joins(:investors)
-                            .where('investors.investor_entity_id': user.entity_id)
-                            .where("investors.category=access_rights.access_to_category")
-                            .joins(:access_rights)
-                            .merge(AccessRight.for_access_type("Investment"))
-
-    direct_access = Entity.joins(:investors)
-                          .merge(AccessRight.for_access_type("Investment"))
-                          .merge(AccessRight.user_access(user))
-                          .joins(:access_rights)
-
-    direct_access.or(category_access).distinct
+    Entity.joins(:investors)
+          .where('investors.investor_entity_id': user.entity_id)
+          .where("investors.category=access_rights.access_to_category")
+          .joins(:access_rights)
+          .merge(AccessRight.for_access_type("Investment"))
+          .distinct
   end
 end

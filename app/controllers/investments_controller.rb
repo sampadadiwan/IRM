@@ -22,10 +22,12 @@ class InvestmentsController < ApplicationController
   def investor_investments
     if params[:entity_id].present?
       @entity = Entity.find(params[:entity_id])
-      @investments = Investment.investments_for(current_user, @entity)
+      @investments = Investment.for_investor(current_user, @entity)
     end
 
-    @investments = @investments.order(initial_value: :desc).joins(:investor, :investee_entity).page params[:page]
+    @investments = @investments.order(initial_value: :desc)
+                               .includes(:investee_entity, investor: :investor_entity).distinct
+                               .page params[:page]
 
     render "index"
   end

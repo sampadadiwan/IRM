@@ -38,10 +38,10 @@ class AccessRight < ApplicationRecord
 
   scope :for, ->(owner) { where(owner_id: owner.id, owner_type: owner.class.name) }
   scope :for_access_type, ->(type) { where("access_rights.access_type=?", type) }
-  scope :investor_access, lambda { |investor, entity|
-                            where("(access_rights.entity_id=?) AND
-           (access_rights.access_to_investor_id=? OR access_rights.access_to_category=?)",
-                                  entity.id, investor.id, investor.category)
+  scope :investor_access, lambda { |investor|
+                            where(" (access_rights.entity_id=?) AND
+                                    (access_rights.access_to_investor_id=? OR access_rights.access_to_category=?)",
+                                  investor.investee_entity_id, investor.id, investor.category)
                           }
 
   def to_s

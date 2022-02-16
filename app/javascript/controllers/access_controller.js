@@ -51,8 +51,8 @@ export default class extends Controller {
 
   }
 
-  toggleFields(event) {
-    console.log("toggleFields");
-
+  close(event) {
+    console.log("closeForm");
+    $(".dynamic_form").remove();
   }
 }

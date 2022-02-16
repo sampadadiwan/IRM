@@ -83,13 +83,15 @@ class Investment < ApplicationRecord
                   .joins(investee_entity: :investor_accesses)
                   .merge(InvestorAccess.approved_for(current_user, entity))
 
-    return investments if investments.blank?
+    # return investments if investments.blank?
 
     # Is this user from an investor
     investor = Investor.for(current_user, entity).first
 
     # Get the investor access for this user and this entity
-    access_right = AccessRight.investments.investor_access(investor, entity).first
+    access_right = AccessRight.investments.investor_access(investor).last
+    return Investment.none if access_right.nil?
+
     Rails.logger.debug access_right.to_json
 
     case access_right.metadata
