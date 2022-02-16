@@ -45,7 +45,7 @@ class DealMessage < ApplicationRecord
 
   after_create :update_message_count
   def update_message_count
-    if user.entity_id == deal_investor.investee_entity_id
+    if user.entity_id == deal_investor.entity_id
       deal_investor.unread_messages_investor += 1
       deal_investor.todays_messages_investor += 1
     else
