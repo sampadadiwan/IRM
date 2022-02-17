@@ -15,7 +15,7 @@
     </span>
   <% end %>
   <% if investor.unapproved_investor_access_count > 0 %>
-    <span class="badge badge-danger">
+    <span class="badge badge-warning">
       <%= link_to "Pending #{investor.unapproved_investor_access_count}", investor_path(investor, tab: "investors-tab") %>
     </span>
   <% end %>

@@ -115,6 +115,10 @@ h1 {
 .badge {
   color: white !important;
   padding: .5em .7em !important;
+  a {
+    color: white !important;
+    text-decoration: none !important;
+  }
 }
 
 .task-done-checkbox {
