@@ -1,3 +1,9 @@
+
+<%
+    show_metadata ||= "Yes"
+    show_for ||= "Yes"
+%>
+
 <tr id="<%= dom_id access_right %>">
     <td>
         <%= access_right.access_to_label  %>
@@ -5,12 +11,16 @@
     <td>
         <%= access_right.access_type %>
     </td>  
+    <% if show_metadata == "Yes" %>
     <td>
         <%= access_right.metadata %>
     </td>  
+    <% end %>
+    <% if show_for == "Yes" %>
     <td>
         <%= link_to access_right.owner.name, access_right.owner %>
     </td>  
+    <% end %>
     <td>
         <%= button_to "Delete", access_right, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>    
     </td>

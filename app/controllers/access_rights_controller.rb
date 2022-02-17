@@ -44,12 +44,28 @@ class AccessRightsController < ApplicationController
 
   # POST /access_rights or /access_rights.json
   def create
-    @access_right = AccessRight.new(access_right_params)
-    @access_right.entity_id = current_user.entity_id
-    authorize @access_right
+    # We get multiple categories to be given access at the same time
+    @owner = nil
+    @access_rights = []
+    if access_right_params[:access_to_category].present?
+      @owner = AccessRight.new(access_right_params).owner
+      access_right_params[:access_to_category].each do |category|
+        @access_right = AccessRight.new(access_right_params)
+        @access_right.access_to_category = category
+        @access_right.entity_id = current_user.entity_id
+        authorize @access_right
+        @owner.access_rights << @access_right
+        @access_rights << @access_right
+      end
+    else
+      @access_right = AccessRight.new(access_right_params)
+      @access_right.entity_id = current_user.entity_id
+      authorize @access_right
+      @access_rights << @access_right
+    end
 
     respond_to do |format|
-      if @access_right.save
+      if @owner&.save || @access_right.save
         format.turbo_stream { render :create }
         format.html { redirect_to access_right_url(@access_right), notice: "Access right was successfully created." }
         format.json { render :show, status: :created, location: @access_right }
@@ -103,6 +119,6 @@ class AccessRightsController < ApplicationController
   def access_right_params
     params.require(:access_right).permit(:owner_id, :owner_type,
                                          :access_to_investor_id, :access_type, :metadata,
-                                         :entity_id, :access_to_category)
+                                         :entity_id, access_to_category: [])
   end
 end

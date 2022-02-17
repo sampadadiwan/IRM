@@ -64,7 +64,9 @@ Metrics/MethodLength:
   StyleGuide: '<https://github.com/bbatsov/ruby-style-guide#short-methods>'
   Max: 25
   Enabled: true
-
+  Exclude:
+    - 'app/controllers/access_rights_controller.rb'
+  
 Metrics/BlockLength:
   CountComments: false
   Max: 15

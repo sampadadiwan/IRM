@@ -15,6 +15,10 @@
 <%= turbo_frame_tag "new_access_right" do %>
 <% end %>
 
+<%
+  show_metadata ||= "Yes"
+  show_for ||= "Yes"
+%>
 <div class="table-responsive">
 
   <table id="access_rights_table" class="table table-bordered table-striped dataTable ">
@@ -26,13 +30,16 @@
         <th>
           Access Type
         </th>
-        <th>
-          Metadata
-        </th>
-        <th>
-          For
-        </th>
-
+        <% if show_metadata == "Yes" %>
+          <th>
+            Metadata
+          </th>
+        <% end %>
+        <% if show_for == "Yes" %>
+          <th>
+            For
+          </th>
+        <% end %>
         <th>
         </th>
       </tr>
@@ -40,7 +47,7 @@
 
     <tbody id="access_rights_table_body">
       <% access_rights.each do |access_right| %>
-        <%= render access_right, access_right: access_right %>
+        <%= render access_right, access_right: access_right, show_for: show_for, show_metadata: show_metadata %>
       <% end %>
     </tbody>
 

@@ -4,11 +4,13 @@ export default class extends Controller {
 
   connect() {
 
-    console.log("Access javascript");
-   
     $(document).on('turbo:frame-load', function () {
 
       console.log("Access javascript loaded");
+      $('.select2-multiple').select2({
+        
+      });
+
 
       $("#category_form_group").hide();
       $('#access_right_access_to_category').prop('disabled', 'disabled');
