@@ -1,4 +1,6 @@
 class AccessRightsController < ApplicationController
+  include AccessRightsHelper
+
   before_action :set_access_right, only: %w[show update destroy edit]
 
   # GET /access_rights or /access_rights.json
@@ -44,25 +46,7 @@ class AccessRightsController < ApplicationController
 
   # POST /access_rights or /access_rights.json
   def create
-    # We get multiple categories to be given access at the same time
-    @owner = nil
-    @access_rights = []
-    if access_right_params[:access_to_category].present?
-      @owner = AccessRight.new(access_right_params).owner
-      access_right_params[:access_to_category].each do |category|
-        @access_right = AccessRight.new(access_right_params)
-        @access_right.access_to_category = category
-        @access_right.entity_id = current_user.entity_id
-        authorize @access_right
-        @owner.access_rights << @access_right
-        @access_rights << @access_right
-      end
-    else
-      @access_right = AccessRight.new(access_right_params)
-      @access_right.entity_id = current_user.entity_id
-      authorize @access_right
-      @access_rights << @access_right
-    end
+    @owner, @access_rights = initialize_from_params(access_right_params)
 
     respond_to do |format|
       if @owner&.save || @access_right.save
@@ -117,8 +101,8 @@ class AccessRightsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def access_right_params
-    params.require(:access_right).permit(:owner_id, :owner_type,
-                                         :access_to_investor_id, :access_type, :metadata,
-                                         :entity_id, access_to_category: [])
+    params.require(:access_right).permit(:owner_id, :owner_type, :access_type, :metadata,
+                                         :entity_id, access_to_category: [],
+                                                     access_to_investor_id: [])
   end
 end

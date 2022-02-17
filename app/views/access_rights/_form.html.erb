@@ -40,7 +40,8 @@
     %>
     <div class="form-group">
       <%= form.label :access_type %>
-      <%= form.select :email_or_cat, types, {}, class: "form-control"  %>
+      <%= form.select :email_or_cat, types, {}, class: "form-control", 
+            name: "email_or_cat", "data-action": "change->access#onChange"   %>
     </div>
 
     <% if access_right.access_type != "Deal" %>
@@ -55,7 +56,8 @@
 
     <div class="form-group" id="investor_form_group">
         <%= form.label :access_to_investor_id, "Select Investor" %>
-        <%= form.select :access_to_investor_id, current_user.entity.investors.includes(:investor_entity).order("entities.name").map{|c| [c.investor_name, c.id]}, {include_blank: false}, {class: "form-control"} %>
+        <%= form.select :access_to_investor_id, current_user.entity.investors.includes(:investor_entity).order("entities.name").map{|c| [c.investor_name, c.id]}, 
+            {include_blank: false}, class: "form-control select2-multiple", multiple: "multiple" %>
     </div>
 
     <% if access_right.access_type == "Investment" %>
