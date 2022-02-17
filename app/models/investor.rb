@@ -23,6 +23,7 @@ class Investor < ApplicationRecord
   counter_culture :investee_entity
 
   has_many :investor_accesses, dependent: :destroy
+
   has_many :access_rights, foreign_key: :access_to_investor_id, dependent: :destroy
   has_many :deal_investors, dependent: :destroy
   has_many :deals, through: :deal_investors

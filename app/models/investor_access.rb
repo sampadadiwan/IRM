@@ -7,6 +7,8 @@ class InvestorAccess < ApplicationRecord
   validates :email, presence: true
   belongs_to :entity
   belongs_to :investor
+  counter_culture :investor, column_name: proc { |model| model.approved ? 'investor_accesses_count' : 'unapproved_investor_access_count' }
+
   belongs_to :user, optional: true
   belongs_to :granter, class_name: "User", foreign_key: :granted_by, optional: true
 
