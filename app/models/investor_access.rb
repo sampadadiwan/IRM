@@ -8,7 +8,7 @@ class InvestorAccess < ApplicationRecord
   belongs_to :entity
   belongs_to :investor
   belongs_to :user, optional: true
-  belongs_to :granter, class_name: "User", foreign_key: :granted_by
+  belongs_to :granter, class_name: "User", foreign_key: :granted_by, optional: true
 
   delegate :name, to: :entity, prefix: :entity
   delegate :investor_name, to: :investor

@@ -102,7 +102,7 @@ class Investment < ApplicationRecord
       # Got all the investments for this investor
       logger.debug "Access to investor #{current_user.email} to SELF Entity #{entity.id} investments"
       investments = investments.where(investor_id: investor.id)
-    when InvestorAccess::SUMMARY
+    when AccessRight::SUMMARY
       # Show summary page
       logger.debug "Access to investor #{current_user.email} to SUMMARY Entity #{entity.id} investments"
     end

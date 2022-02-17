@@ -13,6 +13,25 @@ class InvestorAccessesController < ApplicationController
     render "index"
   end
 
+  def request_access
+    @investor_access = InvestorAccess.new(investor_access_params)
+    @investor_access.user_id = current_user.id
+    @investor_access.email = current_user.email
+    @investor_access.entity_id = @investor_access.investor.investee_entity_id
+    @investor_access.approved = false
+    authorize @investor_access
+
+    respond_to do |format|
+      if @investor_access.save
+        format.html { redirect_to entity_url(@investor_access.entity), notice: "Investor access request successfull. You will be notified when your request is approved." }
+        format.json { render :show, status: :created, location: @investor_access }
+      else
+        format.html { redirect_to entity_url(@investor_access.entity), notice: "Investor access request failed. #{@investor_access.errors.full_messages}" }
+        format.json { render json: @investor_access.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # GET /investor_accesses/1 or /investor_accesses/1.json
   def show; end
 
@@ -27,6 +46,7 @@ class InvestorAccessesController < ApplicationController
 
   def approve
     @investor_access.approved = !@investor_access.approved
+    @investor_access.granted_by = current_user.id
     @investor_access.save
     respond_to do |format|
       format.turbo_stream do

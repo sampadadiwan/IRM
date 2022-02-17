@@ -40,6 +40,12 @@
          <%= button_to "Delete", @entity, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
       </div>
       <% end %>
+      <% 
+         investor = Investor.where(investee_entity_id: @entity.id, investor_entity_id: current_user.entity_id).first
+         if investor.present? 
+      %>
+         <%= button_to "Request Access", request_access_investor_accesses_path("investor_access[investor_id]": investor.id), class: "btn btn-success" %> 
+      <% end %>
    </div>
 </div>
 

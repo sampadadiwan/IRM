@@ -14,7 +14,11 @@ class InvestorAccessPolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_cached_role?(:super) || user.entity_id == record.entity_id || user.entity_id == record.investor.investor_entity_id
+    (user.has_cached_role?(:super) || user.entity_id == record.entity_id) && !record.granted_by.nil?
+  end
+
+  def request_access?
+    user.entity_id == record.investor.investor_entity_id && !record.approved
   end
 
   def new?

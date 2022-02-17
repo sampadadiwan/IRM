@@ -19,7 +19,7 @@
         </div>
         <div id="viewers-tab" class="tab-pane fade">
           <div id="users" class="associated_entity">
-            <%= render "/users/index", users: document.viewed_by %>
+            <%= render "/users/index", users: document.viewed_by.includes(:entity) %>
           </div>     
         </div>
     </div>
