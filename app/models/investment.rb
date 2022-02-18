@@ -23,9 +23,7 @@ class Investment < ApplicationRecord
   include Trackable
 
   encrypts :investment_instrument, :investment_type, :category
-  encrypts :quantity, type: :integer
-
-
+  
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
