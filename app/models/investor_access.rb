@@ -42,6 +42,7 @@ class InvestorAccess < ApplicationRecord
   before_save :update_user
 
   def update_user
+    self.email = email.strip
     u = User.find_by(email: email)
     self.user = u if u
   end

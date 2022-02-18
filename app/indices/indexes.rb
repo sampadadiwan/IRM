@@ -110,12 +110,13 @@ ThinkingSphinx::Index.define :access_right, with: :real_time do
   indexes owner_name, sortable: true
   indexes entity.name
   indexes investor.investor_name
-  indexes access_to
+  indexes access_to_category
   indexes access_type
 
   # attributes
   has created_at, type: :timestamp
   has entity_id, type: :integer
+  has access_to_investor_id, type: :integer
 end
 
 ThinkingSphinx::Index.define :investor_access, with: :real_time do

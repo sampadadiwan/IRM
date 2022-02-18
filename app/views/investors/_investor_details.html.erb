@@ -15,7 +15,7 @@
               owner_id: current_user.entity_id,
               entity_id: current_user.entity_id) %>
               
-          <%= render "/access_rights/index", access_rights: investor.access_rights, access_right: access_right %>
+          <%= render "/access_rights/index", access_rights: AccessRight.for_investor(investor), access_right: access_right %>
         </div>
       </div>
       <div id="investors-tab" class="tab-pane fade">

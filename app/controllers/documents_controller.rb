@@ -32,11 +32,11 @@ class DocumentsController < ApplicationController
   end
 
   def search
-    @entity = current_user.entity
+    @entity = params[:entity_id].present? ? Entity.find(params[:entity_id]) : current_user.entity
     @documents = if current_user.has_role?(:super)
                    Document.search(params[:query], star: true)
                  else
-                   Document.search(params[:query], star: false, with: { entity_id: current_user.entity_id })
+                   Document.search(params[:query], star: false, with: { entity_id: @entity.id })
                  end
 
     render "index"
