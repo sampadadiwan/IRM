@@ -15,6 +15,7 @@
 #  details          :text(65535)
 #  sequence         :integer
 #  days             :integer
+#  deleted_at       :datetime
 #
 
 class DealActivity < ApplicationRecord

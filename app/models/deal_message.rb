@@ -9,6 +9,7 @@
 #  updated_at       :datetime         not null
 #  is_task          :boolean          default("0")
 #  task_done        :boolean          default("0")
+#  deleted_at       :datetime
 #
 
 class DealMessage < ApplicationRecord

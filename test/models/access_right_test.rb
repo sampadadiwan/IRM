@@ -13,6 +13,7 @@
 #  updated_at            :datetime         not null
 #  entity_id             :integer          not null
 #  access_to_category    :string(20)
+#  deleted_at            :datetime
 #
 
 require "test_helper"

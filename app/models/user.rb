@@ -18,6 +18,7 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  entity_id              :integer
+#  deleted_at             :datetime
 #
 
 class User < ApplicationRecord

@@ -14,6 +14,8 @@
 #  file_content_type :string(255)
 #  file_file_size    :integer
 #  file_updated_at   :datetime
+#  deleted_at        :datetime
+#  impressions_count :integer          default("0")
 #
 
 require "test_helper"

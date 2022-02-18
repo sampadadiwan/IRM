@@ -15,6 +15,8 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  category              :string(25)
+#  deleted_at            :datetime
+#  percentage_holding    :decimal(5, 2)
 #
 
 require "test_helper"

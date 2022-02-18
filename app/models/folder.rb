@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: folders
+#
+#  id               :integer          not null, primary key
+#  name             :string(100)
+#  parent_folder_id :integer
+#  full_path        :text(65535)
+#  level            :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  entity_id        :integer          not null
+#  documents_count  :integer          default("0"), not null
+#
+
 class Folder < ApplicationRecord
   belongs_to :parent, class_name: "Folder", foreign_key: :parent_folder_id, optional: true
   belongs_to :entity

@@ -13,6 +13,9 @@
 #  file_file_size    :integer
 #  file_updated_at   :datetime
 #  entity_id         :integer          not null
+#  deleted_at        :datetime
+#  folder_id         :integer          not null
+#  impressions_count :integer          default("0")
 #
 
 class Document < ApplicationRecord
