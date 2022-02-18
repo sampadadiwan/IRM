@@ -9,9 +9,9 @@
   <%= investor.category %>
 </td>
 <td>
-  <% if investor.investor_accesses_count > 0 %>
+  <% if investor.investor_access_count > 0 %>
     <span class="badge badge-success">
-      <%= link_to "Approved #{investor.investor_accesses_count}", investor_path(investor, tab: "investors-tab") %>
+      <%= link_to "Approved #{investor.investor_access_count}", investor_path(investor, tab: "investors-tab") %>
     </span>
   <% end %>
   <% if investor.unapproved_investor_access_count > 0 %>

@@ -11,12 +11,14 @@
 #  investor_name                    :string(255)
 #  deleted_at                       :datetime
 #  last_interaction_date            :date
-#  investor_accesses_count          :integer          default("0")
+#  investor_access_count          :integer          default("0")
 #  unapproved_investor_access_count :integer          default("0")
 #
 
 class Investor < ApplicationRecord
   include Trackable
+
+  encrypts :investor_name
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])

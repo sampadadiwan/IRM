@@ -30,7 +30,7 @@ Then('an investor entity should be created') do
 end
 
 Then('an investor entity should not be created') do
-  Entity.where(name: @investor.investor_name).count.should == 1
+  Entity.where(name: @investor.investor_name).count.should == 0
 
   @investor_entity.name.include?(@investor_entity.name).should == true
   @investor.investor_entity_id.should == @investor_entity.id

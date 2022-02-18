@@ -193,7 +193,7 @@ ActiveRecord::Schema.define(version: 2022_02_17_102831) do
 
   create_table "deals", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "entity_id", null: false
-    t.string "name", limit: 100
+    t.string "name", limit: 255
     t.decimal "amount", precision: 10
     t.string "status", limit: 20
     t.datetime "created_at", precision: 6, null: false
@@ -208,7 +208,7 @@ ActiveRecord::Schema.define(version: 2022_02_17_102831) do
   end
 
   create_table "documents", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name", limit: 100
+    t.string "name", limit: 255
     t.string "visible_to", default: "--- []\n"
     t.string "text", default: "--- []\n"
     t.datetime "created_at", precision: 6, null: false
@@ -229,7 +229,7 @@ ActiveRecord::Schema.define(version: 2022_02_17_102831) do
   create_table "entities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "url"
-    t.string "category", limit: 100
+    t.string "category", limit: 255
     t.date "founded"
     t.float "funding_amount"
     t.string "funding_unit", limit: 10
@@ -254,7 +254,7 @@ ActiveRecord::Schema.define(version: 2022_02_17_102831) do
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name", limit: 100
+    t.string "name", limit: 255
     t.integer "parent_folder_id"
     t.text "full_path"
     t.integer "level"
@@ -293,18 +293,18 @@ ActiveRecord::Schema.define(version: 2022_02_17_102831) do
   end
 
   create_table "investments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "investment_type", limit: 20
+    t.string "investment_type", limit: 100
     t.integer "investor_id"
-    t.string "investor_type", limit: 20
+    t.string "investor_type", limit: 100
     t.integer "investee_entity_id"
     t.string "status", limit: 20
-    t.string "investment_instrument", limit: 50
+    t.string "investment_instrument", limit: 100
     t.integer "quantity"
     t.decimal "initial_value", precision: 20
     t.decimal "current_value", precision: 20
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "category", limit: 25
+    t.string "category", limit: 100
     t.datetime "deleted_at", precision: 6
     t.decimal "percentage_holding", precision: 5, scale: 2
     t.index ["deleted_at"], name: "index_investments_on_deleted_at"
@@ -332,7 +332,7 @@ ActiveRecord::Schema.define(version: 2022_02_17_102831) do
   create_table "investors", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "investor_entity_id"
     t.integer "investee_entity_id"
-    t.string "category", limit: 50
+    t.string "category", limit: 100
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "investor_name"
@@ -404,8 +404,8 @@ ActiveRecord::Schema.define(version: 2022_02_17_102831) do
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "first_name", limit: 80
-    t.string "last_name", limit: 80
+    t.string "first_name", limit: 255
+    t.string "last_name", limit: 255
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "email", default: "", null: false
@@ -413,7 +413,7 @@ ActiveRecord::Schema.define(version: 2022_02_17_102831) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at", precision: 6
     t.datetime "remember_created_at", precision: 6
-    t.string "phone", limit: 20
+    t.string "phone", limit: 100
     t.boolean "active", default: true
     t.string "confirmation_token"
     t.datetime "confirmed_at", precision: 6

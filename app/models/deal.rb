@@ -20,6 +20,8 @@ class Deal < ApplicationRecord
   include Trackable
   include Impressionable
 
+  encrypts :name
+
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 

@@ -15,6 +15,8 @@
 class Note < ApplicationRecord
   include Trackable
 
+  encrypts :details
+
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
