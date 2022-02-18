@@ -29,4 +29,9 @@ class InvestorAccess < ApplicationRecord
     u = User.find_by(email: email)
     self.user = u if u
   end
+
+  before_save :send_notification
+  def send_notification
+    InvestorAccessMailer.with(investor_access_id: id).notify_access.deliver_later if approved && approved_changed? && URI::MailTo::EMAIL_REGEXP.match?(email)
+  end
 end
