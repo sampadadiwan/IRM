@@ -56,13 +56,19 @@ namespace :irm do
     files = ["undraw_profile.svg", "undraw_profile_1.svg", "undraw_profile_2.svg", "undraw_profile_3.svg", "undraw_rocket.svg"]
     begin
       Entity.startups.each do |e|
+        folders = ["Finances", "Metrics", "Investor Notes", "Employee ESOPs Docs"]
+        root = e.folders.first
+        folders.each do |f|
+          Folder.create(entity: e, name: f, parent: root)
+        end
+      
         (0..4).each do |i|
-          doc = Document.create!(entity: e, name: dnames[i], text: Faker::Quotes::Rajnikanth.joke,
+          doc = Document.create!(entity: e, name: dnames[i], text: Faker::Quotes::Rajnikanth.joke, folder: Folder.all.sample,
                                  file: File.new("public/img/#{files[i]}", "r"))
 
           5.times do
             inv = e.investors.sample
-            AccessRight.create(owner: doc, access_type: "Document",
+            AccessRight.create(owner: doc, access_type: "Document", 
                                entity: e, access_to_category: Investor::INVESTOR_CATEGORIES[rand(Investor::INVESTOR_CATEGORIES.length)])
           end
         end
