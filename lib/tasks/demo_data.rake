@@ -32,8 +32,8 @@ namespace :irm do
       end
     end
 
-    vc_names = ["Sequoia Capital", "Accel", "Blume Ventures", "Tiger Global Management", "Kalaari Capital", 
-                "Drip Ventures", "Matrix Partners", "Nexus Venture Partners", "Indian Angel Network", "Omidyar Network India"]
+    vc_names = ["Sequoia Capital", "Accel", "Blume Ventures", "Tiger Global Management", "Kalaari Capital"] 
+                # "Drip Ventures", "Matrix Partners", "Nexus Venture Partners", "Indian Angel Network", "Omidyar Network India"]
     vc_names.each do |name|
       e = FactoryBot.create(:entity, entity_type: "VC", name: name)
       puts "Entity #{e.name}"

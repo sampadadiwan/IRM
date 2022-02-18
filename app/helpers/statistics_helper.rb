@@ -12,8 +12,13 @@ module StatisticsHelper
   end
 
   def investment_by_investor(entity)
+    # pie_chart Investment.where(investee_entity_id: entity.id)
+    #                     .joins(:investor).includes(:investor).group("investors.investor_name").sum(:initial_value),
+
+    # We cant use the DB, as values are encrypted
     pie_chart Investment.where(investee_entity_id: entity.id)
-                        .joins(:investor).includes(:investor).group("investors.investor_name").sum(:initial_value),
+                        .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
+                        .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.initial_value }] },
               #   xtitle: "Investment Amount",
               #   ytitle: "Type",
               donut: true,
