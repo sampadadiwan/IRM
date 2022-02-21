@@ -13,7 +13,6 @@ set :branch, 'main'
 set :deploy_to, "/home/ubuntu/IRM"
 set :ssh_options, forward_agent: true
 set :ssh_options, keys: "/home/thimmaiah/.ssh/altxdev.pem"
-set :puma_init_active_record, true
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
 
@@ -49,7 +48,7 @@ set :puma_access_log, "#{release_path}/log/puma.error.log"
 set :puma_error_log,  "#{release_path}/log/puma.access.log"
 set :puma_preload_app, true
 set :puma_worker_timeout, nil
-set :puma_init_active_record, false # Change to true if using ActiveRecord
+set :puma_init_active_record, true
 
 namespace :deploy do
   desc "Uploads .env remote servers."
@@ -90,5 +89,5 @@ namespace :puma do
     end
   end
 
-  before :start, :make_dirs
+  # before :start, :make_dirs
 end
