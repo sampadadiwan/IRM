@@ -13,7 +13,7 @@ set :branch, 'main'
 set :deploy_to, "/home/ubuntu/IRM"
 set :ssh_options, forward_agent: true
 set :ssh_options, keys: "/home/thimmaiah/.ssh/altxdev.pem"
-
+set :puma_init_active_record, true
 # Default value for :format is :airbrussh.
 # set :format, :airbrussh
 
@@ -90,5 +90,5 @@ namespace :puma do
     end
   end
 
-  # before :start, :make_dirs
+  before :start, :make_dirs
 end
