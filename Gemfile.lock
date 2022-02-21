@@ -454,6 +454,7 @@ GEM
     ruby-vips (2.1.4)
       ffi (~> 1.12)
     rubyzip (2.3.2)
+    sanitize_email (2.0.3)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -589,6 +590,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec
+  sanitize_email
   sassc-rails
   selenium-webdriver
   sidekiq (~> 6.4)

@@ -59,6 +59,7 @@ gem "kt-paperclip", git: "https://github.com/thimmaiah/kt-paperclip.git"
 gem "paranoia", "~> 2.2"
 gem 'public_activity', github: 'chaps-io/public_activity', branch: 'master'
 gem 'whenever', require: false
+gem 'sanitize_email'
 
 gem "acts_as_list"
 gem 'acts-as-taggable-on', '~> 9.0'
