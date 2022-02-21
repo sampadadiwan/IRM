@@ -1,7 +1,7 @@
 <tr>
 <% attributes.reject(&:password_digest?).each do |attribute| -%>
   <th>
-    <strong><%= attribute.human_name.titleize %></strong>
+    <%= attribute.human_name.titleize %>
   </th>
 <% end %>
   <th>

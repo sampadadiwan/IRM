@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_21_063211) do
+ActiveRecord::Schema.define(version: 2022_02_21_120122) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -267,6 +267,18 @@ ActiveRecord::Schema.define(version: 2022_02_21_063211) do
     t.index ["parent_folder_id"], name: "index_folders_on_parent_folder_id"
   end
 
+  create_table "holdings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "entity_id", null: false
+    t.integer "quantity", default: 0
+    t.decimal "value", precision: 20, default: "0"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "investment_instrument", limit: 100
+    t.index ["entity_id"], name: "index_holdings_on_entity_id"
+    t.index ["user_id"], name: "index_holdings_on_user_id"
+  end
+
   create_table "impressions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "impressionable_type"
     t.integer "impressionable_id"
@@ -464,5 +476,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_063211) do
   add_foreign_key "deals", "entities"
   add_foreign_key "documents", "folders"
   add_foreign_key "folders", "entities"
+  add_foreign_key "holdings", "entities"
+  add_foreign_key "holdings", "users"
   add_foreign_key "taggings", "tags"
 end

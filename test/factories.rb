@@ -1,4 +1,11 @@
 FactoryBot.define do
+  factory :holding do
+    user { nil }
+    entity { nil }
+    quantity { 1 }
+    value { "9.99" }
+  end
+
   factory :folder do
     name { "MyString" }
     parent_folder_id { 1 }

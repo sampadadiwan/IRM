@@ -269,6 +269,7 @@ GEM
     faker (2.19.0)
       i18n (>= 1.6, < 2)
     ffi (1.15.4)
+    foreman (0.87.2)
     globalid (1.0.0)
       activesupport (>= 5.0)
     groupdate (6.0.1)
@@ -565,6 +566,7 @@ DEPENDENCIES
   exception_notification
   factory_bot_rails
   faker
+  foreman
   groupdate
   hightop
   image_processing (~> 1.2)

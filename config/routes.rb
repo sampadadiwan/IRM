@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :holdings
   resources :folders
   resources :investor_accesses do
     get 'search', on: :collection

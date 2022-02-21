@@ -126,6 +126,7 @@ group :development do
   gem "capistrano3-puma"
   gem "capistrano-rails", "~> 1.6", require: false
   gem 'capistrano-rvm'
+  gem 'foreman'
 end
 
 group :test do

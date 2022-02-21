@@ -1,0 +1,43 @@
+<%= render "/layouts/alerts" %>
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Holdings</h1>
+    <%= link_to "New Holding" , new_holding_path("holding[user_id]": current_user.id), {class: "btn btn-primary" } %>
+  </div>
+
+  <div class="table-responsive" data-controller="datatable">
+
+  <table id="holdings" class="table table-bordered dataTable jqDataTable">
+
+    <thead>
+
+      <tr>
+        <th>
+          User
+        </th>
+        <th>
+          Entity
+        </th>
+        <th>
+          Instrument
+        </th>
+        <th>
+          Quantity
+        </th>
+        <th>
+          Value
+        </th>
+
+        <th>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @holdings.each do |holding| %>
+        <%= render holding %>
+      <% end %>
+    </tbody>
+  </table>
+
+  </div>

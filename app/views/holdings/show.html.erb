@@ -1,0 +1,55 @@
+<%= render "/layouts/alerts" %>
+
+  <table class="table table-bordered dataTable">
+
+    <tr>
+      <td>
+        User
+      </td>
+      <td>
+        <%= @holding.user.full_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Entity
+      </td>
+      <td>
+        <%= @holding.entity.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Instrument
+      </td>
+      <td>
+        <%= @holding.investment_instrument %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Quantity
+      </td>
+      <td>
+        <%= @holding.quantity %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Value
+      </td>
+      <td>
+        <%= @holding.value %>
+      </td>
+    </tr>
+
+
+  </table>
+
+
+  <div>
+    <%= link_to "Edit" , edit_holding_path(@holding), {class: "btn btn-primary" } %> |
+      <%= link_to "Back" , :back, {class: "btn btn-primary" } %> |
+
+        <%= button_to "Delete" , @holding, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" %>
+  </div>
