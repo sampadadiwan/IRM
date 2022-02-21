@@ -1,51 +1,59 @@
 <%= turbo_frame_tag "deal_show" do %>
 
-<table class="table table-bordered dataTable ">
+  <table class="table table-bordered dataTable ">
 
-          <tr>
-        <td>
-          Entity
-        </td>
-        <td>
-          <%= deal.entity.name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Name
-        </td>
-        <td>
-          <%= deal.name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Amount
-        </td>
-        <td>
-          <%= number_to_currency deal.amount %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Start Date
-        </td>
-        <td>
-          <%= deal.start_date ?  l(deal.start_date) : "Not Started" %>
-        </td>    
-      </tr>
-      </tr>
-          <tr>
-        <td>
-          Status
-        </td>
-        <td>
-          <%= deal.status %>
-        </td>    
-      </tr>
-  
-</table>
+    <tr>
+      <td>
+        Entity
+      </td>
+      <td>
+        <%= deal.entity.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Name
+      </td>
+      <td>
+        <%= deal.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Amount
+      </td>
+      <td>
+        <%= number_to_currency deal.amount %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Start Date
+      </td>
+      <td>
+        <%= deal.start_date ? l(deal.start_date) : "Not Started" %>
+      </td>
+    </tr>
+    </tr>
+    <tr>
+      <td>
+        Status
+      </td>
+      <td>
+        <%= deal.status %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Archived
+      </td>
+      <td>
+        <%= deal.archived ? "Yes" : "No" %>
+      </td>
+    </tr>
 
 
-<% end %>
+  </table>
 
+
+  <% end %>
