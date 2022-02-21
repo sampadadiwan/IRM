@@ -62,3 +62,8 @@ en:
     create: 'Access was given'
     update: 'Access was updated'
     destroy: 'Access was removed'
+
+  investor_access:
+    create: 'Investor access was given'
+    update: 'Investor access was updated'
+    destroy: 'Investor access was removed'
