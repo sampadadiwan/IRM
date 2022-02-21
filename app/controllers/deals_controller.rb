@@ -13,6 +13,8 @@ class DealsController < ApplicationController
                @deals.includes(:entity)
              end
 
+    @deals = @deals.where("deals.archived=?", false) if params[:include_archived].blank?
+
     # @deals = @deals.page params[:page]
   end
 

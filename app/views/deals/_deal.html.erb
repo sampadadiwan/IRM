@@ -22,6 +22,9 @@
 </td>  
 <td>    
     <span class="badge bg-info"><%= deal.status %></span>
+    <% if deal.archived %>
+        <span class="badge bg-danger">Archived</span>
+    <% end %>
 </td>  
 <% if current_user.entity_id == deal.entity_id %>
 
