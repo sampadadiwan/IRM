@@ -22,7 +22,8 @@
 class Investment < ApplicationRecord
   include Trackable
 
-  encrypts :investment_instrument, :investment_type, :category
+  encrypts :investment_instrument, deterministic: true
+  encrypts :investment_type, :category
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -64,11 +65,13 @@ class Investment < ApplicationRecord
   end
 
   def update_percentage_holdings
-    entity_investments = Investment.not_debt.where(investee_entity_id: investee_entity_id)
-    total_quantity = entity_investments.sum(:quantity)
+    entity_investments = Investment.where(investee_entity_id: investee_entity_id)
+    total_quantity = entity_investments.reject { |i| i.investment_instrument == "Debt" }.inject(0) { |result, i| result + i.quantity }
     entity_investments.each do |inv|
-      inv.percentage_holding = (inv.quantity * 100.0) / total_quantity
-      inv.save
+      if inv.investment_instrument != "Debt"
+        inv.percentage_holding = (inv.quantity * 100.0) / total_quantity
+        inv.save
+      end
     end
   end
 
