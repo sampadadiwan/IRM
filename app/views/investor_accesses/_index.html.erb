@@ -1,7 +1,8 @@
+<% label ||= "Investor User" %>
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Investor Users</h1>
-    <%= link_to "New Investor User", 
+    <h1 class="h3 mb-0 text-gray-800"><%= label.pluralize %></h1>
+    <%= link_to "New #{label}", 
         new_investor_access_path("investor_access[investor_id]": investor.id, 
             "investor_access[entity_id]": current_user.entity_id), 
             { data: { turbo_frame: 'new_investor_access' }, class: "btn btn-primary"} if investor  %> 

@@ -92,8 +92,10 @@ class Entity < ApplicationRecord
   after_create :setup_holding_entity
   def setup_holding_entity
     unless entity_type == "Holding"
-      e = Entity.create(name: "#{name} - Employees", entity_type: "Holding", is_holdings_entity: true, active: true)
-      Investor.create(investor_name: e.name, investor_entity_id: e.id, investee_entity_id: id, category: "Employee")
+      e = Entity.create(name: "#{name} - Employees", entity_type: "Holding",
+                        is_holdings_entity: true, active: true)
+      Investor.create(investor_name: e.name, investor_entity_id: e.id,
+                      investee_entity_id: id, category: "Employee", is_holdings_entity: true)
     end
   end
 
