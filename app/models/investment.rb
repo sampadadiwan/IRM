@@ -71,7 +71,7 @@ class Investment < ApplicationRecord
     self.employee_holdings = true if investment_type == "Employee Holdings"
   end
 
-  after_save :update_percentage_holdings
+  # after_save :update_percentage_holdings
   def update_percentage_holdings
     entity_investments = Investment.where(investee_entity_id: investee_entity_id)
     total_quantity = entity_investments.reject { |i| i.investment_instrument == "Debt" }.inject(0) { |result, i| result + i.quantity }

@@ -14,5 +14,6 @@ class Holding < ApplicationRecord
 
     investment.quantity += quantity
     investment.save
+    investment.update_percentage_holdings
   end
 end

@@ -1,7 +1,7 @@
 class HoldingPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope.where(entity_id: user.entity_id)
+      scope.where("entity_id=? or user_id=?", user.entity_id, user.id)
     end
   end
 

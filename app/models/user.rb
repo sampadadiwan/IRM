@@ -26,6 +26,7 @@ class User < ApplicationRecord
   tracked except: :update, owner: proc { |controller, _model| controller.current_user if controller && controller.current_user },
           entity_id: proc { |controller, _model| controller.current_user.entity_id if controller && controller.current_user }
   has_many :activities, as: :trackable, class_name: 'PublicActivity::Activity', dependent: :destroy
+  has_many :holdings, dependent: :destroy
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -77,6 +78,12 @@ class User < ApplicationRecord
   # Ensure those are updated with this users id
   def update_investor_access
     InvestorAccess.where(email: email).update(user_id: id)
+    ia = InvestorAccess.where(email: email).first
+    # Sometimes the invite goes out via the investor access, hence we need to associate the user to the entity
+    if ia && (ia.investor && entity_id.nil?)
+      self.entity_id = ia.investor.investor_entity_id
+      save
+    end
   end
 
   def send_devise_notification(notification, *args)
