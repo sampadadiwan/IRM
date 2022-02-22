@@ -1,0 +1,44 @@
+<%= form_with(model: offer) do |form| %>
+  <% if offer.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(offer.errors.count, "error") %> prohibited this offer from being saved:</h2>
+
+      <ul>
+        <% offer.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.text_field :user_id, class: "form-control", hidden: true  %>
+    <%= form.text_field :entity_id, class: "form-control", hidden: true  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :secondary_sale %>
+    <%= form.text_field :secondary_sale_name, class: "form-control", disabled: true, value: offer.secondary_sale.name  %>
+    <%= form.text_field :secondary_sale_id, class: "form-control", hidden: true  %>
+  </div>
+
+
+  <div class="form-group">
+    <%= form.label :holding %>
+    <%= form.select :holding_id, Holding.where(user_id: current_user.id, entity_id: offer.entity_id).map{|c| [c.investment_instrument, c.id]}, {include_blank: true}, {class: "form-control"} %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :quantity %>
+    <%= form.number_field :quantity, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :notes %>
+    <%= form.text_area :notes, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>

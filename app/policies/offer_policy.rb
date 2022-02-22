@@ -1,4 +1,4 @@
-class SecondarySalePolicy < ApplicationPolicy
+class OfferPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.has_cached_role?(:super)
@@ -14,16 +14,19 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def show?
-    if user.has_cached_role?(:super) || user.entity_id == record.entity_id
+    if user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
       true
     else
-      SecondarySale.for_investor(user, record.entity)
-                   .where("secondary_sales.id=?", record.id).first.present?
+      record.holding.user_id == user.id && record.holding.entity_id == record.entity_id
     end
   end
 
   def create?
-    user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+    if user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+      true
+    else
+      record.holding.user_id == user.id && record.holding.entity_id == record.entity_id
+    end
   end
 
   def new?

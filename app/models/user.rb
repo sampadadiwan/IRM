@@ -27,6 +27,7 @@ class User < ApplicationRecord
           entity_id: proc { |controller, _model| controller.current_user.entity_id if controller && controller.current_user }
   has_many :activities, as: :trackable, class_name: 'PublicActivity::Activity', dependent: :destroy
   has_many :holdings, dependent: :destroy
+  has_many :offers, dependent: :destroy
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -81,7 +82,10 @@ class User < ApplicationRecord
     ia = InvestorAccess.where(email: email).first
     # Sometimes the invite goes out via the investor access, hence we need to associate the user to the entity
     if ia && (ia.investor && entity_id.nil?)
+      # Set the users entity
       self.entity_id = ia.investor.investor_entity_id
+      # Add this role so we can identify which users have holdings
+      add_role :holding if entity && (entity.entity_type == "Holding")
       save
     end
   end

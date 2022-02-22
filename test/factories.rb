@@ -1,4 +1,13 @@
 FactoryBot.define do
+  factory :offer do
+    user { nil }
+    entity { nil }
+    secondary_sale { nil }
+    quantity { 1 }
+    percentage { "9.99" }
+    notes { "MyText" }
+  end
+
   factory :secondary_sale do
     name { "MyString" }
     entity { nil }

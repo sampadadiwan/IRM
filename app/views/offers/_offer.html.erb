@@ -1,0 +1,31 @@
+<tr id="<%= dom_id offer %>">
+  <td>
+    <%= offer.user.full_name %>
+  </td>
+  <% if show_entity %>
+  <td>
+    <%= offer.entity.name %>
+  </td>
+  <% end %>
+  <% if show_secondary_sale %>
+  <td>
+    <%= offer.secondary_sale.name %>
+  </td>
+  <% end %>
+  <td>
+    <%= offer.quantity %>
+  </td>
+  <td>
+    <%= offer.percentage %>
+    <% if offer.percentage > offer.secondary_sale.percent_allowed %>
+      <span class="badge badge-danger">Over Allowed Percentge</span>
+    <% end %>
+  </td>
+  <td>
+    <%= offer.notes %>
+  </td>
+  <td>
+    <%= link_to "Show" , offer , {class: "btn btn-primary" }%>
+    <%= button_to "Delete", offer, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>    
+  </td>
+</tr>

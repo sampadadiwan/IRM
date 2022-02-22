@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :offers
   resources :secondary_sales
   resources :holdings
   resources :folders

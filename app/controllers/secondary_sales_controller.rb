@@ -1,9 +1,14 @@
 class SecondarySalesController < ApplicationController
   before_action :set_secondary_sale, only: %i[show edit update destroy]
+  after_action :verify_policy_scoped, only: []
 
   # GET /secondary_sales or /secondary_sales.json
   def index
-    @secondary_sales = policy_scope(SecondarySale)
+    @secondary_sales = if current_user.has_cached_role?(:holding)
+                         SecondarySale.none
+                       else
+                         policy_scope(SecondarySale)
+                       end
   end
 
   # GET /secondary_sales/1 or /secondary_sales/1.json

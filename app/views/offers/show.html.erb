@@ -1,0 +1,69 @@
+<%= render "/layouts/alerts" %>
+
+<table class="table table-bordered dataTable">
+
+          <tr>
+        <td>
+          User
+        </td>
+        <td>
+          <%= @offer.user.full_name %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Entity
+        </td>
+        <td>
+          <%= @offer.entity.name %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Secondary Sale
+        </td>
+        <td>
+          <%= @offer.secondary_sale.name %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Quantity
+        </td>
+        <td>
+          <%= @offer.quantity %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Percentage
+        </td>
+        <td>
+          <%= @offer.percentage %>
+          <% if @offer.percentage > @offer.secondary_sale.percent_allowed %>
+            <div>              
+              <div class="badge badge-danger">Over Allowed Percentge</div>
+              The current sale allows you to sell only <%= @offer.secondary_sale.percent_allowed %>% of your holdings
+            </div>
+          <% end %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Notes
+        </td>
+        <td>
+          <%= @offer.notes %>
+        </td>    
+      </tr>
+    
+  
+</table>
+
+
+<div>
+  <%= link_to "Edit", edit_offer_path(@offer), {class: "btn btn-primary"} %> |
+  <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
+
+  <%= button_to "Delete", @offer, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+</div>
