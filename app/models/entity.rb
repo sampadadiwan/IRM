@@ -31,7 +31,7 @@
 class Entity < ApplicationRecord
   include Trackable
 
-  encrypts :name
+  encrypts :name, deterministic: true
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])

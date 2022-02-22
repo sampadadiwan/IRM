@@ -23,8 +23,9 @@ Then('an investor should be created') do
 end
 
 Then('an investor entity should be created') do
-  @investor_entity = Entity.last
-  @investor_entity.name.include?(@investor_entity.name).should == true
+  puts @investor.to_json
+  @investor_entity = Entity.find_by(name: @investor.investor_name)
+  @investor.investor_name.include?(@investor_entity.name).should == true
   @investor.investor_entity_id.should == @investor_entity.id
   @investor.investee_entity_id.should == @user.entity_id
 end

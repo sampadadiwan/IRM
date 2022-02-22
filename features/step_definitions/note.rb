@@ -1,5 +1,5 @@
 When('I create a new note {string}') do |arg1|
-  click_on("Add Note")
+  click_on("Add Note", match: :first)
   find('#note_details').set(arg1)
   click_on("Save")
 end

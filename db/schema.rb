@@ -314,8 +314,8 @@ ActiveRecord::Schema.define(version: 2022_02_22_154517) do
     t.string "status", limit: 20
     t.string "investment_instrument", limit: 100
     t.integer "quantity"
-    t.decimal "initial_value", precision: 20
-    t.decimal "current_value", precision: 20
+    t.decimal "initial_value", precision: 20, default: 0
+    t.decimal "current_value", precision: 20, default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "category", limit: 100
