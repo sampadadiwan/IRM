@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_21_120122) do
+ActiveRecord::Schema.define(version: 2022_02_22_052400) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_120122) do
     t.integer "deal_investors_count", default: 0, null: false
     t.integer "documents_count", default: 0, null: false
     t.decimal "total_investments", precision: 20, default: "0"
+    t.boolean "is_holdings_entity", default: false
     t.index ["deleted_at"], name: "index_entities_on_deleted_at"
   end
 
@@ -353,6 +354,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_120122) do
     t.date "last_interaction_date"
     t.integer "investor_access_count", default: 0
     t.integer "unapproved_investor_access_count", default: 0
+    t.boolean "is_holdings_entity", default: false
     t.index ["deleted_at"], name: "index_investors_on_deleted_at"
     t.index ["investee_entity_id"], name: "index_investors_on_investee_entity_id"
     t.index ["investor_entity_id"], name: "index_investors_on_investor_entity_id"

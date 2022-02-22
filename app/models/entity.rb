@@ -63,6 +63,7 @@ class Entity < ApplicationRecord
   TYPES = %w[VC Startup].freeze
   FUNDING_UNITS = %w[Lakhs Crores].freeze
 
+  scope :holdings, -> { where(entity_type: "Holding") }
   scope :vcs, -> { where(entity_type: "VC") }
   scope :startups, -> { where(entity_type: "Startup") }
   scope :user_investor_entities, ->(user) { where('access_rights.access_to': user.email).includes(:access_rights) }
@@ -86,6 +87,14 @@ class Entity < ApplicationRecord
   after_create :setup_root_folder
   def setup_root_folder
     Folder.create(name: "/", entity_id: id)
+  end
+
+  after_create :setup_holding_entity
+  def setup_holding_entity
+    unless entity_type == "Holding"
+      e = Entity.create(name: "#{name} - Employees", entity_type: "Holding", is_holdings_entity: true, active: true)
+      Investor.create(investor_name: e.name, investor_entity_id: e.id, investee_entity_id: id, category: "Employee")
+    end
   end
 
   # Setup the person who created this entity as belonging to this entity

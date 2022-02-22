@@ -2,7 +2,10 @@
 
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Holdings</h1>
-    <%= link_to "New Holding" , new_holding_path("holding[user_id]": current_user.id), {class: "btn btn-primary" } %>
+    <span>
+      <%= link_to "New Holding" , new_holding_path("holding[user_id]": current_user.id), {class: "btn btn-primary" } %>
+      <%= link_to "Employee Holdings" , new_holding_path("holding[user_id]": current_user.id), {class: "btn btn-primary" } %>
+    </span>
   </div>
 
   <div class="table-responsive" data-controller="datatable">
