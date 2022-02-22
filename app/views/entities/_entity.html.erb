@@ -1,23 +1,24 @@
 
 <tr id="<%= dom_id entity %>">
-<td>
-    <%= link_to entity.name, entity %>
-  </td>  
-<td>
-    <%= entity.category %>
-</td>  
-<td>
-    <%= entity.entity_type %>
-</td>  
-<td>
-    <% if !vc_view %>
-        <%= link_to "Documents", documents_path(entity_id: entity.id) , {class: "btn btn-primary"}%>
-        <%= link_to "Investments", investments_path(entity_id: entity.id) , {class: "btn btn-success"}%>
-    <% else %>
-        <%= link_to "Documents", documents_path(entity_id: entity.id) , {class: "btn btn-primary"}%>
-        <%= link_to "Investments", investor_investments_investments_path(entity_id: entity.id) , {class: "btn btn-success"}%>
-        <%= link_to "Holdings", holdings_path(entity_id: entity.id) , {class: "btn btn-success"}%>
-    <% end %>
-</td>  
+    
+    <td>
+        <%= link_to entity.name, entity %>
+    </td>  
+    <td>
+        <%= entity.category %>
+    </td>  
+    <td>
+        <%= entity.entity_type %>
+    </td>  
+    <td>
+        <% if !vc_view %>
+            <%= link_to "Documents", documents_path(entity_id: entity.id) , {class: "btn btn-primary"}%>
+            <%= link_to "Investments", investments_path(entity_id: entity.id) , {class: "btn btn-success"}%>
+        <% else %>
+            <%= link_to "Documents", documents_path(entity_id: entity.id) , {class: "btn btn-primary"}%>
+            <%= link_to "Investments", investor_investments_investments_path(entity_id: entity.id) , {class: "btn btn-success"}%>
+            <%= link_to "Holdings", holdings_path(entity_id: entity.id) , {class: "btn btn-success"}%>
+        <% end %>
+    </td>  
 
 </tr>

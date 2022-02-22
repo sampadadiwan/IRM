@@ -75,6 +75,7 @@ class Investment < ApplicationRecord
   def update_percentage_holdings
     entity_investments = Investment.where(investee_entity_id: investee_entity_id)
     total_quantity = entity_investments.reject { |i| i.investment_instrument == "Debt" }.inject(0) { |result, i| result + i.quantity }
+
     entity_investments.each do |inv|
       if inv.investment_instrument != "Debt"
         inv.percentage_holding = (inv.quantity * 100.0) / total_quantity

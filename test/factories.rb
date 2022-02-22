@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :holding do
-    user { nil }
-    entity { nil }
-    quantity { 1 }
-    value { "9.99" }
+    user { User.all.sample }
+    entity { Entity.all.sample }
+    quantity { rand(10) * 100 }
+    value {  }
   end
 
   factory :folder do

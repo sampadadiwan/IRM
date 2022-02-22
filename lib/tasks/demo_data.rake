@@ -102,6 +102,24 @@ namespace :irm do
     raise e
   end
 
+  desc "generates fake Holdings for testing"
+  task generateFakeHoldings: :environment do
+    Entity.holdings.each do |e|
+      (1..4).each do |j|
+        user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
+        puts user.to_json
+        investor = Investor.where(investor_entity_id: e.id).first
+        InvestorAccess.create!(investor:investor, user: user, email: user.email, approved: false, entity_id: investor.investee_entity_id)
+
+        Holding.create!(user: user, entity: investor.investee_entity, quantity: (1 + rand(10))*100, investment_instrument: "Equity")
+      end
+    end
+  rescue Exception => e
+    puts e.backtrace.join("\n")
+    raise e
+  end
+
+
   desc "generates fake Deals for testing"
   task generateFakeDeals: :environment do
     Entity.startups.each do |e|
