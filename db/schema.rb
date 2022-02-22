@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_22_072033) do
+ActiveRecord::Schema.define(version: 2022_02_22_111937) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -313,7 +313,7 @@ ActiveRecord::Schema.define(version: 2022_02_22_072033) do
     t.integer "investee_entity_id"
     t.string "status", limit: 20
     t.string "investment_instrument", limit: 100
-    t.integer "quantity", default: 0
+    t.integer "quantity"
     t.decimal "initial_value", precision: 20
     t.decimal "current_value", precision: 20
     t.datetime "created_at", precision: 6, null: false
@@ -386,6 +386,20 @@ ActiveRecord::Schema.define(version: 2022_02_22_072033) do
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
+  end
+
+  create_table "secondary_sales", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.bigint "entity_id", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.integer "percent_allowed", default: 0
+    t.decimal "min_price", precision: 5, scale: 2
+    t.decimal "max_price", precision: 5, scale: 2
+    t.boolean "active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["entity_id"], name: "index_secondary_sales_on_entity_id"
   end
 
   create_table "taggings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -481,5 +495,6 @@ ActiveRecord::Schema.define(version: 2022_02_22_072033) do
   add_foreign_key "folders", "entities"
   add_foreign_key "holdings", "entities"
   add_foreign_key "holdings", "users"
+  add_foreign_key "secondary_sales", "entities"
   add_foreign_key "taggings", "tags"
 end

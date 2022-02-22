@@ -1,4 +1,15 @@
 FactoryBot.define do
+  factory :secondary_sale do
+    name { "MyString" }
+    entity { nil }
+    start_date { "2022-02-22" }
+    end_date { "2022-02-22" }
+    percent_allowed { 1 }
+    min_price { "9.99" }
+    max_price { "9.99" }
+    active { false }
+  end
+
   factory :holding do
     user { User.all.sample }
     entity { Entity.all.sample }

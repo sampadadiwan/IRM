@@ -1,0 +1,52 @@
+<%= render "/layouts/alerts" %>
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Secondary Sales</h1>
+    <%= link_to "New Secondary Sale" , new_secondary_sale_path("secondary_sale[entity_id]": current_user.entity_id),
+      {class: "btn btn-primary" } %>
+  </div>
+
+  <div class="table-responsive" data-controller="datatable">
+
+
+    <table id="secondary_sales" class="table table-bordered dataTable jqDataTable">
+      <thead>
+        <tr>
+          <th>
+            Name
+          </th>
+          <th>
+            Entity
+          </th>
+          <th>
+            Start Date
+          </th>
+          <th>
+            End Date
+          </th>
+          <th>
+            Percent Allowed
+          </th>
+          <th>
+            Min Price
+          </th>
+          <th>
+            Max Price
+          </th>
+          <th>
+            Active
+          </th>
+
+          <th>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @secondary_sales.each do |secondary_sale| %>
+          <%= render secondary_sale %>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>

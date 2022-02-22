@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :secondary_sales
   resources :holdings
   resources :folders
   resources :investor_accesses do

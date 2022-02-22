@@ -1,0 +1,29 @@
+<tr id="<%= dom_id secondary_sale %>">
+  <td>
+    <%= secondary_sale.name %>
+  </td>
+  <td>
+    <%= secondary_sale.entity.name %>
+  </td>
+  <td>
+    <%= l secondary_sale.start_date %>
+  </td>
+  <td>
+    <%= l secondary_sale.end_date %>
+  </td>
+  <td>
+    <%= secondary_sale.percent_allowed %> %
+  </td>
+  <td>
+    <%= secondary_sale.min_price %>
+  </td>
+  <td>
+    <%= secondary_sale.max_price %>
+  </td>
+  <td>
+    <%= secondary_sale.active ? "Yes" : "No" %>
+  </td>
+  <td>
+    <%= link_to "Show" , secondary_sale , {class: "btn btn-primary" }%>
+  </td>
+</tr>

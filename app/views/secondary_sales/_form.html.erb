@@ -1,0 +1,58 @@
+<%= form_with(model: secondary_sale) do |form| %>
+  <% if secondary_sale.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(secondary_sale.errors.count, "error") %> prohibited this secondary_sale from being saved:</h2>
+
+      <ul>
+        <% secondary_sale.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :entity_id %>
+    <%= form.text_field :entity_name, class: "form-control", value: secondary_sale.entity.name, disabled: true  %>
+    <%= form.text_field :entity_id, class: "form-control", hidden: true  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :start_date %>
+    <%= form.date_field :start_date, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :end_date %>
+    <%= form.date_field :end_date, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :percent_allowed %>
+    <%= form.number_field :percent_allowed, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :min_price %>
+    <%= form.text_field :min_price, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :max_price %>
+    <%= form.text_field :max_price, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :active %>
+    <%= form.check_box :active, class: "form-control form-checkbox"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>

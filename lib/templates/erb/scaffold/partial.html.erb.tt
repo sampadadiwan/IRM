@@ -1,12 +1,15 @@
-<tr>
-<% attributes.reject(&:password_digest?).each do |attribute| -%>
-  <th>
-    <%= attribute.human_name.titleize %>
-  </th>
-<% end %>
-  <th>
-  <th>
-</tr>
+<thead>
+  <tr>
+  <% attributes.reject(&:password_digest?).each do |attribute| -%>
+    <th>
+      <%= attribute.human_name.titleize %>
+    </th>
+  <% end %>
+    <th>
+    <th>
+  </tr>
+</thead>
+
 <tr id="<%%= dom_id <%= singular_name %> %>">
 <% attributes.reject(&:password_digest?).each do |attribute| -%>
 <td>
