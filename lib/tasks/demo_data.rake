@@ -126,7 +126,7 @@ namespace :irm do
       3.times do
         deal = FactoryBot.create(:deal, entity: e)
         puts "Deal #{deal.id}"
-        deal.entity.investors.each do |inv|
+        deal.entity.investors.where("category <> 'Employee'").each do |inv|
           di = FactoryBot.create(:deal_investor, investor: inv, entity: e, deal: deal)
           puts "DealInvestor #{di.id} for investor #{inv.id}"
           (1..rand(10)).each do
