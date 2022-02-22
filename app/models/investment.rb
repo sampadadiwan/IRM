@@ -29,7 +29,9 @@ class Investment < ApplicationRecord
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   belongs_to :investor
+  delegate :investor_entity_id, to: :investor
   belongs_to :investee_entity, class_name: "Entity"
+
   counter_culture :investee_entity
   counter_culture :investee_entity, column_name: 'total_investments', delta_column: 'initial_value'
 
@@ -64,6 +66,12 @@ class Investment < ApplicationRecord
     investor.investor_name
   end
 
+  before_create :update_employee_holdings
+  def update_employee_holdings
+    self.employee_holdings = true if investment_type == "Employee Holdings"
+  end
+
+  after_save :update_percentage_holdings
   def update_percentage_holdings
     entity_investments = Investment.where(investee_entity_id: investee_entity_id)
     total_quantity = entity_investments.reject { |i| i.investment_instrument == "Debt" }.inject(0) { |result, i| result + i.quantity }
@@ -74,8 +82,6 @@ class Investment < ApplicationRecord
       end
     end
   end
-
-  delegate :investor_entity_id, to: :investor
 
   def self.for_investor(current_user, entity)
     investments = Investment
