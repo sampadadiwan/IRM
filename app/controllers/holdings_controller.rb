@@ -13,7 +13,6 @@ class HoldingsController < ApplicationController
   # GET /holdings/new
   def new
     @holding = Holding.new(holding_params)
-    @holding.user_id = current_user.id
     @holding.entity_id = current_user.entity_id
 
     authorize @holding

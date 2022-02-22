@@ -3,8 +3,9 @@
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Holdings</h1>
     <span>
-      <%= link_to "New Holding" , new_holding_path("holding[user_id]": current_user.id), {class: "btn btn-primary" } %>
-      <%= link_to "Employee Holdings" , new_holding_path("holding[user_id]": current_user.id), {class: "btn btn-primary" } %>
+      <!-- We have to show the employee investors screen from which we can add holdings -->
+      <% investor = current_user.entity.investors.where(is_holdings_entity: true).first %>
+      <%= link_to "New Holding" , investor_path(investor, tab: "investors-tab"), {class: "btn btn-primary" } if investor %>
     </span>
   </div>
 
