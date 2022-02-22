@@ -119,6 +119,16 @@ namespace :irm do
     raise e
   end
 
+  desc "generates fake Notes for testing"
+  task generateFakeNotes: :environment do
+      (1..100).each do |j|
+        note = FactoryBot.create(:note)
+      end
+  rescue Exception => e
+    puts e.backtrace.join("\n")
+    raise e
+  end
+
 
   desc "generates fake Deals for testing"
   task generateFakeDeals: :environment do
@@ -143,4 +153,11 @@ namespace :irm do
     puts e.backtrace.join("\n")
     raise e
   end
+
+
+  task :generateAll => [:generateFakeEntities, :generateFakeInvestments, :generateFakeDeals, 
+                        :generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes] do
+    puts "Generating all Fake Data"
+  end
+
 end

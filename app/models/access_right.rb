@@ -48,6 +48,13 @@ class AccessRight < ApplicationRecord
                                investor.investee_entity_id, investor.category, investor.id)
                        }
 
+  scope :for_secondary_sale, lambda { |secondary_sale|
+                               where("(access_rights.entity_id=?
+                                             and access_rights.owner_id=?
+                                             and access_rights.owner_type=?)",
+                                     secondary_sale.entity_id, secondary_sale.id, "SecondarySale")
+                             }
+
   scope :investor_access, lambda { |investor|
                             where(" (access_rights.entity_id=?) AND
                                     (access_rights.access_to_investor_id=? OR access_rights.access_to_category=?)",
