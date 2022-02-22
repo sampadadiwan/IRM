@@ -1,9 +1,8 @@
-<p>Welcome <%= @access_right.access_to %>!</p>
 
 <p>
 
-    You have been granted access as an investor to <%= @access_right.entity.name %>
-    Please <%= link_to "Login", new_user_session_url(email: @access_right.access_to) %> or 
-    <%= link_to "Register", new_user_registration_url(email: @access_right.access_to) %> 
+    You have been granted access to the <%= @access_right.access_type %> - <%= @access_right.owner.name %> by <%= @access_right.entity.name %>
+    Please <%= link_to "Login", new_user_session_url() %> or 
+    <%= link_to "Register", new_user_registration_url() %> 
 
 </p>

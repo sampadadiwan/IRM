@@ -74,6 +74,23 @@ class AccessRight < ApplicationRecord
     label[0..-3]
   end
 
+  def investor_emails
+    emails = []
+
+    if access_to_investor_id.present?
+      # Get all the investor -> investor access that are approved, and get the email addresses
+      emails = investor.investor_accesses.approved.collect(&:email)
+    elsif access_to_category.present?
+      # Get all the investors with this category -> investor access that are approved, and get the email addresses
+      investors = Investor.where(investee_entity_id: entity_id, category: access_to_category)
+      investors.each do |investor|
+        emails += investor.investor_accesses.approved.collect(&:email)
+      end
+    end
+
+    emails
+  end
+
   before_save :strip_fields
   def strip_fields
     self.access_to_category = access_to_category.strip if access_to_category
@@ -83,6 +100,6 @@ class AccessRight < ApplicationRecord
 
   after_create :send_notification
   def send_notification
-    # AccessRightsMailer.with(access_right: self).notify_access.deliver_later if URI::MailTo::EMAIL_REGEXP.match?(access_to_email)
+    AccessRightsMailer.with(access_right_id: id).notify_access.deliver_later
   end
 end

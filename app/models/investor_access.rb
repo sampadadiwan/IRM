@@ -35,6 +35,10 @@ class InvestorAccess < ApplicationRecord
     where("investor_accesses.user_id=? and investor_accesses.approved=?", user.id, true)
   }
 
+  scope :approved, lambda {
+    where("investor_accesses.approved=?", true)
+  }
+
   scope :approved_for, lambda { |user, entity|
                          where("investor_accesses.user_id=? and investor_accesses.entity_id=? and investor_accesses.approved=?", user.id, entity.id, true)
                        }
