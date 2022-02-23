@@ -40,12 +40,8 @@ class DealDashboard < Administrate::BaseDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    entity
-    deal_investors
-    deal_activities
-    deal_docs
-    access_rights
     id
+    entity
     name
     amount
     status
@@ -53,6 +49,10 @@ class DealDashboard < Administrate::BaseDashboard
     updated_at
     start_date
     end_date
+    deal_investors
+    deal_activities
+    deal_docs
+    access_rights
   ].freeze
 
   # FORM_ATTRIBUTES

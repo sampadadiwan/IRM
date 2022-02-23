@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class DocumentDashboard < Administrate::BaseDashboard
+class OfferDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,16 +8,19 @@ class DocumentDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    entity: Field::Polymorphic,
-    access_rights: Field::HasMany,
-    folder: Field::BelongsTo,
-    rich_text_text: RichTextAreaField,
+    user: Field::BelongsTo,
+    entity: Field::BelongsTo,
+    secondary_sale: Field::BelongsTo,
+    holding: Field::BelongsTo,
+    granter: Field::BelongsTo,
     id: Field::Number,
-    name: Field::String,
-    visible_to: Field::String,
-    text: Field::String,
+    quantity: Field::Number,
+    percentage: Field::String.with_options(searchable: false),
+    notes: Field::Text,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime
+    updated_at: Field::DateTime,
+    approved: Field::Boolean,
+    granted_by_user_id: Field::Number
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -26,34 +29,44 @@ class DocumentDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    id
-    name
-    folder
+    user
     entity
-    created_at
+    secondary_sale
+    holding
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    id
+    user
     entity
-    folder
-    rich_text_text
+    secondary_sale
+    holding
+    granter
     id
-    name
+    quantity
+    percentage
+    notes
     created_at
     updated_at
-    access_rights
-
+    approved
+    granted_by_user_id
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    name
-    rich_text_text
+    user
+    entity
+    secondary_sale
+    holding
+    granter
+    quantity
+    percentage
+    notes
+    approved
+    granted_by_user_id
   ].freeze
 
   # COLLECTION_FILTERS
@@ -68,10 +81,10 @@ class DocumentDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how documents are displayed
+  # Overwrite this method to customize how offers are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(document)
-    document.name
-  end
+  # def display_resource(offer)
+  #   "Offer ##{offer.id}"
+  # end
 end

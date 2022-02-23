@@ -51,6 +51,12 @@ Rails.application.routes.draw do
     resources :deal_activities
     resources :deal_docs
     resources :deal_messages
+    resources :holdings
+    resources :offers
+    resources :interests
+    resources :folders
+    resources :investor_accesses
+    resources :secondary_sales
     root to: "investors#index"
   end
 

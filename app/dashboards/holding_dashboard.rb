@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class DocumentDashboard < Administrate::BaseDashboard
+class HoldingDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,16 +8,14 @@ class DocumentDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    entity: Field::Polymorphic,
-    access_rights: Field::HasMany,
-    folder: Field::BelongsTo,
-    rich_text_text: RichTextAreaField,
+    user: Field::BelongsTo,
+    entity: Field::BelongsTo,
     id: Field::Number,
-    name: Field::String,
-    visible_to: Field::String,
-    text: Field::String,
+    quantity: Field::Number,
+    value: Field::String.with_options(searchable: false),
     created_at: Field::DateTime,
-    updated_at: Field::DateTime
+    updated_at: Field::DateTime,
+    investment_instrument: Field::Select.with_options(collection: Investment::INSTRUMENT_TYPES)
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -27,24 +25,23 @@ class DocumentDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     id
-    name
-    folder
+    user
     entity
-    created_at
+    quantity
+    investment_instrument
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
     id
+    user
     entity
-    folder
-    rich_text_text
-    id
-    name
+    investment_instrument
+    quantity
+    value
     created_at
     updated_at
-    access_rights
 
   ].freeze
 
@@ -52,8 +49,9 @@ class DocumentDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    name
-    rich_text_text
+    quantity
+    value
+    investment_instrument
   ].freeze
 
   # COLLECTION_FILTERS
@@ -68,10 +66,10 @@ class DocumentDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how documents are displayed
+  # Overwrite this method to customize how holdings are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(document)
-    document.name
-  end
+  # def display_resource(holding)
+  #   "Holding ##{holding.id}"
+  # end
 end

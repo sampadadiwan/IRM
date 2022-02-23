@@ -18,7 +18,7 @@ class EntityDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     active: Field::Boolean,
-    entity_type: Field::String,
+    entity_type: Field::Select.with_options(collection: Entity::TYPES),
     created_by: Field::Number,
     investor_categories: Field::String,
     investment_types: Field::String,

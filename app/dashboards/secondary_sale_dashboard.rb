@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class DocumentDashboard < Administrate::BaseDashboard
+class SecondarySaleDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,16 +8,24 @@ class DocumentDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    entity: Field::Polymorphic,
+    entity: Field::BelongsTo,
     access_rights: Field::HasMany,
-    folder: Field::BelongsTo,
-    rich_text_text: RichTextAreaField,
+    public_docs_attachments: Field::HasMany,
+    public_docs_blobs: Field::HasMany,
+    offers: Field::HasMany,
+    interests: Field::HasMany,
     id: Field::Number,
     name: Field::String,
-    visible_to: Field::String,
-    text: Field::String,
+    start_date: Field::Date,
+    end_date: Field::Date,
+    percent_allowed: Field::Number,
+    min_price: Field::String.with_options(searchable: false),
+    max_price: Field::String.with_options(searchable: false),
+    active: Field::Boolean,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime
+    updated_at: Field::DateTime,
+    total_offered_quantity: Field::Number,
+    visible_externally: Field::Boolean
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -28,23 +36,35 @@ class DocumentDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     name
-    folder
     entity
-    created_at
+    start_date
+    end_date
+    min_price
+    max_price
+    percent_allowed
+    total_offered_quantity
+    visible_externally
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
     id
-    entity
-    folder
-    rich_text_text
-    id
     name
+    start_date
+    end_date
+    percent_allowed
+    min_price
+    max_price
+    active
     created_at
     updated_at
+    total_offered_quantity
+    visible_externally
+    entity
     access_rights
+    offers
+    interests
 
   ].freeze
 
@@ -53,7 +73,12 @@ class DocumentDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     name
-    rich_text_text
+    start_date
+    end_date
+    percent_allowed
+    min_price
+    max_price
+    visible_externally
   ].freeze
 
   # COLLECTION_FILTERS
@@ -68,10 +93,10 @@ class DocumentDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how documents are displayed
+  # Overwrite this method to customize how secondary sales are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(document)
-    document.name
+  def display_resource(secondary_sale)
+    secondary_sale.name
   end
 end

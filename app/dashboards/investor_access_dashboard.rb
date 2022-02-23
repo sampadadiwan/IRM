@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class DocumentDashboard < Administrate::BaseDashboard
+class InvestorAccessDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,16 +8,19 @@ class DocumentDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    entity: Field::Polymorphic,
-    access_rights: Field::HasMany,
-    folder: Field::BelongsTo,
-    rich_text_text: RichTextAreaField,
+    versions: Field::HasMany,
+    activities: Field::HasMany,
+    entity: Field::BelongsTo,
+    investor: Field::BelongsTo,
+    user: Field::BelongsTo,
+    granter: Field::BelongsTo,
     id: Field::Number,
-    name: Field::String,
-    visible_to: Field::String,
-    text: Field::String,
+    email: Field::String,
+    approved: Field::Boolean,
+    granted_by: Field::Number,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime
+    updated_at: Field::DateTime,
+    deleted_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -26,11 +29,11 @@ class DocumentDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    id
-    name
-    folder
     entity
-    created_at
+    investor
+    user
+    granter
+    approved
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -38,22 +41,28 @@ class DocumentDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
     id
     entity
-    folder
-    rich_text_text
-    id
-    name
+    investor
+    email
+    user
+    granter
+    email
+    approved
+    granted_by
     created_at
     updated_at
-    access_rights
-
+    deleted_at
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    name
-    rich_text_text
+    entity
+    investor
+    user
+    granter
+    email
+    approved
   ].freeze
 
   # COLLECTION_FILTERS
@@ -68,10 +77,10 @@ class DocumentDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how documents are displayed
+  # Overwrite this method to customize how investor accesses are displayed
   # across all pages of the admin dashboard.
   #
-  def display_resource(document)
-    document.name
-  end
+  # def display_resource(investor_access)
+  #   "InvestorAccess ##{investor_access.id}"
+  # end
 end
