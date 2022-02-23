@@ -1,8 +1,10 @@
 class SecondarySalePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.has_cached_role?(:super) || user.has_cached_role?(:wealth_manager)
+      if user.has_cached_role?(:super)
         scope.all
+      elsif user.has_cached_role?(:wealth_manager)
+        scope.where(visible_externally: true)
       else
         scope.where(entity_id: user.entity_id)
       end
@@ -14,7 +16,12 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    if user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+      true
+    else
+      (record.active? && user.has_cached_role?(:holding)) ||
+        (record.active? && user.has_cached_role?(:wealth_manager) && record.visible_externally)
+    end
   end
 
   def create?
@@ -29,11 +36,15 @@ class SecondarySalePolicy < ApplicationPolicy
     create?
   end
 
+  def make_visible?
+    update?
+  end
+
   def edit?
-    create?
+    update?
   end
 
   def destroy?
-    create?
+    update?
   end
 end

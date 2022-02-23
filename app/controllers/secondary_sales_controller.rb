@@ -1,5 +1,5 @@
 class SecondarySalesController < ApplicationController
-  before_action :set_secondary_sale, only: %i[show edit update destroy]
+  before_action :set_secondary_sale, only: %i[show edit update destroy make_visible]
   after_action :verify_policy_scoped, only: []
 
   # GET /secondary_sales or /secondary_sales.json
@@ -26,6 +26,20 @@ class SecondarySalesController < ApplicationController
 
   # GET /secondary_sales/1/edit
   def edit; end
+
+  def make_visible
+    @secondary_sale.visible_externally = !@secondary_sale.visible_externally
+
+    respond_to do |format|
+      if @secondary_sale.save
+        format.html { redirect_to secondary_sale_url(@secondary_sale), notice: "Secondary sale was successfully updated." }
+        format.json { render :show, status: :created, location: @secondary_sale }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @secondary_sale.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   # POST /secondary_sales or /secondary_sales.json
   def create

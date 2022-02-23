@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_23_082016) do
+ActiveRecord::Schema.define(version: 2022_02_23_124304) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -433,6 +433,7 @@ ActiveRecord::Schema.define(version: 2022_02_23_082016) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "total_offered_quantity", default: 0
+    t.boolean "visible_externally", default: false
     t.index ["entity_id"], name: "index_secondary_sales_on_entity_id"
   end
 

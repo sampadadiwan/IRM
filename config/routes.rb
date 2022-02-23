@@ -3,7 +3,10 @@ Rails.application.routes.draw do
     patch 'approve', on: :member
   end
 
-  resources :secondary_sales
+  resources :secondary_sales do
+    patch 'make_visible', on: :member
+  end
+
   resources :holdings
   resources :folders
   resources :investor_accesses do
