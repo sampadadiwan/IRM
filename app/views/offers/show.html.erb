@@ -39,7 +39,7 @@
           Percentage
         </td>
         <td>
-          <%= @offer.percentage %>
+          <%= @offer.percentage %>%
           <% if @offer.percentage > @offer.secondary_sale.percent_allowed %>
             <div>              
               <div class="badge badge-danger">Over Allowed Percentge</div>
@@ -62,8 +62,5 @@
 
 
 <div>
-  <%= link_to "Edit", edit_offer_path(@offer), {class: "btn btn-primary"} %> |
-  <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
-
-  <%= button_to "Delete", @offer, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+  <%= link_to "Edit", edit_offer_path(@offer), {class: "btn btn-primary"} %> 
 </div>

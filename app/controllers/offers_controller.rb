@@ -14,6 +14,8 @@ class OffersController < ApplicationController
     @offer = Offer.new(offer_params)
     @offer.user_id = current_user.id
     @offer.entity_id = @offer.secondary_sale.entity_id
+    @offer.quantity = @offer.allowed_quantity
+
     authorize @offer
   end
 
