@@ -1,7 +1,7 @@
 class SecondarySalePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.has_cached_role?(:super)
+      if user.has_cached_role?(:super) || user.has_cached_role?(:wealth_manager)
         scope.all
       else
         scope.where(entity_id: user.entity_id)
@@ -14,12 +14,7 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def show?
-    if user.has_cached_role?(:super) || user.entity_id == record.entity_id
-      true
-    else
-      SecondarySale.for_investor(user, record.entity)
-                   .where("secondary_sales.id=?", record.id).first.present?
-    end
+    true
   end
 
   def create?

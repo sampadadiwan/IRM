@@ -33,7 +33,18 @@
                     </a>
 
                 </li>
+            
+            <% elsif current_user && current_user.has_cached_role?(:wealth_manager) %>
+                <li class="nav-item">
+                     
+                    <a class="nav-link" href="/secondary_sales">
+                        <i class="fas fa-fw fa-briefcase"></i>
+                        <span>Secondary Sales</span>
+                    </a>
 
+                </li>
+
+                
             <% end %>
 
             <% if current_user && current_user.has_cached_role?(:investor) %>

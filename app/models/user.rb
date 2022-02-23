@@ -87,6 +87,7 @@ class User < ApplicationRecord
     end
     # Add this role so we can identify which users have holdings
     add_role :holding if entity && (entity.entity_type == "Holding")
+    add_role :wealth_manager if entity && (entity.entity_type == "Wealth Manager")
     save
   end
 

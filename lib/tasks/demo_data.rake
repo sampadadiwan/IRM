@@ -32,6 +32,17 @@ namespace :irm do
       end
     end
 
+    wm_names = ["Ambit", "Citi"]
+    wm_names.each do |name|
+      e = FactoryBot.create(:entity, entity_type: "Wealth Manager", name: name)
+      puts "Entity #{e.name}"
+      (1..2).each do |j|
+        user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
+        puts user.to_json
+      end
+    end
+
+
     vc_names = ["Sequoia Capital", "Accel", "Blume Ventures", "Tiger Global Management", "Kalaari Capital"] 
                 # "Drip Ventures", "Matrix Partners", "Nexus Venture Partners", "Indian Angel Network", "Omidyar Network India"]
     vc_names.each do |name|

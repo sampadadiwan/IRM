@@ -43,6 +43,9 @@ Naming/MethodName:
     - 'app/models/investor.rb'
 
 # Metrics Cops
+Metrics/CyclomaticComplexity:
+  Max: 10
+  Enabled: true
 
 Metrics/ClassLength:
   Description: 'Avoid classes longer than 100 lines of code.'
