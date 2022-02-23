@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_23_031228) do
+ActiveRecord::Schema.define(version: 2022_02_23_075710) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -417,6 +417,7 @@ ActiveRecord::Schema.define(version: 2022_02_23_031228) do
     t.boolean "active", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "total_offered_quantity", default: 0
     t.index ["entity_id"], name: "index_secondary_sales_on_entity_id"
   end
 
