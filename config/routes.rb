@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  resources :offers
+  resources :offers do
+    patch 'approve', on: :member
+  end
+
   resources :secondary_sales
   resources :holdings
   resources :folders

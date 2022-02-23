@@ -3,11 +3,12 @@ class Offer < ApplicationRecord
   belongs_to :entity
   belongs_to :secondary_sale
   belongs_to :holding
+  belongs_to :granter, class_name: "User", foreign_key: :granted_by_user_id, optional: true
 
   delegate :quantity, to: :holding, prefix: :holding
 
   validates :quantity, comparison: { less_than_or_equal_to: :holding_quantity }
-  validate :already_offered
+  validate :already_offered, on: :create
 
   def already_offered
     errors.add(:secondary_sale, "An existing offer from this user already exists. Pl modify or delete that one.") if secondary_sale.offers.where(user_id: user_id).first.present?

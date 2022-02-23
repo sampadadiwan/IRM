@@ -1,66 +1,76 @@
 <%= render "/layouts/alerts" %>
 
-<table class="table table-bordered dataTable">
+  <table class="table table-bordered dataTable">
 
-          <tr>
-        <td>
-          User
-        </td>
-        <td>
-          <%= @offer.user.full_name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Entity
-        </td>
-        <td>
-          <%= @offer.entity.name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Secondary Sale
-        </td>
-        <td>
-          <%= @offer.secondary_sale.name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Quantity
-        </td>
-        <td>
-          <%= @offer.quantity %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Percentage
-        </td>
-        <td>
+    <tr>
+      <td>
+        User
+      </td>
+      <td>
+        <%= @offer.user.full_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Entity
+      </td>
+      <td>
+        <%= @offer.entity.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Secondary Sale
+      </td>
+      <td>
+        <%= @offer.secondary_sale.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Quantity
+      </td>
+      <td>
+        <%= @offer.quantity %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Percentage
+      </td>
+      <td>
           <%= @offer.percentage %>%
-          <% if @offer.percentage > @offer.secondary_sale.percent_allowed %>
-            <div>              
+          <% if @offer.percentage> @offer.secondary_sale.percent_allowed %>
+            <div>
               <div class="badge badge-danger">Over Allowed Percentge</div>
               The current sale allows you to sell only <%= @offer.secondary_sale.percent_allowed %>% of your holdings
             </div>
           <% end %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Notes
-        </td>
-        <td>
-          <%= @offer.notes %>
-        </td>    
-      </tr>
-    
-  
-</table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Notes
+      </td>
+      <td>
+        <%= @offer.notes %>
+      </td>
+    </tr>
+    <tr>
+
+      <td>
+        Approved
+      </td>
+      <td>
+        <%= offer.approved ? "Yes" : "No" %>
+      </td>
+
+    </tr>
 
 
-<div>
-  <%= link_to "Edit", edit_offer_path(@offer), {class: "btn btn-primary"} %> 
-</div>
+  </table>
+
+
+  <div>
+    <%= link_to "Edit" , edit_offer_path(@offer), {class: "btn btn-primary" } %>
+  </div>

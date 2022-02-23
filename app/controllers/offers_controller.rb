@@ -1,5 +1,5 @@
 class OffersController < ApplicationController
-  before_action :set_offer, only: %i[show edit update destroy]
+  before_action :set_offer, only: %i[show edit update destroy approve]
 
   # GET /offers or /offers.json
   def index
@@ -17,6 +17,21 @@ class OffersController < ApplicationController
     @offer.quantity = @offer.allowed_quantity
 
     authorize @offer
+  end
+
+  def approve
+    @offer.approved = !@offer.approved
+    @offer.granted_by_user_id = current_user.id
+    @offer.save!
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace(@offer, partial: "/offers/offer", locals: { show_entity: false, show_secondary_sale: false, offer: @offer })
+        ]
+      end
+      format.html { redirect_to offer_url(@offer), notice: "Offer was successfully approved." }
+      format.json { @offer.to_json }
+    end
   end
 
   # GET /offers/1/edit

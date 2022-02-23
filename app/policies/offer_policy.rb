@@ -29,6 +29,10 @@ class OfferPolicy < ApplicationPolicy
     end
   end
 
+  def approve?
+    user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+  end
+
   def new?
     create?
   end
