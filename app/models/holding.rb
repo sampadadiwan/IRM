@@ -16,4 +16,9 @@ class Holding < ApplicationRecord
     investment.save
     investment.update_percentage_holdings
   end
+
+  def active_secondary_sale
+    entity.secondary_sales.where("secondary_sales.start_date <= ? and secondary_sales.end_date >= ?",
+                                 Time.zone.today, Time.zone.today).first
+  end
 end

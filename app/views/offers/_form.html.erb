@@ -21,14 +21,14 @@
     <%= form.text_field :secondary_sale_name, class: "form-control", disabled: true, value: offer.secondary_sale.name  %>
     <%= form.text_field :secondary_sale_id, class: "form-control", hidden: true  %>
     <%= form.text_field :holding_id, class: "form-control", hidden: true  %>
-    <small class="text-muted"> Percentage of holdings authorized for sale is <%= offer.secondary_sale.percent_allowed %>% </small>
+    <small class="text-muted"> Percentage of holdings authorized in this sale is <%= offer.secondary_sale.percent_allowed %>% </small>
   </div>
 
 
   <div class="form-group">
     <%= form.label :quantity %>
     <%= form.number_field :quantity, class: "form-control"  %>
-    <small class="text-muted"><%= offer.secondary_sale.percent_allowed %>% of your holdings is <%= offer.allowed_quantity %></small>
+    <small class="text-muted"><%= offer.secondary_sale.percent_allowed %>% of your <%=offer.holding.quantity%> holdings is <%= offer.allowed_quantity %> units</small>
   </div>
 
   <div class="form-group">

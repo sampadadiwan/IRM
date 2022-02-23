@@ -84,10 +84,10 @@ class User < ApplicationRecord
     if ia && (ia.investor && entity_id.nil?)
       # Set the users entity
       self.entity_id = ia.investor.investor_entity_id
-      # Add this role so we can identify which users have holdings
-      add_role :holding if entity && (entity.entity_type == "Holding")
-      save
     end
+    # Add this role so we can identify which users have holdings
+    add_role :holding if entity && (entity.entity_type == "Holding")
+    save
   end
 
   def send_devise_notification(notification, *args)

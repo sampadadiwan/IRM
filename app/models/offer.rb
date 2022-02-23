@@ -8,10 +8,14 @@ class Offer < ApplicationRecord
   delegate :quantity, to: :holding, prefix: :holding
 
   validates :quantity, comparison: { less_than_or_equal_to: :holding_quantity }
-  validate :already_offered, on: :create
+  validate :already_offered, :sale_active, on: :create
 
   def already_offered
     errors.add(:secondary_sale, "An existing offer from this user already exists. Pl modify or delete that one.") if secondary_sale.offers.where(user_id: user_id).first.present?
+  end
+
+  def sale_active
+    errors.add(:secondary_sale, "Is not active.") unless secondary_sale.active?
   end
 
   before_save :set_percentage

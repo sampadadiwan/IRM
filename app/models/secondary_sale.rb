@@ -17,4 +17,8 @@ class SecondarySale < ApplicationRecord
       .joins(entity: :investor_accesses)
       .merge(InvestorAccess.approved_for(user, entity))
   end
+
+  def active?
+    start_date <= Time.zone.today && end_date >= Time.zone.today
+  end
 end
