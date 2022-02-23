@@ -47,9 +47,9 @@
     <%= form.text_field :max_price, class: "form-control"  %>
   </div>
 
-  <div class="field" class="form-group" id="video_upload" >
+  <div class="field" class="form-group" data-controller="directuploads" >
     <%= form.label :public_docs, "Public Documents" %>
-    <%= form.file_field :public_docs, class: "form-control", direct_upload: true, multiple:true, placeholder: "Upload video" %>
+    <%= form.file_field :public_docs, class: "form-control", direct_upload: true, multiple:true %>
   </div>
 
   <div class="form-group">
