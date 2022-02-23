@@ -66,5 +66,7 @@ module InvestorRelationshipManagement
         secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"]
       }
     }
+
+    config.active_storage.replace_on_assign_to_many = false
   end
 end
