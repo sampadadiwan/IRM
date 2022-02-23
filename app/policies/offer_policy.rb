@@ -38,14 +38,14 @@ class OfferPolicy < ApplicationPolicy
   end
 
   def update?
-    create?
+    user.id == record.user_id
   end
 
   def edit?
-    create?
+    update?
   end
 
   def destroy?
-    create?
+    update?
   end
 end

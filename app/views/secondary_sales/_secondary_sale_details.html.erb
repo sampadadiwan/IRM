@@ -5,6 +5,7 @@
   <nav class="nav nav-tabs nav-fill nav-justified"  role="tablist">
     <a class="nav-link  active" data-bs-toggle="pill" data-toggle="tab" href="#holdings-tab">Holdings</a>
     <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#offerings-tab">Offers</a>
+    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#interests-tab">Interests</a>
     <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">Access Rights</a>
   </nav>
 
@@ -26,6 +27,14 @@
           <%= render "/offers/index", offers: offers, secondary_sale: secondary_sale, show_entity:false, show_secondary_sale:false  %>
         </div>     
       </div>
+
+      <div id="interests-tab" class="tab-pane fade">
+        <div id="interests" class="associated_entity">
+          <% interests = current_user.entity_id == secondary_sale.entity_id ? secondary_sale.interests : secondary_sale.interests.where(user_id: current_user.id) %>
+          <%= render "/interests/index", interests: interests, secondary_sale: secondary_sale  %>
+        </div>     
+      </div>
+
       <div id="holdings-tab" class="tab-pane fade in show active">
         <div id="holdings" class="associated_entity">
           <% holdings = current_user.entity_id == secondary_sale.entity_id ? current_user.entity.holdings : current_user.holdings.where(entity_id: secondary_sale.entity_id) %>

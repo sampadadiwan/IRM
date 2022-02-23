@@ -14,12 +14,11 @@ class InterestsTest < ApplicationSystemTestCase
     visit interests_url
     click_on "New interest"
 
-    fill_in "Company", with: @interest.company_id
-    fill_in "Price per share", with: @interest.price_per_share
-    fill_in "Share type", with: @interest.share_type
-    fill_in "Shares max", with: @interest.shares_max
-    fill_in "Shares min", with: @interest.shares_min
-    fill_in "Side", with: @interest.side
+    fill_in "Interest entity", with: @interest.interest_entity_id
+    fill_in "Offer entity", with: @interest.offer_entity_id
+    fill_in "Price", with: @interest.price
+    fill_in "Quantity", with: @interest.quantity
+    fill_in "Secondary sale", with: @interest.secondary_sale_id
     fill_in "User", with: @interest.user_id
     click_on "Create Interest"
 
@@ -31,12 +30,11 @@ class InterestsTest < ApplicationSystemTestCase
     visit interest_url(@interest)
     click_on "Edit this interest", match: :first
 
-    fill_in "Company", with: @interest.company_id
-    fill_in "Price per share", with: @interest.price_per_share
-    fill_in "Share type", with: @interest.share_type
-    fill_in "Shares max", with: @interest.shares_max
-    fill_in "Shares min", with: @interest.shares_min
-    fill_in "Side", with: @interest.side
+    fill_in "Interest entity", with: @interest.interest_entity_id
+    fill_in "Offer entity", with: @interest.offer_entity_id
+    fill_in "Price", with: @interest.price
+    fill_in "Quantity", with: @interest.quantity
+    fill_in "Secondary sale", with: @interest.secondary_sale_id
     fill_in "User", with: @interest.user_id
     click_on "Update Interest"
 

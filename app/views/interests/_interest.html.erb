@@ -1,0 +1,27 @@
+<tr id="<%= dom_id interest %>">
+  <% if secondary_sale && secondary_sale.entity_id != current_user.entity_id %>
+    <td>
+      <%= interest.secondary_sale.name %>
+    </td>
+    <td>
+      <%= interest.offer_entity.name %>
+    </td>
+  <% else %>
+    <td>
+      <%= interest.interest_entity.name %>
+    </td>
+    <td>
+      <%= interest.user.full_name %>
+    </td>    
+  <% end %>
+  <td>
+    <%= interest.quantity %>
+  </td>
+  <td>
+    <%= interest.price %>
+  </td>
+  
+  <td>
+    <%= link_to "Show" , interest , {class: "btn btn-primary" }%>
+  </td>
+</tr>

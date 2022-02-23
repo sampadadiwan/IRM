@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_23_075710) do
+ActiveRecord::Schema.define(version: 2022_02_23_082016) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -306,6 +306,21 @@ ActiveRecord::Schema.define(version: 2022_02_23_075710) do
     t.index ["user_id"], name: "index_impressions_on_user_id"
   end
 
+  create_table "interests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "offer_entity_id"
+    t.integer "quantity"
+    t.decimal "price", precision: 10
+    t.bigint "user_id", null: false
+    t.integer "interest_entity_id"
+    t.bigint "secondary_sale_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["interest_entity_id"], name: "index_interests_on_interest_entity_id"
+    t.index ["offer_entity_id"], name: "index_interests_on_offer_entity_id"
+    t.index ["secondary_sale_id"], name: "index_interests_on_secondary_sale_id"
+    t.index ["user_id"], name: "index_interests_on_user_id"
+  end
+
   create_table "investments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "investment_type", limit: 100
     t.integer "investor_id"
@@ -514,6 +529,8 @@ ActiveRecord::Schema.define(version: 2022_02_23_075710) do
   add_foreign_key "folders", "entities"
   add_foreign_key "holdings", "entities"
   add_foreign_key "holdings", "users"
+  add_foreign_key "interests", "secondary_sales"
+  add_foreign_key "interests", "users"
   add_foreign_key "offers", "entities"
   add_foreign_key "offers", "holdings"
   add_foreign_key "offers", "secondary_sales"

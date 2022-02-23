@@ -1,8 +1,6 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Offers</h1>
-    <%= link_to "New Offer" , new_offer_path("offer[secondary_sale_id]": secondary_sale.id), 
-        {class: "btn btn-primary" } if secondary_sale %>
 </div>
 
 <table id="offers" class="table table-bordered dataTable">
@@ -40,7 +38,7 @@
 
     <tbody>
         <% offers.each do |offer| %>
-            <%= render offer, show_entity: show_entity, show_secondary_sale: show_secondary_sale %>
+            <%= render offer, show_entity: show_entity, show_secondary_sale: show_secondary_sale, secondary_sale: secondary_sale %>
         <% end %>
     </tbody>
 </table>

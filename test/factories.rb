@@ -1,4 +1,14 @@
 FactoryBot.define do
+  factory :interest do
+    offer_entity_id { 1 }
+    quantity { 1 }
+    price { "9.99" }
+    user { nil }
+    interest_entity_id { 1 }
+    secondary_sale { nil }
+  end
+
+  
   factory :offer do
     user { nil }
     entity { nil }

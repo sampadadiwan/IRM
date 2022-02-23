@@ -17,9 +17,7 @@ class InterestsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create interest" do
     assert_difference("Interest.count") do
-      post interests_url,
-           params: { interest: { company_id: @interest.company_id, price_per_share: @interest.price_per_share,
-                                 share_type: @interest.share_type, shares_max: @interest.shares_max, shares_min: @interest.shares_min, side: @interest.side, user_id: @interest.user_id } }
+      post interests_url, params: { interest: { interest_entity_id: @interest.interest_entity_id, offer_entity_id: @interest.offer_entity_id, price: @interest.price, quantity: @interest.quantity, secondary_sale_id: @interest.secondary_sale_id, user_id: @interest.user_id } }
     end
 
     assert_redirected_to interest_url(Interest.last)
@@ -36,9 +34,7 @@ class InterestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update interest" do
-    patch interest_url(@interest),
-          params: { interest: { company_id: @interest.company_id, price_per_share: @interest.price_per_share,
-                                share_type: @interest.share_type, shares_max: @interest.shares_max, shares_min: @interest.shares_min, side: @interest.side, user_id: @interest.user_id } }
+    patch interest_url(@interest), params: { interest: { interest_entity_id: @interest.interest_entity_id, offer_entity_id: @interest.offer_entity_id, price: @interest.price, quantity: @interest.quantity, secondary_sale_id: @interest.secondary_sale_id, user_id: @interest.user_id } }
     assert_redirected_to interest_url(@interest)
   end
 

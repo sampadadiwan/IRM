@@ -1,0 +1,46 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Interests</h1>
+    <%= link_to "New Interest" , new_interest_path("interest[secondary_sale_id]": secondary_sale.id), 
+        {class: "btn btn-primary" } if secondary_sale %>
+</div>
+
+<table id="interests" class="table table-bordered dataTable">
+
+    <thead>
+        <tr>
+            <% if secondary_sale && secondary_sale.entity_id != current_user.entity_id %>
+                <th>
+                    Secondary Sale
+                </th>
+                <th>
+                    Offer Entity
+                </th>
+            <% else %>                
+                <th>
+                    Interest Entity
+                </th>
+                
+                <th>
+                    User
+                </th>
+            <% end %>
+
+            <th>
+                Quantity
+            </th>
+            <th>
+                Price
+            </th>
+            
+
+            <th>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% interests.each do |interest| %>
+            <%= render interest, secondary_sale: secondary_sale %>
+        <% end %>
+    </tbody>
+</table>

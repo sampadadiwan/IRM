@@ -1,0 +1,63 @@
+<%= render "/layouts/alerts" %>
+
+  <table class="table table-bordered dataTable">
+
+    <tr>
+      <td>
+        Offer Entity
+      </td>
+      <td>
+        <%= @interest.offer_entity.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Secondary Sale
+      </td>
+      <td>
+        <%= @interest.secondary_sale.name %> : 
+        <%= l @interest.secondary_sale.start_date %> - <%= l @interest.secondary_sale.end_date %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Quantity
+      </td>
+      <td>
+        <%= @interest.quantity %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Price
+      </td>
+      <td>
+        <%= @interest.price %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        User
+      </td>
+      <td>
+        <%= @interest.user.full_name %>, <%= @interest.user.email %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Interest Entity
+      </td>
+      <td>
+        <%= @interest.interest_entity.name %>
+      </td>
+    </tr>
+
+
+
+  </table>
+
+
+  <div>
+    <%= link_to "Edit" , edit_interest_path(@interest), {class: "btn btn-primary" } %> |
+    <%= button_to "Delete" , @interest, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" %>
+  </div>
