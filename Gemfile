@@ -50,6 +50,9 @@ gem "chartkick"
 gem 'groupdate'
 gem 'hightop'
 
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary-edge'
+
 gem "administrate"
 gem 'administrate-field-active_storage'
 

@@ -16,6 +16,10 @@ class InvestmentsController < ApplicationController
         ] = "attachment; filename=investments.xlsx"
       end
       format.html { render :index }
+
+      format.pdf do
+        render template: "investments/index", formats: [:html], pdf: "#{@entity.name} Investments"
+      end
     end
   end
 
@@ -50,6 +54,12 @@ class InvestmentsController < ApplicationController
   # GET /investments/1 or /investments/1.json
   def show
     authorize @investment
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render template: "investments/show", formats: [:html], pdf: "Investment #{@investment.id}"
+      end
+    end
   end
 
   # GET /investments/new
