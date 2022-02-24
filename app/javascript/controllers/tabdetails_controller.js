@@ -3,7 +3,11 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   connect() {
-
+    if( $("#clickOnLoad").length > 0 ) {
+      let link = $("#clickOnLoad").val();
+      $(`${link} .load_data_link`).find('span').trigger('click'); // Works
+      $(`${link} .load_data_link`).remove();  
+    }
   }
 
   loadData(event) {

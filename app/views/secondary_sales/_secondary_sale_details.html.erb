@@ -16,10 +16,12 @@
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">Access Rights</a>
     <% elsif current_user.has_cached_role?(:holding) %>
       <% holdings_active = true %>
-      <a class="nav-link <%= holdings_active ? 'active' : '' %>" data-bs-toggle="pill" data-toggle="tab" href="#holdings-tab">Holdings</a>
-      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#offerings-tab">Offers</a>      
+      <a class="nav-link <%= holdings_active ? 'active' : '' %>" data-bs-toggle="pill" data-toggle="tab" href="#holdings-tab" data-action="click->tabdetails#loadData">Holdings</a>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#offerings-tab" data-action="click->tabdetails#loadData">Offers</a>      
     <% elsif current_user.has_cached_role?(:secondary_buyer) %>
       <% interests_active = true %>
+      <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#interests-tab" data-action="click->tabdetails#loadData">Interests</a>
+      <input hidden=true value="#interests-tab" id="clickOnLoad" />
     <% end %>
   </nav>
 
@@ -32,25 +34,25 @@
               owner_type: "SecondarySale", 
               entity_id: secondary_sale.entity_id) %>
               
-          <%= render "/access_rights/index", access_rights: AccessRight.for_secondary_sale(secondary_sale), access_right: access_right %>
+          <%= render "/access_rights/index", access_rights: AccessRight.for_secondary_sale(secondary_sale).includes(:investor), access_right: access_right %>
         </div>
       </div>
       <div id="offerings-tab" class="tab-pane fade">
         <div id="offerings" class="associated_entity">
-          <%= link_to offers_path(secondary_sale_id: secondary_sale.id, show_entity: false, show_secondary_sale: false), class: "load_data_link", data: { turbo_frame: 'offers_frame' } do %>
-            <span>Loading...</span>
-          <% end %>
           <%= turbo_frame_tag "offers_frame" do %>
+            <%= link_to offers_path(secondary_sale_id: secondary_sale.id, show_entity: false, show_secondary_sale: false), class: "load_data_link", data: { turbo_frame: 'offers_frame' } do %>
+              <span>Loading...</span>
+            <% end %>
           <% end %>
         </div>     
       </div>
 
       <div id="interests-tab" class="tab-pane fade <%= interests_active ? 'in show active' : '' %>">
         <div id="interests" class="associated_entity">
-          <%= link_to interests_path(secondary_sale_id: secondary_sale.id), class: "load_data_link", data: { turbo_frame: 'interests_frame' } do %>
-            <span>Loading...</span>
-          <% end %>
           <%= turbo_frame_tag "interests_frame" do %>
+            <%= link_to interests_path(secondary_sale_id: secondary_sale.id), class: "load_data_link", data: { turbo_frame: 'interests_frame' } do %>
+              <span>Loading...</span>
+            <% end %>
           <% end %>
         </div>     
       </div>
@@ -58,7 +60,7 @@
       <div id="holdings-tab" class="tab-pane fade <%= holdings_active ? 'in show active' : '' %>">
         <div id="holdings" class="associated_entity">
           <% holdings = current_user.entity_id == secondary_sale.entity_id ? current_user.entity.holdings : current_user.holdings.where(entity_id: secondary_sale.entity_id) %>
-          <%= render "/holdings/index", holdings: holdings, secondary_sale: secondary_sale  %>
+          <%= render "/holdings/index", holdings: holdings.includes(:user, :entity), secondary_sale: secondary_sale  %>
         </div>     
       </div>
   </div>

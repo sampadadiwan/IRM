@@ -3,6 +3,8 @@ class OfferPolicy < ApplicationPolicy
     def resolve
       if user.has_cached_role?(:super)
         scope.all
+      elsif user.has_cached_role?(:holding)
+        scope.where(user_id: user.id)
       else
         scope.where(entity_id: user.entity_id)
       end
