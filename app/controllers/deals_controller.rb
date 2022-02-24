@@ -74,11 +74,7 @@ class DealsController < ApplicationController
     @deal.create_activity key: 'deal.started', owner: current_user
 
     respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.replace('deal_show', partial: "deals/show", locals: { deal: @deal })
-        ]
-      end
+      format.turbo_stream { render :start_deal }
       format.html { redirect_to deal_url(@deal), notice: "Deal was successfully started." }
     end
   end

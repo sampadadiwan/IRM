@@ -1,5 +1,5 @@
 <%= render "/layouts/alerts" %>
-<%= turbo_frame_tag "offers_frame" do %>
+<%= turbo_frame_tag "offers_frame", target: "_top" do %>
     <%
         show_entity = params[:show_entity].present? ? params[:show_entity]=="true" : true
         show_secondary_sale = params[:show_secondary_sale].present? ? params[:show_secondary_sale]=="true" : true 

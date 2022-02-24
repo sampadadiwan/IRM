@@ -1,4 +1,4 @@
 <%= render "/layouts/alerts" %>
-<%= turbo_frame_tag "deal_messages_frame" do %>
+<%= turbo_frame_tag "deal_messages_frame", target: "_top" do %>
     <%= render "deal_messages/chats_and_tasks", deal_messages: @deal_messages, deal_investor: @deal_investor %>
 <% end %>

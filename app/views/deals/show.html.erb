@@ -5,17 +5,6 @@
 
 <% if current_user.entity_id == @deal.entity_id %>
 
-  <div>
-    <%= link_to "Edit", edit_deal_path(@deal), {class: "btn btn-primary"} %> |
-    <% if !@deal.start_date.present?  %>
-      <%= button_to "Start Deal", start_deal_deal_path(@deal), 
-        {"data-turbo": "false", class: "btn btn-primary", form_class: "deleteButton"} %> |
-    <% end %>
-    <%= link_to "Activity Template", deal_activities_path(deal_id: @deal.id, template: true) , {class: "btn btn-success"}%> |
-    <%= button_to "Delete", @deal, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
-   
-  </div>
-
   <%= render "/deals/deal_details", deal: @deal, show_deal: "No" %>
   
 <% else %>

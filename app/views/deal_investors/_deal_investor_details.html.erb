@@ -28,7 +28,7 @@
         <%= link_to deal_messages_path(deal_investor_id: deal_investor.id), class: "load_data_link", data: { turbo_frame: 'deal_messages_frame' } do %>
           <span>Loading...</span>
         <% end %>
-        <%= turbo_frame_tag "deal_messages_frame" do %>
+        <%= turbo_frame_tag "deal_messages_frame", target: "_top" do %>
         <% end %>
       </div>  
     </div>

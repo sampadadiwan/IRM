@@ -48,7 +48,7 @@
             <span>Loading...</span>
           <% end %>
           
-          <%= turbo_frame_tag "offers_frame" do %>
+          <%= turbo_frame_tag "offers_frame", target: "_top" do %>
           <% end %>
         </div>     
       </div>
@@ -59,14 +59,14 @@
             <span>Loading...</span>
            <% end %>
       
-          <%= turbo_frame_tag "interests_frame" do %>
+          <%= turbo_frame_tag "interests_frame", target: "_top" do %>
           <% end %>
         </div>     
       </div>
 
       <div id="holdings-tab" class="tab-pane fade <%= holdings_active ? 'in show active' : '' %>">
         <div id="holdings" class="associated_entity">
-          <%= turbo_frame_tag "holdings_frame" do %>
+          <%= turbo_frame_tag "holdings_frame", target: "_top" do %>
             <%= link_to holdings_path(secondary_sale_id: secondary_sale.id), class: "load_data_link", data: { turbo_frame: 'holdings_frame' } do %>
               <span>Loading...</span>
             <% end %>
