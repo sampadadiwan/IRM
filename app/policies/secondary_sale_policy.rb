@@ -3,7 +3,7 @@ class SecondarySalePolicy < ApplicationPolicy
     def resolve
       if user.has_cached_role?(:super)
         scope.all
-      elsif user.has_cached_role?(:wealth_manager)
+      elsif user.has_cached_role?(:secondary_buyer)
         scope.where(visible_externally: true)
       else
         scope.where(entity_id: user.entity_id)
@@ -20,7 +20,7 @@ class SecondarySalePolicy < ApplicationPolicy
       true
     else
       (record.active? && user.has_cached_role?(:holding)) ||
-        (record.active? && user.has_cached_role?(:wealth_manager) && record.visible_externally)
+        (record.active? && user.has_cached_role?(:secondary_buyer) && record.visible_externally)
     end
   end
 

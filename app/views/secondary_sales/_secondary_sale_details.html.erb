@@ -18,7 +18,7 @@
       <% holdings_active = true %>
       <a class="nav-link <%= holdings_active ? 'active' : '' %>" data-bs-toggle="pill" data-toggle="tab" href="#holdings-tab">Holdings</a>
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#offerings-tab">Offers</a>      
-    <% elsif current_user.has_cached_role?(:wealth_manager) %>
+    <% elsif current_user.has_cached_role?(:secondary_buyer) %>
       <% interests_active = true %>
     <% end %>
   </nav>
