@@ -4,6 +4,7 @@ class InterestsController < ApplicationController
   # GET /interests or /interests.json
   def index
     @interests = policy_scope(Interest)
+    @interests = @interests.where(secondary_sale_id: params[:secondary_sale_id]) if params[:secondary_sale_id].present?
   end
 
   # GET /interests/1 or /interests/1.json

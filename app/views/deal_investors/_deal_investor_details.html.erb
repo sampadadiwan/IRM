@@ -1,8 +1,8 @@
-<div class="associated_entity" data-controller="dealdetails">
+<div class="associated_entity" data-controller="tabdetails">
   <nav class="nav nav-tabs nav-fill nav-justified"  role="tablist">
     <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#docs-tab">Documents</a>
     <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#activities-tab">Activities</a>
-    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#chat-tab" data-action="click->dealdetails#loadChats">Chat</a>
+    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#chat-tab" data-action="click->tabdetails#loadData">Chat</a>
     <% if show_tranch %>
     <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#tranche-tab">Tranche</a>
     <% end %>
@@ -25,7 +25,7 @@
   
     <div id="chat-tab" class="tab-pane fade">
       <div id="deal_messages" class="associated_entity">
-        <%= link_to deal_messages_path(deal_investor_id: deal_investor.id), id: "load_chats_link", data: { turbo_frame: 'deal_messages_frame' } do %>
+        <%= link_to deal_messages_path(deal_investor_id: deal_investor.id), class: "load_data_link", data: { turbo_frame: 'deal_messages_frame' } do %>
           <span>Loading...</span>
         <% end %>
         <%= turbo_frame_tag "deal_messages_frame" do %>

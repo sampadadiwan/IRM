@@ -7,12 +7,12 @@
     access_right_active = false
   %>
 
-  <nav class="nav nav-tabs nav-fill nav-justified"  role="tablist">
+  <nav class="nav nav-tabs nav-fill nav-justified"  role="tablist" data-controller="tabdetails">
     <% if current_user.entity_id == secondary_sale.entity_id %>
       <% holdings_active = true %>
       <a class="nav-link <%= holdings_active ? 'active' : '' %>" data-bs-toggle="pill" data-toggle="tab" href="#holdings-tab">Holdings</a>
-      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#offerings-tab">Offers</a>
-      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#interests-tab">Interests</a>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#offerings-tab" data-action="click->tabdetails#loadData">Offers</a>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#interests-tab" data-action="click->tabdetails#loadData">Interests</a>
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">Access Rights</a>
     <% elsif current_user.has_cached_role?(:holding) %>
       <% holdings_active = true %>
@@ -37,15 +37,21 @@
       </div>
       <div id="offerings-tab" class="tab-pane fade">
         <div id="offerings" class="associated_entity">
-          <% offers = current_user.entity_id == secondary_sale.entity_id ? secondary_sale.offers : secondary_sale.offers.where(user_id: current_user.id) %>
-          <%= render "/offers/index", offers: offers, secondary_sale: secondary_sale, show_entity:false, show_secondary_sale:false  %>
+          <%= link_to offers_path(secondary_sale_id: secondary_sale.id, show_entity: false, show_secondary_sale: false), class: "load_data_link", data: { turbo_frame: 'offers_frame' } do %>
+            <span>Loading...</span>
+          <% end %>
+          <%= turbo_frame_tag "offers_frame" do %>
+          <% end %>
         </div>     
       </div>
 
       <div id="interests-tab" class="tab-pane fade <%= interests_active ? 'in show active' : '' %>">
         <div id="interests" class="associated_entity">
-          <% interests = current_user.entity_id == secondary_sale.entity_id ? secondary_sale.interests : secondary_sale.interests.where(user_id: current_user.id) %>
-          <%= render "/interests/index", interests: interests, secondary_sale: secondary_sale  %>
+          <%= link_to interests_path(secondary_sale_id: secondary_sale.id), class: "load_data_link", data: { turbo_frame: 'interests_frame' } do %>
+            <span>Loading...</span>
+          <% end %>
+          <%= turbo_frame_tag "interests_frame" do %>
+          <% end %>
         </div>     
       </div>
 

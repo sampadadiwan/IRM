@@ -1,4 +1,5 @@
 <%= render "/layouts/alerts" %>
-
-<%= render "/interests/index", interests: @interests, secondary_sale: nil %>
+<%= turbo_frame_tag "interests_frame" do %>
+    <%= render "/interests/index", interests: @interests, secondary_sale: nil %>
+<% end %>
 
