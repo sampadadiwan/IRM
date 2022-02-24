@@ -58,6 +58,8 @@
 
 
   <div>
-    <%= link_to "Edit" , edit_interest_path(@interest), {class: "btn btn-primary" } %> |
-    <%= button_to "Delete" , @interest, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" %>
+    <% if Pundit.policy(current_user, @interest).update? %>
+      <%= link_to "Edit" , edit_interest_path(@interest), {class: "btn btn-primary" } %> |
+      <%= button_to "Delete" , @interest, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" %>
+    <% end %>
   </div>
