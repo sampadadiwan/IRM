@@ -5,6 +5,12 @@ class HoldingsController < ApplicationController
   def index
     @holdings = policy_scope(Holding)
     @holdings = @holdings.includes(:user, :entity)
+    @secondary_sale = nil
+    if params[:secondary_sale_id]
+      @secondary_sale = SecondarySale.find(params[:secondary_sale_id])
+      @holdings = @holdings.where(entity_id: @secondary_sale.entity_id)
+    end
+    @holdings = @holdings.where(entity_id: params[:entity_id]) if params[:entity_id].present?
   end
 
   # GET /holdings/1 or /holdings/1.json

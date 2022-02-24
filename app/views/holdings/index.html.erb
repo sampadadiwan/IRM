@@ -1,3 +1,5 @@
 <%= render "/layouts/alerts" %>
 
-<%= render "/holdings/index", holdings: @holdings, secondary_sale: nil %>
+<%= turbo_frame_tag "holdings_frame" do %>
+    <%= render "/holdings/index", holdings: @holdings, secondary_sale: @secondary_sale %>
+<% end %>
