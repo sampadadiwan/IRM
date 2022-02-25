@@ -6,5 +6,5 @@ SanitizeEmail::Config.configure do |config|
   config[:activation_proc] = proc { %w[development staging].include?(Rails.env) }
   # config[:use_actual_email_prepended_to_subject] = true         # or false
   # config[:use_actual_environment_prepended_to_subject] = true   # or false
-  config[:use_actual_email_as_sanitized_user_name] = true       # or false
+  # config[:use_actual_email_as_sanitized_user_name] = true       # or false
 end
