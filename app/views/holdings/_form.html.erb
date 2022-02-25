@@ -13,7 +13,7 @@
 
   <div class="form-group">
     <%= form.label :user %>
-    <%= form.text_field :user_name, class: "form-control", value: holding.user.full_name, disabled: true  %>
+    <%= form.text_field :user_name, class: "form-control", value: holding.user&.full_name, disabled: true  %>
     <%= form.text_field :user_id, class: "form-control", hidden: true  %>
   </div>
 
@@ -30,7 +30,7 @@
 
   <div class="form-group">
     <%= form.label :investment_instrument %>
-    <%= form.select :investment_instrument, Investment.INSTRUMENT_TYPES(current_user.entity) , 
+    <%= form.select :investment_instrument, Investment.INSTRUMENT_TYPES(current_user&.entity) , 
       {include_blank: true}, {class: "form-control"} %>
   </div>
 

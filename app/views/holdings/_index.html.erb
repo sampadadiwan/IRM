@@ -2,7 +2,7 @@
     <h1 class="h3 mb-0 text-gray-800">Holdings</h1>
     <span>
         <!-- We have to show the employee investors screen from which we can add holdings -->
-        <% investor=current_user.entity.investors.where(is_holdings_entity: true).first %>
+        <% investor=current_user&.entity.investors.where(is_holdings_entity: true).first %>
         <%= link_to "New Holding" , investor_path(investor, tab: "investors-tab" ), {class: "btn btn-primary" } if
                 investor %>
     </span>
@@ -15,7 +15,10 @@
         <thead>
             <tr>
                 <th>
-                    User
+                    Type
+                </th>
+                <th>
+                    Investor
                 </th>
                 <th>
                     Email

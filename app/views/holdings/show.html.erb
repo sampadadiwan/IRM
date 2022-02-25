@@ -4,10 +4,18 @@
 
     <tr>
       <td>
-        User
+        Type
       </td>
       <td>
-        <%= @holding.user.full_name %>
+        <%= @holding.holding_type %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Investor
+      </td>
+      <td>
+        <%= @holding.user ? "#{@holding.user.full_name}, #{@holding.user.email}" : @holding.investor.investor_name %>
       </td>
     </tr>
     <tr>

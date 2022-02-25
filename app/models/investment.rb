@@ -71,6 +71,20 @@ class Investment < ApplicationRecord
     self.employee_holdings = true if investment_type == "Employee Holdings"
   end
 
+  after_save :update_investor_holdings
+  def update_investor_holdings
+    holding = Holding.where(investor_id: investor_id, investment_instrument: investment_instrument).first
+    if holding
+      holding.quantity = quantity
+    else
+      holding = Holding.new(entity_id: investee_entity_id, investor_id: investor_id,
+                            holding_type: "Investor", investment_instrument: investment_instrument, 
+                            quantity: quantity)
+    end
+
+    holding.save!
+  end
+
   # after_save :update_percentage_holdings
   def update_percentage_holdings
     entity_investments = Investment.where(investee_entity_id: investee_entity_id)

@@ -1,8 +1,10 @@
 class Holding < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :entity
+  belongs_to :investor
 
-  after_create :update_investment
+  # Only update the investment if its coming from an employee of a holding company
+  after_create :update_investment, if: proc { |h| h.holding_type == "Employee" }
   def update_investment
     investment = entity.investments.where(employee_holdings: true).first
     unless investment

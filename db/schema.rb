@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_23_124304) do
+ActiveRecord::Schema.define(version: 2022_02_25_035637) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -269,14 +269,17 @@ ActiveRecord::Schema.define(version: 2022_02_23_124304) do
   end
 
   create_table "holdings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.bigint "entity_id", null: false
     t.integer "quantity", default: 0
     t.decimal "value", precision: 20, default: "0"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "investment_instrument", limit: 100
+    t.bigint "investor_id", null: false
+    t.string "holding_type", limit: 15, null: false
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
+    t.index ["investor_id"], name: "index_holdings_on_investor_id"
     t.index ["user_id"], name: "index_holdings_on_user_id"
   end
 
@@ -529,6 +532,7 @@ ActiveRecord::Schema.define(version: 2022_02_23_124304) do
   add_foreign_key "documents", "folders"
   add_foreign_key "folders", "entities"
   add_foreign_key "holdings", "entities"
+  add_foreign_key "holdings", "investors"
   add_foreign_key "holdings", "users"
   add_foreign_key "interests", "secondary_sales"
   add_foreign_key "interests", "users"

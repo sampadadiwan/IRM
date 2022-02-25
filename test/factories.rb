@@ -36,13 +36,6 @@ FactoryBot.define do
     value {  }
   end
 
-  factory :folder do
-    name { "MyString" }
-    parent_folder_id { 1 }
-    full_path { "MyText" }
-    level { 1 }
-  end
-
   factory :investor_access do
     investor_id { 1 }
     user_id { 1 }
@@ -110,7 +103,7 @@ FactoryBot.define do
   end
 
   factory :investment do
-    investment_type { Investment::INVESTMENT_TYPES[rand(Investment::INVESTMENT_TYPES.length)] }
+    investment_type { "Series A,Series B,Series C".split(",")[rand(3)] }
     investee_entity_id { Entity.startups.sample.id }
     investor { Investor.where(investee_entity_id: investee_entity_id).all.sample }
     investment_instrument { Investment::INSTRUMENT_TYPES[rand(Investment::INSTRUMENT_TYPES.length)] }

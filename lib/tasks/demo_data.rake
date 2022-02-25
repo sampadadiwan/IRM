@@ -122,7 +122,8 @@ namespace :irm do
         investor = Investor.where(investor_entity_id: e.id).first
         InvestorAccess.create!(investor:investor, user: user, email: user.email, approved: false, entity_id: investor.investee_entity_id)
 
-        Holding.create!(user: user, entity: investor.investee_entity, quantity: (1 + rand(10))*100, investment_instrument: "Equity")
+        Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
+            quantity: (1 + rand(10))*100, investment_instrument: "Equity", holding_type: "Employee")
       end
     end
   rescue Exception => e
