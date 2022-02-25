@@ -73,7 +73,7 @@ class Investment < ApplicationRecord
 
   after_save :update_investor_holdings
   def update_investor_holdings
-    if investment_instrument == "Equity" || investment_instrument == "Preferred" 
+    if investment_instrument == "Equity" || investment_instrument == "Preferred"
       holding = Holding.where(investor_id: investor_id, investment_instrument: investment_instrument).first
       if holding
         holding.quantity = quantity
