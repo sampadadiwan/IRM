@@ -6,7 +6,7 @@ class OfferPolicy < ApplicationPolicy
       elsif user.has_cached_role?(:holding)
         scope.where(user_id: user.id)
       elsif user.has_cached_role?(:investor)
-        scope.joins(:investor).where("investors.investor_entity_id": user.entity_id)
+        scope.joins(:investor).where('investors.investor_entity_id': user.entity_id)
       else
         scope.where(entity_id: user.entity_id)
       end
