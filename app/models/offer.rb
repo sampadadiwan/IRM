@@ -1,5 +1,6 @@
 class Offer < ApplicationRecord
   belongs_to :user
+  belongs_to :investor
   belongs_to :entity
   belongs_to :secondary_sale
   counter_culture :secondary_sale, column_name: 'total_offered_quantity', delta_column: 'quantity'

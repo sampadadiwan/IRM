@@ -5,6 +5,8 @@ class OfferPolicy < ApplicationPolicy
         scope.all
       elsif user.has_cached_role?(:holding)
         scope.where(user_id: user.id)
+      elsif user.has_cached_role?(:investor)
+        scope.joins(:investor).where("investors.investor_entity_id": user.entity_id)
       else
         scope.where(entity_id: user.entity_id)
       end
@@ -16,18 +18,18 @@ class OfferPolicy < ApplicationPolicy
   end
 
   def show?
-    if user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
-      true
-    else
-      record.holding.user_id == user.id && record.holding.entity_id == record.entity_id
-    end
+    create?
   end
 
   def create?
     if user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
       true
-    else
+    elsif user.has_cached_role?(:holding)
       record.holding.user_id == user.id && record.holding.entity_id == record.entity_id
+    elsif user.has_cached_role?(:investor)
+      record.holding.investor.investor_entity_id == user.entity_id && record.holding.entity_id == record.entity_id
+    else
+      false
     end
   end
 

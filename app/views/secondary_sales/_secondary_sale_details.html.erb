@@ -16,7 +16,7 @@
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#offerings-tab" data-action="click->tabdetails#loadData">Offers</a>
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#interests-tab" data-action="click->tabdetails#loadData">Interests</a>
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">Access Rights</a>
-    <% elsif current_user.has_cached_role?(:holding) %>
+    <% elsif current_user.has_cached_role?(:holding) || current_user.has_cached_role?(:investor) %>
       <% holdings_active = true %>
       <input hidden=true value="#holdings-tab" id="clickOnLoad" />
       

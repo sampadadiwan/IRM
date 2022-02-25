@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_25_035637) do
+ActiveRecord::Schema.define(version: 2022_02_25_050624) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -332,8 +332,8 @@ ActiveRecord::Schema.define(version: 2022_02_25_035637) do
     t.string "status", limit: 20
     t.string "investment_instrument", limit: 100
     t.integer "quantity", default: 0
-    t.decimal "initial_value", precision: 20, scale: 2, default: 0
-    t.decimal "current_value", precision: 20, scale: 2, default: 0
+    t.decimal "initial_value", precision: 20, scale: 2, default: "0.0"
+    t.decimal "current_value", precision: 20, scale: 2, default: "0.0"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "category", limit: 100
@@ -405,8 +405,11 @@ ActiveRecord::Schema.define(version: 2022_02_25_035637) do
     t.bigint "holding_id", null: false
     t.boolean "approved", default: false
     t.integer "granted_by_user_id"
+    t.bigint "investor_id", null: false
+    t.string "offer_type", limit: 15
     t.index ["entity_id"], name: "index_offers_on_entity_id"
     t.index ["holding_id"], name: "index_offers_on_holding_id"
+    t.index ["investor_id"], name: "index_offers_on_investor_id"
     t.index ["secondary_sale_id"], name: "index_offers_on_secondary_sale_id"
     t.index ["user_id"], name: "index_offers_on_user_id"
   end
