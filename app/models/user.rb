@@ -72,6 +72,7 @@ class User < ApplicationRecord
   def setup_defaults
     add_role :employee
     add_role :investor if (entity && entity.entity_type == "VC") || InvestorAccess.where(user_id: id).first.present?
+    add_role :secondary_buyer if entity && (entity.entity_type == "Wealth Manager")
     add_role :startup if entity && (entity.entity_type == "Startup")
   end
 
@@ -87,7 +88,7 @@ class User < ApplicationRecord
     end
     # Add this role so we can identify which users have holdings
     add_role :holding if entity && (entity.entity_type == "Holding")
-    add_role :secondary_buyer if entity && (entity.entity_type == "Wealth Manager")
+    add_role :secondary_buyer if entity && (entity.entity_type == "VC")
     save
   end
 

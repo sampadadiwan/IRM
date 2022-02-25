@@ -3,7 +3,7 @@ class SecondarySalePolicy < ApplicationPolicy
     def resolve
       if user.has_cached_role?(:super)
         scope.all
-      elsif user.has_cached_role?(:secondary_buyer) || user.has_cached_role?(:investor)
+      elsif user.has_cached_role?(:secondary_buyer)
         scope.where(visible_externally: true)
       else
         scope.where(entity_id: user.entity_id)
@@ -16,17 +16,16 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def show_interest?
-    (record.active? && user.has_cached_role?(:secondary_buyer) && record.visible_externally) ||
-      (record.active? && user.has_cached_role?(:investor) && record.visible_externally)
+    (record.active? && user.has_cached_role?(:secondary_buyer) && record.visible_externally)
   end
 
   def show?
     if user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
       true
     else
-      record.active? &&
-        (user.has_cached_role?(:holding) ||
-        ((user.has_cached_role?(:secondary_buyer) || user.has_cached_role?(:investor)) && record.visible_externally))
+      (record.active? &&
+        user.has_cached_role?(:holding)) ||
+        (user.has_cached_role?(:secondary_buyer) && record.visible_externally)
     end
   end
 
