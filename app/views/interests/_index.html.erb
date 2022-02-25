@@ -4,7 +4,9 @@
         {class: "btn btn-primary" } if params[:secondary_sale_id] %>
 </div>
 
-<table id="interests" class="table table-bordered dataTable">
+<div class="table-responsive" data-controller="datatable">
+
+<table id="interests" class="table table-bordered dataTable jqDataTable">
 
     <thead>
         <tr>
@@ -44,3 +46,5 @@
         <% end %>
     </tbody>
 </table>
+
+</div>

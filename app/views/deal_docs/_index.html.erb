@@ -8,20 +8,24 @@
   
 </div>
 
-<table id="deal_docs" class="table table-bordered dataTable ">
-  <tr>
-    <th>
-      Name
-    </th>
-    <th>
-      Tags
-    </th>
-    <th>
-      Deal
-    </th>
-  </tr>
-  <% deal_docs.each do |deal_doc| %>
-    <%= render deal_doc %>
-  <% end %>
+<table id="deal_docs" class="table table-bordered dataTable jqDataTable">
+  <thead>
+    <tr>
+      <th>
+        Name
+      </th>
+      <th>
+        Tags
+      </th>
+      <th>
+        Deal
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% deal_docs.each do |deal_doc| %>
+      <%= render deal_doc %>
+    <% end %>
+  </tbody>
 </table>
 

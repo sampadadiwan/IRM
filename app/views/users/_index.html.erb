@@ -1,28 +1,30 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Users</h1>
-    <%= link_to "New User", new_user_path(entity_id: current_user.entity_id), {class: "btn btn-primary"}  %>
-  </div>
-  
-  <table id="users" class="table table-bordered table-striped dataTable ">
-  
+  <h1 class="h3 mb-0 text-gray-800">Users</h1>
+  <%= link_to "New User" , new_user_path(entity_id: current_user.entity_id), {class: "btn btn-primary" } %>
+</div>
+
+<table id="users" class="table table-bordered table-striped dataTable jqDataTable">
+  <thead>
     <tr>
       <th>
         First name
       </th>
-  
+
       <th>
         Last name
       </th>
-      
+
       <th>
         Entity
       </th>
-  
+
     </tr>
-  
-  
+  </thead>
+
+  <tbody>
     <% users.each do |user| %>
-      <%= render user %>    
+      <%= render user %>
     <% end %>
-  </table>
+  </tbody>
   
+</table>

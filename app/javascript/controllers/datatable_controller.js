@@ -5,6 +5,7 @@ export default class extends Controller {
 
       let table = $('.jqDataTable').DataTable({
         stateSave: true,
+        retrieve: true,
         language: {
           search: '',
           searchPlaceholder: "Search...",

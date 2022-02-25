@@ -4,7 +4,7 @@ class HoldingsController < ApplicationController
   # GET /holdings or /holdings.json
   def index
     @holdings = policy_scope(Holding)
-    @holdings = @holdings.includes(:user, :entity)
+    @holdings = @holdings.includes(:user, :entity, :investor)
     @secondary_sale = nil
     if params[:secondary_sale_id]
       @secondary_sale = SecondarySale.find(params[:secondary_sale_id])
