@@ -34,8 +34,8 @@ module InvestorRelationshipManagement
     Rails.application.routes.default_url_options[:host] = ENV['HOST']
 
     config.action_mailer.smtp_settings = {
-      address: "email-smtp.us-west-1.amazonaws.com",
-      domain: "InvestorRelationshipManagement.com",
+      address: "email-smtp.ap-south-1.amazonaws.com",
+      domain: "altconnects.com",
       port: 587,
       user_name: ENV["SES_SMTP_USERNAME"],
       password: ENV["SES_SMTP_PASSWORD"],

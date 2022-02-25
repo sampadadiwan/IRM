@@ -170,6 +170,7 @@ namespace :irm do
   task :generateAll => [:generateFakeEntities, :generateFakeInvestments, :generateFakeDeals, 
                         :generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes] do
     puts "Generating all Fake Data"
+    Sidekiq.redis(&:flushdb)
   end
 
 end
