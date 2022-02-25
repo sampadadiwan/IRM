@@ -62,6 +62,6 @@ class InvestorAccess < ApplicationRecord
   end
 
   def send_notification_if_changed
-    send_notification if approved_changed?
+    send_notification if id.present? && approved_changed?
   end
 end
