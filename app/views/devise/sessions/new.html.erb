@@ -1,6 +1,6 @@
 
 <%- flash.each do |name, msg| -%>
-    <%= content_tag :div, msg, :id => "flash_#{name}", class: "text-center" if msg.is_a?(String) %>
+    <%= content_tag :div, msg, :id => "flash_#{name}", class: "text-center alert alert-info" if msg.is_a?(String) %>
 <%- end -%>  
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>

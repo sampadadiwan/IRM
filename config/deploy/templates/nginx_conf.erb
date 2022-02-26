@@ -68,6 +68,11 @@ server {
     # limit_req zone=one;
     access_log <%= shared_path %>/log/nginx.access.log;
     error_log <%= shared_path %>/log/nginx.error.log;
+
+    
+    if ($request_method !~ ^(GET|HEAD|PUT|POST|DELETE|OPTIONS|PATCH)$ ){
+      return 405;
+    }
   }
 
   location ^~ /assets/ {
