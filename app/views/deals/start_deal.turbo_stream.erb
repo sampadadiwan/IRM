@@ -1,2 +1,7 @@
 <%= turbo_stream.replace('deal_show', partial: "deals/show", 
     locals: { deal: @deal }) %>
+
+<%= turbo_stream.replace('alert', partial: "layouts/alerts", 
+    locals: { notice: "Deal was successfully started" }) %>
+
+
