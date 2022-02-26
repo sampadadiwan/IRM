@@ -75,3 +75,65 @@ Given('investor has access right {string} in the investment') do |arg1|
 end
 
 
+
+
+
+Then('a holding should be created for the investor') do
+  @holding = Holding.last
+  @holding.quantity.should == @investment.quantity
+  @holding.investment_instrument.should == @investment.investment_instrument
+  @holding.entity_id.should == @investment.investee_entity_id  
+  @holding.investor_id.should == @investment.investor_id
+  @holding.user_id.should == nil
+  @holding.holding_type.should == "Investor"
+
+end
+
+
+
+Given('there is are {string} employee investors') do |arg|
+  @holdings_investor = @entity.investors.where(is_holdings_entity: true).first
+  @holdings_entity = @holdings_investor.investor_entity
+  (0..arg.to_i).each do
+    user = FactoryBot.create(:user, entity: @holdings_entity)
+    InvestorAccess.create!(investor:@holdings_investor, user: user, email: user.email, 
+        approved: true, entity_id: @holdings_investor.investee_entity_id)
+  end
+end
+
+Given('Given I create a holding for each employee with quantity {string}') do |arg|
+  @holding_quantity = arg.to_i
+  @entity.investor_accesses.each do |emp|
+    visit(investor_url(@holdings_investor))
+    click_on("Employee Investors")
+    find("#investor_access_#{emp.id}").click_link("Add Holding")
+    fill_in('holding_quantity', with: @holding_quantity)
+    select("Equity", from: "holding_investment_instrument")
+
+    click_on("Save")
+    sleep(1)
+  end
+end
+
+Then('There should be a corresponding holdings created for each employee') do
+
+  puts Holding.all.to_json
+    
+  @holdings_entity.employees.each do |emp|
+    emp.holdings.count.should == 1
+    holding = emp.holdings.first
+    holding.quantity.should == @holding_quantity
+    holding.holding_type.should == "Employee"
+    holding.entity_id.should == @entity.id
+    holding.investment_instrument.should == "Equity"
+  end
+end
+
+Then('There should be a corresponding investment created') do
+  @holding_investment = Investment.first
+  @holding_investment.investee_entity_id.should == @entity.id
+  @holding_investment.investor_entity_id.should == @holdings_entity.id
+  @holding_investment.investment_instrument.should == "Equity"
+  @holding_investment.quantity.should == Holding.all.sum(:quantity)
+  @holding_investment.investment_type.should == "Employee Holdings"
+end

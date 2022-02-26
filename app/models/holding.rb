@@ -3,6 +3,11 @@ class Holding < ApplicationRecord
   belongs_to :entity
   belongs_to :investor
 
+  before_save :set_type
+  def set_type
+    self.holding_type = user_id.present? ? "Employee" : "Investor"
+  end
+
   # Only update the investment if its coming from an employee of a holding company
   after_create :update_investment, if: proc { |h| h.holding_type == "Employee" }
   def update_investment

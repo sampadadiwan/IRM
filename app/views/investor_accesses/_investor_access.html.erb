@@ -20,7 +20,7 @@
     <% label = investor_access.approved ?  "UnApprove" : "Approve" %>
     <%= button_to label , approve_investor_access_path(investor_access), method: :patch, class: "btn btn-success" , 
         form_class: "deleteButton" if Pundit.policy(current_user, investor_access).approve? %>
-    <%= link_to "Add Holding" , new_holding_path("holding[user_id]": investor_access.user_id), method: :patch, class: "btn btn-success" , 
+    <%= link_to "Add Holding" , new_holding_path("holding[user_id]": investor_access.user_id, "holding[investor_id]": investor_access.investor_id), method: :patch, class: "btn btn-success" , 
         form_class: "deleteButton" if investor_access.investor.is_holdings_entity && investor_access.user_id %>
   </td>
 </tr>

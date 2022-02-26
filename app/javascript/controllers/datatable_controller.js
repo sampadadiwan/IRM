@@ -11,7 +11,7 @@ export default class extends Controller {
           searchPlaceholder: "Search...",
           paginate: {
             "previous": "Prev"
-          }
+          }          
         }
       });   
       
