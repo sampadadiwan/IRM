@@ -7,7 +7,7 @@
           Name
         </td>
         <td>
-          <%= @import_upload.name %>
+          <%= link_to @import_upload.name, rails_blob_path(@import_upload.import_file, disposition: "attachment")  %>                     
         </td>    
       </tr>
           <tr>
