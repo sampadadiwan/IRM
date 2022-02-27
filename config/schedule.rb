@@ -31,5 +31,5 @@ end
 every :reboot do
   bundle "sidekiq"
   rake "ts:rebuild"
-  bundle "rails s"
+  bundle "puma -C /home/ubuntu/IRM/shared/puma.rb"
 end

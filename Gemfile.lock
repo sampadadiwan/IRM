@@ -10,6 +10,15 @@ GIT
       railties (>= 3.0.0)
 
 GIT
+  remote: https://github.com/seuros/capistrano-sidekiq.git
+  revision: 784b04c973e5c074dc78c30746077c9e6fd2bb9a
+  specs:
+    capistrano-sidekiq (2.0.0)
+      capistrano (>= 3.9.0)
+      capistrano-bundler
+      sidekiq (>= 6.0)
+
+GIT
   remote: https://github.com/thimmaiah/kt-paperclip.git
   revision: 6ccda386ec67d236af20bf3755c7ba6a864e4239
   specs:
@@ -563,6 +572,7 @@ DEPENDENCIES
   capistrano (~> 3.10)
   capistrano-rails (~> 1.6)
   capistrano-rvm
+  capistrano-sidekiq!
   capistrano3-puma
   capybara
   capybara-email
