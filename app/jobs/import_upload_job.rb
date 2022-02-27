@@ -67,17 +67,19 @@ class ImportUploadJob < ApplicationJob
 
     end
 
-    # Create the Holding
-    Holding.create!(user: user, investor: import_upload.owner, holding_type: "Employee",
-                    entity_id: import_upload.owner.investee_entity_id, quantity: user_data["Quantity"],
-                    investment_instrument: user_data["Instrument"])
-
     # create the Investor Access
     unless InvestorAccess.exists?(email: user_data['Email'], investor_id: import_upload.owner_id)
       InvestorAccess.create!(email: user_data["Email"], approved: true,
                              entity_id: import_upload.entity_id, investor_id: import_upload.owner_id,
                              granted_by: import_upload.user_id)
     end
+
+    # Create the Holding
+    holding = Holding.new(user: user, investor: import_upload.owner, holding_type: "Employee",
+      entity_id: import_upload.owner.investee_entity_id, quantity: user_data["Quantity"],
+      investment_instrument: user_data["Instrument"])
+
+    holding.save
   end
 
   def save_investor_access(user_data, import_upload)
