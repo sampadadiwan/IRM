@@ -3,6 +3,9 @@ class ImportUploadJob < ApplicationJob
 
   def perform(import_upload_id)
     import_upload = ImportUpload.find(import_upload_id)
+    import_upload.status = nil
+    import_upload.error_text = nil
+
     processed_record_count = 0
     file = Tempfile.new(["import_#{import_upload.id}", ".xlsx"], binmode: true)
     begin
@@ -11,10 +14,10 @@ class ImportUploadJob < ApplicationJob
       file.close
 
       Rails.logger.debug { "Downloaded file to #{file.path}" }
-      processed_record_count = process_file(file)
+      processed_record_count = process_file(file, import_upload)
     rescue StandardError => e
       import_upload.status ||= "Error"
-      import_upload.error_text = e.message
+      import_upload.error_text = e.backtrace
     ensure
       file.delete
     end
@@ -38,7 +41,10 @@ class ImportUploadJob < ApplicationJob
       case import_upload.import_type
       when "InvestorAccess"
         processed_record_count += save_investor_access(user_data, import_upload) ? 1 : 0
+      when "Holding"
+        processed_record_count += save_holding(user_data, import_upload) ? 1 : 0
       else
+        Rails.logger.error e.backtrace
         err_msg = "Bad import_type #{import_upload.import_type} for import_upload #{import_upload.id}"
         Rails.logger.error err_msg
         raise err_msg
@@ -46,6 +52,32 @@ class ImportUploadJob < ApplicationJob
     end
     # return how many we processed
     processed_record_count
+  end
+
+  def save_holding(user_data, import_upload)
+    Rails.logger.debug { "Processing holdings #{user_data}" }
+    # Create the user if he does not exists
+    user = User.find_by(email: user_data['Email'])
+    unless user
+      password = (0...8).map { rand(65..90).chr }.join
+      user = User.create!(email: user_data["Email"], password: password,
+                          first_name: user_data["First Name"],
+                          last_name: user_data["Last Name"], active: true,
+                          entity_id: import_upload.owner.investor_entity_id)
+
+    end
+
+    # Create the Holding
+    Holding.create!(user: user, investor: import_upload.owner, holding_type: "Employee",
+                    entity_id: import_upload.owner.investee_entity_id, quantity: user_data["Quantity"],
+                    investment_instrument: user_data["Instrument"])
+
+    # create the Investor Access
+    unless InvestorAccess.exists?(email: user_data['Email'], investor_id: import_upload.owner_id)
+      InvestorAccess.create!(email: user_data["Email"], approved: true,
+                             entity_id: import_upload.entity_id, investor_id: import_upload.owner_id,
+                             granted_by: import_upload.user_id)
+    end
   end
 
   def save_investor_access(user_data, import_upload)
