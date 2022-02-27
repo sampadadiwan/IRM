@@ -72,6 +72,7 @@ gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'counter_culture', '~> 2.0'
 gem 'impressionist'
+gem 'roo'
 
 # gem 'acts-as-taggable-on', '~> 9.0'
 

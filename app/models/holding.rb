@@ -10,16 +10,24 @@ class Holding < ApplicationRecord
 
   # Only update the investment if its coming from an employee of a holding company
   after_create :update_investment, if: proc { |h| h.holding_type == "Employee" }
+  after_destroy :reduce_investment, if: proc { |h| h.holding_type == "Employee" }
   def update_investment
-    investment = entity.investments.where(employee_holdings: true).first
+    investment = entity.investments.where(employee_holdings: true, investment_instrument: investment_instrument).first
     unless investment
       employee_investor = Investor.for(user, entity).first
-      investment = Investment.new(investment_type: "Employee Holdings", investment_instrument: "Equity",
+      investment = Investment.new(investment_type: "Employee Holdings", investment_instrument: investment_instrument,
                                   category: "Employee", investee_entity_id: entity.id, investor_id: employee_investor.id,
                                   employee_holdings: true, quantity: 0)
     end
 
     investment.quantity += quantity
+    investment.save
+    investment.update_percentage_holdings
+  end
+
+  def reduce_investment
+    investment = entity.investments.where(employee_holdings: true, investment_instrument: investment_instrument).first
+    investment.quantity -= quantity
     investment.save
     investment.update_percentage_holdings
   end

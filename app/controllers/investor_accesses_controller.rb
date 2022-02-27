@@ -59,6 +59,8 @@ class InvestorAccessesController < ApplicationController
     end
   end
 
+  def upload; end
+
   # POST /investor_accesses or /investor_accesses.json
   def create
     @investor_access = InvestorAccess.new(investor_access_params)

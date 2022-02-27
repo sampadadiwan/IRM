@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     get 'search', on: :collection
     patch 'approve', on: :member
     post 'request_access', on: :collection
+    post 'upload', on: :collection
   end
   resources :access_rights do
     get 'search', on: :collection
