@@ -3,7 +3,7 @@
 
   <%= render "devise/shared/error_messages", resource: resource %>
 
-    <div class="container">
+    <div class="container" >
 
         <!-- Outer Row -->
         <div class="row justify-content-center">
@@ -16,14 +16,14 @@
                         <div class="row">
                             <div class="col-lg-7 d-none d-lg-block bg-password-image"></div>
                             <div class="col-lg-5">
-                                <div class="p-5" data-turbo=false>
+                                <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-2">Welcome To IRM</h1>
                                         <p class="mb-4">We get it, stuff happens. Just enter your email address below
                                             and we'll send you a link to reset your password!</p>
                                     </div>
                                     
-                                    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+                                    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, "data-turbo":false) do |f| %>
                                         <%= render "devise/shared/error_messages", resource: resource %>
 
                                         <div class="form-group">
@@ -32,7 +32,7 @@
                                                 placeholder="Enter Email Address...">
                                         </div>
 
-                                        <%= f.submit "Reset Password", class:"btn btn-primary btn-user btn-block" %>
+                                        <%= f.submit "Reset Password", class:"btn btn-primary btn-user btn-block", "data-turbo":false %>
                                     
                                     <% end %>
 

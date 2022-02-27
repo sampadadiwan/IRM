@@ -62,7 +62,7 @@ class ImportUploadJob < ApplicationJob
       password = (0...8).map { rand(65..90).chr }.join
       user = User.create!(email: user_data["Email"], password: password,
                           first_name: user_data["First Name"],
-                          last_name: user_data["Last Name"], active: true,
+                          last_name: user_data["Last Name"], active: true, system_created: true,
                           entity_id: import_upload.owner.investor_entity_id)
 
     end

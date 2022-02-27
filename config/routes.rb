@@ -82,7 +82,11 @@ Rails.application.routes.draw do
 
   resources :interests
 
-  devise_for :users, controllers: { registrations: "registrations" }
+  devise_for :users, controllers: {
+    registrations: "users/registrations",
+    passwords: "users/passwords",
+    confirmations: 'users/confirmations'
+  }
 
   resources :entities do
     get 'search', on: :collection
