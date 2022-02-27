@@ -3,32 +3,49 @@ class ImportUploadJob < ApplicationJob
 
   def perform(import_upload_id)
     import_upload = ImportUpload.find(import_upload_id)
-
+    processed_record_count = 0
     file = Tempfile.new(["import_#{import_upload.id}", ".xlsx"], binmode: true)
     begin
+      # Download the S3 file to tmp
       file << import_upload.import_file.download
       file.close
 
       Rails.logger.debug { "Downloaded file to #{file.path}" }
-
-      data = Roo::Spreadsheet.open(file.path) # open spreadsheet
-      headers = data.row(1) # get header row
-      data.each_with_index do |row, idx|
-        next if idx.zero? # skip header row
-
-        # create hash from headers and cells
-        user_data = [headers, row].transpose.to_h
-
-        case import_upload.import_type
-        when "InvestorAccess"
-          save_investor_access(user_data, import_upload)
-        else
-          Rails.logger.error "Bad import_type #{import_upload.import_type} for import_upload #{import_upload.id}"
-        end
-      end
+      processed_record_count = process_file(file)
+    rescue StandardError => e
+      import_upload.status ||= "Error"
+      import_upload.error_text = e.message
     ensure
       file.delete
     end
+
+    import_upload.status ||= "Done. Processed #{processed_record_count} records"
+    import_upload.save
+  end
+
+  def process_file(file, import_upload)
+    processed_record_count = 0
+
+    # Parse the XL rows
+    data = Roo::Spreadsheet.open(file.path) # open spreadsheet
+    headers = data.row(1) # get header row
+    data.each_with_index do |row, idx|
+      next if idx.zero? # skip header row
+
+      # create hash from headers and cells
+      user_data = [headers, row].transpose.to_h
+
+      case import_upload.import_type
+      when "InvestorAccess"
+        processed_record_count += save_investor_access(user_data, import_upload) ? 1 : 0
+      else
+        err_msg = "Bad import_type #{import_upload.import_type} for import_upload #{import_upload.id}"
+        Rails.logger.error err_msg
+        raise err_msg
+      end
+    end
+    # return how many we processed
+    processed_record_count
   end
 
   def save_investor_access(user_data, import_upload)
