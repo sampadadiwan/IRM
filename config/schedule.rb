@@ -23,6 +23,7 @@ set :path, "/home/ubuntu/IRM/current"
 job_type :bundle, 'cd :path && :environment_variable=:environment bundle exec :task'
 
 every 1.day, at: '00:01 am' do
+  command "logrotate /home/ubuntu/IRM/shared/log/logrotate.conf --state /home/ubuntu/IRM/shared/log/logrotate.state --verbose"
   rake "ts:rebuild"
   runner "ClearMessagesCountJob.new.perform"
 end
