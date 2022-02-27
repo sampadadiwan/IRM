@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_25_050624) do
+ActiveRecord::Schema.define(version: 2022_02_27_045007) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -255,6 +255,13 @@ ActiveRecord::Schema.define(version: 2022_02_25_050624) do
     t.index ["deleted_at"], name: "index_entities_on_deleted_at"
   end
 
+  create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title"
+    t.text "body", size: :medium
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.integer "parent_folder_id"
@@ -281,6 +288,22 @@ ActiveRecord::Schema.define(version: 2022_02_25_050624) do
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
     t.index ["investor_id"], name: "index_holdings_on_investor_id"
     t.index ["user_id"], name: "index_holdings_on_user_id"
+  end
+
+  create_table "import_uploads", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.bigint "entity_id", null: false
+    t.string "owner_type", null: false
+    t.bigint "owner_id", null: false
+    t.bigint "user_id", null: false
+    t.string "import_type", limit: 50
+    t.string "status", limit: 50
+    t.text "error_text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["entity_id"], name: "index_import_uploads_on_entity_id"
+    t.index ["owner_type", "owner_id"], name: "index_import_uploads_on_owner"
+    t.index ["user_id"], name: "index_import_uploads_on_user_id"
   end
 
   create_table "impressions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -537,6 +560,8 @@ ActiveRecord::Schema.define(version: 2022_02_25_050624) do
   add_foreign_key "holdings", "entities"
   add_foreign_key "holdings", "investors"
   add_foreign_key "holdings", "users"
+  add_foreign_key "import_uploads", "entities"
+  add_foreign_key "import_uploads", "users"
   add_foreign_key "interests", "secondary_sales"
   add_foreign_key "interests", "users"
   add_foreign_key "offers", "entities"

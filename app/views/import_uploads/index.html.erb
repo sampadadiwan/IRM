@@ -1,0 +1,41 @@
+<%= render "/layouts/alerts" %>
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Import Uploads</h1>
+    <%= link_to "New Import Upload" , new_import_upload_path, {class: "btn btn-primary" } %>
+  </div>
+
+  <table id="import_uploads" class="table table-bordered dataTable">
+
+    <thead>
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Owner
+        </th>
+        <th>
+          User
+        </th>
+        <th>
+          Import Type
+        </th>
+        <th>
+          Status
+        </th>
+        <th>
+          Error Text
+        </th>
+
+        <th>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @import_uploads.each do |import_upload| %>
+        <%= render import_upload %>
+      <% end %>
+    </tbody>
+  </table>

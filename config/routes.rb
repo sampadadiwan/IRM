@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :import_uploads
   resources :offers do
     patch 'approve', on: :member
   end

@@ -1,0 +1,34 @@
+<%= form_with(model: import_upload) do |form| %>
+  <% if import_upload.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(import_upload.errors.count, "error") %> prohibited this import_upload from being saved:</h2>
+
+      <ul>
+        <% import_upload.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control"  %>
+    <%= form.text_field :user_id, class: "form-control", hidden: true  %>
+    <%= form.text_field :owner_id, class: "form-control", hidden: true  %>
+    <%= form.text_field :owner_type, class: "form-control", hidden: true  %>
+    <%= form.text_field :entity_id, class: "form-control", hidden: true  %>
+    <%= form.text_field :import_type, class: "form-control", hidden: true  %>
+
+  </div>
+
+  <div class="field" class="form-group" id="document_upload">
+    <%= form.label :import_file, "Import Data" %>
+    <%= form.file_field :import_file, class: "form-control", placeholder: "Upload document" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>

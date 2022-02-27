@@ -1,0 +1,25 @@
+
+
+<tr id="<%= dom_id import_upload %>">
+<td>
+    <%= import_upload.name %>
+</td>  
+<td>
+    <%= import_upload.owner_type %>
+</td>  
+<td>
+    <%= import_upload.user.full_name %>
+</td>  
+<td>
+    <%= import_upload.import_type %>
+</td>  
+<td>
+    <%= import_upload.status %>
+</td>  
+<td>
+    <%= import_upload.error_text %>
+</td>  
+<td>
+  <%= link_to "Show", import_upload , {class: "btn btn-primary"}%>
+</td>
+</tr>

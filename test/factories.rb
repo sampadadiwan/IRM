@@ -1,4 +1,15 @@
 FactoryBot.define do
+  factory :import_upload do
+    name { "MyString" }
+    entity { nil }
+    owner { nil }
+    user { nil }
+    import_type { "MyString" }
+    status { "MyString" }
+    error_text { "MyText" }
+  end
+
+  
   factory :interest do
     offer_entity_id { 1 }
     quantity { 1 }
