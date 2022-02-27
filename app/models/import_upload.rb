@@ -8,4 +8,9 @@ class ImportUpload < ApplicationRecord
             attached: true,
             content_type: ['application/xls', 'application/xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
             size: { less_than: 2.megabytes, message: 'must be less than 2MB in size' }
+
+  after_create :run_import_job
+  def run_import_job
+    ImportUploadJob.perform_later(id)
+  end
 end
