@@ -23,8 +23,10 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def offer?
-    (user.id == record.user_id && user.has_cached_role?(:holding)) ||
+    (
+      (user.id == record.user_id && user.has_cached_role?(:holding)) ||
       (user.entity_id == record.investor.investor_entity_id && user.has_cached_role?(:investor))
+    )
   end
 
   def create?

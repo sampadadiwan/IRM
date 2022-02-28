@@ -15,6 +15,10 @@ class SecondarySalePolicy < ApplicationPolicy
     true
   end
 
+  def offer?
+    AccessRight.for_secondary_sale(record).joins(:investor).where("access_rights.access_to_investor_id = investors.id and investors.investor_entity_id=?", user.entity_id).present?
+  end
+
   def show_interest?
     (record.active? && user.has_cached_role?(:secondary_buyer) && record.visible_externally)
   end
