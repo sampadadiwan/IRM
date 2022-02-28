@@ -6,6 +6,12 @@ class SecondarySale < ApplicationRecord
   has_many :offers, dependent: :destroy
   has_many :interests, dependent: :destroy
 
+  scope :for, lambda { |user|
+                where("access_rights.access_type='SecondarySale'")
+                  .where("access_rights.access_to_investor_id = investors.id and investors.investor_entity_id=?", user.entity_id)
+                  .joins(access_rights: :investor)
+              }
+
   def self.for_investor(user, entity)
     SecondarySale
       # Ensure the access rghts for Document

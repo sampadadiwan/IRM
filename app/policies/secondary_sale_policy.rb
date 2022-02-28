@@ -3,6 +3,8 @@ class SecondarySalePolicy < ApplicationPolicy
     def resolve
       if user.has_cached_role?(:super)
         scope.all
+      elsif user.has_cached_role?(:holding) || user.has_cached_role?(:investor)
+        scope.for(user)
       elsif user.has_cached_role?(:secondary_buyer)
         scope.where(visible_externally: true)
       else
@@ -16,7 +18,7 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def offer?
-    AccessRight.for_secondary_sale(record).joins(:investor).where("access_rights.access_to_investor_id = investors.id and investors.investor_entity_id=?", user.entity_id).present?
+    SecondarySale.for(user).present?
   end
 
   def show_interest?
@@ -27,9 +29,9 @@ class SecondarySalePolicy < ApplicationPolicy
     if user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
       true
     else
-      (record.active? &&
-        user.has_cached_role?(:holding)) ||
-        (user.has_cached_role?(:secondary_buyer) && record.visible_externally)
+      record.active? &&
+        (SecondarySale.for(user).present? ||
+        (user.has_cached_role?(:secondary_buyer) && record.visible_externally))
     end
   end
 
