@@ -1,0 +1,17 @@
+<tr id="<%= dom_id nudge %>">
+  <td>
+    <%= nudge.to %>
+  </td>
+  <td>
+    <%= nudge.subject %>
+  </td>
+  <td>
+    <%= nudge.msg_body %>
+  </td>
+  <td>
+    <%= nudge.user.full_name %>
+  </td>
+  <td>
+    <%= link_to "Show" , nudge , {class: "btn btn-primary" }%>
+  </td>
+</tr>

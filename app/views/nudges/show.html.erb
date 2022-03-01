@@ -1,0 +1,62 @@
+<%= render "/layouts/alerts" %>
+
+  <table class="table table-bordered dataTable">
+
+    <tr>
+      <td>
+        To
+      </td>
+      <td>
+        <%= @nudge.to %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Subject
+      </td>
+      <td>
+        <%= @nudge.subject %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Msg Body
+      </td>
+      <td>
+        <%= @nudge.msg_body %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        User
+      </td>
+      <td>
+        <%= @nudge.user.full_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Entity
+      </td>
+      <td>
+        <%= @nudge.entity.name %>
+      </td>
+    </tr>
+    <% if @nudge.item %>
+    <tr>
+      <td>
+        Item
+      </td>
+      <td>
+        <%= @nudge.item_id %>
+      </td>
+    </tr>
+    <% end %>
+
+  </table>
+
+
+  <div>
+    <%= link_to "Edit" , edit_nudge_path(@nudge), {class: "btn btn-primary" } %> |
+    <%= button_to "Delete" , @nudge, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" %>
+  </div>

@@ -1,4 +1,13 @@
 FactoryBot.define do
+  factory :nudge do
+    to { "MyText" }
+    subject { "MyText" }
+    msg_body { "MyText" }
+    user { nil }
+    entity { nil }
+    item { nil }
+  end
+
   factory :import_upload do
     name { "MyString" }
     entity { nil }

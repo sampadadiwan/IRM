@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_01_062759) do
+ActiveRecord::Schema.define(version: 2022_03_01_081147) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -423,6 +423,21 @@ ActiveRecord::Schema.define(version: 2022_03_01_062759) do
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
+  create_table "nudges", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "to"
+    t.text "subject"
+    t.text "msg_body"
+    t.bigint "user_id", null: false
+    t.bigint "entity_id", null: false
+    t.string "item_type"
+    t.bigint "item_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["entity_id"], name: "index_nudges_on_entity_id"
+    t.index ["item_type", "item_id"], name: "index_nudges_on_item"
+    t.index ["user_id"], name: "index_nudges_on_user_id"
+  end
+
   create_table "offers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "entity_id", null: false
@@ -577,6 +592,8 @@ ActiveRecord::Schema.define(version: 2022_03_01_062759) do
   add_foreign_key "import_uploads", "users"
   add_foreign_key "interests", "secondary_sales"
   add_foreign_key "interests", "users"
+  add_foreign_key "nudges", "entities"
+  add_foreign_key "nudges", "users"
   add_foreign_key "offers", "entities"
   add_foreign_key "offers", "holdings"
   add_foreign_key "offers", "secondary_sales"
