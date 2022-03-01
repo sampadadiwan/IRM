@@ -1,6 +1,6 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-  <h1 class="h3 mb-0 text-gray-800">Cap Table</h1>
+  <h1 class="h3 mb-0 text-gray-800"><%= title %></h1>
   <span>
   <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id), 
       {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
@@ -14,15 +14,13 @@
 
   <table id="investments" class="table table-bordered dataTable jqDataTable">
 
-    <%= render "investments/index_header" %>
+    <%= render "investments/index_header", title: title %>
     <tbody>
       <% investments.each do |investment| %>
-        <%= render investment %>
+        <%= render investment, title: title %>
       <% end %>
     </tbody>
 
   </table>
 
 </div>
-
-<div data-controller="datatable"></div>

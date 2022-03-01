@@ -19,13 +19,26 @@
         <%= investment.quantity %>
         
     </td>  
+
+    <% if title == "Equity" %>
     <td>
         <% if investment.percentage_holding %>
             <%= investment.percentage_holding %>% 
         <% end %>
     </td>
     <td>
-        <%= number_to_currency(investment.initial_value, units: "INR")  %>
+        <% if investment.percentage_holding %>
+            <%= investment.diluted_percentage %>% 
+        <% end %>
+    </td>
+
+    <% end %>
+    
+    <td>
+        <%= number_to_currency(investment.price, units: "INR")  %>
+    </td>
+    <td>
+        <%= number_to_currency(investment.amount, units: "INR")  %>
     </td>  
     
 <% end  %>

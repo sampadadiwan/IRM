@@ -93,6 +93,7 @@ namespace :irm do
   desc "generates fake Investments for testing"
   task generateFakeInvestments: :environment do
     Entity.startups.each do |e|
+      i = nil
       Entity.vcs.each do |vc|
         inv = FactoryBot.create(:investor, investee_entity: e, investor_entity: vc)
         puts "Investor #{inv.id}"
@@ -101,6 +102,7 @@ namespace :irm do
         puts "Investment #{i.id}"
       end
 
+      i&.update_percentage_holdings
     
       5.times do
         inv = e.investors.sample

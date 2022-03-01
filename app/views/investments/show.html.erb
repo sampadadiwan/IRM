@@ -51,20 +51,39 @@
          <%= @investment.quantity %>
       </td>
    </tr>
+
+   <% if @investment.investment_instrument != "Debt" %>
    <tr>
       <td>
-         Initial Value
+         Percentage Holding
       </td>
       <td>
-         <%= @investment.initial_value %>
+         <%= @investment.percentage_holding %> %
       </td>
    </tr>
    <tr>
       <td>
-         Current Value
+         Fully Diluted
       </td>
       <td>
-         <%= @investment.current_value %>
+         <%= @investment.diluted_percentage %> %
+      </td>
+   </tr>
+   <% end %>
+   <tr>
+      <td>
+         Price
+      </td>
+      <td>
+         <%= number_to_currency @investment.price %>
+      </td>
+   </tr>
+   <tr>
+      <td>
+         Amount
+      </td>
+      <td>
+         <%= number_to_currency  @investment.amount %>
       </td>
    </tr>
    <% end %>

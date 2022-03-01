@@ -22,7 +22,6 @@
 class Investment < ApplicationRecord
   include Trackable
 
-  encrypts :investment_instrument, deterministic: true
   encrypts :investment_type, :category
 
   # Make all models searchable
@@ -48,6 +47,9 @@ class Investment < ApplicationRecord
   scope :shareholders, -> { where(investor_type: "Shareholder") }
   scope :debt, -> { where(investment_instrument: "Debt") }
   scope :not_debt, -> { where("investment_instrument <> 'Debt'") }
+  scope :equity, -> { where(investment_instrument: "Equity") }
+  scope :options_or_esop, -> { where(investment_instrument: %w[ESOP Option]) }
+  scope :debt, -> { where(investment_instrument: "Debt") }
 
   # These functions override the defaults based on entities customization
   def self.INVESTMENT_TYPES(entity = nil)
@@ -89,14 +91,21 @@ class Investment < ApplicationRecord
 
   # after_save :update_percentage_holdings
   def update_percentage_holdings
-    entity_investments = Investment.where(investee_entity_id: investee_entity_id)
-    total_quantity = entity_investments.reject { |i| i.investment_instrument == "Debt" }.inject(0) { |result, i| result + i.quantity }
+    equity_investments = Investment.where(investee_entity_id: investee_entity_id).equity
+    esop_investments = Investment.where(investee_entity_id: investee_entity_id).options_or_esop
+    equity_quantity = equity_investments.sum(:quantity)
+    esop_quantity = esop_investments.sum(:quantity)
 
-    entity_investments.each do |inv|
-      if inv.investment_instrument != "Debt"
-        inv.percentage_holding = (inv.quantity * 100.0) / total_quantity
-        inv.save
-      end
+    equity_investments.each do |inv|
+      inv.percentage_holding = (inv.quantity * 100.0) / equity_quantity
+      inv.diluted_percentage = (inv.quantity * 100.0) / (equity_quantity + esop_quantity)
+      inv.save
+    end
+
+    esop_investments.each do |inv|
+      inv.percentage_holding = 0
+      inv.diluted_percentage = (inv.quantity * 100.0) / (equity_quantity + esop_quantity)
+      inv.save
     end
   end
 

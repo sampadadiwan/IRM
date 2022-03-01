@@ -63,9 +63,15 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :initial_value, "Value in Crores" %>
-    <%= form.text_field :initial_value, class: "form-control"  %>
+    <%= form.label :price %>
+    <%= form.text_field :price, class: "form-control"  %>
   </div>
+
+  <div class="form-group">
+    <%= form.label :amount %>
+    <%= form.text_field :amount, class: "form-control"  %>
+  </div>
+
 
   <div class="form-group">
     <%= form.submit "Save", {class: "btn btn-primary"}%>

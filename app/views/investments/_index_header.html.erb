@@ -14,15 +14,23 @@
         <% if !params[:prospective] %>
             <th>
                 Instrument
-            </th>
+            </th>            
             <th>
                 Quantity
             </th>
+            <% if title == "Equity" %>
             <th>
                 Percentage Equity
             </th>
             <th>
-                Initial Value
+                Fully Diluted
+            </th>
+            <% end %>
+            <th>
+                Price
+            </th>
+            <th>
+                Amount
             </th>
         <% end %>
         
