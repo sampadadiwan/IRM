@@ -86,6 +86,7 @@ class DealInvestorsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def deal_investor_params
-    params.require(:deal_investor).permit(:deal_id, :investor_id, :status, :primary_amount, :secondary_investment, :entity_id)
+    params.require(:deal_investor).permit(:deal_id, :investor_id, :status, :primary_amount,
+                                          :secondary_investment, :entity_id, :investor_advisor, :company_advisor, :pre_money_valuation)
   end
 end

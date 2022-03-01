@@ -1,51 +1,75 @@
 <table class="table table-bordered dataTable ">
 
-          <tr>
-        <td>
-          Deal
-        </td>
-        <td>
-          <%= deal_investor.deal_name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Investor
-        </td>
-        <td>
-          <%= deal_investor.investor_name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Status
-        </td>
-        <td>
-          <%= deal_investor.status %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Primary Amount
-        </td>
-        <td>
-          <%= number_to_currency deal_investor.primary_amount %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Secondary Investment
-        </td>
-        <td>
-          <%= number_to_currency deal_investor.secondary_investment %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Entity
-        </td>
-        <td>
-          <%= deal_investor.entity_name %>
-        </td>    
-      </tr>  
+  <tr>
+    <td>
+      Deal
+    </td>
+    <td>
+      <%= deal_investor.deal_name %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Investor
+    </td>
+    <td>
+      <%= deal_investor.investor_name %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Status
+    </td>
+    <td>
+      <%= deal_investor.status %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Pre Money Valuation
+    </td>
+    <td>
+      <%= number_to_currency deal_investor.pre_money_valuation %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Primary Amount
+    </td>
+    <td>
+      <%= number_to_currency deal_investor.primary_amount %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Secondary Investment
+    </td>
+    <td>
+      <%= number_to_currency deal_investor.secondary_investment %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Company Advisor
+    </td>
+    <td>
+      <%=  deal_investor.company_advisor %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Investor Advisor
+    </td>
+    <td>
+      <%= deal_investor.investor_advisor %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Entity
+    </td>
+    <td>
+      <%= deal_investor.entity_name %>
+    </td>
+  </tr>
 </table>

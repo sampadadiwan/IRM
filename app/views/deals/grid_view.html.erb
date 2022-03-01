@@ -17,11 +17,15 @@
     <table id="deal_grid_view" class="table table-bordered dataTable" >
         <tr>
             <th>Investor</th>
+            <th>Pre Money Valuation`</th>
             <th>Primary</th>
             <th>Secondary</th>
             <% DealActivity.templates(@deal).each do |deal_activity| %>
                 <th> <small class="text-muted"><%= deal_activity.title %></small> </th>
             <% end %>
+            <th><small class="text-muted">Company Advisor</small></th>
+            <th><small class="text-muted">Investor Advisor</small></th>
+            
         </tr>
         <% @deal_investors.includes(:investor, :deal_activities).each do |deal_investor| %>
             <%= render "deals/grid_view_row", deal_investor: deal_investor %>

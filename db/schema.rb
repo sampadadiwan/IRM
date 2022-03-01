@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_27_154406) do
+ActiveRecord::Schema.define(version: 2022_03_01_052817) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -171,6 +171,9 @@ ActiveRecord::Schema.define(version: 2022_02_27_154406) do
     t.integer "unread_messages_investee", default: 0
     t.integer "todays_messages_investor", default: 0
     t.integer "todays_messages_investee", default: 0
+    t.decimal "pre_money_valuation", precision: 20, scale: 2, default: "0.0"
+    t.string "company_advisor", limit: 100
+    t.string "investor_advisor", limit: 100
     t.index ["deal_id"], name: "index_deal_investors_on_deal_id"
     t.index ["deleted_at"], name: "index_deal_investors_on_deleted_at"
     t.index ["entity_id"], name: "index_deal_investors_on_entity_id"

@@ -19,10 +19,19 @@
         </div>
     </td>
     <td>
+        <%= number_to_currency deal_investor.pre_money_valuation %>
+    </td>
+    <td>
         <%= number_to_currency deal_investor.primary_amount %>
     </td>
     <td>
         <%= number_to_currency deal_investor.secondary_investment %>
+    </td>
+    <td>
+        <%= deal_investor.company_advisor %>
+    </td>
+    <td>
+        <%= deal_investor.investor_advisor %>
     </td>
     <td class="">
         <% if current_user.entity_id == deal_investor.investor_entity_id %>

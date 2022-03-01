@@ -40,9 +40,25 @@
   </div>
 
   <div class="form-group">
+    <%= form.label :pre_money_valuation %>
+    <%= form.text_field :pre_money_valuation, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
     <%= form.label :secondary_investment %>
     <%= form.text_field :secondary_investment, class: "form-control"  %>
   </div>
+
+  <div class="form-group">
+    <%= form.label :company_advisor %>
+    <%= form.text_field :company_advisor, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :investor_advisor %>
+    <%= form.text_field :investor_advisor, class: "form-control"  %>
+  </div>
+
 
   <div class="form-group">
     <%= form.submit "Save", {class: "btn btn-primary"}%>

@@ -17,6 +17,9 @@
         </div>
     </td>
     <td>
+        <%= number_to_currency deal_investor.pre_money_valuation %>
+    </td>
+    <td>
         <%= number_to_currency deal_investor.primary_amount %>
     </td>
     <td>
@@ -40,4 +43,10 @@
             </div>
         </td>
     <% end %>
+    <td>
+        <%= deal_investor.company_advisor %>
+    </td>
+    <td>
+        <%= deal_investor.investor_advisor %>
+    </td>
 </tr>
