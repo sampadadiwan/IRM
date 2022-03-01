@@ -48,7 +48,7 @@ class Investment < ApplicationRecord
   scope :debt, -> { where(investment_instrument: "Debt") }
   scope :not_debt, -> { where("investment_instrument <> 'Debt'") }
   scope :equity, -> { where(investment_instrument: "Equity") }
-  scope :equity_or_pref, -> { where(investment_instrument: ["Equity", "Preferred"]) }
+  scope :equity_or_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
   scope :options_or_esop, -> { where(investment_instrument: %w[ESOP Option]) }
   scope :debt, -> { where(investment_instrument: "Debt") }
 
@@ -69,9 +69,14 @@ class Investment < ApplicationRecord
     investor.investor_name
   end
 
+  before_save :update_amount
   before_create :update_employee_holdings
   def update_employee_holdings
     self.employee_holdings = true if investment_type == "Employee Holdings"
+  end
+
+  def update_amount
+    self.amount = quantity * price
   end
 
   after_save :update_investor_holdings

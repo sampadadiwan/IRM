@@ -132,7 +132,6 @@ FactoryBot.define do
     investment_instrument { Investment::INSTRUMENT_TYPES[rand(Investment::INSTRUMENT_TYPES.length)] }
     category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
     quantity { (rand(10) * 100) + (rand(10) * 10) }
-    amount { quantity * rand(100) + rand(100) * 10 }
     price { quantity * rand(10) * 10 }
     current_value {}
   end
