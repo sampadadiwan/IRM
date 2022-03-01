@@ -19,7 +19,8 @@
 
     <div id="activities-tab" class="tab-pane fade">
       <div id="deal_activities" class="associated_entity">
-        <%= render "/deal_activities/index", deal_investor:deal_investor, deal_activities: deal_investor.deal_activities.includes(:deal) %>
+        <%= render "/deal_activities/index", deal_investor:deal_investor, 
+                    template: false, deal_activities: deal_investor.deal_activities.includes(:deal) %>
       </div>
     </div>
   

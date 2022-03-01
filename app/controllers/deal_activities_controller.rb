@@ -34,7 +34,8 @@ class DealActivitiesController < ApplicationController
 
   # GET /deal_activities/new
   def new
-    @deal_activity = DealActivity.new(deal_id: params[:deal_id], deal_investor_id: params[:deal_investor_id])
+    @deal_activity = DealActivity.new(deal_activity_params)
+    @deal_activity.entity_id = current_user.entity_id
     authorize @deal_activity
   end
 
@@ -126,8 +127,13 @@ class DealActivitiesController < ApplicationController
     authorize @deal_activity
     @deal_activity.destroy
 
+    redirect_path = if @deal_activity.deal_investor_id.blank?
+                      deal_activities_path(deal_id: @deal_activity.deal_id, template: true)
+                    else
+                      deal_activities_path(deal_id: @deal_activity.deal_id, deal_investor_id: @deal_activity.deal_investor_id)
+                    end
     respond_to do |format|
-      format.html { redirect_to deal_activities_url, notice: "Deal activity was successfully destroyed." }
+      format.html { redirect_to redirect_path, notice: "Deal activity was successfully destroyed." }
       format.json { head :no_content }
     end
   end

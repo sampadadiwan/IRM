@@ -1,4 +1,4 @@
 <%= render "/layouts/alerts" %>
 
-<%= render "/deal_activities/index", deal_activities: @deal_activities %>
+<%= render "/deal_activities/index", deal_activities: @deal_activities, template: false %>
 <%= paginate @deal_activities %>

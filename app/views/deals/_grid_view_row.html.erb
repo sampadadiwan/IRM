@@ -25,24 +25,33 @@
     <td>
         <%= number_to_currency deal_investor.secondary_investment %>
     </td>
-    <% deal_investor.deal_activities.each do |activity| %>
-        <td>
-            
-            <div class="dropdown" data-toggle="tooltip" data-placement="right" title="By: <%= l activity.by_date %>">
-                <span class="btn btn-sm dropdown-toggle <%=activity_color(activity)%>" 
-                      id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <%= activity.summary %>
-                </span>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <%= button_to "Toogle Done", toggle_completed_deal_activity_path(activity), class: "dropdown-item" %>
-                    <%= link_to "Show", deal_activity_path(activity), class: "dropdown-item" %>
-                    <%= link_to "Edit", edit_deal_activity_path(activity, 
-                                    back_to: deal_path(id: deal_investor.deal_id, grid_view: true)), 
-                                    class: "dropdown-item" %>
+    <% if deal_investor.deal_activities.present? %>
+        <% deal_investor.deal_activities.each do |activity| %>
+            <td>
+                
+                <div class="dropdown" data-toggle="tooltip" data-placement="right" title="By: <%= l activity.by_date %>">
+                    <span class="btn btn-sm dropdown-toggle <%=activity_color(activity)%>" 
+                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <%= activity.summary %>
+                    </span>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <%= button_to "Toogle Done", toggle_completed_deal_activity_path(activity), class: "dropdown-item" %>
+                        <%= link_to "Show", deal_activity_path(activity), class: "dropdown-item" %>
+                        <%= link_to "Edit", edit_deal_activity_path(activity, 
+                                        back_to: deal_path(id: deal_investor.deal_id, grid_view: true)), 
+                                        class: "dropdown-item" %>
+                    </div>
                 </div>
-            </div>
-        </td>
+            </td>
+        <% end %>
+    <% else %>
+        <% DealActivity.templates(deal_investor.deal).each do |activity| %>
+            <td></td>
+        <% end %>
+
     <% end %>
+
+
     <td>
         <%= deal_investor.company_advisor %>
     </td>

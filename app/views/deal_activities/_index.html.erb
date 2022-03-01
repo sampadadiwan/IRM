@@ -1,9 +1,11 @@
 <%= turbo_frame_tag "deal_activities_frame", target: "_top" do %>
 
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <% if params[:template].present? %>
+    <% if params[:template].present? || template %>
       <h1 class="h3 mb-0 text-gray-800">Activity Templates</h1>
-      <%= link_to "New Activity Template", new_deal_activity_path(deal_id: params[:deal_id], deal_investor_id: params[:deal_investor_id]), {class: "btn btn-primary"}  if params[:deal_id] %>
+      <%= link_to "New Activity Template", new_deal_activity_path("deal_activity[deal_id]": params[:deal_id], 
+                      back_to: params[:back_to]), {class: "btn btn-primary"} if params[:deal_id] %>
+
     <% else %>
       <h1 class="h3 mb-0 text-gray-800">Deal Activities</h1>
     <% end %>
