@@ -5,4 +5,9 @@ class Nudge < ApplicationRecord
   has_many :access_rights, as: :owner, dependent: :destroy
 
   has_rich_text :msg_body
+
+  after_create :send_nudge
+  def send_nudge
+    NudgeMailer.with(id: id).send_nudge.deliver_later
+  end
 end
