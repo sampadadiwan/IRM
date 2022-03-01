@@ -21,10 +21,10 @@
             <th>Primary</th>
             <th>Secondary</th>
             <% DealActivity.templates(@deal).each do |deal_activity| %>
-                <th> <small class="text-muted"><%= deal_activity.title %></small> </th>
+                <th> <%= deal_activity.title %> </th>
             <% end %>
-            <th><small class="text-muted">Company Advisor</small></th>
-            <th><small class="text-muted">Investor Advisor</small></th>
+            <th>Company Advisor</th>
+            <th>Investor Advisor</th>
             
         </tr>
         <% @deal_investors.includes(:investor, :deal_activities).each do |deal_investor| %>
