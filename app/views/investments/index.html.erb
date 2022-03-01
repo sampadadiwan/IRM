@@ -1,5 +1,5 @@
 <%= render "/layouts/alerts" %>
-<div data-controller="datatable">
+<div data-controller="investments">
     <%= render "investments/index", investments: @investments.not_debt, entity: @entity, title: "Equity" %>
     <div class="divider"></div>
     <%= render "investments/index", investments: @investments.debt, entity: @entity, title: "Debt" %>

@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   connect() {
 
-      let table = $('.jqDataTable').DataTable({
+      let options = {
         stateSave: true,
         retrieve: true,
         language: {
@@ -13,10 +13,15 @@ export default class extends Controller {
             "previous": "Prev"
           }          
         }
-      });   
+      };   
+
+      let t1 = $("#investments-Equity").DataTable(options);
+      let t2 = $("#investments-Debt").DataTable(options);
+      
       // Ensure DataTable is destroyed, else it gets duplicated
       $(document).on('turbo:before-cache', function() {     
-        table.destroy();
+        t2.destroy();
+        t1.destroy();
       });
       
   }
