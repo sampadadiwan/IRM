@@ -48,6 +48,7 @@ class Investment < ApplicationRecord
   scope :debt, -> { where(investment_instrument: "Debt") }
   scope :not_debt, -> { where("investment_instrument <> 'Debt'") }
   scope :equity, -> { where(investment_instrument: "Equity") }
+  scope :equity_or_pref, -> { where(investment_instrument: ["Equity", "Preferred"]) }
   scope :options_or_esop, -> { where(investment_instrument: %w[ESOP Option]) }
   scope :debt, -> { where(investment_instrument: "Debt") }
 
@@ -91,7 +92,7 @@ class Investment < ApplicationRecord
 
   # after_save :update_percentage_holdings
   def update_percentage_holdings
-    equity_investments = Investment.where(investee_entity_id: investee_entity_id).equity
+    equity_investments = Investment.where(investee_entity_id: investee_entity_id).equity_or_pref
     esop_investments = Investment.where(investee_entity_id: investee_entity_id).options_or_esop
     equity_quantity = equity_investments.sum(:quantity)
     esop_quantity = esop_investments.sum(:quantity)
