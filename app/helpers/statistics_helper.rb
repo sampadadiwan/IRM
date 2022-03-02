@@ -1,11 +1,11 @@
 module StatisticsHelper
   def investment_by_investment_type(entity)
-    bar_chart Investment.where(investee_entity_id: entity.id).group(:investment_type).sum(:initial_value),
+    bar_chart Investment.where(investee_entity_id: entity.id).group(:investment_type).sum(:amount),
               prefix: '₹'
   end
 
   def investment_by_intrument(entity)
-    bar_chart Investment.where(investee_entity_id: entity.id).group(:investment_instrument).sum(:initial_value),
+    bar_chart Investment.where(investee_entity_id: entity.id).group(:investment_instrument).sum(:amount),
               #   xtitle: "Investment Amount",
               #   ytitle: "Type",
               prefix: '₹'
@@ -18,7 +18,7 @@ module StatisticsHelper
     # We cant use the DB, as values are encrypted
     pie_chart Investment.where(investee_entity_id: entity.id)
                         .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
-                        .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.initial_value }] },
+                        .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.amount }] },
               #   xtitle: "Investment Amount",
               #   ytitle: "Type",
               donut: true,
@@ -30,8 +30,7 @@ module StatisticsHelper
                       .group("category").count,
               #   xtitle: "Investment Amount",
               #   ytitle: "Type",
-              donut: true,
-              prefix: '₹'
+              donut: true  
   end
 
   def notes_by_month(entity)
