@@ -15,6 +15,8 @@
     <%= form.label :to %>
     <%= form.text_field :to, class: "form-control"  %>
     <%= form.text_field :back_to, class: "form-control", hidden: true, name: "back_to", value: params[:back_to]  %>
+    <%= form.text_field :item_id, class: "form-control", hidden: true  %>
+    <%= form.text_field :item_type, class: "form-control", hidden: true  %>
   </div>
 
   <div class="form-group">

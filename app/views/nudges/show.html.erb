@@ -64,7 +64,7 @@
         Item
       </td>
       <td>
-        <%= @nudge.item_id %>
+        <%= link_to "Linked #{@nudge.item_type}", @nudge.item  %>
       </td>
     </tr>
     <% end %>

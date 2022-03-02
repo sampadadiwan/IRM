@@ -1,4 +1,5 @@
 <%= render "/layouts/alerts" %>
 
-<%= render "/deal_investors/index", deal_investors: @deal_investors %>
-
+<div data-controller="datatable">
+    <%= render "/deal_investors/index", deal_investors: @deal_investors %>
+</div>
