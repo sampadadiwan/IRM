@@ -101,6 +101,7 @@
       </td>
     </tr>
 
+    <% if Pundit.policy(current_user, @secondary_sale).see_private_docs?  %>
     <tr>
       <td>
         Private Files: Viewable only by shortlisted buyers
@@ -118,7 +119,7 @@
         </ul>
       </td>
     </tr>
-
+    <% end %>
 
 
   </table>

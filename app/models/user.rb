@@ -28,6 +28,7 @@ class User < ApplicationRecord
   has_many :activities, as: :trackable, class_name: 'PublicActivity::Activity', dependent: :destroy
   has_many :holdings, dependent: :destroy
   has_many :offers, dependent: :destroy
+  has_many :interests, dependent: :destroy
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])

@@ -11,4 +11,6 @@ class Interest < ApplicationRecord
   delegate :total_offered_quantity, to: :secondary_sale
   delegate :min_price, to: :secondary_sale
   delegate :max_price, to: :secondary_sale
+
+  scope :short_listed, -> { where(short_listed: true) }
 end

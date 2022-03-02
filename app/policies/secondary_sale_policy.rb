@@ -25,6 +25,10 @@ class SecondarySalePolicy < ApplicationPolicy
     (record.active? && user.has_cached_role?(:secondary_buyer) && record.visible_externally)
   end
 
+  def see_private_docs?
+    user.entity_id == record.entity_id || user.interests.short_listed.where(secondary_sale_id: record.id).present?
+  end
+
   def show?
     if user.has_cached_role?(:super) || (user.entity_id == record.entity_id && user.entity.enable_secondary_sale)
       true

@@ -22,6 +22,10 @@ class InterestPolicy < ApplicationPolicy
     (user.entity_id == record.offer_entity_id)
   end
 
+  def unscramble?
+    (record.escrow_deposited? && user.entity_id == record.offer_entity_id) || user.entity_id == record.interest_entity_id
+  end
+
   def create?
     update?
   end
