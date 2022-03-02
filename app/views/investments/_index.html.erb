@@ -2,12 +2,18 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
   <h1 class="h3 mb-0 text-gray-800"><%= title %></h1>
   <span>
-  <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id,
+  
+  <% if title == "Equity" %>
+    <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id,
                                                     "investment[investment_instrument]": title), 
       {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
-  <%= link_to investments_path(format: :xlsx), {class: "btn btn-success"} do %>
-    <i class="fa-lg fa-regular fa-file-excel"></i> Download
+
+  
+    <%= link_to investments_path(format: :xlsx), {class: "btn btn-success"} do %>
+      <i class="fa-lg fa-regular fa-file-excel"></i> Download
+    <% end %>
   <% end %>
+  
   </span>
 </div>
 
