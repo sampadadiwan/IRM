@@ -22,7 +22,12 @@ class EntityDashboard < Administrate::BaseDashboard
     created_by: Field::Number,
     investor_categories: Field::String,
     investment_types: Field::String,
-    instrument_types: Field::String
+    instrument_types: Field::String,
+    enable_documents: Field::Boolean,
+    enable_deals: Field::Boolean,
+    enable_investments: Field::Boolean,
+    enable_holdings: Field::Boolean,
+    enable_secondary_sale: Field::Boolean
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -53,6 +58,11 @@ class EntityDashboard < Administrate::BaseDashboard
     investor_categories
     investment_types
     instrument_types
+    enable_documents
+    enable_deals
+    enable_investments
+    enable_holdings
+    enable_secondary_sale
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -67,6 +77,11 @@ class EntityDashboard < Administrate::BaseDashboard
     investor_categories
     investment_types
     instrument_types
+    enable_documents
+    enable_deals
+    enable_investments
+    enable_holdings
+    enable_secondary_sale
   ].freeze
 
   # COLLECTION_FILTERS

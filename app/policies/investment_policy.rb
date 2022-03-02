@@ -10,20 +10,21 @@ class InvestmentPolicy < ApplicationPolicy
   end
 
   def index?
-    true
+    user.entity.enable_investments
   end
 
   def show?
-    if user.has_cached_role?(:super) || user.entity_id == record.investee_entity_id
+    if user.has_cached_role?(:super) || (user.entity_id == record.investee_entity_id && user.entity.enable_investments)
       true
     else
-      Investment.for_investor(user, record.investee_entity)
-                .where("investments.id=?", record.id).first.present?
+      user.entity.enable_investments &&
+        Investment.for_investor(user, record.investee_entity)
+                  .where("investments.id=?", record.id).first.present?
     end
   end
 
   def create?
-    user.has_cached_role?(:super) || user.entity_id == record.investee_entity_id
+    user.has_cached_role?(:super) || (user.entity_id == record.investee_entity_id && user.entity.enable_investments)
   end
 
   def new?

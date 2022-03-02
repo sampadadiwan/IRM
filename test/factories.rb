@@ -160,5 +160,10 @@ FactoryBot.define do
     category { Faker::Company.industry }
     url { "https://#{Faker::Internet.domain_name}" }
     entity_type { Entity::TYPES[rand(Entity::TYPES.length)] }
+    enable_documents {true}
+    enable_deals {true}
+    enable_investments {true}
+    enable_holdings {true}
+    enable_secondary_sale {true}
   end
 end

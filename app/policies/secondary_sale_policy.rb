@@ -14,7 +14,7 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def index?
-    true
+    user.entity.enable_secondary_sale
   end
 
   def offer?
@@ -26,7 +26,7 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def show?
-    if user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+    if user.has_cached_role?(:super) || (user.entity_id == record.entity_id && user.entity.enable_secondary_sale)
       true
     else
       record.active? &&
@@ -36,7 +36,7 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+    user.has_cached_role?(:super) || (user.entity_id == record.entity_id && user.entity.enable_secondary_sale)
   end
 
   def new?

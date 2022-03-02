@@ -10,20 +10,21 @@ class DocumentPolicy < ApplicationPolicy
   end
 
   def index?
-    true
+    user.entity.enable_documents
   end
 
   def show?
-    if user.has_cached_role?(:super) || user.entity_id == record.entity_id
+    if user.has_cached_role?(:super) || (user.entity_id == record.entity_id && user.entity.enable_documents)
       true
     else
-      Document.for_investor(user, record.entity)
-              .where("documents.id=?", record.id).first.present?
+      user.entity.enable_documents &&
+        Document.for_investor(user, record.entity)
+                .where("documents.id=?", record.id).first.present?
     end
   end
 
   def create?
-    user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+    user.has_cached_role?(:super) || (user.entity_id == record.entity_id && user.entity.enable_documents)
   end
 
   def new?

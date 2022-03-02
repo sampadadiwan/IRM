@@ -33,6 +33,20 @@
                <%= @entity.details %>
             </td>
          </tr>
+
+         <tr>
+            <td>
+               Access Enabled
+            </td>
+            <td>
+               <%= "Documents" if @entity.enable_documents %>
+               <%= "Deals" if @entity.enable_deals %>
+               <%= "Investments" if @entity.enable_investments %>
+               <%= "Holdings" if @entity.enable_holdings %>
+               <%= "Secondary Sale" if @entity.enable_secondary_sale %>
+            </td>
+         </tr>
+
       </table>
       <% if current_user.entity_id == @entity.id %>
       <div>
