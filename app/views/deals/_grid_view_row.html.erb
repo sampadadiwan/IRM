@@ -8,7 +8,7 @@
                 <%= deal_investor.investor_name %>      
             </span>
             <div class="dropdown-menu">
-                <%= link_to "Nudge", new_nudge_path("nudge[item_id]": deal_investor.id, "nudge[item_type]": "DealInvestor", back_to: deal_path(@deal, grid_view: true)), class: "dropdown-item" %>
+                <%= link_to "Nudge", new_nudge_path("nudge[item_id]": deal_investor.id, "nudge[item_type]": "DealInvestor", back_to: deal_path(deal_investor.deal, grid_view: true)), class: "dropdown-item" %>
                 <%= link_to "View Investor", deal_investor_path(id: deal_investor.id), class: "dropdown-item" %>
                 <%= link_to "View Docs", deal_docs_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
                 <%= link_to "View Msgs", deal_messages_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
@@ -39,9 +39,13 @@
                         <%= activity.summary %>
                     </span>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <%= link_to "Nudge", new_nudge_path("nudge[item_id]": activity.id, "nudge[item_type]": "DealActivity", back_to: deal_path(@deal, grid_view: true)), class: "dropdown-item" %>
+                        <%= link_to "Nudge", new_nudge_path("nudge[item_id]": activity.id, "nudge[item_type]": "DealActivity", 
+                                    back_to: deal_path(deal_investor.deal, grid_view: true)), class: "dropdown-item" %>
+
                         <%= button_to "Toogle Done", toggle_completed_deal_activity_path(activity), class: "dropdown-item" %>
+
                         <%= link_to "Show", deal_activity_path(activity), class: "dropdown-item" %>
+                        
                         <%= link_to "Edit", edit_deal_activity_path(activity, 
                                         back_to: deal_path(id: deal_investor.deal_id, grid_view: true)), 
                                         class: "dropdown-item" %>

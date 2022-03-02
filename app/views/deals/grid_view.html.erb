@@ -9,7 +9,12 @@
             <%= link_to "Not Declined", deal_path(id: @deal.id, grid_view: true), {class: "btn btn-primary"}  %>
         <% end %>
 
-        <a class="btn btn-success", data-action="click->nudge#newDealMsg">Send Message</a>
+        <% if !@deal.start_date.present?  %>
+            <%= button_to "Start Deal", start_deal_deal_path(@deal), 
+            {class: "btn btn-success", form_class: "deleteButton"} %> 
+        <% end %>
+
+        <a class="btn btn-success", hidden="hidden", data-action="click->nudge#newDealMsg">Send Message</a>
         <%= link_to new_nudge_path(), id: "new_nudge", hidden: true do %>
             <span>Loading...</span>
         <% end %>
