@@ -80,6 +80,7 @@ class Investment < ApplicationRecord
   end
 
   after_save :update_investor_holdings
+  after_destroy :update_investor_holdings
   def update_investor_holdings
     if (investment_instrument == "Equity" || investment_instrument == "Preferred") && !investor.is_holdings_entity
       holding = Holding.where(investor_id: investor_id, investment_instrument: investment_instrument).first
