@@ -30,7 +30,7 @@ module StatisticsHelper
                       .group("category").count,
               #   xtitle: "Investment Amount",
               #   ytitle: "Type",
-              donut: true  
+              donut: true
   end
 
   def notes_by_month(entity)
