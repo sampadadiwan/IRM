@@ -101,6 +101,24 @@
       </td>
     </tr>
 
+    <tr>
+      <td>
+        Private Files
+      </td>
+      <td>
+        <ul>
+          <% @secondary_sale.private_docs.each do |file| %>
+            <li>
+              <%= link_to rails_blob_path(file, disposition: :attachment), class: "btn btn-sm btn-warning" do%>
+                <i class="fas fa-download"></i>
+                <%= file.filename.to_s.capitalize %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </td>
+    </tr>
+
 
 
   </table>

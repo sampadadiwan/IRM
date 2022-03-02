@@ -92,6 +92,7 @@ class SecondarySalesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def secondary_sale_params
     params.require(:secondary_sale).permit(:name, :entity_id, :start_date, :end_date,
-                                           :percent_allowed, :min_price, :max_price, :active, public_docs: [])
+                                           :percent_allowed, :min_price, :max_price, :active,
+                                           private_docs: [], public_docs: [])
   end
 end
