@@ -21,8 +21,21 @@
                         Download
                      </td>
                      <td>
-                        <%= link_to @document.name, @document.file.expiring_url() if @document.file.exists? %>
-                        <%= link_to @document.name, rails_blob_path(@document.video, disposition: "attachment") if @document.video.present? %>                     
+
+                        <% if @document.file.exists? %>
+                           <%= link_to @document.file.expiring_url() do %>
+                              <i class="fas fa-download"></i>
+                              <%= @document.name.capitalize %>
+                           <% end %>
+                        <% end %>
+                        
+                        <% if @document.video.present? %>
+                           <%= link_to rails_blob_path(@document.video, disposition: "attachment") do %>
+                              <i class="fas fa-download"></i>
+                              <%= @document.name.capitalize %>
+                           <% end %>
+                        <% end %>
+                        
                      </td>
                   </tr>
                   <tr>

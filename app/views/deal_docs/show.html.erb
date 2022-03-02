@@ -5,7 +5,10 @@
          Name
       </td>
       <td>
-         <%= link_to @deal_doc.name, @deal_doc.file.expiring_url() %>
+         <%= link_to @deal_doc.file.expiring_url() do %>
+            <i class="fas fa-download"></i>
+            <%= @deal_doc.name.capitalize %>
+         <% end %>
       </td>
    </tr>
    <tr>
@@ -21,7 +24,7 @@
          Deal
       </td>
       <td>
-         <%= @deal_doc.deal_name %>
+         <%= link_to @deal_doc.deal_name, @deal_doc.deal %>
       </td>
    </tr>
    <tr>

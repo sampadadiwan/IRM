@@ -34,9 +34,12 @@ class DealsController < ApplicationController
   # GET /deals/1 or /deals/1.json
   def show
     authorize @deal
-    if params[:grid_view].present?
-      @deal_investors = @deal.deal_investors.order("deal_investors.primary_amount desc")
-      @deal_investors = @deal_investors.not_declined if params[:all].blank?
+    @deal_investors = @deal.deal_investors.order("deal_investors.primary_amount desc")
+    @deal_investors = @deal_investors.not_declined if params[:all].blank?
+
+    if params[:grid_view] == "false"
+      render "show"
+    else
 
       respond_to do |format|
         format.xlsx do
@@ -49,8 +52,6 @@ class DealsController < ApplicationController
         end
         format.html { render "grid_view" }
       end
-    else
-      render "show"
     end
   end
 

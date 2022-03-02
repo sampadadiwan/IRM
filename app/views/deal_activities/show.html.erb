@@ -32,7 +32,7 @@
           Deal
         </td>
         <td>
-          <%= @deal_activity.deal_name %>
+          <%= link_to @deal_activity.deal_name, deal_path(@deal_activity.deal, grid_view: true)  %>
         </td>    
       </tr>
           <tr>
