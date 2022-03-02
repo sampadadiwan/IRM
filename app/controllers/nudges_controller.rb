@@ -11,9 +11,10 @@ class NudgesController < ApplicationController
 
   # GET /nudges/new
   def new
-    @nudge = Nudge.new
+    @nudge = Nudge.new(nudge_params)
     @nudge.user_id = current_user.id
     @nudge.entity_id = current_user.entity_id
+    @nudge.pre_populate
     authorize @nudge
   end
 
@@ -30,7 +31,9 @@ class NudgesController < ApplicationController
 
     respond_to do |format|
       if @nudge.save
-        format.html { redirect_to nudge_url(@nudge), notice: "Nudge was successfully created." }
+        redirect_url = params[:back_to].presence || nudge_url(@nudge)
+
+        format.html { redirect_to redirect_url, notice: "Nudge was successfully created." }
         format.json { render :show, status: :created, location: @nudge }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -43,7 +46,8 @@ class NudgesController < ApplicationController
   def update
     respond_to do |format|
       if @nudge.update(nudge_params)
-        format.html { redirect_to nudge_url(@nudge), notice: "Nudge was successfully updated." }
+        redirect_url = params[:back_to].presence || nudge_url(@nudge)
+        format.html { redirect_to redirect_url, notice: "Nudge was successfully updated." }
         format.json { render :show, status: :ok, location: @nudge }
       else
         format.html { render :edit, status: :unprocessable_entity }

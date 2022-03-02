@@ -10,4 +10,20 @@ class Nudge < ApplicationRecord
   def send_nudge
     NudgeMailer.with(id: id).send_nudge.deliver_later
   end
+
+  def pre_populate
+    self.to = []
+    self.subject = ""
+    self.msg_body = ""
+    case item_type
+    when "DealActivity"
+      ia = item.deal_investor.investor.investor_accesses
+      self.to = ia.collect(&:email).join(",")
+      self.subject = "Task #{item.title} is pending"
+      self.msg_body = "Dear Investor, Please can you complete this task"
+    when "DealInvestor"
+      ia = item.investor.investor_accesses
+      self.to = ia.collect(&:email).join(",")
+    end
+  end
 end
