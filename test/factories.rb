@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :payment do
-    entity { nil }
-    amount { "9.99" }
-    plan { "MyString" }
-    discount { "9.99" }
-    reference_number { "MyString" }
-    user { nil }
+    entity { Entity.all.sample }
+    amount { rand(100)*10 + rand(100) * 10 }
+    plan { Entity::PLANS[rand(Entity::PLANS.length)] }
+    discount { 0 }
+    reference_number { (0...8).map { (65 + rand(26)).chr }.join }
+    user { entity.employees.sample }
   end
 
   factory :nudge do

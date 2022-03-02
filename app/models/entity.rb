@@ -64,7 +64,7 @@ class Entity < ApplicationRecord
 
   TYPES = ["VC", "Startup", "Holding", "Wealth Manager", "Home Office"].freeze
   FUNDING_UNITS = %w[Lakhs Crores].freeze
-
+  PLANS = ENV['PLANS'].split(",")
   scope :holdings, -> { where(entity_type: "Holding") }
   scope :vcs, -> { where(entity_type: "VC") }
   scope :startups, -> { where(entity_type: "Startup") }

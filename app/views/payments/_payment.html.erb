@@ -1,49 +1,23 @@
-<thead>
-  <tr>
-      <th>
-      Entity
-    </th>
-      <th>
-      Amount
-    </th>
-      <th>
-      Plan
-    </th>
-      <th>
-      Discount
-    </th>
-      <th>
-      Reference Number
-    </th>
-      <th>
-      User
-    </th>
-  
-    <th>
-    <th>
-  </tr>
-</thead>
-
 <tr id="<%= dom_id payment %>">
-<td>
-    <%= payment.entity_id %>
-</td>  
-<td>
-    <%= payment.amount %>
-</td>  
-<td>
+  <td>
+    <%= payment.entity.name %>
+  </td>
+  <td>
+    <%= number_to_currency payment.amount %>
+  </td>
+  <td>
     <%= payment.plan %>
-</td>  
-<td>
+  </td>
+  <td>
     <%= payment.discount %>
-</td>  
-<td>
+  </td>
+  <td>
     <%= payment.reference_number %>
-</td>  
-<td>
-    <%= payment.user_id %>
-</td>  
-<td>
-  <%= link_to "Show", payment , {class: "btn btn-primary"}%>
-</td>
+  </td>
+  <td>
+    <%= payment.user.full_name %>
+  </td>
+  <td>
+    <%= link_to "Show" , payment , {class: "btn btn-primary" }%>
+  </td>
 </tr>

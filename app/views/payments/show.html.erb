@@ -7,7 +7,7 @@
           Entity
         </td>
         <td>
-          <%= @payment.entity_id %>
+          <%= @payment.entity.name %>
         </td>    
       </tr>
           <tr>
@@ -47,17 +47,16 @@
           User
         </td>
         <td>
-          <%= @payment.user_id %>
+          <%= @payment.user.full_name %>
         </td>    
       </tr>
     
   
 </table>
 
-
+<% if current_user.has_cached_role?(:super) %>
 <div>
   <%= link_to "Edit", edit_payment_path(@payment), {class: "btn btn-primary"} %> |
-  <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
-
   <%= button_to "Delete", @payment, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
 </div>
+<% end %>
