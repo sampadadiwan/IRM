@@ -29,7 +29,8 @@
   
   <td>
     <%= link_to "Show" , interest , {class: "btn btn-primary" }%>
-    <%= button_to "Shortlist" , short_list_interest_path(interest), method: :patch, class: "btn btn-success" , 
+    <% label = interest.short_listed? ? "Remove Shortlist" : "Shorlist" %>
+    <%= button_to label , short_list_interest_path(interest), method: :patch, class: "btn btn-success" , 
       form_class: "deleteButton" if Pundit.policy(current_user, interest).short_list? %>
 
   </td>
