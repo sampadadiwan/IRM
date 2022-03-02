@@ -18,6 +18,10 @@ class InterestPolicy < ApplicationPolicy
       (user.entity_id == record.offer_entity_id)
   end
 
+  def short_list?
+    (user.entity_id == record.offer_entity_id)
+  end
+
   def create?
     update?
   end

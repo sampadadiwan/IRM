@@ -62,7 +62,7 @@ class Entity < ApplicationRecord
   has_many :access_rights, dependent: :destroy
   has_many :investments, foreign_key: "investee_entity_id", dependent: :destroy
 
-  TYPES = ["VC", "Startup", "Holding", "Wealth Manager", "Home Office"].freeze
+  TYPES = ["VC", "Startup", "Holding", "Advisor", "Family Office"].freeze
   FUNDING_UNITS = %w[Lakhs Crores].freeze
   PLANS = ENV['PLANS'].split(",")
   scope :holdings, -> { where(entity_type: "Holding") }

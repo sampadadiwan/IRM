@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_02_082040) do
+ActiveRecord::Schema.define(version: 2022_03_02_151304) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -263,6 +263,13 @@ ActiveRecord::Schema.define(version: 2022_03_02_082040) do
     t.index ["deleted_at"], name: "index_entities_on_deleted_at"
   end
 
+  create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title"
+    t.text "body", size: :medium
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.integer "parent_folder_id"
@@ -342,6 +349,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_082040) do
     t.bigint "secondary_sale_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "short_listed", default: false
+    t.boolean "escrow_deposited", default: false
     t.index ["interest_entity_id"], name: "index_interests_on_interest_entity_id"
     t.index ["offer_entity_id"], name: "index_interests_on_offer_entity_id"
     t.index ["secondary_sale_id"], name: "index_interests_on_secondary_sale_id"

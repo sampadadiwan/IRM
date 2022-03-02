@@ -16,7 +16,9 @@ class InterestDashboard < Administrate::BaseDashboard
     quantity: Field::Number,
     price: Field::String.with_options(searchable: false),
     created_at: Field::DateTime,
-    updated_at: Field::DateTime
+    updated_at: Field::DateTime,
+    short_listed: Field::Boolean,
+    escrow_deposited: Field::Boolean
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -32,6 +34,8 @@ class InterestDashboard < Administrate::BaseDashboard
     offer_entity
     price
     quantity
+    short_listed
+    escrow_deposited
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -44,6 +48,8 @@ class InterestDashboard < Administrate::BaseDashboard
     offer_entity
     quantity
     price
+    short_listed
+    escrow_deposited
     created_at
     updated_at
   ].freeze
@@ -54,6 +60,8 @@ class InterestDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     quantity
     price
+    short_listed
+    escrow_deposited
   ].freeze
 
   # COLLECTION_FILTERS

@@ -8,20 +8,29 @@
     </td>
   <% else %>
     <td>
-      <%= interest.interest_entity.name %>
+      <%= interest.escrow_deposited? ? interest.interest_entity.name : "------" %>
     </td>
     <td>
-      <%= interest.user.full_name %>
+      <%= interest.escrow_deposited? ? interest.user.full_name : "------" %>
     </td>    
   <% end %>
   <td>
     <%= interest.quantity %>
   </td>
   <td>
-    <%= interest.price %>
+    <%= number_to_currency interest.price %>
+  </td>
+  <td>
+    <%= interest.short_listed? ? "Yes" : "No" %>
+  </td>
+  <td>
+    <%= interest.escrow_deposited? ? "Yes" : "No" %>
   </td>
   
   <td>
     <%= link_to "Show" , interest , {class: "btn btn-primary" }%>
+    <%= button_to "Shortlist" , short_list_interest_path(interest), method: :patch, class: "btn btn-success" , 
+      form_class: "deleteButton" if Pundit.policy(current_user, interest).short_list? %>
+
   </td>
 </tr>

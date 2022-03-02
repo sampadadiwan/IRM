@@ -7,7 +7,7 @@
         Offer Entity
       </td>
       <td>
-        <%= @interest.offer_entity.name %>
+        <%= @interest.escrow_deposited? ? @interest.offer_entity.name : "------" %>
       </td>
     </tr>
     <tr>
@@ -37,10 +37,26 @@
     </tr>
     <tr>
       <td>
+        Shortlisted
+      </td>
+      <td>
+        <%= @interest.short_listed? ? "Yes" : "No" %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Escrow Deposited
+      </td>
+      <td>
+        <%= @interest.escrow_deposited? ? "Yes" : "No" %>
+      </td>
+    </tr>
+    <tr>
+      <td>
         User
       </td>
       <td>
-        <%= @interest.user.full_name %>, <%= @interest.user.email %>
+        <%= @interest.escrow_deposited? ? @interest.user.full_name + " " + @interest.user.email : "------" %>
       </td>
     </tr>
     <tr>

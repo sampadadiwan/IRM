@@ -82,7 +82,9 @@ Rails.application.routes.draw do
     get 'investor_documents', on: :collection
   end
 
-  resources :interests
+  resources :interests do
+    patch 'short_list', on: :member
+  end
 
   devise_for :users, controllers: {
     registrations: "users/registrations",
