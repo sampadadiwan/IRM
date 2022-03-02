@@ -1,4 +1,13 @@
 FactoryBot.define do
+  factory :payment do
+    entity { nil }
+    amount { "9.99" }
+    plan { "MyString" }
+    discount { "9.99" }
+    reference_number { "MyString" }
+    user { nil }
+  end
+
   factory :nudge do
     to { "MyText" }
     subject { "MyText" }

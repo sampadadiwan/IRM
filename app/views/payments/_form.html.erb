@@ -1,0 +1,47 @@
+<%= form_with(model: payment) do |form| %>
+  <% if payment.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(payment.errors.count, "error") %> prohibited this payment from being saved:</h2>
+
+      <ul>
+        <% payment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :entity_id %>
+    <%= form.text_field :entity_id, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :amount %>
+    <%= form.text_field :amount, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :plan %>
+    <%= form.text_field :plan, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :discount %>
+    <%= form.text_field :discount, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :reference_number %>
+    <%= form.text_field :reference_number, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>

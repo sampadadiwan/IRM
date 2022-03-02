@@ -1,0 +1,63 @@
+<%= render "/layouts/alerts" %>
+
+<table class="table table-bordered dataTable">
+
+          <tr>
+        <td>
+          Entity
+        </td>
+        <td>
+          <%= @payment.entity_id %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Amount
+        </td>
+        <td>
+          <%= @payment.amount %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Plan
+        </td>
+        <td>
+          <%= @payment.plan %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Discount
+        </td>
+        <td>
+          <%= @payment.discount %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          Reference Number
+        </td>
+        <td>
+          <%= @payment.reference_number %>
+        </td>    
+      </tr>
+          <tr>
+        <td>
+          User
+        </td>
+        <td>
+          <%= @payment.user_id %>
+        </td>    
+      </tr>
+    
+  
+</table>
+
+
+<div>
+  <%= link_to "Edit", edit_payment_path(@payment), {class: "btn btn-primary"} %> |
+  <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
+
+  <%= button_to "Delete", @payment, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+</div>

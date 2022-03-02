@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_02_042450) do
+ActiveRecord::Schema.define(version: 2022_03_02_082040) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -255,6 +255,11 @@ ActiveRecord::Schema.define(version: 2022_03_02_042450) do
     t.integer "documents_count", default: 0, null: false
     t.decimal "total_investments", precision: 20, default: "0"
     t.boolean "is_holdings_entity", default: false
+    t.boolean "enable_documents", default: false
+    t.boolean "enable_deals", default: false
+    t.boolean "enable_investments", default: false
+    t.boolean "enable_holdings", default: false
+    t.boolean "enable_secondary_sale", default: false
     t.index ["deleted_at"], name: "index_entities_on_deleted_at"
   end
 
@@ -461,6 +466,19 @@ ActiveRecord::Schema.define(version: 2022_03_02_042450) do
     t.index ["user_id"], name: "index_offers_on_user_id"
   end
 
+  create_table "payments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.decimal "amount", precision: 10, scale: 2, default: "0.0", null: false
+    t.string "plan", limit: 30
+    t.decimal "discount", precision: 10, scale: 2, default: "0.0"
+    t.string "reference_number"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["entity_id"], name: "index_payments_on_entity_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
+  end
+
   create_table "roles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "resource_type"
@@ -600,6 +618,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_042450) do
   add_foreign_key "offers", "holdings"
   add_foreign_key "offers", "secondary_sales"
   add_foreign_key "offers", "users"
+  add_foreign_key "payments", "entities"
+  add_foreign_key "payments", "users"
   add_foreign_key "secondary_sales", "entities"
   add_foreign_key "taggings", "tags"
 end
