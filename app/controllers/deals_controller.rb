@@ -37,7 +37,7 @@ class DealsController < ApplicationController
     @deal_investors = @deal.deal_investors.order("deal_investors.primary_amount desc")
     @deal_investors = @deal_investors.not_declined if params[:all].blank?
 
-    if params[:grid_view] == "false"
+    if params[:grid_view] == "false" || @deal.start_date.nil?
       render "show"
     else
 

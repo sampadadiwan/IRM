@@ -14,7 +14,7 @@ Given('I create an investment {string}') do |arg1|
   select(@investment.investment_instrument, from: "investment_investment_instrument")
 
   fill_in('investment_quantity', with: @investment.quantity)
-  fill_in('investment_initial_value', with: @investment.initial_value)
+  fill_in('investment_price', with: @investment.price)
   click_on("Save")
 end
 
@@ -25,7 +25,8 @@ Then('an investment should be created') do
   @created.investment_type.should == @investment.investment_type
   @created.investment_instrument.should == @investment.investment_instrument
   @created.quantity.should == @investment.quantity
-  @created.initial_value.should == @investment.initial_value
+  @created.price.should == @investment.price
+  @created.amount.should == @investment.price * @investment.quantity 
 end
 
 Then('I should see the investment details on the details page') do
@@ -34,7 +35,8 @@ Then('I should see the investment details on the details page') do
   expect(page).to have_content(@investment.investment_instrument)
   expect(page).to have_content(@investment.investment_type)
   expect(page).to have_content(@investment.quantity)
-  expect(page).to have_content(@investment.initial_value)
+  expect(page).to have_content(ActiveSupport::NumberHelper.number_to_currency(@investment.price))
+  expect(page).to have_content(ActiveSupport::NumberHelper.number_to_currency(@investment.amount))
 end
 
 Then('I should see the investment in all investments page') do
@@ -44,7 +46,7 @@ Then('I should see the investment in all investments page') do
   expect(page).to have_content(@investment.investment_instrument)
   expect(page).to have_content(@investment.investment_type)
   expect(page).to have_content(@investment.quantity)
-  expect(page).to have_content(@investment.initial_value)
+  expect(page).to have_content(ActiveSupport::NumberHelper.number_to_currency(@investment.price))
 end
 
 
