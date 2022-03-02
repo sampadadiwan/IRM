@@ -18,6 +18,7 @@ class ImportUploadJob < ApplicationJob
     rescue StandardError => e
       import_upload.status ||= "Error"
       import_upload.error_text = e.backtrace
+      Rails.logger.error e.backtrace
     ensure
       file.delete
     end
