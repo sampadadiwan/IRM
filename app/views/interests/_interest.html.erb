@@ -12,6 +12,9 @@
     </td>
     <td>
       <%= interest.escrow_deposited? ? interest.user.full_name : "------" %>
+    </td>
+    <td>
+      <%= interest.interest_entity.entity_type %>
     </td>    
   <% end %>
   <td>
