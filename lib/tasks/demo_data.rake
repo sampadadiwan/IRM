@@ -97,6 +97,9 @@ namespace :irm do
       Entity.vcs.each do |vc|
         inv = FactoryBot.create(:investor, investee_entity: e, investor_entity: vc)
         puts "Investor #{inv.id}"
+        inv.investor_entity.employees.each do |user|
+          InvestorAccess.create!(investor:inv, user: user, email: user.email, approved: rand(2), entity_id: inv.investee_entity_id)
+        end
 
         i = FactoryBot.create(:investment, investee_entity: e, investor: inv)
         puts "Investment #{i.id}"

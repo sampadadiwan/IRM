@@ -17,12 +17,12 @@ class Nudge < ApplicationRecord
     self.msg_body = ""
     case item_type
     when "DealActivity"
-      ia = item.deal_investor.investor.investor_accesses
+      ia = item.deal_investor.investor.investor_accesses.approved
       self.to = ia.collect(&:email).join(",")
       self.subject = "Task #{item.title} is pending"
       self.msg_body = "Dear Investor, Please can you complete this task"
     when "DealInvestor"
-      ia = item.investor.investor_accesses
+      ia = item.investor.investor_accesses.approved
       self.to = ia.collect(&:email).join(",")
     end
   end
