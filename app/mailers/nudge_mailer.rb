@@ -3,7 +3,8 @@ class NudgeMailer < ApplicationMailer
     @nudge = Nudge.find(params[:id])
 
     mail(to: @nudge.to,
-         cc: ENV['SUPPORT_EMAIL'],
+         cc: @nudge.cc,
+         bcc: "#{ENV['SUPPORT_EMAIL']},#{@nudge.bcc}",
          subject: @nudge.subject)
   end
 end

@@ -72,6 +72,7 @@ class NudgesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def nudge_params
-    params.require(:nudge).permit(:to, :subject, :msg_body, :user_id, :entity_id, :item_id, :item_type)
+    params.require(:nudge).permit(:to, :cc, :bcc, :subject, :msg_body,
+                                  :user_id, :entity_id, :item_id, :item_type)
   end
 end
