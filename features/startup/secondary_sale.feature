@@ -45,3 +45,5 @@ Examples:
     |user	    |entity               |sale             |quantity	|
     |  	        |entity_type=Startup  |name=Grand Sale  |100        |
     |  	        |entity_type=Startup  |name=Winter Sale |200        |
+
+

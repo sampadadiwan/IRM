@@ -110,3 +110,13 @@ Then('the sales total_offered_quantity should be {string}') do |arg|
   @sale.reload
   @sale.total_offered_quantity.should == arg.to_i  
 end
+
+
+Given('I should have {string} access to the sale {string}') do |access_type, arg|
+  Pundit.policy(@user, @sale).send("#{access_type}?").to_s.should == arg
+end
+
+Given('another user should have {string} access to the sale {string}') do |access_type, arg|
+  Pundit.policy(@another_user, @sale).send("#{access_type}?").to_s.should == arg
+end
+
