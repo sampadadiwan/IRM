@@ -1,7 +1,7 @@
 Feature: Secondary Sale
   Can create and view a sale as a startup
 
-Scenario Outline: Create new note
+Scenario Outline: Create new sale
   Given Im logged in as a user "<user>" for an entity "<entity>"
   And I am at the sales page
   When I create a new sale "<sale>"
@@ -17,7 +17,7 @@ Scenario Outline: Create new note
 
 
 
-Scenario Outline: Create new note
+Scenario Outline: Create new sale and make visible
   Given Im logged in as a user "<user>" for an entity "<entity>"
   And I am at the sales page
   When I create a new sale "<sale>"
@@ -31,3 +31,17 @@ Scenario Outline: Create new note
   	|user	    |entity               |sale             |msg	|
   	|  	        |entity_type=Startup  |name=Grand Sale  |Secondary sale was successfully created|
     |  	        |entity_type=Startup  |name=Winter Sale |Secondary sale was successfully created|
+
+
+
+Scenario Outline: Create new sale with holdings
+  Given Im logged in as a user "<user>" for an entity "<entity>"
+  Given there is are "2" employee investors
+  And Given I create a holding for each employee with quantity "<quantity>"
+  Given there is a sale "<sale>"
+  And I am at the sales details page
+  Then I should see the holdings
+Examples:
+    |user	    |entity               |sale             |quantity	|
+    |  	        |entity_type=Startup  |name=Grand Sale  |100        |
+    |  	        |entity_type=Startup  |name=Winter Sale |200        |

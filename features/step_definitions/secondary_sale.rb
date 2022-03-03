@@ -65,3 +65,31 @@
     end
   end
   
+
+
+
+  Given('there is a sale {string}') do |arg1|
+    @sale = FactoryBot.build(:secondary_sale, entity: @entity)
+    key_values(@sale, arg1)
+    @sale.save!
+    puts "\n####Sale####\n"
+    puts @sale.to_json
+  end
+  
+  Given('I am at the sales details page') do
+    visit secondary_sale_path(@sale)
+  end
+  
+  Then('I should see the holdings') do
+    Holding.all.each do |h|
+        within("tr#holding_#{h.id}") do
+            expect(page).to have_content(h.holding_type)
+            expect(page).to have_content(h.user.full_name)
+            expect(page).to have_content(h.user.email)
+            expect(page).to have_content(h.entity.name)
+            expect(page).to have_content(h.investment_instrument)
+            expect(page).to have_content(h.quantity)
+        end
+    end
+  end
+  
