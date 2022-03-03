@@ -50,7 +50,7 @@ FactoryBot.define do
   factory :secondary_sale do
     name { "Sale-#{Time.zone.today}" }
     entity { nil }
-    start_date { Time.zone.today + rand(5).days }
+    start_date { Time.zone.today }
     end_date { start_date + (2 + rand(10)).days }
     percent_allowed { (1 + rand(9)) * 10 }
     min_price { (1 + rand(9)) * 10 }

@@ -21,7 +21,7 @@ Scenario Outline: Create new investment
 
 Scenario Outline: Create new holding
   Given Im logged in as a user "first_name=Test" for an entity "name=Urban;entity_type=Startup"
-  Given there is are "2" employee investors
+  Given there are "2" employee investors
   And Given I create a holding for each employee with quantity "100"
   Then There should be a corresponding holdings created for each employee
   Then There should be a corresponding investment created

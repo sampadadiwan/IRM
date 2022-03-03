@@ -72,3 +72,4 @@ When('I create a new investor {string} for the existing investor entity') do |st
   select("Founder", from: "investor_category")
   click_on("Save")
 end
+

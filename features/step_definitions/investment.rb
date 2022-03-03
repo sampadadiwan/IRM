@@ -97,8 +97,11 @@ Given('there are {string} employee investors') do |arg|
   @holdings_entity = @holdings_investor.investor_entity
   (0..arg.to_i-1).each do
     user = FactoryBot.create(:user, entity: @holdings_entity)
-    InvestorAccess.create!(investor:@holdings_investor, user: user, email: user.email, 
+    ia = InvestorAccess.create!(investor:@holdings_investor, user: user, email: user.email, 
         approved: true, entity_id: @holdings_investor.investee_entity_id)
+
+    puts "\n####InvestorAccess####\n"
+    puts ia.to_json
   end
 end
 

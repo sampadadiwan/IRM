@@ -65,9 +65,6 @@
     end
   end
   
-
-
-
   Given('there is a sale {string}') do |arg1|
     @sale = FactoryBot.build(:secondary_sale, entity: @entity)
     @sale.start_date = Time.zone.today    
@@ -75,6 +72,7 @@
     @sale.save!
     puts "\n####Sale####\n"
     puts @sale.to_json
+    puts "@sale.active? = #{@sale.active?}"
   end
   
   Given('I am at the sales details page') do
@@ -120,3 +118,13 @@ Given('another user should have {string} access to the sale {string}') do |acces
   Pundit.policy(@another_user, @sale).send("#{access_type}?").to_s.should == arg
 end
 
+Given('employee investor should have {string} access to the sale {string}') do |access_type, arg|
+  @employee_investor = @holdings_entity.employees.first    
+  Pundit.policy(@employee_investor, @sale).send("#{access_type}?").to_s.should == arg
+end
+
+
+Given('employee investor has access rights to the sale') do
+  ar = AccessRight.create(owner: @sale, access_type: "SecondarySale", 
+    entity: @entity, access_to_investor_id: @holdings_investor.id)
+end
