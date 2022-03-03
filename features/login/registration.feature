@@ -15,3 +15,16 @@ Scenario Outline: User Registration Successfully
     |       |entity_type=Startup|A message with a confirmation link has been sent to your email address. |Signed in successfully  |
     | 	    |entity_type=VC     |A message with a confirmation link has been sent to your email address.	|Signed in successfully	|
 
+
+
+Scenario Outline: User Registration Successfully
+  Given there is a user "<user>" for an entity "<entity>"
+  Then the user should have the roles "<roles>"
+  Examples:
+  	|user		|entity               |roles		|	
+  	| 	    |entity_type=VC       |employee,investor,secondary_buyer	|
+    |       |entity_type=Startup  |employee,startup   |
+    | 	    |entity_type=Holding  |employee,holding   |
+    | 	    |entity_type=Advisor  |employee,secondary_buyer   |
+    | 	    |entity_type=Family Office  |employee,secondary_buyer   |
+
