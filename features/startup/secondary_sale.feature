@@ -36,7 +36,7 @@ Scenario Outline: Create new sale and make visible
 
 Scenario Outline: Create new sale with holdings
   Given Im logged in as a user "<user>" for an entity "<entity>"
-  Given there is are "2" employee investors
+  Given there are "2" employee investors
   And Given I create a holding for each employee with quantity "<quantity>"
   Given there is a sale "<sale>"
   And I am at the sales details page

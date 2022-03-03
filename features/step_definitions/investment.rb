@@ -93,7 +93,7 @@ end
 
 
 
-Given('there is are {string} employee investors') do |arg|
+Given('there are {string} employee investors') do |arg|
   @holdings_investor = @entity.investors.where(is_holdings_entity: true).first
   @holdings_entity = @holdings_investor.investor_entity
   (0..arg.to_i).each do

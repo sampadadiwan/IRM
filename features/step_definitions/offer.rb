@@ -1,6 +1,6 @@
   Given('Im logged in as an employee investor') do
-    @holding_entity = Entity.where(is_holdings_entity: true).first
-    @employee_investor = @holding_entity.employees.first
+    @holdings_entity = Entity.where(is_holdings_entity: true).first
+    @employee_investor = @holdings_entity.employees.first
     puts "\n####employee_investor####\n"
     puts @employee_investor.to_json
 
@@ -13,7 +13,7 @@
   end
   
   Given('there is a holding {string} for each employee investor') do |args|
-    @holding_entity.employees.each do |emp|
+    @holdings_entity.employees.each do |emp|
         holding = FactoryBot.build(:holding, user: emp, entity: @entity, investor_id: @entity.investors.first.id)
         key_values(holding, args)
         holding.save
@@ -35,7 +35,7 @@
         end
     end
 
-    @holding_entity.employees.where("id <> ?", @employee_investor.id).each do |other_emp|
+    @holdings_entity.employees.where("id <> ?", @employee_investor.id).each do |other_emp|
         other_emp.holdings.all.each do |h|
             expect(page).to have_no_content(h.user.full_name)
             expect(page).to have_no_content(h.user.email)                    
@@ -74,4 +74,45 @@
         expect(page).to have_content("No")
     end  
   end
+
+
+
+Given('there is an offer {string} for each employee investor') do |args|
+  Holding.all.each do |h|
+    offer = Offer.new(holding_id: h.id, user_id:h.user_id, entity_id: h.entity_id,
+                secondary_sale_id: @sale.id, investor_id: h.investor_id)
+    key_values(offer, args)
+    offer.save
+  end
+end
+
+Then('I should see all the offers') do
+  click_on("Offers")
+
+  Offer.all.each do |offer|
+    within("tr#offer_#{offer.id}") do
+        expect(page).to have_content(offer.user.full_name)
+        expect(page).to have_content(offer.investor.investor_name)
+        expect(page).to have_content(offer.quantity)
+        expect(page).to have_content(offer.percentage)
+        within("td.approved") do
+          expect(page).to have_content("No")
+        end
+    end
+  end
+end
+
+Then('When I approve the offers the offers should be approved') do
+Offer.all.each do |offer|
+    within("tr#offer_#{offer.id}") do
+        click_on("Approve")
+        within("td.approved") do
+          expect(page).to have_content("Yes")
+        end
+        offer.reload
+        offer.approved.should == true
+    end
+  end
+end
+
   
