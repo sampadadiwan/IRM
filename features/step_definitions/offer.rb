@@ -1,6 +1,6 @@
   Given('Im logged in as an employee investor') do
-    @holdings_entity = Entity.where(is_holdings_entity: true).first
-    @employee_investor = @holdings_entity.employees.first
+    @investor_entity = Entity.where(is_holdings_entity: true).first
+    @employee_investor = @investor_entity.employees.first
     puts "\n####employee_investor####\n"
     puts @employee_investor.to_json
 
@@ -13,7 +13,7 @@
   end
   
   Given('there is a holding {string} for each employee investor') do |args|
-    @holdings_entity.employees.each do |emp|
+    @investor_entity.employees.each do |emp|
         holding = FactoryBot.build(:holding, user: emp, entity: @entity, investor_id: @entity.investors.first.id)
         key_values(holding, args)
         holding.save
@@ -35,7 +35,7 @@
         end
     end
 
-    @holdings_entity.employees.where("id <> ?", @employee_investor.id).each do |other_emp|
+    @investor_entity.employees.where("id <> ?", @employee_investor.id).each do |other_emp|
         other_emp.holdings.all.each do |h|
             expect(page).to have_no_content(h.user.full_name)
             expect(page).to have_no_content(h.user.email)                    

@@ -98,6 +98,8 @@ class Investment < ApplicationRecord
       end
 
       holding.save!
+    else
+      Rails.logger.debug { "Not creating holdings for #{to_json}" }
     end
   end
 

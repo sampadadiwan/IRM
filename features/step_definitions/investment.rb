@@ -5,6 +5,8 @@ end
 Given('I create an investment {string}') do |arg1|
   @investment = FactoryBot.build(:investment)
   key_values(@investment, arg1)
+  # puts @investment.investor.to_json
+  # puts "investor_name = " + @investment.investor.investor_name
 
   click_on("New Investment")
 
@@ -20,6 +22,9 @@ end
 
 Then('an investment should be created') do
   @created = Investment.last
+  puts "\n####Investment Created####\n"
+  puts @created.to_json
+
   @created.investor_id.should == @investment.investor_id
   @created.category.should == @investment.category
   @created.investment_type.should == @investment.investment_type
@@ -27,6 +32,8 @@ Then('an investment should be created') do
   @created.quantity.should == @investment.quantity
   @created.price.should == @investment.price
   @created.amount.should == @investment.price * @investment.quantity 
+
+  @investment = @created
 end
 
 Then('I should see the investment details on the details page') do
@@ -77,11 +84,12 @@ Given('investor has access right {string} in the investment') do |arg1|
 end
 
 
-
-
-
 Then('a holding should be created for the investor') do
+  sleep(1)
   @holding = Holding.last
+  puts "\n####Holding####\n"
+  puts @holding.to_json
+
   @holding.quantity.should == @investment.quantity
   @holding.investment_instrument.should == @investment.investment_instrument
   @holding.entity_id.should == @investment.investee_entity_id  
@@ -94,9 +102,9 @@ end
 
 Given('there are {string} employee investors') do |arg|
   @holdings_investor = @entity.investors.where(is_holdings_entity: true).first
-  @holdings_entity = @holdings_investor.investor_entity
+  @investor_entity = @holdings_investor.investor_entity
   (0..arg.to_i-1).each do
-    user = FactoryBot.create(:user, entity: @holdings_entity)
+    user = FactoryBot.create(:user, entity: @investor_entity)
     ia = InvestorAccess.create!(investor:@holdings_investor, user: user, email: user.email, 
         approved: true, entity_id: @holdings_investor.investee_entity_id)
 
@@ -123,7 +131,7 @@ Then('There should be a corresponding holdings created for each employee') do
 
   puts Holding.all.to_json
     
-  @holdings_entity.employees.each do |emp|
+  @investor_entity.employees.each do |emp|
     emp.holdings.count.should == 1
     holding = emp.holdings.first
     holding.quantity.should == @holding_quantity
@@ -136,7 +144,7 @@ end
 Then('There should be a corresponding investment created') do
   @holding_investment = Investment.first
   @holding_investment.investee_entity_id.should == @entity.id
-  @holding_investment.investor_entity_id.should == @holdings_entity.id
+  @holding_investment.investor_entity_id.should == @investor_entity.id
   @holding_investment.investment_instrument.should == "Equity"
   @holding_investment.quantity.should == Holding.all.sum(:quantity)
   @holding_investment.investment_type.should == "Employee Holdings"

@@ -13,9 +13,9 @@ Scenario Outline: Create new investment
   And a holding should be created for the investor  
 
   Examples:
-  	|user	      |entity               |investor     |investment     |msg	|
-  	|  	        |entity_type=Startup  |name=Sequoia |category=Lead Investor;investment_type=Series A;investment_instrument=Equity;quantity=100;initial_value=100     |Investment was successfully created|
-    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_type=Series B;investment_instrument=Preferred;quantity=80;initial_value=800     |Investment was successfully created|
+  	|user	      |entity               |investor     |investment                                                                                                             |msg	|
+  	|  	        |entity_type=Startup  |name=Sequoia |category=Lead Investor;investment_type=Series A;investment_instrument=Equity;quantity=100;investor_id=3     |Investment was successfully created|
+    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_type=Series B;investment_instrument=Preferred;quantity=80;investor_id=3     |Investment was successfully created|
 
 
 

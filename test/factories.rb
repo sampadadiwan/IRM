@@ -136,8 +136,8 @@ FactoryBot.define do
 
   factory :investment do
     investment_type { "Series A,Series B,Series C".split(",")[rand(3)] }
-    investee_entity_id { Entity.startups.sample.id }
-    investor { Investor.where(investee_entity_id: investee_entity_id).all.sample }
+    # investee_entity_id { Entity.startups.sample.id }
+    # investor { Investor.where(investee_entity_id: investee_entity_id).all.sample }
     investment_instrument { Investment::INSTRUMENT_TYPES[rand(Investment::INSTRUMENT_TYPES.length)] }
     category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
     quantity { (rand(10) * 100) + (rand(10) * 10) }
