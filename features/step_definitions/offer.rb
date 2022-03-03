@@ -30,6 +30,8 @@
             expect(page).to have_content(h.entity.name)
             expect(page).to have_content(h.investment_instrument)
             expect(page).to have_content(h.quantity)
+
+            expect(page).to have_content("Offer")
         end
     end
 
@@ -40,5 +42,36 @@
         end
     end
 
+  end
+  
+
+
+  Then('when I place an offer {string}') do |arg|
+    @offer = Offer.new
+    key_values(@offer, arg)
+    click_on("Offer")
+    fill_in("offer_quantity", with: @offer.quantity)
+    click_on("Save")
+  end
+  
+  Then('I should see the offer details') do
+    expect(page).to have_content(@user.full_name)
+    expect(page).to have_content(@entity.name)
+    expect(page).to have_content(@sale.name)
+    expect(page).to have_content(@offer.quantity)
+    within("tr#approved") do
+        expect(page).to have_content("No")
+    end
+  end
+  
+  Then('I should see the offer in the offers tab') do
+    visit(secondary_sale_path(@sale))
+    click_on("Offers")
+    expect(page).to have_content(@user.full_name)
+    expect(page).to have_content(@entity.name)
+    expect(page).to have_content(@offer.quantity)
+    within("td.approved") do
+        expect(page).to have_content("No")
+    end  
   end
   
