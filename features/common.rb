@@ -139,3 +139,7 @@ end
 Then('when I click the {string} button') do |arg1|
   click_on(arg1)    
 end
+
+Then('sleep {string}') do |arg|
+  sleep(arg.to_i)
+end

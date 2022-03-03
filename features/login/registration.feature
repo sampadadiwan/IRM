@@ -9,9 +9,6 @@ Scenario Outline: User Registration Successfully
   Then when I click the confirmation link
   Then I should see the "Your email address has been successfully confirmed."
   Then the user should be confirmed
-  And I am at the login page
-  When I fill and submit the login page
-  Then I should see the "<msg2>"
   Examples:
   	|user		|entity             |msg1											                                              |msg2		  |
   	| 	    |entity_type=VC     |A message with a confirmation link has been sent to your email address.	|Signed in successfully	|

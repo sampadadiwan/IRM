@@ -27,12 +27,13 @@ Scenario Outline: Place an offer
   And I am at the sales details page
   Then when I place an offer "<offer>"
   Then I should see the offer details
+  And the sales total_offered_quantity should be "<total_quantity>"
   And I am at the sales details page
   Then I should see the offer in the offers tab
 Examples:
-    |user	    |entity               |sale                                                         |offer	             |
-    |  	        |entity_type=Startup  |name=Grand Sale;visible_externally=true;percent_allowed=100  |quantity=100        |
-    |  	        |entity_type=Startup  |name=Winter Sale;visible_externally=true;percent_allowed=100 |quantity=50         |
+    |user	    |entity               |sale                                                         |offer	             | total_quantity |
+    |  	        |entity_type=Startup  |name=Grand Sale;visible_externally=true;percent_allowed=100  |quantity=100        | 100            |
+    |  	        |entity_type=Startup  |name=Winter Sale;visible_externally=true;percent_allowed=100 |quantity=50         | 50             |
 
 
 Scenario Outline: Place a wrong offer 
@@ -61,6 +62,7 @@ Scenario Outline: Approve holdings as a startup
   And there is an offer "quantity=100" for each employee investor
   And I am at the sales details page
   Then I should see all the offers
+  And the sales total_offered_quantity should be "200"  
   And When I approve the offers the offers should be approved
 Examples:
     |user	    |entity               |sale                                                         |quantity	|

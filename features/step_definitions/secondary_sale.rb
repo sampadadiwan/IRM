@@ -104,3 +104,9 @@ Given('I have access to the sale') do
   puts "\n####InvestorAccess####\n"
   puts InvestorAccess.all.to_json
 end
+
+
+Then('the sales total_offered_quantity should be {string}') do |arg|
+  @sale.reload
+  @sale.total_offered_quantity.should == arg.to_i  
+end
