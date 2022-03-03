@@ -70,6 +70,7 @@
 
   Given('there is a sale {string}') do |arg1|
     @sale = FactoryBot.build(:secondary_sale, entity: @entity)
+    @sale.start_date = Time.zone.today    
     key_values(@sale, arg1)
     @sale.save!
     puts "\n####Sale####\n"
@@ -93,3 +94,13 @@
     end
   end
   
+
+
+Given('I have access to the sale') do  
+  investor = Investor.where(investor_entity_id: @user.entity_id, investee_entity_id: @entity.id).first
+  ar = AccessRight.create!(entity: @entity, owner: @sale, access_type: "SecondarySale", access_to_investor_id: investor.id)
+  puts "\n####AccessRight####\n"
+  puts ar.to_json
+  puts "\n####InvestorAccess####\n"
+  puts InvestorAccess.all.to_json
+end

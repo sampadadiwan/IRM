@@ -96,8 +96,11 @@ class Entity < ApplicationRecord
     unless entity_type == "Holding"
       e = Entity.create(name: "#{name} - Employees", entity_type: "Holding",
                         is_holdings_entity: true, active: true)
-      Investor.create(investor_name: e.name, investor_entity_id: e.id,
-                      investee_entity_id: id, category: "Employee", is_holdings_entity: true)
+      Rails.logger.debug { "Created Employee Holding entity #{e.name} #{e.id} for #{name}" }
+
+      i = Investor.create(investor_name: e.name, investor_entity_id: e.id,
+                          investee_entity_id: id, category: "Employee", is_holdings_entity: true)
+      Rails.logger.debug { "Created Investor for Holding entity #{i.investor_name} #{i.id} for #{name}" }
     end
   end
 
