@@ -48,14 +48,14 @@ FactoryBot.define do
   end
 
   factory :secondary_sale do
-    name { "MyString" }
+    name { "Sale-#{Time.zone.today}" }
     entity { nil }
-    start_date { "2022-02-22" }
-    end_date { "2022-02-22" }
-    percent_allowed { 1 }
-    min_price { "9.99" }
-    max_price { "9.99" }
-    active { false }
+    start_date { Time.zone.today + rand(5).days }
+    end_date { start_date + (2 + rand(10)).days }
+    percent_allowed { (1 + rand(9)) * 10 }
+    min_price { (1 + rand(9)) * 10 }
+    max_price { min_price + (1 + rand(9)) * 10 }
+    active { true }
   end
 
   factory :holding do
