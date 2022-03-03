@@ -133,3 +133,9 @@ When(/^I click "([^"]*)" in the side panel$/) do |arg1|
   click_on(arg1)
   sleep(1)
 end
+
+
+
+Then('when I click the {string} button') do |arg1|
+  click_on(arg1)    
+end
