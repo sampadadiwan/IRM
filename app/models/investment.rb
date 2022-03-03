@@ -82,7 +82,7 @@ class Investment < ApplicationRecord
   after_destroy :destroy_investor_holdings
   def destroy_investor_holdings
     holding = Holding.where(investor_id: investor_id, investment_instrument: investment_instrument).first
-    holding.destroy if holding
+    holding&.destroy
   end
 
   after_save :update_investor_holdings
