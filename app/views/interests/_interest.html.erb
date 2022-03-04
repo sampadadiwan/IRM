@@ -8,10 +8,10 @@
     </td>
   <% else %>
     <td>
-      <%= Pundit.policy(current_user, interest).unscramble? ? interest.interest_entity.name : "------" %>
+      <%= Pundit.policy(current_user, interest).unscramble? ? interest.interest_entity.name : ENV["OBFUSCATION"] %>
     </td>
     <td>
-      <%= Pundit.policy(current_user, interest).unscramble? ? interest.user.full_name : "------" %>
+      <%= Pundit.policy(current_user, interest).unscramble? ? interest.user.full_name : ENV["OBFUSCATION"] %>
     </td>
     <td>
       <%= interest.interest_entity.entity_type %>
@@ -23,10 +23,10 @@
   <td>
     <%= number_to_currency interest.price %>
   </td>
-  <td>
+  <td id="short_listed">
     <%= interest.short_listed? ? "Yes" : "No" %>
   </td>
-  <td>
+  <td id="escrow_deposited">
     <%= interest.escrow_deposited? ? "Yes" : "No" %>
   </td>
   

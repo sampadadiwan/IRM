@@ -115,4 +115,3 @@ Offer.all.each do |offer|
   end
 end
 
-  
