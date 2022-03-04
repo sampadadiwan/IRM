@@ -70,6 +70,7 @@
     @sale.start_date = Time.zone.today    
     key_values(@sale, arg1)
     @sale.save!
+    @sale.reload
     puts "\n####Sale####\n"
     puts @sale.to_json
     puts "@sale.active? = #{@sale.active?}"

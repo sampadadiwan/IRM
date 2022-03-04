@@ -82,8 +82,12 @@ Given('there is an offer {string} for each employee investor') do |args|
     offer = Offer.new(holding_id: h.id, user_id:h.user_id, entity_id: h.entity_id,
                 secondary_sale_id: @sale.id, investor_id: h.investor_id)
     key_values(offer, args)
-    offer.save
+    offer.save!
+    puts "\n####Offer####\n"
+    puts offer.to_json
   end
+
+  @sale.reload
 end
 
 Then('I should see all the offers') do

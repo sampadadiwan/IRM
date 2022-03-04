@@ -24,6 +24,26 @@
     fill_in("interest_price", with: @interest.price)
     click_on("Save")
   end
+
+  Given('an interest {string} from some entity {string}') do |int_args, entity_args|
+    @buyer_entity = FactoryBot.build(:entity)
+    key_values(@buyer_entity, entity_args)
+    @buyer_entity.save
+    @buyer_user = FactoryBot.create(:user, entity: @buyer_entity)
+
+    @interest = Interest.new(user: @buyer_user, interest_entity: @buyer_entity, 
+            secondary_sale: @sale, offer_entity: @sale.entity)
+    key_values(@interest, int_args)
+    
+
+    puts "min_price #{@interest.price > @sale.min_price}"
+    puts "max_price #{@interest.price < @sale.max_price}"
+    puts @interest.to_json
+
+    @interest.save!
+
+  end
+  
   
   Then('I should see the interest details') do
     sleep(1)
@@ -33,9 +53,16 @@
 
     expect(page).to have_content(@interest.price)
     expect(page).to have_content(@interest.quantity)
-    expect(page).to have_content(@created_interest.user.full_name)
+    if @user.entity_id == @created_interest.interest_entity_id
+        expect(page).to have_content(@created_interest.user.full_name)
+        expect(page).to have_content(@created_interest.interest_entity.name)
+    else
+        expect(page).to have_no_content(@created_interest.user.full_name)
+        expect(page).to have_no_content(@created_interest.interest_entity.name)
+        expect(page).to have_content(ENV["OBFUSCATION"])
+    end
     expect(page).to have_content(@created_interest.offer_entity.name)
-    expect(page).to have_content(@created_interest.interest_entity.name)
+    
     within("#short_listed") do
         expect(page).to have_content("No")
     end
