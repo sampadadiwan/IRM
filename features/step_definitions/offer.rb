@@ -16,7 +16,7 @@
     @investor_entity.employees.each do |emp|
         holding = FactoryBot.build(:holding, user: emp, entity: @entity, investor_id: @entity.investors.first.id)
         key_values(holding, args)
-        holding.save
+        holding.save!
     end
 
   end
@@ -49,7 +49,9 @@
   Then('when I place an offer {string}') do |arg|
     @offer = Offer.new
     key_values(@offer, arg)
-    click_on("Offer")
+    within "table#holdings" do
+      click_on("Offer")
+    end
     fill_in("offer_quantity", with: @offer.quantity)
     click_on("Save")
   end

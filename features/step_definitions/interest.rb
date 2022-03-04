@@ -53,7 +53,7 @@
 
     expect(page).to have_content(@interest.price)
     expect(page).to have_content(@interest.quantity)
-    if @user.entity_id == @created_interest.interest_entity_id
+    if @user.entity_id == @created_interest.interest_entity_id || @created_interest.escrow_deposited
         expect(page).to have_content(@created_interest.user.full_name)
         expect(page).to have_content(@created_interest.interest_entity.name)
     else
@@ -64,10 +64,22 @@
     expect(page).to have_content(@created_interest.offer_entity.name)
     
     within("#short_listed") do
-        expect(page).to have_content("No")
+        label = @created_interest.short_listed ? "Yes" : "No"
+        expect(page).to have_content(label)
     end
     within("#escrow_deposited") do
-        expect(page).to have_content("No")
+        label = @created_interest.escrow_deposited ? "Yes" : "No"
+        expect(page).to have_content(label)
+    end
+  end
+  
+
+  Then('the interest should be shortlisted') do
+    sleep(1)
+    @created_interest.reload
+    @created_interest.short_listed.should == true
+    within("#short_listed") do
+        expect(page).to have_content("Yes")
     end
   end
   
