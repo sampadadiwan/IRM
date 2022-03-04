@@ -48,11 +48,11 @@ Scenario Outline: Access Deal as Investor with access
 
   Examples:
   	|should	    |entity               |deal                     | access_right                                      | investor_access |
-  	|true  	    |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=3          | approved=1 |
+  	|true  	    |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=2          | approved=1 |
     |true  	    |entity_type=Startup  |name=Series B;amount=120 | access_type=Deal;access_to_category=Lead Investor | approved=1 |
-	  |false      |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=2          | approved=1 |
+	  |false      |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=1          | approved=1 |
     |false      |entity_type=Startup  |name=Series B;amount=120 | access_type=Deal;access_to_category=Co-Investor   | approved=1 |
-	  |false      |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=3          | approved=0 |
+	  |false      |entity_type=Startup  |name=Series A;amount=100 | access_type=Deal;access_to_investor_id=2          | approved=0 |
     |false      |entity_type=Startup  |name=Series B;amount=120 | access_type=Deal;access_to_category=Lead Investor | approved=0 |
 
 

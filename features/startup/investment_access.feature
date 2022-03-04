@@ -51,11 +51,11 @@ Scenario Outline: Access Investment as Investor with access
 
   Examples:
   	|should	    |entity               |investment   | access_right                                                         | investor_access |
-  	|true  	    |entity_type=Startup  |quantity=100 | access_type=Investment;access_to_investor_id=3;metadata=All          | approved=1 |
+  	|true  	    |entity_type=Startup  |quantity=100 | access_type=Investment;access_to_investor_id=2;metadata=All          | approved=1 |
     |true  	    |entity_type=Startup  |quantity=120 | access_type=Investment;access_to_category=Lead Investor;metadata=All | approved=1 |
-	  |false      |entity_type=Startup  |quantity=100 | access_type=Investment;access_to_investor_id=2;metadata=All          | approved=1 |
+	  |false      |entity_type=Startup  |quantity=100 | access_type=Investment;access_to_investor_id=1;metadata=All          | approved=1 |
     |false      |entity_type=Startup  |quantity=120 | access_type=Investment;access_to_category=Co-Investor;metadata=All   | approved=1 |
-	  |false      |entity_type=Startup  |quantity=100 | access_type=Investment;access_to_investor_id=3;metadata=All          | approved=0 |
+	  |false      |entity_type=Startup  |quantity=100 | access_type=Investment;access_to_investor_id=2;metadata=All          | approved=0 |
     |false      |entity_type=Startup  |quantity=120 | access_type=Investment;access_to_category=Lead Investor;metadata=All | approved=0 |
 
 

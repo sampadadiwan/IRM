@@ -91,17 +91,15 @@ class Entity < ApplicationRecord
     Folder.create(name: "/", entity_id: id)
   end
 
-  after_create :setup_holding_entity
+  after_create :setup_holding_entity, :if => Proc.new {|model| model.entity_type == "Startup" }
   def setup_holding_entity
-    unless entity_type == "Holding"
       e = Entity.create(name: "#{name} - Employees", entity_type: "Holding",
-                        is_holdings_entity: true, active: true)
+                        is_holdings_entity: true, active: true, parent_entity_id: id)
       Rails.logger.debug { "Created Employee Holding entity #{e.name} #{e.id} for #{name}" }
 
       i = Investor.create(investor_name: e.name, investor_entity_id: e.id,
                           investee_entity_id: id, category: "Employee", is_holdings_entity: true)
       Rails.logger.debug { "Created Investor for Holding entity #{i.investor_name} #{i.id} for #{name}" }
-    end
   end
 
   # Setup the person who created this entity as belonging to this entity
