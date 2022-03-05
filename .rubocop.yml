@@ -41,6 +41,9 @@ Naming/MethodName:
   Exclude:
     - 'app/models/investment.rb'
     - 'app/models/investor.rb'
+Naming/AccessorMethodName:
+  Exclude:
+    - 'app/datatables/note_datatable.rb'
 
 # Metrics Cops
 Metrics/CyclomaticComplexity:
