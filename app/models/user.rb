@@ -75,6 +75,7 @@ class User < ApplicationRecord
     add_role :investor if (entity && entity.entity_type == "VC") || InvestorAccess.where(user_id: id).first.present?
     add_role :secondary_buyer if entity && ["Advisor", "Family Office", "VC"].include?(entity.entity_type)
     add_role :startup if entity && (entity.entity_type == "Startup")
+    self.active = true
   end
 
   # There may be pending investor access given before the user is created.
@@ -103,5 +104,9 @@ class User < ApplicationRecord
 
   def investor(investee_entity_id)
     Investor.includes(:investee_entity).user_investors(self).where('entities.id': investee_entity_id).first
+  end
+
+  def active_for_authentication?
+    active
   end
 end
