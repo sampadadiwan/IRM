@@ -17,17 +17,17 @@ class EntityDashboard < Administrate::BaseDashboard
     category: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    active: Field::Boolean,
+    active: Field::BooleanEmoji,
     entity_type: Field::Select.with_options(collection: Entity::TYPES),
     created_by: Field::Number,
     investor_categories: Field::String,
     investment_types: Field::String,
     instrument_types: Field::String,
-    enable_documents: Field::Boolean,
-    enable_deals: Field::Boolean,
-    enable_investments: Field::Boolean,
-    enable_holdings: Field::Boolean,
-    enable_secondary_sale: Field::Boolean
+    enable_documents: Field::BooleanEmoji,
+    enable_deals: Field::BooleanEmoji,
+    enable_investments: Field::BooleanEmoji,
+    enable_holdings: Field::BooleanEmoji,
+    enable_secondary_sale: Field::BooleanEmoji
   }.freeze
 
   # COLLECTION_ATTRIBUTES

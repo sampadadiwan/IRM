@@ -19,7 +19,7 @@ class OfferDashboard < Administrate::BaseDashboard
     notes: Field::Text,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    approved: Field::Boolean,
+    approved: Field::BooleanEmoji,
     granted_by_user_id: Field::Number
   }.freeze
 

@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class DealActivityDashboard < Administrate::BaseDashboard
+class RoleDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,21 +8,15 @@ class DealActivityDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    deal: Field::BelongsTo,
-    deal_investor: Field::BelongsTo,
-    entity: Field::BelongsTo,
-    deal_docs: Field::HasMany,
-    rich_text_details: RichTextAreaField,
+    versions: Field::HasMany,
+    activities: Field::HasMany,
+    users: Field::HasMany,
+    resource: Field::Polymorphic,
     id: Field::Number,
-    by_date: Field::Date,
-    status: Field::String,
-    completed: Field::BooleanEmoji,
+    name: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    title: Field::String,
-    details: Field::Text,
-    sequence: Field::Number,
-    days: Field::Number
+    deleted_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -31,51 +25,28 @@ class DealActivityDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    title
-    status
-    completed
-    deal
-    deal_investor
-    entity
+    id
+    name
+    resource
+    created_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    title
-    rich_text_details
+    resource
     id
-    by_date
-    status
-    completed
+    name
     created_at
     updated_at
-    sequence
-    days
-    deal
-    deal_investor
-    entity
-    deal_docs
-
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    versions
-    deal
-    deal_investor
-    entity
-    deal_docs
-    rich_text_details
-    by_date
-    status
-    completed
-    title
-    details
-    sequence
-    days
+    resource
+    name
   ].freeze
 
   # COLLECTION_FILTERS
@@ -90,10 +61,10 @@ class DealActivityDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how deal activities are displayed
+  # Overwrite this method to customize how roles are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(deal_activity)
-  #   "DealActivity ##{deal_activity.id}"
-  # end
+  def display_resource(role)
+    "Role: #{role.name.capitalize}"
+  end
 end

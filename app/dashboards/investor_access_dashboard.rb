@@ -16,7 +16,7 @@ class InvestorAccessDashboard < Administrate::BaseDashboard
     granter: Field::BelongsTo,
     id: Field::Number,
     email: Field::String,
-    approved: Field::Boolean,
+    approved: Field::BooleanEmoji,
     granted_by: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,

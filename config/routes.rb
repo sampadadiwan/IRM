@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     resources :folders
     resources :investor_accesses
     resources :secondary_sales
+    resources :roles
     root to: "investors#index"
   end
 

@@ -16,9 +16,9 @@ class UserDashboard < Administrate::BaseDashboard
     updated_at: Field::DateTime,
     email: Field::String,
     phone: Field::String,
-    active: Field::Boolean,
-    confirmed_at: Field::DateTime
-
+    active: Field::BooleanEmoji,
+    confirmed_at: Field::DateTime,
+    roles: Field::HasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -49,7 +49,7 @@ class UserDashboard < Administrate::BaseDashboard
     phone
     active
     confirmed_at
-
+    roles
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -62,7 +62,7 @@ class UserDashboard < Administrate::BaseDashboard
     email
     phone
     active
-
+    roles
   ].freeze
 
   # COLLECTION_FILTERS

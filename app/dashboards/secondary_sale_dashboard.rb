@@ -21,11 +21,11 @@ class SecondarySaleDashboard < Administrate::BaseDashboard
     percent_allowed: Field::Number,
     min_price: Field::String.with_options(searchable: false),
     max_price: Field::String.with_options(searchable: false),
-    active: Field::Boolean,
+    active: Field::BooleanEmoji,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     total_offered_quantity: Field::Number,
-    visible_externally: Field::Boolean
+    visible_externally: Field::BooleanEmoji
   }.freeze
 
   # COLLECTION_ATTRIBUTES
