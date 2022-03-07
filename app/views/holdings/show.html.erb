@@ -15,7 +15,11 @@
         Investor
       </td>
       <td>
-        <%= @holding.user ? "#{@holding.user.full_name}, #{@holding.user.email}" : @holding.investor.investor_name %>
+        <% if @holding.user %>
+          <%=  @holding.user.full_name %>, <%= @holding.user.email %>
+        <% else %>
+          <%= link_to @holding.investor.investor_name, @holding.investor %>
+        <% end %>
       </td>
     </tr>
     <tr>

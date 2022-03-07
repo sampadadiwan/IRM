@@ -16,12 +16,15 @@
 
 <%= render "notes/index", notes: current_user.entity.notes.order("id desc").limit(5), title: "Recent Notes" %>
 
-<%= render "investors/index", investors: current_user.entity.investors.not_interacted(30).limit(5).page, title: "No Interaction in 30 Days" %>
+<% if current_user.entity.investors.not_interacted(30).count > 0 %>
+    <%= render "investors/index", investors: current_user.entity.investors.not_interacted(30).limit(5).page, title: "No Interaction in 30 Days" %>
+<% end %>
 
+<% if PublicActivity::Activity.where(entity_id: current_user.entity_id).count > 0 %>
+    <% activities = PublicActivity::Activity.where(entity_id: current_user.entity_id).limit(10) %>
+    <%= render "notifications/timeline", activities: activities if activities %>
+<% end %>
 
-<% activities = PublicActivity::Activity.where(entity_id: current_user.entity_id).limit(10) %>
-
-<%= render "notifications/timeline", activities: activities if activities %>
 
 
 

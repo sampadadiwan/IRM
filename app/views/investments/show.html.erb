@@ -13,7 +13,7 @@
          Investor
       </td>
       <td>
-         <%= @investment.investor.investor_name %>
+         <%= link_to @investment.investor.investor_name, @investment.investor %>
       </td>
    </tr>
    <tr>
@@ -21,7 +21,7 @@
          Investee Entity
       </td>
       <td>
-         <%= @investment.investee_entity.name %>
+         <%= link_to @investment.investee_entity.name, @investment.investee_entity %>
       </td>
    </tr>
 

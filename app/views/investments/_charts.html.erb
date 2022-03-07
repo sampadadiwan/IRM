@@ -1,3 +1,5 @@
+<% if Investment.where(investee_entity_id: entity.id).count > 0 %>
+
 <div class="row">
     <div class="col-lg-6 mb-4">
 
@@ -15,7 +17,7 @@
         <!-- Approach -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Instruments</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Investment By Instruments</h6>
             </div>
             <div class="card-body">
                 <%= investment_by_intrument(entity)  %>
@@ -48,3 +50,5 @@
     </div>
 
 </div>
+
+<% end %>
