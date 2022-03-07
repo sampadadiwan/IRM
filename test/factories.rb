@@ -110,6 +110,9 @@ FactoryBot.define do
     entity { deal.entity }
     company_advisor { Faker::Company.name }
     investor_advisor { Faker::Company.name }
+    currency { entity.currency }
+    units { entity.units }
+
   end
 
   factory :deal do
@@ -165,5 +168,8 @@ FactoryBot.define do
     enable_investments {true}
     enable_holdings {true}
     enable_secondary_sale {true}
+    currency { ENV["CURRENCY"].split(",")[rand(3)] }
+    units { ENV["CURRENCY_UNITS"].split(",")[rand(3)] }
+
   end
 end

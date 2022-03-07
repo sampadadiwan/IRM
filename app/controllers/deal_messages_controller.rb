@@ -83,11 +83,12 @@ class DealMessagesController < ApplicationController
       if @deal_message.save
         format.turbo_stream do
           render turbo_stream: [
-            if @deal_message.task_done
-              turbo_stream.remove(@deal_message)
-            else
-              turbo_stream.replace(@deal_message)
-            end
+            # if @deal_message.task_done
+            #   turbo_stream.remove(@deal_message)
+            # else
+            #   turbo_stream.replace(@deal_message)
+            # end
+            turbo_stream.replace(@deal_message)
           ]
         end
       end
