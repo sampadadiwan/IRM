@@ -35,10 +35,10 @@
     <% end %>
     
     <td>
-        <%= number_to_currency(investment.price, units: "INR")  %>
+        <%= number_to_currency(investment.price, units: investment.investee_entity.currency)  %>
     </td>
     <td>
-        <%= number_to_currency(investment.amount, units: "INR")  %>
+        <%= number_to_currency(investment.amount, units: investment.investee_entity.currency)  %>
     </td>  
     
 <% end  %>

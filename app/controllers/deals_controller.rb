@@ -132,6 +132,7 @@ class DealsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def deal_params
-    params.require(:deal).permit(:entity_id, :name, :amount, :status, :activity_list, :archived)
+    params.require(:deal).permit(:entity_id, :name, :amount, :status,
+                                 :currency, :units, :activity_list, :archived)
   end
 end

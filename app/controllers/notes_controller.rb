@@ -35,6 +35,7 @@ class NotesController < ApplicationController
   # GET /notes/new
   def new
     @note = Note.new(note_params)
+    @note.on = Time.zone.today
     authorize @note
   end
 
@@ -95,6 +96,6 @@ class NotesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def note_params
-    params.require(:note).permit(:details, :entity_id, :user_id, :investor_id)
+    params.require(:note).permit(:details, :entity_id, :user_id, :investor_id, :on)
   end
 end

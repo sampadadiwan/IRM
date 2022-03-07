@@ -1,7 +1,10 @@
 <tr id="<%= dom_id note %>">
 <td>
     <%= note.user.name %>
-</td>  
+</td>
+<td>
+    <%= l note.on if note.on %>
+</td>    
 <td>
     <%= note.investor.investor_name %>
 </td>  
