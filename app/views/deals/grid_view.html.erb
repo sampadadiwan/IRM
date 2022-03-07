@@ -9,7 +9,9 @@
             <%= link_to "Not Declined", deal_path(id: @deal.id, grid_view: true), {class: "btn btn-primary"}  %>
         <% end %>
 
-        <%= link_to "Add Investor", new_deal_investor_path("deal_investor[deal_id]": @deal.id, "deal_investor[entity_id]": current_user.entity_id) , {class: "btn btn-success"}%>
+        <% if current_user.entity_id == @deal.entity_id %>
+            <%= link_to "Add Investor", new_deal_investor_path("deal_investor[deal_id]": @deal.id, "deal_investor[entity_id]": current_user.entity_id) , {class: "btn btn-success"}%>
+        <% end %>
 
         <% if !@deal.start_date.present?  %>
             <%= button_to "Start Deal", start_deal_deal_path(@deal), 
@@ -31,9 +33,18 @@
         <thead>
             <tr>
                 <th>Investor</th>
-                <th>Pre Money Valuation</th>
-                <th>Primary</th>
-                <th>Secondary</th>
+                <th>
+                    Pre Money
+                    (<%= @deal.units %> <%= @deal.currency %>)
+                </th>
+                <th>
+                    Primary
+                    (<%= @deal.units %> <%= @deal.currency %>)
+                </th>
+                <th>
+                    Secondary
+                    (<%= @deal.units %> <%= @deal.currency %>)
+                </th>
                 <% DealActivity.templates(@deal).each do |deal_activity| %>
                     <th> <%= deal_activity.title %> </th>
                 <% end %>

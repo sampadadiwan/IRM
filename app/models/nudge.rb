@@ -13,6 +13,7 @@ class Nudge < ApplicationRecord
 
   def pre_populate
     self.to = []
+    self.cc = self.entity.employees.collect(&:email).join(",")
     self.subject = ""
     self.msg_body = ""
     case item_type

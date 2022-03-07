@@ -26,19 +26,5 @@
         <span class="badge bg-danger">Archived</span>
     <% end %>
 </td>  
-<% if current_user.entity_id == deal.entity_id %>
 
-<td>
-  <div class="btn-group">
-    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Action
-    </button>
-    <div class="dropdown-menu">
-        <%= link_to "Add Investor", new_deal_investor_path("deal_investor[deal_id]": deal.id, "deal_investor[entity_id]": current_user.entity_id) , {class: "dropdown-item"}%>
-        <%= link_to "View Investors", deal_investors_path(deal_id: deal.id) , {class: "dropdown-item"}%>               
-    </div>
-  </div>
-</td>
-
-<% end %>
 </tr>
