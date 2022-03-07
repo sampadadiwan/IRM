@@ -9,6 +9,8 @@
             <%= link_to "Not Declined", deal_path(id: @deal.id, grid_view: true), {class: "btn btn-primary"}  %>
         <% end %>
 
+        <%= link_to "Add Investor", new_deal_investor_path("deal_investor[deal_id]": @deal.id, "deal_investor[entity_id]": current_user.entity_id) , {class: "btn btn-success"}%>
+
         <% if !@deal.start_date.present?  %>
             <%= button_to "Start Deal", start_deal_deal_path(@deal), 
             {class: "btn btn-success", form_class: "deleteButton"} %> 

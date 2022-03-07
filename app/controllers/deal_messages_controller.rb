@@ -129,6 +129,6 @@ class DealMessagesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def deal_message_params
-    params.require(:deal_message).permit(:user_id, :content, :deal_investor_id, :task_done)
+    params.require(:deal_message).permit(:user_id, :content, :deal_investor_id, :task_done, :not_msg)
   end
 end

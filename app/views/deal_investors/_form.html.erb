@@ -34,15 +34,17 @@
     <%= form.select :status, DealInvestor::STATUS, {}, {class: "form-control"} %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :primary_amount %>
-    <%= form.text_field :primary_amount, class: "form-control"  %>
-  </div>
 
   <div class="form-group">
     <%= form.label :pre_money_valuation %>
     <%= form.text_field :pre_money_valuation, class: "form-control"  %>
   </div>
+  
+  <div class="form-group">
+    <%= form.label :primary_amount %>
+    <%= form.text_field :primary_amount, class: "form-control"  %>
+  </div>
+
 
   <div class="form-group">
     <%= form.label :secondary_investment %>

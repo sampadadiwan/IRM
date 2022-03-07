@@ -20,11 +20,14 @@
         <!-- Illustrations -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
+                <span class="m-0 font-weight-bold text-primary">Tasks</span>    
+                <%= link_to "Show Completed", deal_messages_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id, show_all: true), class: "float-right btn btn-sm btn-primary"%>
+                
             </div>
             <div class="card-body">
-                <%= render "deal_messages/index", deal_messages: deal_messages.tasks_not_done %>
-            </div>
+                <% tasks = params[:show_all]=='true' ? deal_messages.tasks : deal_messages.tasks_not_done %>
+                <%= render "deal_messages/index", deal_messages: tasks %>
+            </tasks
         </div>
     </div>
 </div>
