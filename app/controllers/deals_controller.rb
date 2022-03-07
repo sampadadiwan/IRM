@@ -58,6 +58,8 @@ class DealsController < ApplicationController
   # GET /deals/new
   def new
     @deal = Deal.new(deal_params)
+    @deal.currency = @deal.entity.currency
+    @deal.units = @deal.entity.units
     @deal.activity_list = Deal::ACTIVITIES
     authorize @deal
   end
