@@ -22,7 +22,7 @@ class DealMessage < ApplicationRecord
   belongs_to :user
   belongs_to :deal_investor
   has_rich_text :content
-  encrypts :content
+  # encrypts :content
 
   scope :user_messages, lambda { |user|
                           where("deal_messages.user_id =? OR deal_investors.entity_id=? OR investors.investor_entity_id=?",
@@ -30,9 +30,12 @@ class DealMessage < ApplicationRecord
                         }
 
   scope :tasks, -> { where(is_task: true) }
+  scope :not_msg, -> { where(not_msg: true) }
+  scope :msg, -> { where(not_msg: false) }
+
   scope :tasks_not_done, -> { where(is_task: true, task_done: false) }
 
-  after_create :broadcast_message
+  after_create :broadcast_message, unless: :not_msg
 
   def broadcast_message
     broadcast_append_to "deal_investor_#{deal_investor_id}",

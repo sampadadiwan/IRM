@@ -24,6 +24,9 @@ class DealMessagesController < ApplicationController
 
   # GET /deal_messages/new
   def new
+    @deal_message = DealMessage.new(deal_message_params)
+    @deal_message.user_id = current_user.id
+
     authorize @deal_message
   end
 
@@ -40,12 +43,7 @@ class DealMessagesController < ApplicationController
 
     respond_to do |format|
       if @deal_message.save
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace('deal_message_form', partial: "deal_messages/form",
-                                                      locals: { deal_message: DealMessage.new(deal_investor_id: @deal_message.deal_investor_id) })
-          ]
-        end
+        format.turbo_stream { render :create }
         format.html { redirect_to deal_message_url(@deal_message), notice: "Deal message was successfully created." }
         format.json { render :show, status: :created, location: @deal_message }
       else
@@ -130,6 +128,7 @@ class DealMessagesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def deal_message_params
-    params.require(:deal_message).permit(:user_id, :content, :deal_investor_id, :task_done, :not_msg)
+    params.require(:deal_message).permit(:user_id, :content, :deal_investor_id, :task_done,
+                                         :is_task, :not_msg)
   end
 end

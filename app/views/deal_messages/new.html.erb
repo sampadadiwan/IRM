@@ -1,2 +1,3 @@
-
-<%= render "form", deal_message: @deal_message %>
+<%= turbo_frame_tag "new_deal_message" do %>
+    <%= render "form", deal_message: @deal_message %>
+<% end %>

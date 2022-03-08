@@ -8,8 +8,8 @@
                 <%= link_to "Nudge", new_nudge_path("nudge[item_id]": deal_investor.id, "nudge[item_type]": "DealInvestor", back_to: deal_path(deal_investor.deal, grid_view: true)), class: "dropdown-item" %>
                 <%= link_to "View Investor", deal_investor_path(id: deal_investor.id), class: "dropdown-item" %>
                 <%= link_to "View Docs", deal_docs_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
-                <%= link_to "View Msgs", deal_messages_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
-                <%= link_to "View Activities", deal_activities_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
+                <%= link_to "View Tasks", deal_messages_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
+                <%= link_to "View Stages", deal_activities_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
             </div>
             
         </div>
