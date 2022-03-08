@@ -52,24 +52,6 @@
       </td>
    </tr>
 
-   <% if @investment.investment_instrument != "Debt" %>
-   <tr>
-      <td>
-         Percentage Holding
-      </td>
-      <td>
-         <%= @investment.percentage_holding %> %
-      </td>
-   </tr>
-   <tr>
-      <td>
-         Fully Diluted
-      </td>
-      <td>
-         <%= @investment.diluted_percentage %> %
-      </td>
-   </tr>
-   <% end %>
    <tr>
       <td>
          Price
@@ -86,6 +68,28 @@
          <%= money_to_currency(@investment.amount, @investment.currency) %>
       </td>
    </tr>
+
+
+
+   <% if @investment.investment_instrument != "Debt" %>
+      <tr>
+         <td>
+            Percentage Holding
+         </td>
+         <td>
+            <%= @investment.percentage_holding %> %
+         </td>
+      </tr>
+      <tr>
+         <td>
+            Fully Diluted
+         </td>
+         <td>
+            <%= @investment.diluted_percentage %> %
+         </td>
+      </tr>
+   <% end %>
+
    <% end %>
 </table>
 

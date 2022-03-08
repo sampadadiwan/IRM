@@ -11,9 +11,9 @@ Scenario Outline: Create new deal
   And I should see the deal in all deals page
 
   Examples:
-  	|user	      |entity               |deal                     |msg	|
-  	|  	        |entity_type=Startup  |name=Series A;amount=100 |Deal was successfully created|
-    |  	        |entity_type=Startup  |name=Series B;amount=120 |Deal was successfully created|
+  	|user	      |entity               |deal                             |msg	|
+  	|  	        |entity_type=Startup  |name=Series A;amount_cents=10000 |Deal was successfully created|
+    |  	        |entity_type=Startup  |name=Series B;amount_cents=12000 |Deal was successfully created|
 
 
 Scenario Outline: Start deal
@@ -26,6 +26,6 @@ Scenario Outline: Start deal
   Then the deal should be started
 
   Examples:
-  	|user	      |entity               |deal                     |msg	|
-  	|  	        |entity_type=Startup  |name=Series A;amount=100 |Deal was successfully started|
-    |  	        |entity_type=Startup  |name=Series B;amount=120 |Deal was successfully started|
+  	|user	      |entity               |deal                             |msg	|
+  	|  	        |entity_type=Startup  |name=Series A;amount_cents=10000 |Deal was successfully started|
+    |  	        |entity_type=Startup  |name=Series B;amount_cents=12000 |Deal was successfully started|

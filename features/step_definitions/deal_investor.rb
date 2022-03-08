@@ -1,4 +1,5 @@
 include ActionView::Helpers::NumberHelper
+include InvestmentsHelper
 
   When('I create a new deal investor {string}') do |arg1|
     @deal_investor = FactoryBot.build(:deal_investor)
@@ -28,8 +29,8 @@ include ActionView::Helpers::NumberHelper
   Then('I should see the deal investor details on the details page') do
     expect(page).to have_content(@deal.name)
     expect(page).to have_content(@deal_investor.investor_name)
-    expect(page).to have_content(number_to_currency @deal_investor.primary_amount)
-    expect(page).to have_content(number_to_currency @deal_investor.secondary_investment)
+    expect(page).to have_content(money_to_currency @deal_investor.primary_amount, @deal_investor.deal.currency)
+    expect(page).to have_content(money_to_currency @deal_investor.secondary_investment, @deal_investor.deal.currency)
     expect(page).to have_content(@deal_investor.entity_name)
   end
   
@@ -37,8 +38,8 @@ include ActionView::Helpers::NumberHelper
     visit("/deal_investors")
     expect(page).to have_content(@deal.name)
     expect(page).to have_content(@deal_investor.investor_name)
-    expect(page).to have_content(number_to_currency @deal_investor.primary_amount)
-    expect(page).to have_content(number_to_currency @deal_investor.secondary_investment)
+    expect(page).to have_content(money_to_currency @deal_investor.primary_amount, @deal_investor.deal.currency)
+    expect(page).to have_content(money_to_currency @deal_investor.secondary_investment, @deal_investor.deal.currency)
     expect(page).to have_content(@deal_investor.entity_name)
   end
   

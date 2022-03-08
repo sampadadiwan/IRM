@@ -13,6 +13,6 @@ Scenario Outline: Create new deal
   And I should see the deal investor in all deal investors page
 
   Examples:
-  	|user	      |deal_investor      |entity               |deal                     |msg	|
-  	|  	        |primary_amount=100 |entity_type=Startup  |name=Series A;amount=100 |Deal investor was successfully created|
-    |  	        |primary_amount=120 |entity_type=Startup  |name=Series B;amount=120 |Deal investor was successfully created|
+  	|user	      |deal_investor              |entity               |deal                             |msg	|
+  	|  	        |primary_amount_cents=10000 |entity_type=Startup  |name=Series A;amount_cents=10000 |Deal investor was successfully created|
+    |  	        |primary_amount_cents=12000 |entity_type=Startup  |name=Series B;amount_cents=12000 |Deal investor was successfully created|

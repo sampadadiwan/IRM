@@ -1,3 +1,5 @@
+include InvestmentsHelper
+
 Given('I am at the investments page') do
   visit("/investments")
 end
@@ -42,8 +44,9 @@ Then('I should see the investment details on the details page') do
   expect(page).to have_content(@investment.investment_instrument)
   expect(page).to have_content(@investment.investment_type)
   expect(page).to have_content(@investment.quantity)
-  expect(page).to have_content(ActiveSupport::NumberHelper.number_with_delimiter(@investment.price))
-  expect(page).to have_content(ActiveSupport::NumberHelper.number_with_delimiter(@investment.amount))
+  expect(page).to have_content(money_to_currency(@investment.price, @investment.currency))
+  expect(page).to have_content(money_to_currency(@investment.amount, @investment.currency))
+  sleep(10)
 end
 
 Then('I should see the investment in all investments page') do
@@ -53,7 +56,7 @@ Then('I should see the investment in all investments page') do
   expect(page).to have_content(@investment.investment_instrument)
   expect(page).to have_content(@investment.investment_type)
   expect(page).to have_content(@investment.quantity)
-  expect(page).to have_content(ActiveSupport::NumberHelper.number_with_delimiter(@investment.price))
+  expect(page).to have_content(money_to_currency(@investment.price, @investment.currency))
 end
 
 

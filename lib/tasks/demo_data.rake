@@ -102,7 +102,7 @@ namespace :irm do
         end
 
         i = FactoryBot.create(:investment, investee_entity: e, investor: inv)
-        puts "Investment #{i.id}"
+        puts "Investment #{i.to_json}"
       end
 
       i&.update_percentage_holdings
