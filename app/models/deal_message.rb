@@ -18,6 +18,7 @@ class DealMessage < ApplicationRecord
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   belongs_to :user
+  belongs_to :entity
   belongs_to :deal_investor
   has_rich_text :content
   # encrypts :content

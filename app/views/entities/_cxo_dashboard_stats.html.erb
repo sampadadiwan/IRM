@@ -68,28 +68,47 @@
 
         <% 
             deal = current_user.entity.deals.where(status: "Open", archived: false).last 
-            if deal
+            if deal && false
         %>
-        <!-- Pending Requests Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                <%= link_to "Active Deal", deal, class: "text-warning" %>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    <%= link_to "Active Deal", deal, class: "text-warning" %>
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                    <%= deal.name %>
+                                </div>
                             </div>
-                            <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                <%= deal.name %>
+                            <div class="col-auto">
+                                <i class="fas fa-briefcase fa-2x text-gray-300"></i>
                             </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-briefcase fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <% else %>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    <%= link_to "Open Tasks", deal_messages_path(tasks:true), class: "text-warning" %>
+                                </div>
+                                <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                    <%= current_user.entity.deal_messages.tasks_not_done.count %>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-briefcase fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
         <% end %>
 
     </div>
