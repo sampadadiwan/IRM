@@ -9,7 +9,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Investors</div>
+                                <%= link_to "Investors", investors_path, class: "text-primary" %>
+                            </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800"><%= current_user.entity.investors_count %></div>
                         </div>
                         <div class="col-auto">
@@ -27,11 +28,12 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Investments</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= number_to_currency current_user.entity.total_investments %></div>
+                                <%= link_to "Pending Access", investor_accesses_path(approved:false), class: "text-success" %>
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= current_user.entity.investor_accesses.unapproved.count %></div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            <i class="fas fa-key fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -44,7 +46,8 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Documents
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                <%= link_to "Documents", documents_path, class: "text-info" %>
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
@@ -63,6 +66,10 @@
             </div>
         </div>
 
+        <% 
+            deal = current_user.entity.deals.where(status: "Open", archived: false).last 
+            if deal
+        %>
         <!-- Pending Requests Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-warning shadow h-100 py-2">
@@ -70,9 +77,10 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Deals</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                <%= number_to_currency current_user.entity.deals.sum(:amount) %>
+                                <%= link_to "Active Deal", deal, class: "text-warning" %>
+                            </div>
+                            <div class="h6 mb-0 font-weight-bold text-gray-800">
+                                <%= deal.name %>
                             </div>
                         </div>
                         <div class="col-auto">
@@ -82,6 +90,8 @@
                 </div>
             </div>
         </div>
+        <% end %>
+
     </div>
 
 </div>

@@ -5,6 +5,7 @@ class InvestorAccessesController < ApplicationController
   # GET /investor_accesses or /investor_accesses.json
   def index
     @investor_accesses = policy_scope(InvestorAccess)
+    @investor_accesses = @investor_accesses.where(approved: params[:approved]) if params[:approved].present?
   end
 
   def search
