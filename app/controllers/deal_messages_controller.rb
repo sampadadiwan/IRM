@@ -12,6 +12,8 @@ class DealMessagesController < ApplicationController
       @deal_investor.messages_viewed(current_user)
       # Return the messages
       @deal_messages = @deal_investor.deal_messages.with_all_rich_text.includes(:user)
+    elsif params[:tasks].present?
+      @deal_messages = DealMessage.where(entity_id: current_user.entity_id).tasks_not_done
     else
       @deal_messages = DealMessage.none
     end
@@ -26,7 +28,7 @@ class DealMessagesController < ApplicationController
   def new
     @deal_message = DealMessage.new(deal_message_params)
     @deal_message.user_id = current_user.id
-
+    @deal_message.entity_id = @deal_message.deal_investor.entity_id
     authorize @deal_message
   end
 
@@ -39,6 +41,7 @@ class DealMessagesController < ApplicationController
   def create
     @deal_message = DealMessage.new(deal_message_params)
     @deal_message.user_id = current_user.id
+    @deal_message.entity_id = @deal_message.deal_investor.entity_id
     authorize @deal_message
 
     respond_to do |format|

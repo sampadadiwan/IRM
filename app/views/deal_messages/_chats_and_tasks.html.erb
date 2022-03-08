@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-8 mb-4">
+    <div class="col-lg-7 mb-4">
         <!-- Illustrations -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -15,29 +15,7 @@
             </div>
         </div>
     </div>
-
-    <div class="col-lg-4 mb-4">
-        <!-- Illustrations -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <span class="m-0 font-weight-bold text-primary">Tasks</span>    
-                <% label = params[:show_all] == "true" ? "Hide Done" : "Show All" %>
-                <span class="float-right">
-                    <%= link_to label, deal_messages_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id, show_all: params[:show_all] != "true"), class: "btn btn-sm btn-primary"%>    
-                    <%= link_to "New Task", new_deal_message_path("deal_message[deal_investor_id]": deal_investor.id, 
-                                "deal_message[is_task]": true, "deal_message[not_msg]": true), 
-                                { data: { turbo_frame: 'new_deal_message' },
-                                  method: :get, class: "btn btn-sm btn-primary"} %>    
-                </span>
-            </div>
-
-            <div class="card-body">
-
-                <%= turbo_frame_tag "new_deal_message" do %>
-                <% end %>
-                <% tasks = params[:show_all]=='true' ? deal_messages.tasks : deal_messages.tasks_not_done %>
-                <%= render "deal_messages/index", deal_messages: tasks %>
-            </tasks
-        </div>
+    <div class="col-lg-5 mb-4">
+        <%= render "deal_messages/index", deal_messages: @deal_messages, deal_investor: deal_investor %>
     </div>
 </div>
