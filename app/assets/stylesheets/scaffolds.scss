@@ -222,6 +222,10 @@ div.divider {
     position: sticky;
     background-color: white;
   }
+
+  .sticky-col:hover {
+    z-index: 1;
+  }
   
   .first-col {
     width: 200px;
@@ -229,6 +233,8 @@ div.divider {
     max-width: 800px;
     left: 0px;
   }
+
+  
   
 }
 
