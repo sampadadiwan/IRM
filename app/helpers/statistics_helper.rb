@@ -3,14 +3,14 @@ module StatisticsHelper
     bar_chart Investment.where(investee_entity_id: entity.id)
                         .group_by(&:investment_type)
                         .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
-              prefix: '₹'
+              prefix: entity.currency
   end
 
   def investment_by_intrument(entity)
     bar_chart Investment.where(investee_entity_id: entity.id)
                         .group_by(&:investment_instrument)
                         .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
-              prefix: '₹'
+              prefix: entity.currency
   end
 
   def investment_by_investor(entity)
@@ -24,7 +24,7 @@ module StatisticsHelper
               #   xtitle: "Investment Amount",
               #   ytitle: "Type",
               donut: true,
-              prefix: '₹'
+              prefix: entity.currency
   end
 
   def count_by_investor(entity)
