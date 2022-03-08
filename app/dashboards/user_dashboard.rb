@@ -15,6 +15,8 @@ class UserDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     email: Field::String,
+    password: Field::String,
+    password_confirmation: Field::String,
     phone: Field::String,
     active: Field::BooleanEmoji,
     confirmed_at: Field::DateTime,
@@ -60,6 +62,8 @@ class UserDashboard < Administrate::BaseDashboard
     first_name
     last_name
     email
+    password
+    password_confirmation
     phone
     active
     roles

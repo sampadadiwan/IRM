@@ -19,6 +19,14 @@
                     <span>Dashboard</span></a>
             </li>
 
+            <% if current_user && current_user.has_cached_role?(:super) %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">
+                        <i class="fas fa-fw fa-key"></i>
+                        <span>Admin</span></a>
+                </li>                
+            <% end %>
+
             <% if current_user && current_user.has_cached_role?(:holding) %>
                 <li class="nav-item">
                         

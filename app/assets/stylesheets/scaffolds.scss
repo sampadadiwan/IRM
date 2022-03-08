@@ -234,7 +234,11 @@ div.divider {
     left: 0px;
   }
 
-  
+  .dropdown-toggle {
+    z-index: -100;
+  }
+
+
   
 }
 
