@@ -8,44 +8,44 @@ FactoryBot.define do
     user { entity.employees.sample }
   end
 
-  factory :nudge do
-    to { "MyText" }
-    subject { "MyText" }
-    msg_body { "MyText" }
-    user { nil }
-    entity { nil }
-    item { nil }
-  end
+  # factory :nudge do
+  #   to { "MyText" }
+  #   subject { "MyText" }
+  #   msg_body { "MyText" }
+  #   user { nil }
+  #   entity { nil }
+  #   item { nil }
+  # end
 
-  factory :import_upload do
-    name { "MyString" }
-    entity { nil }
-    owner { nil }
-    user { nil }
-    import_type { "MyString" }
-    status { "MyString" }
-    error_text { "MyText" }
-  end
-
-  
-  factory :interest do
-    offer_entity_id { 1 }
-    quantity { 1 }
-    price { "9.99" }
-    user { nil }
-    interest_entity_id { 1 }
-    secondary_sale { nil }
-  end
+  # factory :import_upload do
+  #   name { "MyString" }
+  #   entity { nil }
+  #   owner { nil }
+  #   user { nil }
+  #   import_type { "MyString" }
+  #   status { "MyString" }
+  #   error_text { "MyText" }
+  # end
 
   
-  factory :offer do
-    user { nil }
-    entity { nil }
-    secondary_sale { nil }
-    quantity { 1 }
-    percentage { "9.99" }
-    notes { "MyText" }
-  end
+  # factory :interest do
+  #   offer_entity_id { 1 }
+  #   quantity { 1 }
+  #   price { "9.99" }
+  #   user { nil }
+  #   interest_entity_id { 1 }
+  #   secondary_sale { nil }
+  # end
+
+  
+  # factory :offer do
+  #   user { nil }
+  #   entity { nil }
+  #   secondary_sale { nil }
+  #   quantity { 1 }
+  #   percentage { "9.99" }
+  #   notes { "MyText" }
+  # end
 
   factory :secondary_sale do
     name { "Sale-#{Time.zone.today}" }
@@ -85,8 +85,11 @@ FactoryBot.define do
 
   factory :deal_message do
     deal_investor { DealInvestor.all.sample }
+    entity_id { deal_investor.entity_id}
     user { rand(2).positive? ? deal_investor.investor.investor_entity.employees.sample : deal_investor.investor.investee_entity.employees.sample }
     content { Faker::Quotes::Rajnikanth.joke }
+    is_task { rand(2) }
+    not_msg { rand(2) }
   end
 
   factory :deal_activity do

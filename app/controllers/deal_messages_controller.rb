@@ -13,7 +13,11 @@ class DealMessagesController < ApplicationController
       # Return the messages
       @deal_messages = @deal_investor.deal_messages.with_all_rich_text.includes(:user)
     elsif params[:tasks].present?
-      @deal_messages = DealMessage.where(entity_id: current_user.entity_id).tasks_not_done
+      @deal_messages = if params[:show_all].present?
+                         DealMessage.where(entity_id: current_user.entity_id).tasks
+                       else
+                         DealMessage.where(entity_id: current_user.entity_id).tasks_not_done
+                       end
     else
       @deal_messages = DealMessage.none
     end
