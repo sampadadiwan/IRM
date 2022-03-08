@@ -3,7 +3,7 @@
 # Table name: documents
 #
 #  id                :integer          not null, primary key
-#  name              :string(100)
+#  name              :string(255)
 #  visible_to        :string(255)      default("--- []\n")
 #  text              :string(255)      default("--- []\n")
 #  created_at        :datetime         not null

@@ -10,6 +10,7 @@
 #  is_task          :boolean          default("0")
 #  task_done        :boolean          default("0")
 #  deleted_at       :datetime
+#  not_msg          :boolean          default("0")
 #
 
 require "test_helper"

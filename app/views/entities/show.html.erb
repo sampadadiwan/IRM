@@ -33,7 +33,7 @@
                <%= @entity.details %>
             </td>
          </tr>
-
+         <% if @entity.entity_type == "Startup" %>
          <tr>
             <td>
                Currency
@@ -52,6 +52,7 @@
             </td>
          </tr>
 
+         <% end %>
 
 
          <tr>

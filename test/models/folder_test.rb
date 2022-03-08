@@ -3,7 +3,7 @@
 # Table name: folders
 #
 #  id               :integer          not null, primary key
-#  name             :string(100)
+#  name             :string(255)
 #  parent_folder_id :integer
 #  full_path        :text(65535)
 #  level            :integer

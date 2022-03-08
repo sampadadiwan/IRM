@@ -18,6 +18,9 @@
 #  unread_messages_investee :integer          default("0")
 #  todays_messages_investor :integer          default("0")
 #  todays_messages_investee :integer          default("0")
+#  pre_money_valuation      :decimal(20, 2)   default("0.00")
+#  company_advisor          :string(100)
+#  investor_advisor         :string(100)
 #
 
 require "test_helper"

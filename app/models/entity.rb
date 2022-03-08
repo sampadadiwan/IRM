@@ -2,30 +2,39 @@
 #
 # Table name: entities
 #
-#  id                   :integer          not null, primary key
-#  name                 :string(255)
-#  url                  :string(255)
-#  category             :string(100)
-#  founded              :date
-#  funding_amount       :float(24)
-#  funding_unit         :string(10)
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  logo_url             :text(65535)
-#  active               :boolean          default("1")
-#  entity_type          :string(15)
-#  created_by           :integer
-#  investor_categories  :string(255)
-#  investment_types     :string(255)
-#  instrument_types     :string(255)
-#  s3_bucket            :string(255)
-#  deleted_at           :datetime
-#  investors_count      :integer          default("0"), not null
-#  investments_count    :integer          default("0"), not null
-#  deals_count          :integer          default("0"), not null
-#  deal_investors_count :integer          default("0"), not null
-#  documents_count      :integer          default("0"), not null
-#  total_investments    :decimal(20, )    default("0")
+#  id                    :integer          not null, primary key
+#  name                  :string(255)
+#  url                   :string(255)
+#  category              :string(255)
+#  founded               :date
+#  funding_amount        :float(24)
+#  funding_unit          :string(10)
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  logo_url              :text(65535)
+#  active                :boolean          default("1")
+#  entity_type           :string(15)
+#  created_by            :integer
+#  investor_categories   :string(255)
+#  investment_types      :string(255)
+#  instrument_types      :string(255)
+#  s3_bucket             :string(255)
+#  deleted_at            :datetime
+#  investors_count       :integer          default("0"), not null
+#  investments_count     :integer          default("0"), not null
+#  deals_count           :integer          default("0"), not null
+#  deal_investors_count  :integer          default("0"), not null
+#  documents_count       :integer          default("0"), not null
+#  total_investments     :decimal(20, )    default("0")
+#  is_holdings_entity    :boolean          default("0")
+#  enable_documents      :boolean          default("0")
+#  enable_deals          :boolean          default("0")
+#  enable_investments    :boolean          default("0")
+#  enable_holdings       :boolean          default("0")
+#  enable_secondary_sale :boolean          default("0")
+#  parent_entity_id      :integer
+#  currency              :string(10)
+#  units                 :string(15)
 #
 
 class Entity < ApplicationRecord

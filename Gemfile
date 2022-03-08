@@ -50,6 +50,8 @@ gem "chartkick"
 gem 'groupdate'
 gem 'hightop'
 
+gem 'money-rails', '~>1.12'
+
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary-edge'
 

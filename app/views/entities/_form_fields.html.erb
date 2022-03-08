@@ -30,6 +30,8 @@
     <%= form.text_field :url, class: "form-control"  %>
   </div>
 
+  <% if entity.entity_type == "Startup" %>
+
   <div class="form-group">
     <%= form.label :currency %>
     <%= form.select :currency, ENV["CURRENCY"].split(","), {}, class: "form-control"  %>
@@ -40,6 +42,7 @@
     <%= form.select :units, ENV["CURRENCY_UNITS"].split(","), {}, class: "form-control"  %>
   </div>
 
+  <% end %>
 
   <div class="form-group">
     <%= form.label :details %>
