@@ -216,4 +216,19 @@ div.divider {
   th, td, .btn {
     font-size: 1em;
   }
+
+  .sticky-col {
+    position: -webkit-sticky;
+    position: sticky;
+    background-color: white;
+  }
+  
+  .first-col {
+    width: 200px;
+    min-width: 200px;
+    max-width: 800px;
+    left: 0px;
+  }
+  
 }
+

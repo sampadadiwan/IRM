@@ -28,11 +28,11 @@
     </span>
 </div>
 
-<div id="deal_grid_div" data-controller="datatable">
+<div id="deal_grid_div" class="table-responsive">
     <table id="deal_grid_view" class="table table-bordered dataTable" >
         <thead>
             <tr>
-                <th>Investor</th>
+                <th class="sticky-col first-col">Investor</th>
                 <th>
                     Pre Money
                     (<%= @deal.units %> <%= @deal.currency %>)
