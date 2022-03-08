@@ -23,6 +23,8 @@ class EntityDashboard < Administrate::BaseDashboard
     investor_categories: Field::String,
     investment_types: Field::String,
     instrument_types: Field::String,
+    trial: Field::BooleanEmoji,
+    trial_end_date: Field::Date,
     enable_documents: Field::BooleanEmoji,
     enable_deals: Field::BooleanEmoji,
     enable_investments: Field::BooleanEmoji,
@@ -41,6 +43,7 @@ class EntityDashboard < Administrate::BaseDashboard
     url
     entity_type
     category
+    trial
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -58,6 +61,8 @@ class EntityDashboard < Administrate::BaseDashboard
     investor_categories
     investment_types
     instrument_types
+    trial
+    trial_end_date
     enable_documents
     enable_deals
     enable_investments
@@ -77,6 +82,8 @@ class EntityDashboard < Administrate::BaseDashboard
     investor_categories
     investment_types
     instrument_types
+    trial
+    trial_end_date
     enable_documents
     enable_deals
     enable_investments

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_08_121837) do
+ActiveRecord::Schema.define(version: 2022_03_08_143307) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -269,6 +269,8 @@ ActiveRecord::Schema.define(version: 2022_03_08_121837) do
     t.integer "parent_entity_id"
     t.string "currency", limit: 10
     t.string "units", limit: 15
+    t.date "trial_end_date"
+    t.boolean "trial", default: false
     t.index ["deleted_at"], name: "index_entities_on_deleted_at"
     t.index ["parent_entity_id"], name: "index_entities_on_parent_entity_id"
   end
@@ -276,8 +278,8 @@ ActiveRecord::Schema.define(version: 2022_03_08_121837) do
   create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "body", size: :medium
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

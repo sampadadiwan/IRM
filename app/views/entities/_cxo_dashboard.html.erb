@@ -14,7 +14,9 @@
 
 <%= render "investments/charts", entity: current_user.entity %>
 
-<%= render "notes/index", notes: current_user.entity.notes.order("id desc").limit(5), title: "Recent Notes" %>
+<% if current_user.entity.notes.count > 0 %>
+    <%= render "notes/index", notes: current_user.entity.notes.order("id desc").limit(5), title: "Recent Notes" %>
+<% end %>
 
 <% if current_user.entity.investors.not_interacted(30).count > 0 %>
     <%= render "investors/index", investors: current_user.entity.investors.not_interacted(30).limit(5).page, title: "No Interaction in 30 Days" %>
