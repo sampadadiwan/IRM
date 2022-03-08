@@ -66,6 +66,10 @@ class Deal < ApplicationRecord
     GenerateDealActivitiesJob.perform_later(id)
   end
 
+  def started?
+    start_date != nil
+  end
+
   def self.for_investor(user)
     Deal
       # Ensure the access rghts for Document

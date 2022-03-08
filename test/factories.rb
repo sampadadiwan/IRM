@@ -113,9 +113,6 @@ FactoryBot.define do
     entity { deal.entity }
     company_advisor { Faker::Company.name }
     investor_advisor { Faker::Company.name }
-    currency { entity.currency }
-    units { entity.units }
-
   end
 
   factory :deal do
@@ -123,6 +120,8 @@ FactoryBot.define do
     name { ["Series A", "Series B", "Series C", "Series D"][rand(4)] }
     amount { rand(2..11) * 10_000_000 }
     status { "Open" }
+    currency { entity.currency }
+    units { entity.units }
   end
 
   factory :note do

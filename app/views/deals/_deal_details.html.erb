@@ -34,7 +34,7 @@
           <% params[:template] = true %>
           <%= render "deal_activities/index", deal: deal, 
             deal_activities: deal.deal_activities.templates(deal).with_all_rich_text.includes(:deal_investor), 
-            template: true, params: {deal_id: deal.id, back_to: deal_path(deal, grid_view: true, tab: "activities-tab")} %>
+            template: true, params: {deal_id: deal.id, back_to: deal_path(deal, grid_view: true, tab: "activities-tab"), template: true} %>
         </div>  
       </div>
 

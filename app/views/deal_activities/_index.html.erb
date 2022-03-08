@@ -51,6 +51,7 @@
 
   </div>
 
+  
   <% if params[:template].present? %>
       <%= link_to "Change Sequence", update_sequence_deal_activity_path( id: 0, sequence: 0), id: "sort_link", hidden: true %>
       <div data-controller="activitytemplatesort"></div>

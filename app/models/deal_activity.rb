@@ -43,12 +43,21 @@ class DealActivity < ApplicationRecord
 
   has_rich_text :details
 
-  scope :templates, ->(deal) { where(deal_id: deal.id).where(deal_investor_id: nil) }
+  scope :templates, ->(deal) { where(deal_id: deal.id).where(deal_investor_id: nil).order("sequence asc") }
 
   before_save :set_defaults
+  after_save :recreate_activities
 
   def set_defaults
     self.status = "Template" if deal_investor_id.nil?
+  end
+
+  def recreate_activities
+    # If the deal has already started && this template for the deal is saved
+    if status == "Template" && deal.started?
+      # Then we recreate the activities for the deal
+      GenerateDealActivitiesJob.perform_later(deal_id)
+    end
   end
 
   def completed_status

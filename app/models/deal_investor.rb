@@ -70,16 +70,19 @@ class DealInvestor < ApplicationRecord
         by_date = start_date + days_to_completion.days
       end
 
+      # Sometimes the activity already exists, so update it
       existing_activity = DealActivity.where(deal_id: deal_id, deal_investor_id: id)
-                                      .where(title: template.title).first
+                                      .where(template_id: template.id).first
 
       if existing_activity.present?
+        # This happens when the deal is started and activities are added/modified later
         existing_activity.update(sequence: template.sequence, days: template.days, by_date: by_date)
       else
+        # Else create it
         DealActivity.create(deal_id: deal_id, deal_investor_id: id,
                             entity_id: entity_id, title: template.title,
                             sequence: template.sequence, days: template.days,
-                            by_date: by_date)
+                            by_date: by_date, template_id: template.id)
       end
 
       seq += 1
