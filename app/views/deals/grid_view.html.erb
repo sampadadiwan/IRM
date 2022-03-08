@@ -35,15 +35,15 @@
                 <th class="sticky-col first-col">Investor</th>
                 <th>
                     Pre Money
-                    (<%= @deal.units %> <%= @deal.currency %>)
+                    (<%= @deal.currency %>)
                 </th>
                 <th>
                     Primary
-                    (<%= @deal.units %> <%= @deal.currency %>)
+                    (<%= @deal.currency %>)
                 </th>
                 <th>
                     Secondary
-                    (<%= @deal.units %> <%= @deal.currency %>)
+                    (<%= @deal.currency %>)
                 </th>
                 <% DealActivity.templates(@deal).each do |deal_activity| %>
                     <th> <%= deal_activity.title %> </th>

@@ -45,6 +45,10 @@ Naming/AccessorMethodName:
   Exclude:
     - 'app/datatables/note_datatable.rb'
 
+Lint/DuplicateBranch:
+  Exclude:
+    - 'app/helpers/investments_helper.rb'
+
 # Metrics Cops
 Metrics/CyclomaticComplexity:
   Max: 10

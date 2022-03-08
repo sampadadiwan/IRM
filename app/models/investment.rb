@@ -41,6 +41,9 @@ class Investment < ApplicationRecord
   counter_culture :investee_entity
   counter_culture :investee_entity, column_name: 'total_investments', delta_column: 'initial_value'
 
+  # Handled by money-rails gem
+  monetize :amount_cents
+
   # "Series A,Series B,Series C"
   INVESTMENT_TYPES = ENV["INVESTMENT_TYPES"].split(",")
 
@@ -83,7 +86,9 @@ class Investment < ApplicationRecord
   end
 
   def update_amount
-    self.amount = quantity * price
+    self.amount_cents = quantity * price * 100
+    self.currency = investee_entity.currency
+    self.units = investee_entity.units
   end
 
   after_destroy :destroy_investor_holdings

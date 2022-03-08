@@ -75,7 +75,7 @@
          Price
       </td>
       <td>
-         <%= number_to_currency @investment.price %>
+         <%= money_to_currency(@investment.price, @investment.currency) %>
       </td>
    </tr>
    <tr>
@@ -83,7 +83,7 @@
          Amount
       </td>
       <td>
-         <%= number_to_currency  @investment.amount %>
+         <%= money_to_currency(@investment.amount, @investment.currency) %>
       </td>
    </tr>
    <% end %>

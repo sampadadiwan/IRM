@@ -34,7 +34,7 @@ class DealsController < ApplicationController
   # GET /deals/1 or /deals/1.json
   def show
     authorize @deal
-    @deal_investors = @deal.deal_investors.order("deal_investors.primary_amount desc")
+    @deal_investors = @deal.deal_investors.order("deal_investors.primary_amount_cents desc")
     @deal_investors = @deal_investors.not_declined if params[:all].blank?
 
     if params[:grid_view] == "false" || @deal.start_date.nil?

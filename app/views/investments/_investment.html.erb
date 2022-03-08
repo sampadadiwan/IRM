@@ -35,10 +35,10 @@
     <% end %>
     
     <td>
-        <%= number_with_delimiter(investment.price)  %>
+        <%= money_to_currency(investment.price, investment.currency)  %>
     </td>
     <td>
-        <%= number_with_delimiter(investment.amount)  %>
+        <%= money_to_currency(investment.amount, investment.currency)  %>
     </td>  
     
 <% end  %>

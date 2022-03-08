@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_08_143307) do
+ActiveRecord::Schema.define(version: 2022_03_08_155805) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -160,8 +160,8 @@ ActiveRecord::Schema.define(version: 2022_03_08_143307) do
     t.bigint "deal_id", null: false
     t.bigint "investor_id", null: false
     t.string "status", limit: 20
-    t.decimal "primary_amount", precision: 10
-    t.decimal "secondary_investment", precision: 10
+    t.decimal "primary_amount_cents", precision: 10
+    t.decimal "secondary_investment_cents", precision: 10
     t.bigint "entity_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -172,7 +172,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_143307) do
     t.integer "unread_messages_investee", default: 0
     t.integer "todays_messages_investor", default: 0
     t.integer "todays_messages_investee", default: 0
-    t.decimal "pre_money_valuation", precision: 20, scale: 2, default: "0.0"
+    t.decimal "pre_money_valuation_cents", precision: 20, scale: 2, default: "0.0"
     t.string "company_advisor", limit: 100
     t.string "investor_advisor", limit: 100
     t.index ["deal_id"], name: "index_deal_investors_on_deal_id"
@@ -201,7 +201,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_143307) do
   create_table "deals", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "entity_id", null: false
     t.string "name"
-    t.decimal "amount", precision: 10
+    t.decimal "amount_cents", precision: 10
     t.string "status", limit: 20
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -391,6 +391,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_143307) do
     t.decimal "amount", precision: 20, scale: 2, default: "0.0"
     t.string "currency", limit: 10
     t.string "units", limit: 15
+    t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
     t.index ["deleted_at"], name: "index_investments_on_deleted_at"
     t.index ["investee_entity_id"], name: "index_investments_on_investee_entity_id"
     t.index ["investor_id", "investor_type"], name: "index_investments_on_investor"

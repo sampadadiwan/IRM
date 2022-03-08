@@ -27,6 +27,8 @@ class DealInvestor < ApplicationRecord
   include Trackable
   include Impressionable
 
+  monetize :secondary_investment_cents, :primary_amount_cents, :pre_money_valuation_cents
+
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
