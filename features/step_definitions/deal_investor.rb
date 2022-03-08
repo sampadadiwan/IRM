@@ -6,8 +6,8 @@ include ActionView::Helpers::NumberHelper
     puts "\n####DealInvestor####\n"
     puts @deal_investor.to_json
 
-    click_on("Action")
-    click_on("Add Investor")
+    click_on("Investments")
+    click_on("New Potential Investment")
 
     select(@deal_investor.investor_name, from: "deal_investor_investor_id")
     fill_in('deal_investor_primary_amount', with: @deal_investor.primary_amount)

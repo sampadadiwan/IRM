@@ -5,7 +5,7 @@ Scenario Outline: Create new deal
   Given Im logged in as a user "<user>" for an entity "<entity>"
   Given there is an existing investor "name=Sequoia"
   And there exists a deal "<deal>" for my startup
-  And I am at the deals page
+  And I visit the deal details page
   When I create a new deal investor "<deal_investor>"
   Then I should see the "<msg>"
   And a deal investor should be created

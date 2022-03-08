@@ -113,6 +113,6 @@ class User < ApplicationRecord
   end
 
   def active_for_authentication?
-    active
+    active && !confirmed_at.nil?
   end
 end

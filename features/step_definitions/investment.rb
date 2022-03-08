@@ -42,8 +42,8 @@ Then('I should see the investment details on the details page') do
   expect(page).to have_content(@investment.investment_instrument)
   expect(page).to have_content(@investment.investment_type)
   expect(page).to have_content(@investment.quantity)
-  expect(page).to have_content(ActiveSupport::NumberHelper.number_to_currency(@investment.price))
-  expect(page).to have_content(ActiveSupport::NumberHelper.number_to_currency(@investment.amount))
+  expect(page).to have_content(ActiveSupport::NumberHelper.number_with_delimiter(@investment.price))
+  expect(page).to have_content(ActiveSupport::NumberHelper.number_with_delimiter(@investment.amount))
 end
 
 Then('I should see the investment in all investments page') do
@@ -53,7 +53,7 @@ Then('I should see the investment in all investments page') do
   expect(page).to have_content(@investment.investment_instrument)
   expect(page).to have_content(@investment.investment_type)
   expect(page).to have_content(@investment.quantity)
-  expect(page).to have_content(ActiveSupport::NumberHelper.number_to_currency(@investment.price))
+  expect(page).to have_content(ActiveSupport::NumberHelper.number_with_delimiter(@investment.price))
 end
 
 
