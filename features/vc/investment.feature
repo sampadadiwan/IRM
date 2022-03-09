@@ -1,7 +1,7 @@
 Feature: Investment
   Can view an investment as a VC
 
-Scenario Outline: Create new investment
+Scenario Outline: View investment without access
   Given Im logged in as a user "first_name=Emp1" for an entity "entity_type=VC"
   Given there are "3" exisiting investments "<investment>" from my firm in startups
   And I am at the investor_entities page
@@ -13,7 +13,7 @@ Scenario Outline: Create new investment
     |category=Co-Investor;investment_type=Series B;investment_instrument=Preferred;quantity=80;price_cents=2000;investor_id=2     |Investment was successfully created|
 
 
-Scenario Outline: Create new investment
+Scenario Outline: View investment with access
   Given Im logged in as a user "first_name=Emp1" for an entity "entity_type=VC"
   Given there are "3" exisiting investments "<investment>" from my firm in startups
   And I have been granted access "All" to the investments
