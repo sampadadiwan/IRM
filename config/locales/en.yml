@@ -3,8 +3,9 @@ en:
   number:
     currency:
       format:
-        format: "%n %u"
+        format: "%u%n"
         unit: "INR"
+
   date:
     formats:
       default: "%d/%m/%Y"

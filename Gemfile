@@ -50,6 +50,7 @@ gem "chartkick"
 gem 'groupdate'
 gem 'hightop'
 
+gem 'eu_central_bank'
 gem 'money-rails', '~>1.12'
 
 gem 'wicked_pdf'

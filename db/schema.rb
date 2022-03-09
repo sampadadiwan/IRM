@@ -160,8 +160,8 @@ ActiveRecord::Schema.define(version: 2022_03_08_164544) do
     t.bigint "deal_id", null: false
     t.bigint "investor_id", null: false
     t.string "status", limit: 20
-    t.decimal "primary_amount_cents", precision: 10
-    t.decimal "secondary_investment_cents", precision: 10
+    t.decimal "primary_amount_cents", precision: 20, scale: 2, default: "0.0"
+    t.decimal "secondary_investment_cents", precision: 20, scale: 2, default: "0.0"
     t.bigint "entity_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -201,7 +201,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_164544) do
   create_table "deals", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "entity_id", null: false
     t.string "name"
-    t.decimal "amount_cents", precision: 10
+    t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
     t.string "status", limit: 20
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -299,7 +299,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_164544) do
     t.bigint "user_id"
     t.bigint "entity_id", null: false
     t.integer "quantity", default: 0
-    t.decimal "value", precision: 20, default: "0"
+    t.decimal "value", precision: 20, scale: 2, default: "0.0"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "investment_instrument", limit: 100

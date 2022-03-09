@@ -1,16 +1,11 @@
 # encoding : utf-8
 
-MoneyRails.configure do |_config|
-  Money.locale_backend = :currency
-
+MoneyRails.configure do |config|
   # To set the default currency
-  #
-  # config.default_currency = :usd
+  config.default_currency = ENV['DEFAULT_CURRENCY'].to_sym
 
   # Set default bank object
-  #
-  # Example:
-  # config.default_bank = EuCentralBank.new
+  config.default_bank = EuCentralBank.new
 
   # Add exchange rates to current money bank object.
   # (The conversion rate refers to one direction only)
@@ -44,21 +39,6 @@ MoneyRails.configure do |_config|
   #                            default: 'USD'
   #                          }
 
-  # Register a custom currency
-  #
-  # Example:
-  # config.register_currency = {
-  #   priority:            1,
-  #   iso_code:            "EU4",
-  #   name:                "Euro with subunit of 4 digits",
-  #   symbol:              "€",
-  #   symbol_first:        true,
-  #   subunit:             "Subcent",
-  #   subunit_to_unit:     10000,
-  #   thousands_separator: ".",
-  #   decimal_mark:        ","
-  # }
-
   # Specify a rounding mode
   # Any one of:
   #
@@ -72,7 +52,7 @@ MoneyRails.configure do |_config|
   #
   # set to BigDecimal::ROUND_HALF_EVEN by default
   #
-  # config.rounding_mode = BigDecimal::ROUND_HALF_UP
+  config.rounding_mode = BigDecimal::ROUND_HALF_UP
 
   # Set default money format globally.
   # Default value is nil meaning "ignore this option".
@@ -86,7 +66,7 @@ MoneyRails.configure do |_config|
 
   # If you would like to use I18n localization (formatting depends on the
   # locale):
-  # config.locale_backend = :i18n
+  config.locale_backend = :i18n
   #
   # Example (using default localization from rails-i18n):
   #
@@ -112,5 +92,5 @@ MoneyRails.configure do |_config|
   # The default value is false
   #
   # Example:
-  # config.raise_error_on_money_parsing = false
+  config.raise_error_on_money_parsing = true
 end

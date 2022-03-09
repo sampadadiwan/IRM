@@ -118,7 +118,7 @@ FactoryBot.define do
   factory :deal do
     entity { Entity.startups.all.sample }
     name { ["Series A", "Series B", "Series C", "Series D"][rand(4)] }
-    amount { rand(2..11) * 10_000_00 }
+    amount { rand(2..10) * 10_000_00 }
     status { "Open" }
     currency { entity.currency }
     units { entity.units }
@@ -145,8 +145,8 @@ FactoryBot.define do
     # investor { Investor.where(investee_entity_id: investee_entity_id).all.sample }
     investment_instrument { Investment::INSTRUMENT_TYPES[rand(Investment::INSTRUMENT_TYPES.length)] }
     category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
-    quantity { (rand(10) * 100) + (rand(10) * 10) }
-    price { quantity * rand(10) * 10 }
+    quantity { (rand(3..10) * 100) }
+    price { quantity * rand(3..10) * 10 }
     current_value {}
   end
 
