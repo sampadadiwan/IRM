@@ -37,6 +37,11 @@ class DealInvestorsController < ApplicationController
   def create
     @deal_investor = DealInvestor.new(deal_investor_params)
     @deal_investor.entity_id = current_user.entity_id
+    # This is required after the money gem was installed
+    @deal_investor.primary_amount = deal_investor_params[:primary_amount].to_d
+    @deal_investor.secondary_investment = deal_investor_params[:secondary_investment].to_d
+    @deal_investor.pre_money_valuation = deal_investor_params[:pre_money_valuation].to_d
+
     authorize @deal_investor.deal
     authorize @deal_investor
 

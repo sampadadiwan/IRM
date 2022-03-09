@@ -5,7 +5,8 @@ Given('I am at the investments page') do
 end
 
 Given('I create an investment {string}') do |arg1|
-  @investment = FactoryBot.build(:investment)
+  @investment = FactoryBot.build(:investment, investee_entity: @entity)
+  @investment.currency = @entity.currency
   key_values(@investment, arg1)
   # puts @investment.investor.to_json
   # puts "investor_name = " + @investment.investor.investor_name
@@ -32,9 +33,9 @@ Then('an investment should be created') do
   @created.investment_type.should == @investment.investment_type
   @created.investment_instrument.should == @investment.investment_instrument
   @created.quantity.should == @investment.quantity
-  @created.price.should == @investment.price
+  @created.price_cents.should == @investment.price_cents
+  @created.currency.should == @investment.investee_entity.currency
   @created.amount.should == @investment.price * @investment.quantity 
-
   @investment = @created
 end
 
@@ -44,9 +45,8 @@ Then('I should see the investment details on the details page') do
   expect(page).to have_content(@investment.investment_instrument)
   expect(page).to have_content(@investment.investment_type)
   expect(page).to have_content(@investment.quantity)
-  expect(page).to have_content(money_to_currency(@investment.price, @investment.currency))
-  expect(page).to have_content(money_to_currency(@investment.amount, @investment.currency))
-  sleep(10)
+  expect(page).to have_content(money_to_currency(@investment.price))
+  expect(page).to have_content(money_to_currency(@investment.amount))
 end
 
 Then('I should see the investment in all investments page') do
@@ -56,7 +56,7 @@ Then('I should see the investment in all investments page') do
   expect(page).to have_content(@investment.investment_instrument)
   expect(page).to have_content(@investment.investment_type)
   expect(page).to have_content(@investment.quantity)
-  expect(page).to have_content(money_to_currency(@investment.price, @investment.currency))
+  expect(page).to have_content(money_to_currency(@investment.price))
 end
 
 

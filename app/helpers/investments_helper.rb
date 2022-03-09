@@ -1,14 +1,17 @@
 module InvestmentsHelper
-  def money_to_currency(amount, symbol)
-    case symbol.strip
+
+  FORMAT = I18n.t :format, scope: 'number.currency.format'
+
+  def money_to_currency(money)
+    case money.currency.iso_code
     when "INR"
-      Money.new(amount, "INR").format(south_asian_number_formatting: true)
+      money.format(format: FORMAT, south_asian_number_formatting: true)
     when "SGD"
-      Money.new(amount, "SGD").format
+      money.format(format: FORMAT)
     when "USD"
-      Money.new(amount, "USD").format
+      money.format(format: FORMAT)
     else
-      Money.new(amount, "INR").format(south_asian_number_formatting: true)
+      money.format(format: FORMAT, south_asian_number_formatting: true)
     end
   end
 end

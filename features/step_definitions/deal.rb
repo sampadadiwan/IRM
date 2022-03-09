@@ -24,14 +24,14 @@ end
 
 Then('I should see the deal details on the details page') do
   expect(page).to have_content(@deal.name)
-  expect(page).to have_content(money_to_currency(@deal.amount, @deal.currency))
+  expect(page).to have_content(money_to_currency(@deal.amount))
   expect(page).to have_content(@deal.status)
 end
 
 Then('I should see the deal in all deals page') do
   visit("/deals")
   expect(page).to have_content(@deal.name)
-  expect(page).to have_content(money_to_currency(@deal.amount, @deal.currency))
+  expect(page).to have_content(money_to_currency(@deal.amount))
   expect(page).to have_content(@deal.status)
 end
 

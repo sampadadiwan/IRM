@@ -34,7 +34,7 @@ class Holding < ApplicationRecord
       employee_investor = Investor.for(user, entity).first
       investment = Investment.new(investment_type: "Employee Holdings", investment_instrument: investment_instrument,
                                   category: "Employee", investee_entity_id: entity.id, investor_id: employee_investor.id,
-                                  employee_holdings: true, quantity: 0)
+                                  employee_holdings: true, quantity: 0, currency: entity.currency)
     end
 
     investment.quantity += quantity

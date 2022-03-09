@@ -13,6 +13,7 @@ include InvestmentsHelper
     select(@deal_investor.investor_name, from: "deal_investor_investor_id")
     fill_in('deal_investor_primary_amount', with: @deal_investor.primary_amount)
     fill_in('deal_investor_secondary_investment', with: @deal_investor.secondary_investment)
+    fill_in('deal_investor_pre_money_valuation', with: @deal_investor.pre_money_valuation)
     
     click_on("Save")
   end
@@ -29,8 +30,9 @@ include InvestmentsHelper
   Then('I should see the deal investor details on the details page') do
     expect(page).to have_content(@deal.name)
     expect(page).to have_content(@deal_investor.investor_name)
-    expect(page).to have_content(money_to_currency @deal_investor.primary_amount, @deal_investor.deal.currency)
-    expect(page).to have_content(money_to_currency @deal_investor.secondary_investment, @deal_investor.deal.currency)
+    expect(page).to have_content(money_to_currency @deal_investor.primary_amount)
+    expect(page).to have_content(money_to_currency @deal_investor.secondary_investment)
+    expect(page).to have_content(money_to_currency @deal_investor.pre_money_valuation)
     expect(page).to have_content(@deal_investor.entity_name)
   end
   
@@ -38,8 +40,9 @@ include InvestmentsHelper
     visit("/deal_investors")
     expect(page).to have_content(@deal.name)
     expect(page).to have_content(@deal_investor.investor_name)
-    expect(page).to have_content(money_to_currency @deal_investor.primary_amount, @deal_investor.deal.currency)
-    expect(page).to have_content(money_to_currency @deal_investor.secondary_investment, @deal_investor.deal.currency)
+    expect(page).to have_content(money_to_currency @deal_investor.primary_amount)
+    expect(page).to have_content(money_to_currency @deal_investor.secondary_investment)
+    expect(page).to have_content(money_to_currency @deal_investor.pre_money_valuation)
     expect(page).to have_content(@deal_investor.entity_name)
   end
   

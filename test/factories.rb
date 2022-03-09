@@ -107,9 +107,9 @@ FactoryBot.define do
     deal { Deal.all.sample }
     investor { deal.entity.investors.sample }
     status { DealInvestor::STATUS[rand(DealInvestor::STATUS.length)] }
-    primary_amount_cents { rand(2..11) * 1_000_000 }
-    pre_money_valuation_cents { rand(2..11) * 1_000_000 }
-    secondary_investment_cents { rand(2..11) * 1_000_000 }
+    primary_amount_cents { rand(3..11) * 1_000 }
+    pre_money_valuation_cents { rand(3..11) * 1_000 }
+    secondary_investment_cents { rand(3..11) * 1_000 }
     entity { deal.entity }
     company_advisor { Faker::Company.name }
     investor_advisor { Faker::Company.name }
@@ -118,7 +118,7 @@ FactoryBot.define do
   factory :deal do
     entity { Entity.startups.all.sample }
     name { ["Series A", "Series B", "Series C", "Series D"][rand(4)] }
-    amount_cents { rand(2..11) * 10_000_000 }
+    amount { rand(2..11) * 10_000_00 }
     status { "Open" }
     currency { entity.currency }
     units { entity.units }

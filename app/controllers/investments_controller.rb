@@ -77,6 +77,7 @@ class InvestmentsController < ApplicationController
   def create
     @investment = Investment.new(investment_params)
     @investment.investee_entity_id = current_user.entity_id
+    @investment.currency = current_user.entity.currency
     authorize @investment
 
     respond_to do |format|
