@@ -45,4 +45,48 @@ include InvestmentsHelper
     expect(page).to have_content(money_to_currency @deal_investor.pre_money_valuation)
     expect(page).to have_content(@deal_investor.entity_name)
   end
+
+
+  Given('there are {string} deal_investors for the deal') do |arg|
+    (0..arg.to_i).each do 
+      di = FactoryBot.create(:deal_investor, deal: @deal, entity: @deal.entity, status: "Active")
+    end
+    @deal.reload
+  end
+  
+  Given('I should see the deal investors in the deal details page') do
+    visit(deal_path(@deal))
+
+    @deal.deal_investors.each do |deal_investor|
+      within("#deal_investor_#{deal_investor.id}") do
+        expect(page).to have_content(deal_investor.investor_name)
+        expect(page).to have_content(money_to_currency deal_investor.primary_amount)
+        expect(page).to have_content(money_to_currency deal_investor.secondary_investment)
+        expect(page).to have_content(money_to_currency deal_investor.pre_money_valuation)
+      end
+    end
+
+  end
+
+  Given('I should see the deal stages in the deal details page') do
+    @deal.deal_investors.each do |deal_investor|
+      within("#deal_investor_#{deal_investor.id}") do
+        deal_investor.deal_activities.each do |act|
+          within("#deal_activity_#{act.id}") do
+            expect(page).to have_content(act.summary)
+          end
+        end        
+      end
+    end
+  end
+  
+
+  Given('the deal activites are completed') do
+    @deal.deal_activities.update_all(completed: true)
+    @deal.reload
+  end
+  
+  
+  
+  
   

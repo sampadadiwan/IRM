@@ -40,6 +40,7 @@ end
 
 After do
   DatabaseCleaner.clean
+  Sidekiq.redis(&:flushdb)
 end
 
 Cucumber::Rails::Database.javascript_strategy = :truncation
