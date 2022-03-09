@@ -32,9 +32,9 @@ every :reboot do
   bundle "sidekiq"
   rake "ts:rebuild"
   bundle "puma -C /home/ubuntu/IRM/shared/puma.rb"
-  runner "Money.default_bank.update_rates"
+  runner "Money.default_bank.save_rates('tmp/exchange_rates.xml')"
 end
 
 every 1.hour do
-  runner "Money.default_bank.update_rates"
+  runner "Money.default_bank.save_rates('tmp/exchange_rates.xml')"
 end

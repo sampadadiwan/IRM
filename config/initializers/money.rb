@@ -6,6 +6,9 @@ MoneyRails.configure do |config|
 
   # Set default bank object
   config.default_bank = EuCentralBank.new
+  Rails.logger.debug "Reading exchange rates from tmp/exchange_rates.xml"
+  config.default_bank.save_rates("tmp/exchange_rates.xml")
+  config.default_bank.update_rates("tmp/exchange_rates.xml")
 
   # Add exchange rates to current money bank object.
   # (The conversion rate refers to one direction only)
