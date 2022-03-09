@@ -194,6 +194,17 @@ Given('there are {string} exisiting investments {string} from my firm in startup
   end
 end
 
+
+Given('there are {string} exisiting investments {string} from another firm in startups') do |count, args|
+  @another_entity = FactoryBot.create(:entity, entity_type: "VC", name: "Another VC Firm")
+  Entity.startups.each do |startup|
+    @investor = FactoryBot.create(:investor, investor_entity: @another_entity, investee_entity: startup)
+    @investment = FactoryBot.create(:investment, investee_entity: startup, investor: @investor)
+    @investment = FactoryBot.create(:investment, investee_entity: startup, investor: @investor)
+  end
+end
+
+
 Given('I am at the investor_entities page') do
   visit(investor_entities_entities_path)
 end
@@ -223,7 +234,7 @@ end
 
 
 Then('I should be able to see the investments for each entity') do
-  Entity.where(entity_type: "Startup").each do |entity|
+  Entity.startups.each do |entity|
     entity.investments.each do |inv|
       visit(investor_entities_entities_path)
       find("#investments_entity_#{entity.id}").click
@@ -232,6 +243,26 @@ Then('I should be able to see the investments for each entity') do
         Then I should see the investment details   
         Then I should see the investment details on the details page    
       )
+    end  
+    visit(investor_entities_entities_path)    
+  end
+end
+
+
+Then('I should be able to see only my investments for each entity') do
+  Entity.startups.each do |entity|
+    entity.investments.each do |inv|
+      visit(investor_entities_entities_path)
+      find("#investments_entity_#{entity.id}").click
+      @investment = inv
+      if @investment.investor_entity_id == @entity.id
+      steps %(
+        Then I should see the investment details   
+        Then I should see the investment details on the details page    
+      )
+      else
+        expect(page).to have_no_content(@investment.investor.investor_name)
+      end
     end  
     visit(investor_entities_entities_path)    
   end
