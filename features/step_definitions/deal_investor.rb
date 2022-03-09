@@ -48,7 +48,7 @@ include InvestmentsHelper
 
 
   Given('there are {string} deal_investors for the deal') do |arg|
-    (0..arg.to_i).each do 
+    (1..arg.to_i).each do 
       di = FactoryBot.create(:deal_investor, deal: @deal, entity: @deal.entity, status: "Active")
     end
     @deal.reload
@@ -86,6 +86,19 @@ include InvestmentsHelper
     @deal.reload
   end
   
+  Given('I complete an activity') do
+    @deal_activity = @deal.deal_activities.last
+    within("#deal_activity_#{@deal_activity.id}") do
+      find('span', text: 'No').click
+      find('button', text: "Toggle Done").click      
+    end
+    sleep(1)
+  end
+  
+  Then('the activity must be completed') do
+    @deal_activity.reload
+    @deal_activity.completed.should == true
+  end
   
   
   
