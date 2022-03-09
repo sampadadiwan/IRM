@@ -23,6 +23,25 @@ Given('I create an investment {string}') do |arg1|
   click_on("Save")
 end
 
+
+Then('when I edit the investment {string}') do |arg1|
+  visit(investment_path(@investment))
+  click_on("Edit")
+  @edit_investment = @investment
+  key_values(@edit_investment, arg1)
+
+  select(@edit_investment.category, from: "investment_category")
+  select(@edit_investment.investment_type, from: "investment_investment_type")
+  select(@edit_investment.investment_instrument, from: "investment_investment_instrument")
+  
+  fill_in('investment_quantity', with: @edit_investment.quantity)
+  fill_in('investment_price', with: @edit_investment.price)
+  click_on("Save")
+  sleep(1)
+  @investment = Investment.last
+  
+end
+
 Then('an investment should be created') do
   @created = Investment.last
   puts "\n####Investment Created####\n"
