@@ -59,17 +59,21 @@ Then('an investment should be created') do
 end
 
 Then('I should see the investment details on the details page') do
-  expect(page).to have_content(@investment.investor.investor_name)
-  expect(page).to have_content(@investment.category)
-  expect(page).to have_content(@investment.investment_instrument)
-  expect(page).to have_content(@investment.investment_type)
-  expect(page).to have_content(@investment.quantity)
-  expect(page).to have_content(money_to_currency(@investment.price))
+  visit(investment_path(@investment))
+  steps %(
+    Then I should see the investment details    
+  )
   expect(page).to have_content(money_to_currency(@investment.amount))
 end
 
 Then('I should see the investment in all investments page') do
   visit("/investments")
+  steps %(
+    Then I should see the investment details    
+  )
+end
+
+Then('I should see the investment details') do
   expect(page).to have_content(@investment.investor.investor_name)
   expect(page).to have_content(@investment.category)
   expect(page).to have_content(@investment.investment_instrument)
@@ -77,7 +81,6 @@ Then('I should see the investment in all investments page') do
   expect(page).to have_content(@investment.quantity)
   expect(page).to have_content(money_to_currency(@investment.price))
 end
-
 
 Given('given there is a investment {string} for the entity') do |arg1|
   @investment = FactoryBot.build(:investment, investor: @investor, investee_entity: @entity)
@@ -207,14 +210,32 @@ Then('I should not see the entities I have invested in') do
   end
 end
 
-Given('I have been granted access to the investments') do
+Given('I have been granted access {string} to the investments') do |arg|
   Investment.joins(:investor).where("investors.investor_entity_id=?", @entity.id).each do |inv|
     InvestorAccess.create!(investor:inv.investor, user: @user, email: @user.email, approved: true, 
         entity_id: inv.investee_entity_id)
 
-    AccessRight.create(owner: inv.investee_entity, access_type: "Investment", metadata: "All",
+    AccessRight.create(owner: inv.investee_entity, access_type: "Investment", metadata: arg,
         entity: inv.investee_entity, access_to_investor_id: inv.investor_id)
   end
 
 end
+
+
+Then('I should be able to see the investments for each entity') do
+  Entity.where(entity_type: "Startup").each do |entity|
+    entity.investments.each do |inv|
+      visit(investor_entities_entities_path)
+      find("#investments_entity_#{entity.id}").click
+      @investment = inv
+      steps %(
+        Then I should see the investment details   
+        Then I should see the investment details on the details page    
+      )
+    end  
+    visit(investor_entities_entities_path)    
+  end
+end
+
+
 

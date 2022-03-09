@@ -16,9 +16,10 @@ Scenario Outline: Create new investment
 Scenario Outline: Create new investment
   Given Im logged in as a user "first_name=Emp1" for an entity "entity_type=VC"
   Given there are "3" exisiting investments "<investment>" from my firm in startups
-  And I have been granted access to the investments
+  And I have been granted access "All" to the investments
   And I am at the investor_entities page
   Then I should see the entities I have invested in
+  And I should be able to see the investments for each entity
   
   Examples:
   	|investment                                                                                                                   |msg	|
