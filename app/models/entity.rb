@@ -128,6 +128,6 @@ class Entity < ApplicationRecord
   end
 
   def self.for_investor(user)
-    Entity.joins(:investor_accesses).where("investor_accesses.user_id=?", user.id)
+    Entity.joins(:investor_accesses).where("investor_accesses.user_id=?", user.id).distinct
   end
 end

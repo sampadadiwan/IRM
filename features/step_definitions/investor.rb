@@ -45,6 +45,20 @@ Then('I should see the investor details on the details page') do
   expect(page).to have_content(@investor.investee_entity.name)
 end
 
+Given('there is an existing investor entity {string} with employee {string}') do |arg1, arg2|
+
+  puts "############# #{arg1} #{arg2}"
+  steps %(
+      Given there is an existing investor "#{arg1}"
+    )
+
+  @employee_investor = FactoryBot.create(:user, entity: @investor_entity)
+  key_values(@employee_investor, arg2)
+  @employee_investor.save
+  @holdings_investor = @employee_investor
+end
+
+
 Given('there is an existing investor {string}') do |arg1|
   steps %(
         Given there is an existing investor entity "#{arg1}"

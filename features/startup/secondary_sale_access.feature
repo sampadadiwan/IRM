@@ -57,10 +57,11 @@ Scenario Outline: Access externally visible sale as Holding User
     |  	        |entity_type=Startup  |name=Grand Sale;visible_externally=true  |
     |  	        |entity_type=Startup  |name=Winter Sale;visible_externally=true |
 
+@wip
 Scenario Outline: Access externally visible sale as Investor User
   Given there is a user "<user>" for an entity "<entity>"
   Given there is a sale "<sale>"
-  Given there is an existing investor entity "<investor>" with employee "first_name=Emp1"
+  Given there is an existing investor entity "name=Sequoia" with employee "first_name=Emp1"
   And employee investor has access rights to the sale
   And employee investor should have "show" access to the sale "true"
   And employee investor should have "offer" access to the sale "true"

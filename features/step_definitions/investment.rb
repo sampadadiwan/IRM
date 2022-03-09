@@ -172,3 +172,49 @@ Then('There should be a corresponding investment created') do
   @holding_investment.quantity.should == Holding.all.sum(:quantity)
   @holding_investment.investment_type.should == "Employee Holdings"
 end
+
+
+############################################################################
+############################################################################
+#######################  VC related test steps #############################  
+############################################################################
+############################################################################
+
+
+Given('there are {string} exisiting investments {string} from my firm in startups') do |count, args|
+  (1..count.to_i).each do |i|
+    @startup_entity = FactoryBot.create(:entity, entity_type: "Startup", name: "Startup #{i}")
+    @investor = FactoryBot.create(:investor, investor_entity: @entity, investee_entity: @startup_entity)
+    @investment = FactoryBot.create(:investment, investee_entity: @startup_entity, investor: @investor)
+    @investment = FactoryBot.create(:investment, investee_entity: @startup_entity, investor: @investor)
+
+  end
+end
+
+Given('I am at the investor_entities page') do
+  visit(investor_entities_entities_path)
+end
+
+Then('I should see the entities I have invested in') do
+  @entity.investments.each do |inv|
+    expect(page).to have_content(inv.investee_entity.name)
+  end
+end
+
+Then('I should not see the entities I have invested in') do
+  @entity.investments.each do |inv|
+    expect(page).to have_no_content(inv.investee_entity.name)
+  end
+end
+
+Given('I have been granted access to the investments') do
+  Investment.joins(:investor).where("investors.investor_entity_id=?", @entity.id).each do |inv|
+    InvestorAccess.create!(investor:inv.investor, user: @user, email: @user.email, approved: true, 
+        entity_id: inv.investee_entity_id)
+
+    AccessRight.create(owner: inv.investee_entity, access_type: "Investment", metadata: "All",
+        entity: inv.investee_entity, access_to_investor_id: inv.investor_id)
+  end
+
+end
+
