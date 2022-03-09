@@ -124,3 +124,65 @@ Given('investor has access right {string} in the deal') do |arg1|
   puts @access_right.to_json
 end
 
+
+
+############################################################################
+############################################################################
+#######################  VC related test steps #############################  
+############################################################################
+############################################################################
+
+
+
+Given('there are {string} exisiting deals {string} with another firm in the startups') do |count, args|
+  @another_entity = FactoryBot.create(:entity, entity_type: "VC", name: "Another VC Firm")
+
+  Entity.startups.each do |startup|
+    @investor = FactoryBot.create(:investor, investor_entity: @another_entity, investee_entity: startup)
+    (1..count.to_i).each do 
+      deal = FactoryBot.create(:deal, entity: startup)
+      di = FactoryBot.create(:deal_investor, investor: @investor, entity: startup, deal: deal)
+    end
+  end
+end
+
+Given('there are {string} exisiting deals {string} with my firm in the startups') do |count, args|
+
+  Entity.startups.each do |startup|
+    @investor = FactoryBot.create(:investor, investor_entity: @entity, investee_entity: startup)
+    (1..count.to_i).each do 
+      deal = FactoryBot.create(:deal, entity: startup)
+      di = FactoryBot.create(:deal_investor, investor: @investor, entity: startup, deal: deal)
+    end
+  end
+end
+
+Given('I am at the deal_investors page') do
+  visit(deal_investors_path)
+end
+
+Then('I should not see the deals of the startup') do
+  DealInvestor.all.each do |di|
+    expect(page).to have_no_content(di.deal_name)
+    expect(page).to have_no_content(di.investor_name)
+  end
+end
+
+
+Then('I should see the deals of the startup') do
+  DealInvestor.all.each do |di|
+    expect(page).to have_content(di.deal_name)
+    expect(page).to have_content(di.investor_name)
+  end
+end
+
+
+Given('I have access to all deals') do
+  DealInvestor.all.each do |di|
+    InvestorAccess.create!(investor:di.investor, user: @user, email: @user.email, approved: true, 
+        entity_id: di.entity_id)
+
+    AccessRight.create(owner: di.deal, access_type: "Deal",
+        entity: di.entity, access_to_investor_id: di.investor_id)
+  end
+end

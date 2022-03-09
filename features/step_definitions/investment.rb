@@ -188,9 +188,9 @@ Given('there are {string} exisiting investments {string} from my firm in startup
   (1..count.to_i).each do |i|
     @startup_entity = FactoryBot.create(:entity, entity_type: "Startup", name: "Startup #{i}")
     @investor = FactoryBot.create(:investor, investor_entity: @entity, investee_entity: @startup_entity)
-    @investment = FactoryBot.create(:investment, investee_entity: @startup_entity, investor: @investor)
-    @investment = FactoryBot.create(:investment, investee_entity: @startup_entity, investor: @investor)
-
+    (1..count.to_i).each do 
+      @investment = FactoryBot.create(:investment, investee_entity: @startup_entity, investor: @investor)
+    end
   end
 end
 
@@ -199,8 +199,9 @@ Given('there are {string} exisiting investments {string} from another firm in st
   @another_entity = FactoryBot.create(:entity, entity_type: "VC", name: "Another VC Firm")
   Entity.startups.each do |startup|
     @investor = FactoryBot.create(:investor, investor_entity: @another_entity, investee_entity: startup)
-    @investment = FactoryBot.create(:investment, investee_entity: startup, investor: @investor)
-    @investment = FactoryBot.create(:investment, investee_entity: startup, investor: @investor)
+    (1..count.to_i).each do 
+      @investment = FactoryBot.create(:investment, investee_entity: startup, investor: @investor)
+    end
   end
 end
 

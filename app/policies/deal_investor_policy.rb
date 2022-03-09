@@ -3,8 +3,10 @@ class DealInvestorPolicy < ApplicationPolicy
     def resolve
       if user.has_cached_role?(:super)
         scope.all
-      else
-        scope.where(entity_id: user.entity_id).or(scope.where(investor_entity_id: user.entity_id))
+      elsif user.has_cached_role?(:startup)
+        scope.where(entity_id: user.entity_id)
+      elsif user.has_cached_role?(:investor)
+        DealInvestor.for_investor(user)
       end
     end
   end

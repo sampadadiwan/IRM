@@ -102,4 +102,19 @@ class DealInvestor < ApplicationRecord
 
     save
   end
+
+  def self.for_investor(user)
+    DealInvestor
+      # Ensure the access rghts for Document
+      .joins(deal: :access_rights)
+      # .merge(AccessRight.for_access_type("Deal"))
+      .joins(:investor)
+      # Ensure that the user is an investor and tis investor has been given access rights
+      .where("investors.investor_entity_id=?", user.entity_id)
+      .where("investors.category=access_rights.access_to_category OR access_rights.access_to_investor_id=investors.id")
+      # Ensure this user has investor access
+      .joins(entity: :investor_accesses)
+      .merge(InvestorAccess.approved_for_user(user))
+      .where("investor_accesses.entity_id = deals.entity_id")
+  end
 end
