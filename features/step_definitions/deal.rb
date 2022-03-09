@@ -15,6 +15,21 @@ When('I create a new deal {string}') do |arg1|
   click_on("Save")
 end
 
+
+When('I edit the deal {string}') do |arg1|
+  key_values(@deal, arg1)
+  
+  click_on("Edit")
+  
+  fill_in('deal_name', with: @deal.name)
+  fill_in('deal_amount', with: @deal.amount)
+  select(@deal.status, from: "deal_status")
+
+  click_on("Save")
+  sleep(1)
+end
+
+
 Then('an deal should be created') do
   @created = Deal.last
   @created.name.should == @deal.name

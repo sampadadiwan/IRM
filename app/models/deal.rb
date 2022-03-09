@@ -24,7 +24,7 @@ class Deal < ApplicationRecord
   include Impressionable
 
   encrypts :name
-  monetize :amount_cents, with_currency: ->(i) { i.currency }
+  monetize :amount_cents, with_model_currency: ->(i) { i.currency }
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
