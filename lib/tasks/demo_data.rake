@@ -34,7 +34,7 @@ namespace :irm do
 
     wm_names = ["Ambit", "Citi"]
     wm_names.each do |name|
-      e = FactoryBot.create(:entity, entity_type: "Wealth Manager", name: name)
+      e = FactoryBot.create(:entity, entity_type: "Advisor", name: name)
       puts "Entity #{e.name}"
       (1..2).each do |j|
         user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
@@ -60,6 +60,47 @@ namespace :irm do
     puts e.backtrace.join("\n")
     raise e
   end
+
+
+  desc "generates fake Blank Entity for testing"
+  task generateFakeBlankEntities: :environment do
+    startup_names = ["Demo-Startup"]
+    startup_names.each do |name|
+      e = FactoryBot.create(:entity, entity_type: "Startup", name: name)
+      puts "Entity #{e.name}"
+      (1..1).each do |j|
+        user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
+        puts user.to_json
+      end
+    end
+
+    wm_names = ["Demo-Advisor"]
+    wm_names.each do |name|
+      e = FactoryBot.create(:entity, entity_type: "Advisor", name: name)
+      puts "Entity #{e.name}"
+      (1..1).each do |j|
+        user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
+        puts user.to_json
+      end
+    end
+
+
+    vc_names = ["Demo-VC"] 
+
+    vc_names.each do |name|
+      e = FactoryBot.create(:entity, entity_type: "VC", name: name)
+      puts "Entity #{e.name}"
+      (1..2).each do |j|
+        user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
+        puts user.to_json
+      end
+    end
+
+  rescue Exception => e
+    puts e.backtrace.join("\n")
+    raise e
+  end
+
 
   desc "generates fake Documents for testing"
   task generateFakeDocuments: :environment do
@@ -173,7 +214,7 @@ namespace :irm do
 
 
   task :generateAll => [:generateFakeEntities, :generateFakeInvestments, :generateFakeDeals, 
-                        :generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes] do
+                        :generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes, :generateFakeBlankEntities] do
     puts "Generating all Fake Data"
     Sidekiq.redis(&:flushdb)
   end
