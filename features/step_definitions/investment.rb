@@ -62,6 +62,7 @@ end
 
 Given('given there is a investment {string} for the entity') do |arg1|
   @investment = FactoryBot.build(:investment, investor: @investor, investee_entity: @entity)
+  @investment.currency = @entity.currency
   key_values(@investment, arg1)
   @investment.save!
   puts "\n####Investment####\n"

@@ -16,6 +16,7 @@
 #  sequence         :integer
 #  days             :integer
 #  deleted_at       :datetime
+#  template_id      :integer
 #
 
 require "test_helper"

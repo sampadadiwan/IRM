@@ -20,10 +20,10 @@
 #  employee_holdings     :boolean          default("0")
 #  diluted_quantity      :integer          default("0")
 #  diluted_percentage    :decimal(5, 2)    default("0.00")
-#  price                 :decimal(10, )    default("0")
-#  amount                :decimal(20, 2)   default("0.00")
 #  currency              :string(10)
 #  units                 :string(15)
+#  amount_cents          :decimal(20, 2)   default("0.00")
+#  price_cents           :decimal(10, 2)   default("0.00")
 #
 
 require "test_helper"

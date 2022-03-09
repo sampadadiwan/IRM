@@ -35,6 +35,8 @@
 #  parent_entity_id      :integer
 #  currency              :string(10)
 #  units                 :string(15)
+#  trial_end_date        :date
+#  trial                 :boolean          default("0")
 #
 
 class Entity < ApplicationRecord

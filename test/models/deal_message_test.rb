@@ -11,6 +11,7 @@
 #  task_done        :boolean          default("0")
 #  deleted_at       :datetime
 #  not_msg          :boolean          default("0")
+#  entity_id        :integer          not null
 #
 
 require "test_helper"

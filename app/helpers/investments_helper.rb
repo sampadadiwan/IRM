@@ -1,5 +1,4 @@
 module InvestmentsHelper
-
   FORMAT = I18n.t :format, scope: 'number.currency.format'
 
   def money_to_currency(money)
