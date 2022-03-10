@@ -28,7 +28,7 @@ Scenario Outline: Create new sale and make visible
   Then the sale should become externally visible
 
   Examples:
-  	|user	    |entity               |sale             |msg	|
+  	|user	      |entity               |sale             |msg	|
   	|  	        |entity_type=Startup  |name=Grand Sale  |Secondary sale was successfully created|
     |  	        |entity_type=Startup  |name=Winter Sale |Secondary sale was successfully created|
 
@@ -42,7 +42,7 @@ Scenario Outline: Create new sale with holdings
   And I am at the sales details page
   Then I should see the holdings
 Examples:
-    |user	    |entity               |sale             |quantity	|
+    |user	      |entity               |sale             |quantity	|
     |  	        |entity_type=Startup  |name=Grand Sale  |100        |
     |  	        |entity_type=Startup  |name=Winter Sale |200        |
 

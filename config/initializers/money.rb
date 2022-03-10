@@ -6,7 +6,7 @@ MoneyRails.configure do |config|
 
   # Set default bank object
   config.default_bank = EuCentralBank.new
-  if Rails.env != "test"
+  unless Rails.env.test?
     Rails.logger.debug "Reading exchange rates from tmp/exchange_rates.xml"
     config.default_bank.save_rates("tmp/exchange_rates.xml")
     config.default_bank.update_rates("tmp/exchange_rates.xml")

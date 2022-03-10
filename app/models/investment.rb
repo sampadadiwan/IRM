@@ -42,7 +42,7 @@ class Investment < ApplicationRecord
   counter_culture :investee_entity, column_name: 'total_investments', delta_column: 'initial_value'
 
   # Handled by money-rails gem
-  monetize :amount_cents, :price_cents, with_model_currency: :currency 
+  monetize :amount_cents, :price_cents, with_model_currency: :currency
 
   # "Series A,Series B,Series C"
   INVESTMENT_TYPES = ENV["INVESTMENT_TYPES"].split(",")
