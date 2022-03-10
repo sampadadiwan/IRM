@@ -217,7 +217,7 @@ namespace :irm do
   task generateFakeLoadTestUsers: :environment do
     i = 1
     Entity.startups.each do |e|
-      3.times do
+      5.times do
         FactoryBot.create(:user, entity: e, email: "startup#{i}@gmail.com")
         i += 1
       end
