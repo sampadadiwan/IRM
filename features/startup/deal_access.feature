@@ -29,7 +29,8 @@ Scenario Outline: Access Deal as Investor without access
   And given there is a deal "<deal>" for the entity 
   Given there is another user "first_name=Investor" for another entity "entity_type=VC"
   And another entity is an investor "category=Lead Investor" in entity
-  And another user "false" have access to the deal
+  And another entity is a deal_investor "status=Active" in the deal
+  Then another user "false" have access to the deal
 
   Examples:
   	|user	    |entity               |deal                     |
@@ -42,9 +43,10 @@ Scenario Outline: Access Deal as Investor with access
   And given there is a deal "<deal>" for the entity 
   Given there is another user "first_name=Investor" for another entity "entity_type=VC"
   And another entity is an investor "category=Lead Investor" in entity
+  And another entity is a deal_investor "status=Active" in the deal
   And investor has access right "<access_right>" in the deal
   And another user has investor access "<investor_access>" in the investor
-  And another user "<should>" have access to the deal 
+  Then another user "<should>" have access to the deal 
 
   Examples:
   	|should	    |entity               |deal                     | access_right                                      | investor_access |

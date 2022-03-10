@@ -41,6 +41,7 @@ Then('I should see the deal details on the details page') do
   expect(page).to have_content(@deal.name)
   expect(page).to have_content(money_to_currency(@deal.amount))
   expect(page).to have_content(@deal.status)
+  # sleep(10)
 end
 
 Then('I should see the deal in all deals page') do
@@ -80,6 +81,9 @@ Given('given there is a deal {string} for the entity') do |arg1|
   @deal = FactoryBot.build(:deal, entity_id: @entity.id)
   key_values(@deal, arg1)
   @deal.save
+  puts "\n####Deal####\n"
+  puts @deal.to_json
+
 end
 
 Given('I should have access to the deal') do
@@ -103,6 +107,15 @@ Given('another entity is an investor {string} in entity') do |arg|
   puts "\n####Investor####\n"
   puts @investor.to_json
 end
+
+Given('another entity is a deal_investor {string} in the deal') do |arg|
+  @deal_investor = DealInvestor.new(investor: @investor, entity: @entity, deal: @deal)  
+  key_values(@deal_investor, arg)
+  @deal_investor.save!
+  puts "\n####Deal Investor####\n"
+  puts @deal_investor.to_json
+end
+
 
 
 Given('another user has investor access {string} in the investor') do |arg|

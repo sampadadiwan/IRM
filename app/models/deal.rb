@@ -24,7 +24,7 @@ class Deal < ApplicationRecord
   include Impressionable
 
   encrypts :name
-  monetize :amount_cents, with_model_currency: ->(i) { i.currency }
+  monetize :amount_cents, with_model_currency: :currency
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -75,7 +75,7 @@ class Deal < ApplicationRecord
     Deal
       # Ensure the access rghts for Document
       .joins(:access_rights)
-      .merge(AccessRight.for_access_type("Deal"))
+      # .merge(AccessRight.for_access_type("Deal"))
       .joins(:investors)
       # Ensure that the user is an investor and tis investor has been given access rights
       .where("investors.investor_entity_id=?", user.entity_id)
@@ -83,7 +83,7 @@ class Deal < ApplicationRecord
       # Ensure this user has investor access
       .joins(entity: :investor_accesses)
       .merge(InvestorAccess.approved_for_user(user))
-      .where("investor_accesses.entity_id = deals.entity_id")
+      # .where("investor_accesses.entity_id = deals.entity_id")
   end
 
   def to_s
