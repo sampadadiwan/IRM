@@ -83,7 +83,7 @@ class Deal < ApplicationRecord
       # Ensure this user has investor access
       .joins(entity: :investor_accesses)
       .merge(InvestorAccess.approved_for_user(user))
-      # .where("investor_accesses.entity_id = deals.entity_id")
+    # .where("investor_accesses.entity_id = deals.entity_id")
   end
 
   def to_s

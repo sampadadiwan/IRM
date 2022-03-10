@@ -1,6 +1,6 @@
 class DealActivitiesController < ApplicationController
   before_action :set_deal_activity, only: %w[show update destroy edit update_sequence toggle_completed]
-  skip_before_action :verify_authenticity_token, only: [:update_sequence]
+  skip_before_action :verify_authenticity_token, only: [:update_sequence], raise: false
 
   # GET /deal_activities or /deal_activities.json
   def index

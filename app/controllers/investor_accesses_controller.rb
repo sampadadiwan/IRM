@@ -6,6 +6,7 @@ class InvestorAccessesController < ApplicationController
   def index
     @investor_accesses = policy_scope(InvestorAccess)
     @investor_accesses = @investor_accesses.where(approved: params[:approved]) if params[:approved].present?
+    @investor_accesses = @investor_accesses.where(investor_id: params[:investor_id]) if params[:investor_id].present?
   end
 
   def search
