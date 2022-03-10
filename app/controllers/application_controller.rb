@@ -2,6 +2,9 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   include PublicActivity::StoreController
 
+  skip_before_action :verify_authenticity_token 
+
+
   after_action :verify_authorized, except: %i[index search], unless: :devise_controller?
   after_action :verify_policy_scoped, only: [:index]
 

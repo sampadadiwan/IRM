@@ -16,7 +16,7 @@ class InvestmentsController < ApplicationController
         ] = "attachment; filename=investments.xlsx"
       end
       format.html { render :index }
-
+      format.json { render :index }
       format.pdf do
         render template: "investments/index", formats: [:html], pdf: "#{@entity.name} Investments"
       end
