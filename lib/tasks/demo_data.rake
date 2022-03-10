@@ -206,6 +206,8 @@ namespace :irm do
 
         deal.start_deal if rand(2).positive?
       end
+
+      FactoryBot.create(:secondary_sale, entity:e)
     end
   rescue Exception => e
     puts e.backtrace.join("\n")
