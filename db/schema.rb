@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_08_164544) do
+ActiveRecord::Schema.define(version: 2022_03_10_152443) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -278,8 +278,8 @@ ActiveRecord::Schema.define(version: 2022_03_08_164544) do
   create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "body", size: :medium
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -293,6 +293,20 @@ ActiveRecord::Schema.define(version: 2022_03_08_164544) do
     t.integer "documents_count", default: 0, null: false
     t.index ["entity_id"], name: "index_folders_on_entity_id"
     t.index ["parent_folder_id"], name: "index_folders_on_parent_folder_id"
+  end
+
+  create_table "funding_rounds", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.decimal "total_amount_cents", precision: 20, scale: 2, default: "0.0"
+    t.string "currency", limit: 5
+    t.decimal "pre_money_valuation_cents", precision: 20, scale: 2, default: "0.0"
+    t.decimal "post_money_valuation_cents", precision: 20, scale: 2, default: "0.0"
+    t.bigint "entity_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.decimal "amount_raised_cents", precision: 20, scale: 2, default: "0.0"
+    t.string "status", default: "Open"
+    t.index ["entity_id"], name: "index_funding_rounds_on_entity_id"
   end
 
   create_table "holdings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -391,7 +405,9 @@ ActiveRecord::Schema.define(version: 2022_03_08_164544) do
     t.string "units", limit: 15
     t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
     t.decimal "price_cents", precision: 10, scale: 2, default: "0.0"
+    t.bigint "funding_round_id"
     t.index ["deleted_at"], name: "index_investments_on_deleted_at"
+    t.index ["funding_round_id"], name: "index_investments_on_funding_round_id"
     t.index ["investee_entity_id"], name: "index_investments_on_investee_entity_id"
     t.index ["investor_id", "investor_type"], name: "index_investments_on_investor"
   end
@@ -622,6 +638,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_164544) do
   add_foreign_key "deals", "entities"
   add_foreign_key "documents", "folders"
   add_foreign_key "folders", "entities"
+  add_foreign_key "funding_rounds", "entities"
   add_foreign_key "holdings", "entities"
   add_foreign_key "holdings", "investors"
   add_foreign_key "holdings", "users"
@@ -629,6 +646,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_164544) do
   add_foreign_key "import_uploads", "users"
   add_foreign_key "interests", "secondary_sales"
   add_foreign_key "interests", "users"
+  add_foreign_key "investments", "funding_rounds"
   add_foreign_key "nudges", "entities"
   add_foreign_key "nudges", "users"
   add_foreign_key "offers", "entities"

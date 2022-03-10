@@ -5,7 +5,7 @@
          Investment Type
       </td>
       <td>
-         <%= @investment.investment_type %>
+         <%= @investment.funding_round ? link_to(@investment.investment_type, @investment.funding_round) : @investment.investment_type %>
       </td>
    </tr>
    <tr>

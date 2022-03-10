@@ -1,0 +1,47 @@
+<%= render "/layouts/alerts" %>
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Funding Rounds</h1>
+    <%= link_to "New Funding Round" , new_funding_round_path, {class: "btn btn-primary" } %>
+  </div>
+
+  <div class="table-responsive" data-controller="datatable">
+
+  <table id="funding_rounds" class="table table-bordered dataTable jqDataTable">
+    <thead>
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Total Amount
+        </th>
+        <th>
+          Currency
+        </th>
+        <th>
+          Amount Raised
+        </th>
+        <th>
+          Pre Money Valuation 
+        </th>
+        <th>
+          Post Money Valuation
+        </th>
+        <th>
+          Entity
+        </th>
+
+        <th>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @funding_rounds.each do |funding_round| %>
+        <%= render funding_round %>
+      <% end %>
+    </tbody>
+  </table>
+
+  </div>

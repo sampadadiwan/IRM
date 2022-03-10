@@ -135,6 +135,7 @@ namespace :irm do
   task generateFakeInvestments: :environment do
     Entity.startups.each do |e|
       i = nil
+      round = FactoryBot.create(:funding_round, entity: e)
       Entity.vcs.each do |vc|
         inv = FactoryBot.create(:investor, investee_entity: e, investor_entity: vc)
         puts "Investor #{inv.id}"
@@ -142,7 +143,8 @@ namespace :irm do
           InvestorAccess.create!(investor:inv, user: user, email: user.email, approved: rand(2), entity_id: inv.investee_entity_id)
         end
 
-        i = FactoryBot.create(:investment, investee_entity: e, investor: inv)
+        round = FactoryBot.create(:funding_round, entity: e) if rand(6) < 2 
+        i = FactoryBot.create(:investment, investee_entity: e, investor: inv, funding_round: round)
         puts "Investment #{i.to_json}"
       end
 

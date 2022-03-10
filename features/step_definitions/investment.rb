@@ -5,7 +5,9 @@ Given('I am at the investments page') do
 end
 
 Given('I create an investment {string}') do |arg1|
-  @investment = FactoryBot.build(:investment, investee_entity: @entity)
+  @funding_round = FactoryBot.create(:funding_round, entity: @entity)
+  @investment = FactoryBot.build(:investment, investee_entity: @entity, 
+                      investment_type: @funding_round.name, funding_round: @funding_round)
   @investment.currency = @entity.currency
   key_values(@investment, arg1)
   # puts @investment.investor.to_json
@@ -15,7 +17,7 @@ Given('I create an investment {string}') do |arg1|
 
   select(@investment.investor.investor_name, from: "investment_investor_id")
   select(@investment.category, from: "investment_category")
-  select(@investment.investment_type, from: "investment_investment_type")
+  select(@investment.funding_round.name, from: "investment_funding_round_id")
   select(@investment.investment_instrument, from: "investment_investment_instrument")
 
   fill_in('investment_quantity', with: @investment.quantity)
@@ -31,7 +33,7 @@ Then('when I edit the investment {string}') do |arg1|
   key_values(@edit_investment, arg1)
 
   select(@edit_investment.category, from: "investment_category")
-  select(@edit_investment.investment_type, from: "investment_investment_type")
+  select(@edit_investment.investment_type, from: "investment_funding_round_id")
   select(@edit_investment.investment_instrument, from: "investment_investment_instrument")
   
   fill_in('investment_quantity', with: @edit_investment.quantity)

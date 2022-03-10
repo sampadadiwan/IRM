@@ -1,4 +1,12 @@
 FactoryBot.define do
+  factory :funding_round do
+    name { "Series A,Series B,Series C".split(",")[rand(3)] }
+    total_amount_cents { rand(5..10) * 1000000 }
+    pre_money_valuation_cents { rand(5..10) * 1000000 }
+    entity { Entity.all.sample }
+    currency { entity.currency }
+  end
+
   factory :payment do
     entity { Entity.all.sample }
     amount { rand(100)*10 + rand(100) * 10 }
@@ -140,13 +148,13 @@ FactoryBot.define do
   end
 
   factory :investment do
-    investment_type { "Series A,Series B,Series C".split(",")[rand(3)] }
     # investee_entity_id { Entity.startups.sample.id }
     # investor { Investor.where(investee_entity_id: investee_entity_id).all.sample }
     investment_instrument { Investment::INSTRUMENT_TYPES[rand(Investment::INSTRUMENT_TYPES.length)] }
     category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
     quantity { (rand(3..10) * 100) }
     price { quantity * rand(3..10) * 10 }
+
     current_value {}
   end
 

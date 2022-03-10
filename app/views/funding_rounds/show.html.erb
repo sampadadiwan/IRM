@@ -1,0 +1,75 @@
+<%= render "/layouts/alerts" %>
+
+  <table class="table table-bordered dataTable">
+
+    <tr>
+      <td>
+        Name
+      </td>
+      <td>
+        <%= @funding_round.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Total Amount
+      </td>
+      <td>
+        <%= money_to_currency @funding_round.total_amount %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Currency
+      </td>
+      <td>
+        <%= @funding_round.currency %>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Amount Raised
+      </td>
+      <td>
+        <%= money_to_currency @funding_round.amount_raised %>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Pre Money Valuation
+      </td>
+      <td>
+        <%= money_to_currency @funding_round.pre_money_valuation %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Post Money Valuation
+      </td>
+      <td>
+        <%= money_to_currency @funding_round.post_money_valuation %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Entity
+      </td>
+      <td>
+        <%= @funding_round.entity.name %>
+      </td>
+    </tr>
+
+
+  </table>
+
+
+  <div>
+    <%= link_to "Edit" , edit_funding_round_path(@funding_round), {class: "btn btn-primary" } %> |
+    <%= button_to "Delete" , @funding_round, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" %>
+  </div>
+
+  <div class="associated_entity" data-controller="investments">
+    <%= render "investments/index", investments: @funding_round.investments, entity: @funding_round.entity, title: "Equity" %>
+  </div>

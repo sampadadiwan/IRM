@@ -1,0 +1,26 @@
+<tr id="<%= dom_id funding_round %>">
+  <td>
+    <%= funding_round.name %>
+  </td>
+  <td>
+    <%= money_to_currency funding_round.total_amount %>
+  </td>
+  <td>
+    <%= funding_round.currency %>
+  </td>
+  <td>
+    <%= money_to_currency funding_round.amount_raised %>
+  </td>
+  <td>
+    <%= money_to_currency funding_round.pre_money_valuation %>
+  </td>
+  <td>
+    <%= money_to_currency funding_round.post_money_valuation %>
+  </td>
+  <td>
+    <%= funding_round.entity.name %>
+  </td>
+  <td>
+    <%= link_to "Show" , funding_round , {class: "btn btn-primary" }%>
+  </td>
+</tr>

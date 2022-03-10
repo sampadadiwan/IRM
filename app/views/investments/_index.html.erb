@@ -8,7 +8,7 @@
                                                     "investment[investment_instrument]": title), 
       {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
 
-  
+    <%= link_to "Funding Rounds", funding_rounds_path, {class: "btn btn-primary"} %>
     <%= link_to investments_path(format: :xlsx), {class: "btn btn-success"} do %>
       <i class="fa-lg fa-regular fa-file-excel"></i> Download
     <% end %>
@@ -21,7 +21,7 @@
 
   <table id='<%= "investments-#{title}" %>' class="table table-bordered dataTable jqDataTable">
 
-    <%= render "investments/index_header", title: title %>
+    <%= render "investments/index_header", title: title, entity: entity %>
     <tbody>
       <% investments.each do |investment| %>
         <%= render investment, title: title %>

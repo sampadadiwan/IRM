@@ -35,6 +35,9 @@ class Investment < ApplicationRecord
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   belongs_to :investor
+  belongs_to :funding_round, optional: true
+  counter_culture :funding_round, column_name: 'amount_raised_cents', delta_column: 'amount_cents'
+
   delegate :investor_entity_id, to: :investor
   belongs_to :investee_entity, class_name: "Entity"
 
@@ -89,6 +92,7 @@ class Investment < ApplicationRecord
     self.amount = quantity * price
     self.currency = investee_entity.currency
     self.units = investee_entity.units
+    self.investment_type = funding_round.name if funding_round
   end
 
   after_destroy :destroy_investor_holdings

@@ -5,11 +5,14 @@
   <%%= link_to "New <%= human_name.titleize %>", <%= new_helper(type: :path) %>, {class: "btn btn-primary"}  %>
 </div>
 
-<table id="<%= plural_table_name %>" class="table table-bordered dataTable">
-  <tbody>
-  <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
-    <%%= render <%= singular_table_name %> %>
-  <%% end %>
-  </tbody>
-</table>
+<div class="table-responsive" data-controller="datatable">
 
+  <table id="<%= plural_table_name %>" class="table table-bordered dataTable">
+    <tbody>
+    <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
+      <%%= render <%= singular_table_name %> %>
+    <%% end %>
+    </tbody>
+  </table>
+
+</div>

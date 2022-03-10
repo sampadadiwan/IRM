@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :funding_rounds
   resources :payments
   resources :nudges
   resources :import_uploads
