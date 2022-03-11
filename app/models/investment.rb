@@ -31,6 +31,8 @@ class Investment < ApplicationRecord
 
   encrypts :investment_type, :category
 
+  validates :investment_instrument, :quantity, :price, presence: true
+
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 

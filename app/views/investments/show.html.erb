@@ -88,6 +88,15 @@
             <%= @investment.diluted_percentage %> %
          </td>
       </tr>
+
+      <tr>
+         <td>
+            Liquidation Preference
+         </td>
+         <td>
+            <%= @investment.liquidation_preference %>
+         </td>
+      </tr>
    <% end %>
 
    <% end %>
@@ -97,6 +106,16 @@
 
    <div>
       <%= link_to "Edit", edit_investment_path(@investment), {class: "btn btn-primary"} %> |
+      <%= link_to "Back", investments_path, {class: "btn btn-primary"} %> |
+
+      <% if current_user.entity_id == @investment.investee_entity_id %>
+      <%= link_to "New Investment", 
+            new_investment_path("investment[investee_entity_id]": current_user.entity_id,
+            "investment[investment_instrument]": @investment.investment_instrument), 
+            {class: "btn btn-primary"}  %> |
+
+      <% end %>                                                      
+
       <%= button_to "Delete", @investment, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
    </div>
 

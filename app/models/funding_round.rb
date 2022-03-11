@@ -6,7 +6,7 @@ class FundingRound < ApplicationRecord
   belongs_to :entity
   has_many :investments, dependent: :destroy
 
-  scope :open, -> {where(status:"Open")}
+  scope :open, -> { where(status: "Open") }
 
   before_save :compute_post_money
   def compute_post_money

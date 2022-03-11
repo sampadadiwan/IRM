@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_11_061804) do
+ActiveRecord::Schema.define(version: 2022_03_11_073535) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -407,6 +407,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_061804) do
     t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
     t.decimal "price_cents", precision: 10, scale: 2, default: "0.0"
     t.bigint "funding_round_id"
+    t.decimal "liquidation_preference", precision: 4, scale: 2
     t.index ["deleted_at"], name: "index_investments_on_deleted_at"
     t.index ["funding_round_id"], name: "index_investments_on_funding_round_id"
     t.index ["investee_entity_id"], name: "index_investments_on_investee_entity_id"
