@@ -19,13 +19,13 @@
         </div>
     </td>
     <td>
-        <%= money_to_currency deal_investor.pre_money_valuation %>
+        <%= money_to_currency deal_investor.pre_money_valuation, params %>
     </td>
     <td>
-        <%= money_to_currency deal_investor.primary_amount %>
+        <%= money_to_currency deal_investor.primary_amount, params %>
     </td>
     <td>
-        <%= money_to_currency deal_investor.secondary_investment %>
+        <%= money_to_currency deal_investor.secondary_investment, params %>
     </td>
     <td>
         <%= deal_investor.company_advisor %>

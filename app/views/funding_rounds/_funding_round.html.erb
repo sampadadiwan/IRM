@@ -6,13 +6,13 @@
     <%= funding_round.currency %>
   </td>
   <td>
-    <%= money_to_currency funding_round.amount_raised %>
+    <%= money_to_currency funding_round.amount_raised, params %>
   </td>
   <td>
-    <%= money_to_currency funding_round.pre_money_valuation %>
+    <%= money_to_currency funding_round.pre_money_valuation, params %>
   </td>
   <td>
-    <%= money_to_currency funding_round.post_money_valuation %>
+    <%= money_to_currency funding_round.post_money_valuation, params %>
   </td>
   <td>
     <%= funding_round.status%>
