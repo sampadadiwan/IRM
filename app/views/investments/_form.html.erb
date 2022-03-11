@@ -40,7 +40,7 @@
 
   <div class="form-group">
     <%= form.label :funding_round %>
-    <%= form.select :funding_round_id, current_user.entity.funding_rounds.collect {|u| [u.name, u.id]}, 
+    <%= form.select :funding_round_id, current_user.entity.funding_rounds.open.collect {|u| [u.name, u.id]}, 
       {include_blank: true}, {class: "form-control"} %>
   </div>
 

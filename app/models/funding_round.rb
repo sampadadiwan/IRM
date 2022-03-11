@@ -6,6 +6,8 @@ class FundingRound < ApplicationRecord
   belongs_to :entity
   has_many :investments, dependent: :destroy
 
+  scope :open, -> {where(status:"Open")}
+
   before_save :compute_post_money
   def compute_post_money
     self.post_money_valuation = pre_money_valuation + amount_raised
