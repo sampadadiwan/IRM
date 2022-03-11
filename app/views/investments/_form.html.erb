@@ -44,6 +44,8 @@
     <%= form.label :funding_round %>
     <%= form.select :funding_round_id, current_user.entity.funding_rounds.open.collect {|u| [u.name, u.id]}, 
       {include_blank: true}, {class: "form-control"} %>
+    <small class="text-muted">Create a <%= link_to "New Funding Round", new_funding_round_path %></small>
+  
   </div>
 
 
