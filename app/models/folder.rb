@@ -18,6 +18,8 @@ class Folder < ApplicationRecord
   belongs_to :entity
   has_many :documents, dependent: :destroy
 
+  validates :name, :level, presence: true
+
   before_save :update_level
   after_create :touch_root
   before_destroy :destroy_child_folders

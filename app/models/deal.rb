@@ -5,7 +5,7 @@
 #  id                :integer          not null, primary key
 #  entity_id         :integer          not null
 #  name              :string(255)
-#  amount_cents      :decimal(10, )
+#  amount_cents      :decimal(20, 2)   default("0.00")
 #  status            :string(20)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -39,6 +39,8 @@ class Deal < ApplicationRecord
 
   has_many :deal_docs, dependent: :destroy
   has_many :access_rights, as: :owner, dependent: :destroy
+
+  validates :name, :amount_cents, :status, :currency, presence: true
 
   STATUS = %w[Open Closed].freeze
   ACTIVITIES = Rack::Utils.parse_nested_query(ENV["DEAL_ACTIVITIES"].tr(":", "=").tr(",", "&"))

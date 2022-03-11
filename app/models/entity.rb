@@ -47,7 +47,7 @@ class Entity < ApplicationRecord
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
-  validates :name, presence: true
+  validates :name, :entity_type, presence: true
 
   has_rich_text :details
   has_many :deals, dependent: :destroy
@@ -101,7 +101,7 @@ class Entity < ApplicationRecord
 
   after_create :setup_root_folder
   def setup_root_folder
-    Folder.create(name: "/", entity_id: id)
+    Folder.create(name: "/", entity_id: id, level: 0)
   end
 
   after_create :setup_holding_entity, if: proc { |model| model.entity_type == "Startup" }

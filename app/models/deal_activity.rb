@@ -43,6 +43,7 @@ class DealActivity < ApplicationRecord
   delegate :name, to: :deal, prefix: :deal
 
   has_rich_text :details
+  validates :title, :days, presence: true
 
   scope :templates, ->(deal) { where(deal_id: deal.id).where(deal_investor_id: nil).order("sequence asc") }
 

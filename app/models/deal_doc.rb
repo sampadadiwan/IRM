@@ -36,6 +36,8 @@ class DealDoc < ApplicationRecord
   delegate :name, to: :deal, prefix: :deal
   delegate :title, to: :deal_activity, prefix: :deal_activity
 
+  validates :name, presence: true
+
   has_attached_file :file,
                     s3_permissions: nil,
                     bucket: proc { |attachment|

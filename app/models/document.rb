@@ -37,6 +37,8 @@ class Document < ApplicationRecord
   has_rich_text :text
   has_one_attached :video, service: :amazon
 
+  validates :name, presence: true
+
   has_attached_file :file,
                     bucket: proc { |attachment|
                       attachment.instance.entity.s3_bucket.present? ? attachment.instance.owner.s3_bucket : ENV["AWS_S3_BUCKET"]

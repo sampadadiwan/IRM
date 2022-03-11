@@ -6,21 +6,26 @@ module InvestmentsHelper
     money = money.clone
 
     units = ""
-    if params[:units].present?
-      units = case params[:units]
+    raw_units = params[:units].presence || cookies[:currency_units]
+
+    if raw_units.present?
+
+      units = case raw_units
               when "Crores"
                 money /= 10_000_000
                 sanf = true
-                params[:units]
+                raw_units
               when "Lakhs"
                 money /= 100_000
                 sanf = true
-                params[:units]
+                raw_units
               when "Million"
                 money /= 1_000_000
                 sanf = false
-                params[:units]
+                raw_units
               end
+
+      cookies[:currency_units] = units
     end
 
     display(money, sanf, units)
@@ -38,6 +43,6 @@ module InvestmentsHelper
                     money.format(format: FORMAT, south_asian_number_formatting: sanf)
                   end
 
-    "#{display_val} #{units}"
+    units.present? ? "#{display_val} #{units}" : display_val
   end
 end

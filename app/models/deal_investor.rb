@@ -6,8 +6,8 @@
 #  deal_id                    :integer          not null
 #  investor_id                :integer          not null
 #  status                     :string(20)
-#  primary_amount_cents       :decimal(10, )    default("0")
-#  secondary_investment_cents :decimal(10, )    default("0")
+#  primary_amount_cents       :decimal(20, 2)   default("0.00")
+#  secondary_investment_cents :decimal(20, 2)   default("0.00")
 #  entity_id                  :integer          not null
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
@@ -48,6 +48,7 @@ class DealInvestor < ApplicationRecord
   delegate :name, to: :entity, prefix: :entity
   delegate :name, to: :deal, prefix: :deal
 
+  validates :status, :primary_amount_cents, :pre_money_valuation, presence: true
   STATUS = %w[Active Pending Declined].freeze
 
   scope :for, ->(user) { where("investors.investor_entity_id=?", user.entity_id).joins(:investor) }

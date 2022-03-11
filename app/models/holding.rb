@@ -19,6 +19,8 @@ class Holding < ApplicationRecord
   belongs_to :entity
   belongs_to :investor
 
+  validates :quantity, presence: true
+
   before_save :set_type
   def set_type
     self.holding_type = user_id.present? ? "Employee" : "Investor"

@@ -26,6 +26,8 @@ class SecondarySale < ApplicationRecord
   has_many :offers, dependent: :destroy
   has_many :interests, dependent: :destroy
 
+  validates :name, :start_date, :end_date, :min_price, :max_price, :percent_allowed, presence: true
+
   scope :for, lambda { |user|
                 where("access_rights.access_type='SecondarySale'")
                   .where("access_rights.access_to_investor_id = investors.id and investors.investor_entity_id=?", user.entity_id)

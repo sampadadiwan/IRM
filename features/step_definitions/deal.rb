@@ -103,7 +103,7 @@ end
 Given('another entity is an investor {string} in entity') do |arg|
   @investor = Investor.new(investor_entity: @another_entity, investee_entity: @entity)  
   key_values(@investor, arg)
-  @investor.save
+  @investor.save!
   puts "\n####Investor####\n"
   puts @investor.to_json
 end

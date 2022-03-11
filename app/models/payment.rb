@@ -16,4 +16,6 @@
 class Payment < ApplicationRecord
   belongs_to :entity
   belongs_to :user
+
+  validates :amount, :plan, presence: true
 end

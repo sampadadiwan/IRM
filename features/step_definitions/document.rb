@@ -1,7 +1,7 @@
   Given('given there is a document {string} for the entity') do |arg|
     @document = FactoryBot.build(:document, entity: @entity)
     key_values(@document, arg)
-    @document.save
+    @document.save!
     puts "\n####Document####\n"
     puts @document.to_json
   end
