@@ -3,6 +3,9 @@
   <%= link_to "New Potential Investment", new_deal_investor_path("deal_investor[deal_id]": @deal.id, 
               "deal_investor[entity_id]": current_user.entity_id ), 
               {class: "btn btn-primary"} if @deal %>
+  
+  <%= render "investments/currency_form" %>
+
 </div>
 
 <div class="table-responsive">

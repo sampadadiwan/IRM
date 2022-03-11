@@ -236,9 +236,15 @@ div.divider {
 
   .dropdown-toggle {
     z-index: -100;
+  }  
+}
+
+#currency_units_form {
+  display: inline !important;
+
+  .form-group, .form-control {
+    display: inline;
+    width:auto;
   }
-
-
-  
 }
 

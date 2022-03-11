@@ -49,6 +49,9 @@ Lint/DuplicateBranch:
   Exclude:
     - 'app/helpers/investments_helper.rb'
 
+Style/OptionalBooleanParameter:
+  Exclude:
+    - 'app/helpers/investments_helper.rb'
 # Metrics Cops
 Metrics/CyclomaticComplexity:
   Max: 10

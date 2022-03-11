@@ -57,7 +57,7 @@
          Price
       </td>
       <td>
-         <%= money_to_currency @investment.price %>
+         <%= money_to_currency @investment.price, params, true %>
       </td>
    </tr>
    <tr>

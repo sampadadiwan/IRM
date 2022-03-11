@@ -35,7 +35,7 @@
     <% end %>
     
     <td>
-        <%= money_to_currency(investment.price)  %>
+        <%= money_to_currency(investment.price, params, true)  %>
     </td>
     <td>
         <%= money_to_currency(investment.amount, params)  %>

@@ -12,6 +12,9 @@
     <%= link_to investments_path(format: :xlsx), {class: "btn btn-success"} do %>
       <i class="fa-lg fa-regular fa-file-excel"></i> Download
     <% end %>
+
+    <%= render "investments/currency_form" %>
+
   <% end %>
   
   </span>

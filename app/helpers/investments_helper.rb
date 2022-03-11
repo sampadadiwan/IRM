@@ -1,14 +1,14 @@
 module InvestmentsHelper
   FORMAT = I18n.t :format, scope: 'number.currency.format'
 
-  def money_to_currency(money, params = {})
+  def money_to_currency(money, params = {}, ignore_units = false)
     sanf = true
     money = money.clone
 
     units = ""
     raw_units = params[:units].presence || cookies[:currency_units]
 
-    if raw_units.present?
+    if raw_units.present? && !ignore_units
 
       units = case raw_units
               when "Crores"

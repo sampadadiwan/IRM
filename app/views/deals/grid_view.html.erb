@@ -25,6 +25,9 @@
         <%= link_to deal_path(id: @deal.id, grid_view: true, all:true, format: :xlsx), {class: "btn btn-success"} do %>
             <i class="fa-lg fa-regular fa-file-excel"></i> Download
         <% end %>
+
+        <%= render "investments/currency_form" %>
+
     </span>
 </div>
 
