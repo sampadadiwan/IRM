@@ -12,14 +12,6 @@
     </tr>
     <tr>
       <td>
-        Total Amount
-      </td>
-      <td>
-        <%= money_to_currency @funding_round.total_amount %>
-      </td>
-    </tr>
-    <tr>
-      <td>
         Currency
       </td>
       <td>
@@ -58,6 +50,23 @@
       </td>
       <td>
         <%= @funding_round.entity.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Status
+      </td>
+      <td>
+        <%= @funding_round.status %>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Closed On
+      </td>
+      <td>
+        <%= l @funding_round.closed_on if @funding_round.closed_on %>
       </td>
     </tr>
 

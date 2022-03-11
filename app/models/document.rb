@@ -73,7 +73,7 @@ class Document < ApplicationRecord
     Document
       # Ensure the access rghts for Document
       .joins(:access_rights)
-      .merge(AccessRight.for_access_type("Document"))
+      # .merge(AccessRight.for_access_type("Document"))
       .joins(entity: :investors)
       # Ensure that the user is an investor and tis investor has been given access rights
       .where("entities.id=?", entity.id)

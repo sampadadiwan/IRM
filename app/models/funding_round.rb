@@ -8,11 +8,13 @@ class FundingRound < ApplicationRecord
 
   before_save :compute_post_money
   def compute_post_money
-    case status
-    when "Open"
-      self.post_money_valuation = pre_money_valuation + total_amount
-    when "Closed"
-      self.post_money_valuation = pre_money_valuation + amount_raised
-    end
+    self.post_money_valuation = pre_money_valuation + amount_raised
+    self.closed_on = Time.zone.today if status_changed? && status == "Closed"
+    # case status
+    # when "Open"
+    #   self.post_money_valuation = pre_money_valuation + total_amount
+    # when "Closed"
+    #   self.post_money_valuation = pre_money_valuation + amount_raised
+    # end
   end
 end

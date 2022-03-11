@@ -71,7 +71,7 @@ class FundingRoundsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def funding_round_params
-    params.require(:funding_round).permit(:name, :total_amount, :currency,
+    params.require(:funding_round).permit(:name, :total_amount, :currency, :status,
                                           :pre_money_valuation, :entity_id)
   end
 end

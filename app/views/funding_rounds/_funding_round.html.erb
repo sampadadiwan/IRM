@@ -3,9 +3,6 @@
     <%= funding_round.name %>
   </td>
   <td>
-    <%= money_to_currency funding_round.total_amount %>
-  </td>
-  <td>
     <%= funding_round.currency %>
   </td>
   <td>
@@ -18,7 +15,10 @@
     <%= money_to_currency funding_round.post_money_valuation %>
   </td>
   <td>
-    <%= funding_round.entity.name %>
+    <%= funding_round.status%>
+  </td>
+  <td>
+    <%= l funding_round.closed_on if funding_round.closed_on%>
   </td>
   <td>
     <%= link_to "Show" , funding_round , {class: "btn btn-primary" }%>
