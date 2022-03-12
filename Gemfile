@@ -52,7 +52,7 @@ gem 'hightop'
 
 gem 'eu_central_bank'
 gem 'money-rails', '~>1.12'
-gem 'prometheus_exporter'
+#gem 'prometheus_exporter'
 
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary-edge'

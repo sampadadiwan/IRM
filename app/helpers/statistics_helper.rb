@@ -1,13 +1,13 @@
 module StatisticsHelper
   def investment_by_investment_type(entity)
-    bar_chart Investment.where(investee_entity_id: entity.id)
+    column_chart Investment.where(investee_entity_id: entity.id)
                         .group_by(&:investment_type)
                         .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
               prefix: entity.currency
   end
 
   def investment_by_intrument(entity)
-    bar_chart Investment.where(investee_entity_id: entity.id)
+    column_chart Investment.where(investee_entity_id: entity.id)
                         .group_by(&:investment_instrument)
                         .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
               prefix: entity.currency
@@ -18,12 +18,12 @@ module StatisticsHelper
     #                     .joins(:investor).includes(:investor).group("investors.investor_name").sum(:initial_value),
 
     # We cant use the DB, as values are encrypted
-    pie_chart Investment.where(investee_entity_id: entity.id)
+    column_chart Investment.where(investee_entity_id: entity.id)
                         .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
                         .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
               #   xtitle: "Investment Amount",
               #   ytitle: "Type",
-              donut: true,
+              stacked: true,
               prefix: entity.currency
   end
 
@@ -39,13 +39,13 @@ module StatisticsHelper
     notes = Note.where(entity_id: entity.id)
                 .group('MONTH(created_at)')
     group_by_month = notes.count.sort.to_h.transform_keys { |k| I18n.t('date.month_names')[k] }
-    bar_chart group_by_month
+    column_chart group_by_month
   end
 
   def investor_interaction(entity)
     investors = Investor.where("investee_entity_id =? and last_interaction_date > ?", entity.id, Time.zone.today - 6.months)
                         .group('MONTH(last_interaction_date)')
     group_by_month = investors.count.sort.to_h.transform_keys { |k| I18n.t('date.month_names')[k] }
-    bar_chart group_by_month
+    column_chart group_by_month
   end
 end
