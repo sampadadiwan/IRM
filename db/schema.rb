@@ -536,8 +536,8 @@ ActiveRecord::Schema.define(version: 2022_03_12_113349) do
     t.date "start_date"
     t.date "end_date"
     t.integer "percent_allowed", default: 0
-    t.decimal "min_price", precision: 5, scale: 2
-    t.decimal "max_price", precision: 5, scale: 2
+    t.decimal "min_price", precision: 10, scale: 2
+    t.decimal "max_price", precision: 10, scale: 2
     t.boolean "active", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
