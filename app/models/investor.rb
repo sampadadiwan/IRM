@@ -19,7 +19,7 @@
 class Investor < ApplicationRecord
   include Trackable
 
-  encrypts :investor_name
+  encrypts :investor_name, deterministic: true
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
@@ -38,6 +38,9 @@ class Investor < ApplicationRecord
 
   delegate :name, to: :investee_entity, prefix: :investee
   validates :category, presence: true
+
+  validates :investor_name, uniqueness: { scope: :investee_entity_id, message: "already exists as an investor. Duplicate Investor." }
+  validates :investor_entity_id, uniqueness: { scope: :investee_entity_id, message: ": Investment firm already exists as an investor. Duplicate Investor." }
 
   scope :for, lambda { |vc_user, startup_entity|
                 where(investee_entity_id: startup_entity.id,

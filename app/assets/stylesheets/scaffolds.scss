@@ -19,14 +19,20 @@ div.actions {
   border-radius: 10% !important;
   height: 5rem;
   width: 5rem;
-  margin-left: -5px;
+  margin-left: -5px;  
 } 
 
 #alert {
   color: #df4e4e; 
   text-align: center;
   display: table;
-  margin: 0 auto;
+  margin: 0 auto;  
+}
+
+.alert-danger {
+  ul {
+    padding-inline-start: 20px;
+  }
 }
 
 .field_with_errors {

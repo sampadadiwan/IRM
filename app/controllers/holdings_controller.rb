@@ -11,9 +11,7 @@ class HoldingsController < ApplicationController
       @holdings = @holdings.where(entity_id: @secondary_sale.entity_id)
     end
     @holdings = @holdings.where(entity_id: params[:entity_id]) if params[:entity_id].present?
-    if params[:limit]
-      @holdings = @holdings.limit params[:limit]
-    end
+    @holdings = @holdings.limit params[:limit] if params[:limit]
   end
 
   # GET /holdings/1 or /holdings/1.json

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_11_073535) do
+ActiveRecord::Schema.define(version: 2022_03_12_113349) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_073535) do
     t.index ["deleted_at"], name: "index_deal_investors_on_deleted_at"
     t.index ["entity_id"], name: "index_deal_investors_on_entity_id"
     t.index ["investor_entity_id"], name: "index_deal_investors_on_investor_entity_id"
+    t.index ["investor_id", "deal_id"], name: "index_deal_investors_on_investor_id_and_deal_id", unique: true
     t.index ["investor_id"], name: "index_deal_investors_on_investor_id"
   end
 
@@ -278,8 +279,8 @@ ActiveRecord::Schema.define(version: 2022_03_11_073535) do
   create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "body", size: :medium
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -314,7 +315,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_073535) do
     t.bigint "user_id"
     t.bigint "entity_id", null: false
     t.integer "quantity", default: 0
-    t.decimal "value", precision: 20, scale: 2, default: "0.0"
+    t.decimal "value", precision: 20, default: "0"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "investment_instrument", limit: 100
@@ -445,7 +446,9 @@ ActiveRecord::Schema.define(version: 2022_03_11_073535) do
     t.boolean "is_holdings_entity", default: false
     t.index ["deleted_at"], name: "index_investors_on_deleted_at"
     t.index ["investee_entity_id"], name: "index_investors_on_investee_entity_id"
+    t.index ["investor_entity_id", "investee_entity_id"], name: "index_investors_on_investor_entity_id_and_investee_entity_id", unique: true
     t.index ["investor_entity_id"], name: "index_investors_on_investor_entity_id"
+    t.index ["investor_name", "investee_entity_id"], name: "index_investors_on_investor_name_and_investee_entity_id", unique: true
   end
 
   create_table "notes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

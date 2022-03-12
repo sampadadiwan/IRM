@@ -49,6 +49,8 @@ class DealInvestor < ApplicationRecord
   delegate :name, to: :deal, prefix: :deal
 
   validates :status, :primary_amount_cents, :pre_money_valuation, presence: true
+  validates :investor_id, uniqueness: { scope: :deal_id, message: "already added to this deal. Duplicate Investor." }
+
   STATUS = %w[Active Pending Declined].freeze
 
   scope :for, ->(user) { where("investors.investor_entity_id=?", user.entity_id).joins(:investor) }
