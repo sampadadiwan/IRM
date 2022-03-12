@@ -24,7 +24,6 @@ export default class extends Controller {
       t1.destroy();
     });
 
-
     // Add event listener for opening and closing details
     $('#investments-Equity tbody').on('click', 'td.dt-control', function () {
       var tr = $(this).closest('tr');
@@ -34,6 +33,7 @@ export default class extends Controller {
         // This row is already open - close it
         row.child.hide();
         tr.removeClass('shown');
+        tr.find('svg').attr('data-icon', 'plus-circle');    // FontAwesome 5
       }
       else {
 
@@ -43,6 +43,7 @@ export default class extends Controller {
             console.log(data);
             row.child(format(data)).show();
             tr.addClass('shown');
+            tr.find('svg').attr('data-icon', 'minus-circle');    // FontAwesome 5
         });
 
       }
@@ -66,7 +67,7 @@ export default class extends Controller {
 
       // return rows;
 
-      return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+      return '<table class="table table-bordered table-striped dataTable">'+
           '<tr>'+
             '<th>Name</th>'+
             '<th>Instrument</th>'+
