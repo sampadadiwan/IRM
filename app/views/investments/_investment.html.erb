@@ -1,13 +1,14 @@
 <tr id="<%= dom_id investment %>">
 
-<% if investment.investor.is_holdings_entity %>
-    <td class="dt-control" data-instrument="<%=investment.investment_instrument%>" 
-        data-entity="<%=investment.investee_entity_id%>"
-        data-category="<%=investment.category%>"></td>
-<% else %>
-    <td class=""></td>
+<% if current_user.entity_id == investment.investee_entity_id %>
+    <% if investment.investor.is_holdings_entity %>
+        <td class="dt-control" data-instrument="<%=investment.investment_instrument%>" 
+            data-entity="<%=investment.investee_entity_id%>"
+            data-category="<%=investment.category%>"></td>
+    <% else %>
+        <td class=""></td>
+    <% end %>
 <% end %>
-
 <td>
     <%= investment.funding_round ? link_to(investment.investment_type, investment.funding_round) : investment.investment_type %>
 </td>  
