@@ -34,6 +34,7 @@ class Investor < ApplicationRecord
   has_many :access_rights, foreign_key: :access_to_investor_id, dependent: :destroy
   has_many :deal_investors, dependent: :destroy
   has_many :deals, through: :deal_investors
+  has_many :holdings, dependent: :destroy
 
   delegate :name, to: :investee_entity, prefix: :investee
   validates :category, presence: true

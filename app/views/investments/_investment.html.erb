@@ -1,4 +1,11 @@
 <tr id="<%= dom_id investment %>">
+
+<% if investment.investor.is_holdings_entity %>
+    <td class="dt-control"></td>
+<% else %>
+    <td class=""></td>
+<% end %>
+
 <td>
     <%= investment.funding_round ? link_to(investment.investment_type, investment.funding_round) : investment.investment_type %>
 </td>  

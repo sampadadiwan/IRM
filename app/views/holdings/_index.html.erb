@@ -1,5 +1,6 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Holdings</h1>
+    <% title ||= "Holdings" %>
+    <h1 class="h3 mb-0 text-gray-800"><%=title%></h1>
     <span>
         <!-- We have to show the employee investors screen from which we can add holdings -->
         <% investor=current_user&.entity.investors.where(is_holdings_entity: true).first %>
