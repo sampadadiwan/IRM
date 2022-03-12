@@ -1,7 +1,9 @@
 <tr id="<%= dom_id investment %>">
 
 <% if investment.investor.is_holdings_entity %>
-    <td class="dt-control"></td>
+    <td class="dt-control" data-instrument="<%=investment.investment_instrument%>" 
+        data-entity="<%=investment.investee_entity_id%>"
+        data-category="<%=investment.category%>"></td>
 <% else %>
     <td class=""></td>
 <% end %>

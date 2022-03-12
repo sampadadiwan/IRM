@@ -31,7 +31,7 @@
 class Investment < ApplicationRecord
   include Trackable
 
-  encrypts :investment_type, :category
+  encrypts :investment_type
 
   validates :investment_instrument, :quantity, :price, presence: true
 

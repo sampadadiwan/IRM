@@ -19,23 +19,24 @@ class Holding < ApplicationRecord
   belongs_to :entity
   belongs_to :investor
 
-  validates :quantity, presence: true
+  validates :quantity, :holding_type, presence: true
 
-  before_save :set_type
-  def set_type
-    self.holding_type = user_id.present? ? "Employee" : "Investor"
-  end
+  # before_save :set_type
+  # def set_type
+  #   self.holding_type ||= user_id.present? ? "Employee" : "Investor"
+  # end
 
   # Only update the investment if its coming from an employee of a holding company
-  after_create :update_investment, if: proc { |h| h.holding_type == "Employee" }
-  before_destroy :reduce_investment, if: proc { |h| h.holding_type == "Employee" }
+  after_create :update_investment, if: proc { |h| %w[Employee Founder].include?(h.holding_type) }
+  before_destroy :reduce_investment, if: proc { |h| %w[Employee Founder].include?(h.holding_type) }
 
   def update_investment
-    investment = entity.investments.where(employee_holdings: true, investment_instrument: investment_instrument).first
+    investment = entity.investments.where(employee_holdings: true,
+                                          investment_instrument: investment_instrument, category: holding_type).first
     unless investment
       employee_investor = Investor.for(user, entity).first
-      investment = Investment.new(investment_type: "Employee Holdings", investment_instrument: investment_instrument,
-                                  category: "Employee", investee_entity_id: entity.id, investor_id: employee_investor.id,
+      investment = Investment.new(investment_type: "#{holding_type} Holdings", investment_instrument: investment_instrument,
+                                  category: holding_type, investee_entity_id: entity.id, investor_id: employee_investor.id,
                                   employee_holdings: true, quantity: 0, currency: entity.currency)
     end
 
@@ -45,7 +46,8 @@ class Holding < ApplicationRecord
   end
 
   def reduce_investment
-    investment = entity.investments.where(employee_holdings: true, investment_instrument: investment_instrument).first
+    investment = entity.investments.where(employee_holdings: true, category: holding_type,
+                                          investment_instrument: investment_instrument).first
     investment.quantity -= quantity
     investment.save
     investment.update_percentage_holdings
@@ -54,5 +56,9 @@ class Holding < ApplicationRecord
   def active_secondary_sale
     entity.secondary_sales.where("secondary_sales.start_date <= ? and secondary_sales.end_date >= ?",
                                  Time.zone.today, Time.zone.today).first
+  end
+
+  def holder_name
+    user ? user.full_name : investor.investor_name
   end
 end

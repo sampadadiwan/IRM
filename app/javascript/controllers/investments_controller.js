@@ -25,7 +25,10 @@ export default class extends Controller {
     });
 
     // Add event listener for opening and closing details
-    $('#investments-Equity tbody').on('click', 'td.dt-control', function () {
+    $('#investments-Equity tbody').on('click', 'td.dt-control', function (event) {
+      let instrument = $(this).data('instrument');
+      let entity = $(this).data('entity');
+      let category = $(this).data('category');
       var tr = $(this).closest('tr');
       var row = t1.row(tr);
 
@@ -38,7 +41,7 @@ export default class extends Controller {
       else {
 
         $.ajax({
-          url: `/holdings.json?limit=5`
+          url: `/holdings.json?entity_id=${entity}&investment_instrument=${instrument}&holding_type=${category}&limit=5`
         }).then(function(data) {
             console.log(data);
             row.child(format(data)).show();
@@ -51,7 +54,7 @@ export default class extends Controller {
 
     function rowHtml(row, index) {
       return '<tr>'+
-                '<td>'+row.user_name+'</td>'+
+                '<td>'+row.holder_name+'</td>'+
                 '<td>'+row.investment_instrument+'</td>'+
                 '<td>'+row.quantity+'</td>'+
               '</tr>'            

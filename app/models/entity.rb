@@ -43,7 +43,7 @@ class Entity < ApplicationRecord
   include Trackable
 
   encrypts :name, deterministic: true
-
+  validates :name, uniqueness: true
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
@@ -112,7 +112,11 @@ class Entity < ApplicationRecord
 
     i = Investor.create(investor_name: e.name, investor_entity_id: e.id,
                         investee_entity_id: id, category: "Employee", is_holdings_entity: true)
-    Rails.logger.debug { "Created Investor for Holding entity #{i.investor_name} #{i.id} for #{name}" }
+    Rails.logger.debug { "Created Investor for Employee Holding entity #{i.investor_name} #{i.id} for #{name}" }
+
+    i = Investor.create(investor_name: "#{name} - Founders", investor_entity_id: id,
+                        investee_entity_id: id, category: "Founder", is_holdings_entity: true)
+    Rails.logger.debug { "Created Investor for Founder Holding entity #{i.investor_name} #{i.id} for #{name}" }
   end
 
   # Setup the person who created this entity as belonging to this entity

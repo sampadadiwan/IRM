@@ -11,6 +11,8 @@ class HoldingsController < ApplicationController
       @holdings = @holdings.where(entity_id: @secondary_sale.entity_id)
     end
     @holdings = @holdings.where(entity_id: params[:entity_id]) if params[:entity_id].present?
+    @holdings = @holdings.where(holding_type: params[:holding_type]) if params[:holding_type].present?
+    @holdings = @holdings.where(investment_instrument: params[:investment_instrument]) if params[:investment_instrument].present?
     @holdings = @holdings.limit params[:limit] if params[:limit]
   end
 
@@ -77,6 +79,7 @@ class HoldingsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def holding_params
-    params.require(:holding).permit(:user_id, :investor_id, :entity_id, :quantity, :value, :investment_instrument)
+    params.require(:holding).permit(:user_id, :investor_id, :entity_id, :quantity,
+                                    :value, :investment_instrument, :holding_type)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_12_113349) do
+ActiveRecord::Schema.define(version: 2022_03_12_143031) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -273,14 +273,15 @@ ActiveRecord::Schema.define(version: 2022_03_12_113349) do
     t.date "trial_end_date"
     t.boolean "trial", default: false
     t.index ["deleted_at"], name: "index_entities_on_deleted_at"
+    t.index ["name"], name: "index_entities_on_name", unique: true
     t.index ["parent_entity_id"], name: "index_entities_on_parent_entity_id"
   end
 
   create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "body", size: :medium
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -315,7 +316,7 @@ ActiveRecord::Schema.define(version: 2022_03_12_113349) do
     t.bigint "user_id"
     t.bigint "entity_id", null: false
     t.integer "quantity", default: 0
-    t.decimal "value", precision: 20, scale: 2, default: "0.0"
+    t.decimal "value", precision: 20, default: "0"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "investment_instrument", limit: 100
