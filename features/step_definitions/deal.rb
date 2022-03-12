@@ -162,7 +162,6 @@ end
 Given('there are {string} exisiting deals {string} with my firm in the startups') do |count, args|
 
   Entity.startups.each do |startup|
-    @investor = FactoryBot.create(:investor, investor_entity: @entity, investee_entity: startup)
     (1..count.to_i).each do 
       deal = FactoryBot.create(:deal, entity: startup)
       di = FactoryBot.create(:deal_investor, investor: @investor, entity: startup, deal: deal)

@@ -20,7 +20,7 @@ Scenario Outline: Create new deal
 
 Scenario Outline: View Deal Investors in a deal
   Given Im logged in as a user "<user>" for an entity "<entity>"
-  Given there is an existing investor "name=Sequoia"
+  Given there are "3" existing investor ""
   And there exists a deal "<deal>" for my startup
   And I visit the deal details page
   And when I start the deal

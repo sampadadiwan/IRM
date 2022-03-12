@@ -48,8 +48,9 @@ include InvestmentsHelper
 
 
   Given('there are {string} deal_investors for the deal') do |arg|
-    (1..arg.to_i).each do 
-      di = FactoryBot.create(:deal_investor, deal: @deal, entity: @deal.entity, status: "Active")
+    (1..arg.to_i).each do |i|
+      di = FactoryBot.create(:deal_investor, deal: @deal, entity: @deal.entity, 
+                             status: "Active", investor: Investor.find(i))
     end
     @deal.reload
   end
