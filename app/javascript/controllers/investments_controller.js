@@ -70,14 +70,17 @@ export default class extends Controller {
 
       // return rows;
 
-      return '<table class="table table-bordered table-striped dataTable">'+
+      return '<div class="nested_holdings">'+
+      '<span class="mb-0 text-gray-800">Top 5 Holdings</span>'+
+      '<table class="table table-bordered table-striped dataTable">'+
           '<tr>'+
             '<th>Name</th>'+
             '<th>Instrument</th>'+
             '<th>Quantity</th>'+
           '</tr>'+
           rows+          
-      '</table>';
+      '</table>'+
+      '</div>';
     }
   
 
