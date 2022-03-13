@@ -18,7 +18,7 @@ class Folder < ApplicationRecord
   belongs_to :entity
   has_many :documents, dependent: :destroy
 
-  validates :name, :level, presence: true
+  validates :name, presence: true
 
   before_save :update_level
   after_create :touch_root
@@ -47,11 +47,11 @@ class Folder < ApplicationRecord
     Folder.where(entity_id: entity_id, level: 0).first.touch
   end
 
-  def self.build_tree(entity_id)
+  def self.build_tree(folders)
     map = {}
     tree = {}
-    folders = Folder.where(entity_id: entity_id).order(parent_folder_id: :asc)
     parent = nil
+
     folders.each do |f|
       node = { details: f, children: {} }
       map[f.id] = node

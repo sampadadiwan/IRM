@@ -70,6 +70,7 @@ FactoryBot.define do
     user { User.all.sample }
     entity { Entity.all.sample }
     quantity { rand(10) * 100 }
+    holding_type { "Employee" }
     value {  }
   end
 

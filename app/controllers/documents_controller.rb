@@ -10,9 +10,11 @@ class DocumentsController < ApplicationController
     if params[:entity_id].present?
       @entity = Entity.find(params[:entity_id])
       @documents = Document.for_investor(current_user, @entity)
+      @folders = Folder.build_tree(Folder.joins(:documents).merge(@documents).order(parent_folder_id: :asc).distinct)
     else
       @entity = current_user.entity
       @documents = policy_scope(Document)
+      @folders = Folder.build_tree(Folder.where(entity_id: @entity.id).order(parent_folder_id: :asc))
     end
 
     @documents = @documents.order(id: :desc)
@@ -26,6 +28,7 @@ class DocumentsController < ApplicationController
       @documents = Document.for_investor(current_user, @entity)
     end
 
+    @folders = Folder.joins(:documents).merge(@documents).distinct
     @documents = @documents.order(id: :desc).page params[:page]
 
     render "index"
