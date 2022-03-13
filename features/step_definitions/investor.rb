@@ -47,7 +47,6 @@ end
 
 Given('there is an existing investor entity {string} with employee {string}') do |arg1, arg2|
 
-  puts "############# #{arg1} #{arg2}"
   steps %(
       Given there is an existing investor "#{arg1}"
     )
@@ -55,6 +54,8 @@ Given('there is an existing investor entity {string} with employee {string}') do
   @employee_investor = FactoryBot.create(:user, entity: @investor_entity)
   key_values(@employee_investor, arg2)
   @employee_investor.save
+  puts "\n####Employee Investor####\n"
+  puts @employee_investor.to_json
   @holdings_investor = @employee_investor
 end
 

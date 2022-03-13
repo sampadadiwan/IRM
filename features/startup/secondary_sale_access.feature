@@ -61,7 +61,7 @@ Scenario Outline: Access externally visible sale as Investor User
   Given there is a user "<user>" for an entity "<entity>"
   Given there is a sale "<sale>"
   Given there is an existing investor entity "name=Sequoia" with employee "first_name=Emp1"
-  And employee investor has access rights to the sale
+  And existing investor has access rights to the sale
   And employee investor should have "show" access to the sale "true"
   And employee investor should have "offer" access to the sale "true"
   And employee investor should have "show_interest" access to the sale "true"

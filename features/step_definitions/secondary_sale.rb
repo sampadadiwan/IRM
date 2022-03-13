@@ -128,4 +128,18 @@ end
 Given('employee investor has access rights to the sale') do
   ar = AccessRight.create(owner: @sale, access_type: "SecondarySale", 
     entity: @entity, access_to_investor_id: @holdings_investor.id)
+
+  puts "\n####AccessRight####\n"
+  puts ar.to_json
+    
 end
+
+Given('existing investor has access rights to the sale') do
+  ar = AccessRight.create(owner: @sale, access_type: "SecondarySale", 
+    entity: @entity, access_to_investor_id: @investor.id)
+
+  puts "\n####AccessRight####\n"
+  puts ar.to_json
+    
+end
+
