@@ -57,6 +57,11 @@ class ImportUploadJob < ApplicationJob
 
   def save_holding(user_data, import_upload)
     Rails.logger.debug { "Processing holdings #{user_data}" }
+
+    # Find the Founder or Employee Investor for the entity
+    investor = Investor.where(investee_entity_id: import_upload.owner_id,
+                              is_holdings_entity: true, category: user_data["Founder or Employee"]).first
+
     # Create the user if he does not exists
     user = User.find_by(email: user_data['Email'])
     unless user
@@ -64,20 +69,20 @@ class ImportUploadJob < ApplicationJob
       user = User.create!(email: user_data["Email"], password: password,
                           first_name: user_data["First Name"],
                           last_name: user_data["Last Name"], active: true, system_created: true,
-                          entity_id: import_upload.owner.investor_entity_id)
+                          entity_id: investor.investor_entity_id)
 
     end
 
     # create the Investor Access
-    unless InvestorAccess.exists?(email: user_data['Email'], investor_id: import_upload.owner_id)
+    unless InvestorAccess.exists?(email: user_data['Email'], investor_id: investor.id)
       InvestorAccess.create!(email: user_data["Email"], approved: true,
-                             entity_id: import_upload.entity_id, investor_id: import_upload.owner_id,
+                             entity_id: import_upload.owner_id, investor_id: investor.id,
                              granted_by: import_upload.user_id)
     end
 
     # Create the Holding
-    holding = Holding.new(user: user, investor: import_upload.owner, holding_type: "Employee",
-                          entity_id: import_upload.owner.investee_entity_id, quantity: user_data["Quantity"],
+    holding = Holding.new(user: user, investor: investor, holding_type: user_data["Founder or Employee"],
+                          entity_id: import_upload.owner_id, quantity: user_data["Quantity"],
                           investment_instrument: user_data["Instrument"])
 
     holding.save

@@ -41,7 +41,7 @@ export default class extends Controller {
       else {
 
         $.ajax({
-          url: `/holdings.json?entity_id=${entity}&investment_instrument=${instrument}&holding_type=${category}&limit=5`
+          url: `/holdings.json?entity_id=${entity}&investment_instrument=${instrument}&holding_type=${category}&limit=500`
         }).then(function(data) {
             console.log(data);
             row.child(format(data)).show();
