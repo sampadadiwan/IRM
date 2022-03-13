@@ -10,8 +10,10 @@ export default class extends Controller {
     let units = $("#currency_units").val();
     console.log(`setCurrencyUnit called ${units}`);
     let form = $("#currency_units_form");
-    form.attr('action', window.location.href);
-    let submit = $("#currency_units_form #submit");
+    let actionUrl = window.location.href;
+    console.log(actionUrl);
+    form.attr('action', actionUrl);
+    let submit = $(event.target).closest("form").find("input[type='submit']");
     submit.click();
   }
 }
