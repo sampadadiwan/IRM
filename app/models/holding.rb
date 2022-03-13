@@ -34,6 +34,7 @@ class Holding < ApplicationRecord
     investment = entity.investments.where(employee_holdings: true,
                                           investment_instrument: investment_instrument, category: holding_type).first
     unless investment
+      # Rails.logger.debug { "Updating investment for #{to_json}" }
       employee_investor = Investor.for(user, entity).first
       investment = Investment.new(investment_type: "#{holding_type} Holdings", investment_instrument: investment_instrument,
                                   category: holding_type, investee_entity_id: entity.id, investor_id: employee_investor.id,

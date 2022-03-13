@@ -49,6 +49,7 @@ class Investor < ApplicationRecord
 
   scope :for_vc, ->(vc_user) { where(investor_entity_id: vc_user.entity_id) }
   scope :not_holding, -> { where(is_holdings_entity: false) }
+  scope :holding, -> { where(is_holdings_entity: true) }
   scope :not_interacted, ->(no_of_days) { where(is_holdings_entity: false).where("last_interaction_date < ? ", Time.zone.today - no_of_days.days) }
 
   INVESTOR_CATEGORIES = ENV["INVESTOR_CATEGORIES"].split(",") << "Prospective"
