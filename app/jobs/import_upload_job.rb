@@ -18,6 +18,7 @@ class ImportUploadJob < ApplicationJob
     rescue StandardError => e
       import_upload.status ||= "Error"
       import_upload.error_text = e.backtrace
+      Rails.logger.error "Could not download file for import upload job #{import_upload_id} : #{e.message}"
       Rails.logger.error e.backtrace
     ensure
       file.delete
@@ -74,10 +75,12 @@ class ImportUploadJob < ApplicationJob
     end
 
     # create the Investor Access
-    unless InvestorAccess.exists?(email: user_data['Email'], investor_id: investor.id)
-      InvestorAccess.create!(email: user_data["Email"], approved: true,
-                             entity_id: import_upload.owner_id, investor_id: investor.id,
-                             granted_by: import_upload.user_id)
+    if InvestorAccess.where(email: user_data['Email'], investor_id: investor.id).first.blank?
+      ia = InvestorAccess.create(email: user_data["Email"], approved: true,
+                                 entity_id: import_upload.owner_id, investor_id: investor.id,
+                                 granted_by: import_upload.user_id)
+
+      Rails.logger.debug ia.errors.full_messsages if ia.errors.present?
     end
 
     # Create the Holding

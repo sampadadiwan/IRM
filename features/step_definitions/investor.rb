@@ -97,3 +97,19 @@ When('I create a new investor {string} for the existing investor entity') do |st
   click_on("Save")
 end
 
+
+Given('Given I upload an investor access file for employees') do
+  Sidekiq.redis(&:flushdb)
+
+  visit(investor_path(Investor.first))
+  click_on("Employee Investors")
+  click_on("Upload Employee Investors")
+  fill_in('import_upload_name', with: "Test Upload")
+  attach_file('import_upload_import_file', File.absolute_path('./public/sample_uploads/investor_access.xlsx'))
+  click_on("Save")
+  sleep(4)
+end
+
+Then('There should be {string} investor access created') do |count|
+  InvestorAccess.count.should == count.to_i
+end

@@ -274,3 +274,31 @@ end
 
 
 
+Given('Given I upload a holdings file') do
+  Sidekiq.redis(&:flushdb)
+
+  @existing_user_count = User.count
+  visit("/holdings")
+  click_on("Upload Holdings")
+  fill_in('import_upload_name', with: "Test Upload")
+  attach_file('import_upload_import_file', File.absolute_path('./public/sample_uploads/holdings.xlsx'))
+  click_on("Save")
+  sleep(4)
+end
+
+Then('There should be {string} holdings created') do |count|
+  Holding.count.should == count.to_i
+  Holding.all.sum(:quantity).should == 1000
+  Holding.all.each do |h|
+    h.investor.category.should == h.holding_type
+    h.user.entity_id.should == h.investor.investor_entity_id
+  end 
+end
+
+Then('There should be {string} users created for the holdings') do |count|
+  (User.count - @existing_user_count).should == count.to_i
+end
+
+Then('There should be {string} Investments created for the holdings') do |count|
+  Investment.count.should == count.to_i
+end

@@ -20,7 +20,12 @@ class ImportUpload < ApplicationRecord
   belongs_to :owner, polymorphic: true
   belongs_to :user
 
-  has_one_attached :import_file, service: :amazon
+  if Rails.env.test?
+    has_one_attached :import_file
+  else
+    has_one_attached :import_file, service: :amazon
+  end
+
   validates :import_file,
             attached: true,
             content_type: ['application/xls', 'application/xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
@@ -28,6 +33,6 @@ class ImportUpload < ApplicationRecord
 
   after_create :run_import_job
   def run_import_job
-    ImportUploadJob.perform_later(id)
+    ImportUploadJob.set(wait_until: 2.seconds).perform_later(id)
   end
 end

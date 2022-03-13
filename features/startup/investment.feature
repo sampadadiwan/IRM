@@ -41,3 +41,12 @@ Scenario Outline: Create new holding
   And Given I create a holding for each employee with quantity "100"
   Then There should be a corresponding holdings created for each employee
   Then There should be a corresponding investment created
+
+
+Scenario Outline: Import holding
+  Given Im logged in as a user "first_name=Test" for an entity "name=Urban;entity_type=Startup"
+  And Given I upload a holdings file
+  Then I should see the "Import upload was successfully created"
+  Then There should be "4" holdings created
+  And There should be "4" users created for the holdings  
+  And There should be "4" Investments created for the holdings
