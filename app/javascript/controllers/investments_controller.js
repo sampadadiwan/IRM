@@ -41,10 +41,10 @@ export default class extends Controller {
       else {
 
         $.ajax({
-          url: `/holdings.json?entity_id=${entity}&investment_instrument=${instrument}&holding_type=${category}&limit=500`
+          url: `/holdings.json?entity_id=${entity}&investment_instrument=${instrument}&holding_type=${category}&limit=5`
         }).then(function(data) {
             console.log(data);
-            row.child(format(data)).show();
+            row.child(format(data, category, instrument)).show();
             tr.addClass('shown');
             tr.find('svg').attr('data-icon', 'minus-circle');    // FontAwesome 5
         });
@@ -60,7 +60,7 @@ export default class extends Controller {
               '</tr>'            
     }
 
-    function format ( data ) {
+    function format ( data, category, instrument ) {
       // `d` is the original data object for the row
 
       let rows = "";
@@ -71,7 +71,7 @@ export default class extends Controller {
       // return rows;
 
       return '<div class="nested_holdings">'+
-      '<span class="mb-0 text-gray-800">Top 5 Holdings</span>'+
+      `<span class="mb-0 text-gray-800">Top 5 ${category} ${instrument} Holdings</span>`+
       '<table class="table table-bordered table-striped dataTable">'+
           '<tr>'+
             '<th>Name</th>'+
