@@ -173,7 +173,9 @@ namespace :irm do
           approved: false, entity_id: investor.investee_entity_id)
 
         Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
-            quantity: (1 + rand(10))*100, investment_instrument: "Equity", holding_type: investor.category)
+            quantity: (1 + rand(10))*100, 
+            investment_instrument: Investment.INSTRUMENT_TYPES[rand(Investment.INSTRUMENT_TYPES.length)], 
+            holding_type: investor.category)
       end
     end
   rescue Exception => e

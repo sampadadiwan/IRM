@@ -15,11 +15,9 @@
     <%= holding.investment_instrument %>
   </td>
   <td>
-    <%= holding.quantity %>
+    <%= custom_format_number holding.quantity, params %>
   </td>
-  <td>
-    <%= holding.value %>
-  </td>
+
   <td>
     <%= link_to "Show" , holding , {class: "btn btn-primary" }%>
     

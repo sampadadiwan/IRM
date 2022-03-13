@@ -43,18 +43,10 @@
         Quantity
       </td>
       <td>
-        <%= @holding.quantity %>
+        <%= custom_format_number @holding.quantity, params %>
       </td>
     </tr>
-    <tr>
-      <td>
-        Value
-      </td>
-      <td>
-        <%= @holding.value %>
-      </td>
-    </tr>
-
+    
 
   </table>
 

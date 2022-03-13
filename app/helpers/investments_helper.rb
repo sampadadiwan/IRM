@@ -1,6 +1,28 @@
 module InvestmentsHelper
   FORMAT = I18n.t :format, scope: 'number.currency.format'
 
+  INDIA_FORMAT = /(\d+?)(?=(\d\d)+(\d)(?!\d))/
+
+  def custom_format_number(number, params = {}, ignore_units = false)
+    raw_units = params[:units].presence || cookies[:currency_units]
+
+    if raw_units.present? && !ignore_units
+
+      case raw_units
+      when "Crores"
+        number_with_delimiter(number, delimiter_pattern: INDIA_FORMAT)
+      when "Lakhs"
+        number_with_delimiter(number, delimiter_pattern: INDIA_FORMAT)
+      when "Million"
+        number_with_delimiter(number)
+      else
+        number
+      end
+    else
+      number
+    end
+  end
+
   def money_to_currency(money, params = {}, ignore_units = false)
     sanf = true
     money = money.clone

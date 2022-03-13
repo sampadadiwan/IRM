@@ -38,7 +38,7 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def update?
-    create? && record.holding_type == "Employee" # Only employee holdings can be updated
+    create? && record.holding_type != "Investor" # Only employee holdings can be updated
   end
 
   def edit?

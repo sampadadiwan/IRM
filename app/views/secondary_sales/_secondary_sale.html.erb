@@ -3,7 +3,7 @@
     <%= secondary_sale.name %>
   </td>
   <td>
-    <%= secondary_sale.total_offered_quantity %>
+    <%= custom_format_number secondary_sale.total_offered_quantity, params %>
   </td>
   <td>
     <%= secondary_sale.entity.name %>
@@ -20,10 +20,10 @@
   </td>
   <% end %>
   <td>
-    <%= secondary_sale.min_price %>
+    <%= custom_format_number secondary_sale.min_price, params %>
   </td>
   <td>
-    <%= secondary_sale.max_price %>
+    <%= custom_format_number secondary_sale.max_price, params %>
   </td>
   <td>
     <%= secondary_sale.active? ? "Yes" : "No" %>
