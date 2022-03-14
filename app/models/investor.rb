@@ -63,7 +63,8 @@ class Investor < ApplicationRecord
     self.investor_name = "#{investor_entity.name} - #{investee_entity.name}" if investor_name.blank?
     self.last_interaction_date ||= Time.zone.today - 10.years
     if investor_entity_id.blank?
-      e = Entity.create(name: investor_name, entity_type: "VC")
+      e = Entity.create(name: investor_name.split("-")[0], entity_type: "VC")
+
       self.investor_entity = e
     end
   end

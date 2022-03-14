@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   connect() {
 
-      let table = $('.jqDataTable').DataTable({
+      let table = $('.jqDataTable').DataTable({        
         stateSave: true,
         retrieve: true,
         language: {
@@ -19,6 +19,10 @@ export default class extends Controller {
         table.destroy();
       });
       
+      let searchTerm = $("#search_term");
+      if (searchTerm.length > 0) {
+        table.search(searchTerm.val()).draw();
+      }
   }
 
 }
