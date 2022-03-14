@@ -18,6 +18,9 @@
     <%= funding_round.status%>
   </td>
   <td>
+    <%= l funding_round.created_at.to_date %>
+  </td>
+  <td>
     <%= l funding_round.closed_on if funding_round.closed_on%>
   </td>
   <td>

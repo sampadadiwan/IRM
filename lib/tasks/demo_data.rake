@@ -174,7 +174,7 @@ namespace :irm do
 
         Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
             quantity: (1 + rand(10))*100, 
-            investment_instrument: Investment.INSTRUMENT_TYPES[rand(Investment.INSTRUMENT_TYPES.length)], 
+            investment_instrument: ["Equity", "Preferred", "ESOP"][rand(3)], 
             holding_type: investor.category)
       end
     end

@@ -1,7 +1,7 @@
-<% if Investment.where(investee_entity_id: entity.id).count > 0 %>
 
 <div class="row">
-    <div class="col-lg-6 mb-4">
+
+    <div class="col-lg-12 mb-4">
 
         <!-- Illustrations -->
         <div class="card shadow mb-4">
@@ -13,7 +13,20 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6 mb-4">
+
+    <div class="col-lg-12 mb-4">
+
+        <!-- Illustrations -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Funding Rounds</h6>
+            </div>
+            <div class="card-body">
+                <%= funding_rounds_chart(entity)  %>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 mb-4">
         <!-- Approach -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -25,7 +38,7 @@
         </div>
     </div>
 
-    <div class="col-lg-6 mb-4">
+    <div class="col-lg-12 mb-4">
         <!-- Approach -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -37,18 +50,6 @@
         </div>
     </div>
 
-    <div class="col-lg-6 mb-4">
-        <!-- Approach -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Investor count</h6>
-            </div>
-            <div class="card-body">
-                <%= count_by_investor(entity)  %>
-            </div>
-        </div>
-    </div>
-
+    
 </div>
 
-<% end %>

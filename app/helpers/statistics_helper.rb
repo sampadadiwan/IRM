@@ -1,16 +1,32 @@
 module StatisticsHelper
-  def investment_by_investment_type(entity)
-    column_chart Investment.where(investee_entity_id: entity.id)
-                           .group_by(&:investment_type)
-                           .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
-                 prefix: entity.currency
+  def investment_by_dilution(entity)
+    diluted = Investment.where(investee_entity_id: entity.id, investment_instrument: %w[Equity Preferred])
+                        .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
+                        .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.percentage_holding }] }
+    undiluted = Investment.where(investee_entity_id: entity.id, investment_instrument: %w[Equity Preferred])
+                          .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
+                          .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.diluted_percentage }] }
+    data = [
+      { name: "Diluted", data: diluted },
+      { name: "Undiluted", data: undiluted }
+    ]
+    column_chart data,
+                 #  stacked: false,
+                 prefix: "%"
   end
 
   def investment_by_intrument(entity)
     column_chart Investment.where(investee_entity_id: entity.id)
                            .group_by(&:investment_instrument)
-                           .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
-                 prefix: entity.currency
+                           .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] }
+                           .map { |k, v| [k, v] },
+                 prefix: "#{entity.currency}:"
+  end
+
+  def funding_rounds_chart(entity)
+    column_chart FundingRound.where(entity_id: entity.id).order(id: :asc)
+                             .map { |f| ["#{f.name} - #{l(f.created_at.to_date)}", f.amount_raised_cents / 100] },
+                 prefix: "#{entity.currency}:"
   end
 
   def investment_by_investor(entity)
@@ -21,10 +37,8 @@ module StatisticsHelper
     column_chart Investment.where(investee_entity_id: entity.id)
                            .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
                            .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
-                 #   xtitle: "Investment Amount",
-                 #   ytitle: "Type",
                  stacked: true,
-                 prefix: entity.currency
+                 prefix: "#{entity.currency}:"
   end
 
   def count_by_investor(entity)

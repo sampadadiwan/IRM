@@ -76,6 +76,7 @@
 
   <div>
     <%= link_to "Edit" , edit_funding_round_path(@funding_round), {class: "btn btn-primary" } %> |
+    <%= link_to "Funding Rounds" , funding_rounds_path, {class: "btn btn-primary" } %> |
     <%= button_to "Delete" , @funding_round, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" %>
   </div>
 

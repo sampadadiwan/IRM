@@ -16,7 +16,7 @@ module InvestmentsHelper
       when "Million"
         number_with_delimiter(number)
       else
-        number
+        number_with_delimiter(number)
       end
     else
       number

@@ -1,6 +1,12 @@
 <%= render "/layouts/alerts" %>
-<div data-controller="investments">
-    <%= render "investments/index", investments: @investments.not_debt, entity: @entity, title: "Equity" %>
-    <div class="divider"></div>
-    <%= render "investments/index", investments: @investments.debt, entity: @entity, title: "Debt" %>
-</div>
+<% if params[:charts].present? %>
+    <div class="associated_entity">
+        <%= render "investments/cap_table_charts", entity: @entity %>
+    </div>
+<% else %>
+    <div data-controller="investments">
+        <%= render "investments/index", investments: @investments.not_debt, entity: @entity, title: "Equity" %>
+        <div class="divider"></div>
+        <%= render "investments/index", investments: @investments.debt, entity: @entity, title: "Debt" %>
+    </div>
+<% end %>
