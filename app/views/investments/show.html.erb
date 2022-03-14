@@ -122,7 +122,7 @@
 <% end %>
 
 <div class="associated_entity">
-<% if @investment.investor.is_holdings_entity %>
+<% if @investment.investor.is_holdings_entity && current_user.entity_id == @investment.investee_entity_id %>
    <%= render "/holdings/index", holdings: @investment.holdings.order(quantity: :desc), 
       secondary_sale: nil, title: "#{@investment.investor.category} Holdings" %>
 <% end %>
