@@ -70,8 +70,9 @@ FactoryBot.define do
     user { User.all.sample }
     entity { Entity.all.sample }
     quantity { rand(10) * 1000000 }
+    price_cents { rand(3..10) * 10000 }
     holding_type { "Employee" }
-    value {  }
+    value_cents { quantity * price_cents }
   end
 
   factory :investor_access do

@@ -55,7 +55,7 @@ class Folder < ApplicationRecord
     folders.each do |f|
       node = { details: f, children: {} }
       map[f.id] = node
-      if parent.nil?
+      if parent.nil? || map[f.parent_folder_id].nil?
         tree[f.id] = node
         parent = node
       else
@@ -63,6 +63,7 @@ class Folder < ApplicationRecord
         parent[:children][f.id] = node
       end
     end
+
     tree
   end
 end

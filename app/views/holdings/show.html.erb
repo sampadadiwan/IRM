@@ -46,6 +46,22 @@
         <%= custom_format_number @holding.quantity, params %>
       </td>
     </tr>
+    <tr>
+      <td>
+        Price
+      </td>
+      <td>
+        <%= custom_format_number @holding.price, params %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Value
+      </td>
+      <td>
+        <%= money_to_currency @holding.value, params %>
+      </td>
+    </tr>
     
 
   </table>

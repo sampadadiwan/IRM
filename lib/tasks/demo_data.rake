@@ -174,7 +174,7 @@ namespace :irm do
           approved: false, entity_id: investor.investee_entity_id)
 
         Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
-            quantity: (1 + rand(10))*100, 
+            quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000,
             investment_instrument: ["Equity", "Preferred", "ESOP"][rand(3)], 
             holding_type: investor.category)
       end

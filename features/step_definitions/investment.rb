@@ -148,6 +148,7 @@ Given('Given I create a holding for each employee with quantity {string}') do |a
     click_on("Employee Investors")
     find("#investor_access_#{emp.id}").click_link("Add Holding")
     fill_in('holding_quantity', with: @holding_quantity)
+    fill_in('holding_price', with: 1000*emp.user_id)
     select("Equity", from: "holding_investment_instrument")
     # select("Employee", from: "holding_holding_type")
 
@@ -164,6 +165,8 @@ Then('There should be a corresponding holdings created for each employee') do
     emp.holdings.count.should == 1
     holding = emp.holdings.first
     holding.quantity.should == @holding_quantity
+    holding.price_cents.should == 1000 * 100 * emp.id    
+    holding.value_cents.should == @holding_quantity * 1000 * 100 * emp.id
     holding.holding_type.should == "Employee"
     holding.entity_id.should == @entity.id
     holding.investment_instrument.should == "Equity"
@@ -178,6 +181,15 @@ Then('There should be a corresponding investment created') do
   @holding_investment.quantity.should == Holding.all.sum(:quantity)
   @holding_investment.investment_type.should == "Employee Holdings"
 end
+
+Then('Investments is updated with the holdings') do
+  Holding.all.each do |h|
+    h.investment.quantity.should ==  h.investment.holdings.sum(:quantity)
+    h.investment.amount_cents.should ==  h.investment.holdings.sum(:value_cents)
+    h.investment.price_cents.should == h.investment.holdings.sum(:value_cents) / h.investment.holdings.sum(:quantity)
+  end
+end
+
 
 
 ############################################################################

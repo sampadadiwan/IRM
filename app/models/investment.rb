@@ -95,7 +95,14 @@ class Investment < ApplicationRecord
   end
 
   def update_amount
-    self.amount = quantity * price
+    if investor.is_holdings_entity
+      # This is because each holding has a quantity, price and a value
+      # The quantity and value is added to the investment
+      # So we compute the avg price
+      self.price = amount / quantity if quantity.positive?
+    else
+      self.amount = quantity * price
+    end
     self.currency = investee_entity.currency
     self.units = investee_entity.units
     self.investment_type = funding_round.name if funding_round
@@ -116,13 +123,14 @@ class Investment < ApplicationRecord
       else
         holding = Holding.new(entity_id: investee_entity_id, investor_id: investor_id,
                               holding_type: "Investor", investment_instrument: investment_instrument,
-                              quantity: quantity, investment: self)
+                              quantity: quantity, price: price, value: amount, investment: self)
       end
 
       holding.save!
     else
       Rails.logger.debug { "Not creating holdings for #{to_json}" }
     end
+    funding_round&.save
   end
 
   # after_save :update_percentage_holdings

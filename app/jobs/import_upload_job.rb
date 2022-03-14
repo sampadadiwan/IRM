@@ -86,6 +86,7 @@ class ImportUploadJob < ApplicationJob
     # Create the Holding
     holding = Holding.new(user: user, investor: investor, holding_type: user_data["Founder or Employee"],
                           entity_id: import_upload.owner_id, quantity: user_data["Quantity"],
+                          price_cents: user_data["Price"].to_f * 100,
                           investment_instrument: user_data["Instrument"])
 
     holding.save

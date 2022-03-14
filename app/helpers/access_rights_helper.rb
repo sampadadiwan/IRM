@@ -15,6 +15,7 @@ module AccessRightsHelper
       access_right.entity_id = current_user.entity_id
       authorize access_right
       access_rights << access_right
+      owner = access_right.owner
     end
 
     [owner, access_rights]

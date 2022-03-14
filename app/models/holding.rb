@@ -22,17 +22,20 @@ class Holding < ApplicationRecord
   belongs_to :investor
   belongs_to :investment, optional: true
   counter_culture :investment, column_name: proc { |h| INVESTMENT_FOR.include?(h.holding_type) ? 'quantity' : nil }, delta_column: 'quantity'
+  counter_culture :investment, column_name: proc { |h| INVESTMENT_FOR.include?(h.holding_type) ? 'amount_cents' : nil }, delta_column: 'value_cents'
+
+  monetize :price_cents, :value_cents, with_currency: ->(i) { i.entity.currency }
 
   validates :quantity, :holding_type, presence: true
 
-  # before_save :set_type
-  # def set_type
-  #   self.holding_type ||= user_id.present? ? "Employee" : "Investor"
-  # end
-
   # Only update the investment if its coming from an employee of a holding company
   before_save :update_investment, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
+  before_save :update_value
   after_save ->(holding) { holding.investment.update_percentage_holdings }, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
+
+  def update_value
+    self.value_cents = quantity * price_cents
+  end
 
   def update_investment
     self.investment = entity.investments.where(employee_holdings: true,
@@ -45,7 +48,8 @@ class Holding < ApplicationRecord
                                           investment_instrument: investment_instrument,
                                           category: holding_type, investee_entity_id: entity.id,
                                           investor_id: employee_investor.id, employee_holdings: true,
-                                          quantity: 0, price: 0, currency: entity.currency)
+                                          quantity: 0, price_cents: price_cents,
+                                          currency: entity.currency)
     end
   end
 

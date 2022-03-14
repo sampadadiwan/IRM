@@ -40,6 +40,11 @@
   </div>
 
   <div class="form-group">
+    <%= form.label :price %>
+    <%= form.number_field :price, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
     <%= form.label :investment_instrument %>
     <%= form.select :investment_instrument, Investment.INSTRUMENT_TYPES(current_user&.entity) , 
       {include_blank: true}, {class: "form-control"} %>

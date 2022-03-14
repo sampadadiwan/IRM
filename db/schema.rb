@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_14_071557) do
+ActiveRecord::Schema.define(version: 2022_03_14_104220) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -316,13 +316,14 @@ ActiveRecord::Schema.define(version: 2022_03_14_071557) do
     t.bigint "user_id"
     t.bigint "entity_id", null: false
     t.integer "quantity", default: 0
-    t.decimal "value", precision: 20, default: "0"
+    t.decimal "value_cents", precision: 20, scale: 2, default: "0.0"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "investment_instrument", limit: 100
     t.bigint "investor_id", null: false
     t.string "holding_type", limit: 15, null: false
     t.bigint "investment_id", null: false
+    t.decimal "price_cents", precision: 20, scale: 2, default: "0.0"
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
     t.index ["investment_id"], name: "index_holdings_on_investment_id"
     t.index ["investor_id"], name: "index_holdings_on_investor_id"

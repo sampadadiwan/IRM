@@ -123,7 +123,7 @@
 
 <div class="associated_entity">
 <% if @investment.investor.is_holdings_entity %>
-   <%= render "/holdings/index", holdings: @investment.investor.holdings.order(quantity: :desc).limit(10), 
-      secondary_sale: nil, title: "Top Ten Holdings" %>
+   <%= render "/holdings/index", holdings: @investment.investor.holdings.order(quantity: :desc), 
+      secondary_sale: nil, title: "#{@investment.investor.category} Holdings" %>
 <% end %>
 </div>

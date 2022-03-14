@@ -57,6 +57,8 @@ export default class extends Controller {
                 '<td>'+row.holder_name+'</td>'+
                 '<td>'+row.investment_instrument+'</td>'+
                 '<td>'+row.quantity+'</td>'+
+                '<td>'+row.price+'</td>'+
+                '<td>'+row.value+'</td>'+
               '</tr>'            
     }
 
@@ -77,6 +79,8 @@ export default class extends Controller {
             '<th>Name</th>'+
             '<th>Instrument</th>'+
             '<th>Quantity</th>'+
+            '<th>Price</th>'+
+            '<th>Value</th>'+
           '</tr>'+
           rows+          
       '</table>'+

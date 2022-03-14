@@ -61,6 +61,12 @@ class AccessRight < ApplicationRecord
                                   investor.investee_entity_id, investor.id, investor.category)
                           }
 
+  validate :any_present?
+
+  def any_present?
+    errors.add :base, "Must specify Investor or Category" if %w[access_to_investor_id access_to_category].all? { |attr| self[attr].blank? }
+  end
+
   def to_s
     access_to_label
   end

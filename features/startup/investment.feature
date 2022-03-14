@@ -50,3 +50,4 @@ Scenario Outline: Import holding
   Then There should be "4" holdings created
   And There should be "4" users created for the holdings  
   And There should be "4" Investments created for the holdings
+  And Investments is updated with the holdings 
