@@ -15,13 +15,17 @@
 #
 
 class Holding < ApplicationRecord
+
+  INVESTMENT_FOR = %w[Employee Founder]
+
   belongs_to :user, optional: true
   belongs_to :entity
   belongs_to :investor
   belongs_to :investment, optional: true
-  counter_culture :investment, column_name: 'quantity', delta_column: 'quantity'
+  counter_culture :investment, column_name: proc {|h| INVESTMENT_FOR.include?(h.holding_type) ? 'quantity' : nil }, delta_column: 'quantity' 
 
   validates :quantity, :holding_type, presence: true
+
 
   # before_save :set_type
   # def set_type
@@ -29,8 +33,8 @@ class Holding < ApplicationRecord
   # end
 
   # Only update the investment if its coming from an employee of a holding company
-  before_save :update_investment, if: proc { |h| %w[Employee Founder].include?(h.holding_type) }
-  after_save ->(holding) { holding.investment.update_percentage_holdings }, if: proc { |h| %w[Employee Founder].include?(h.holding_type) }
+  before_save :update_investment, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
+  after_save ->(holding) { holding.investment.update_percentage_holdings }, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
 
   def update_investment
     self.investment = entity.investments.where(employee_holdings: true,

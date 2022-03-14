@@ -10,7 +10,7 @@ Given('I create an investment {string}') do |arg1|
                       investment_type: @funding_round.name, funding_round: @funding_round)
   @investment.currency = @entity.currency
   key_values(@investment, arg1)
-  # puts @investment.investor.to_json
+  puts @investment.investor.to_json
   # puts "investor_name = " + @investment.investor.investor_name
 
   click_on("New Investment")
