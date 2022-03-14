@@ -24,8 +24,7 @@
 #
 
 class DealInvestor < ApplicationRecord
-  include Trackable
-  include Impressionable
+  # include Trackable
 
   monetize :secondary_investment_cents, with_currency: ->(i) { i.deal.currency }
   monetize :primary_amount_cents, with_currency: ->(i) { i.deal.currency }

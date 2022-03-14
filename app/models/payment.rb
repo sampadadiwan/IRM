@@ -14,6 +14,8 @@
 #
 
 class Payment < ApplicationRecord
+  include Trackable
+
   belongs_to :entity
   belongs_to :user
 

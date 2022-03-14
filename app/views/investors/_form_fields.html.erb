@@ -23,4 +23,4 @@
     <%= form.select :category, Investor.INVESTOR_CATEGORIES(current_user.entity) , {include_blank: true}, class: "form-control"  %>
   </div>
 
-  
+  <%= form.text_field :back_to, name: "back_to", class: "form-control", hidden: true, value: params[:back_to] %>

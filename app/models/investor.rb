@@ -17,7 +17,7 @@
 #
 
 class Investor < ApplicationRecord
-  include Trackable
+  # include Trackable
 
   encrypts :investor_name, deterministic: true
 
@@ -35,6 +35,7 @@ class Investor < ApplicationRecord
   has_many :deal_investors, dependent: :destroy
   has_many :deals, through: :deal_investors
   has_many :holdings, dependent: :destroy
+  has_many :notes, dependent: :destroy
 
   delegate :name, to: :investee_entity, prefix: :investee
   validates :category, presence: true

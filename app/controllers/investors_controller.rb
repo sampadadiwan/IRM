@@ -57,7 +57,8 @@ class InvestorsController < ApplicationController
 
     respond_to do |format|
       if @investor.save
-        format.html { redirect_to investor_url(@investor), notice: "Investor was successfully created." }
+        redirect_url = params[:back_to].presence || investor_url(@investor)
+        format.html { redirect_to redirect_url, notice: "Investor was successfully created." }
         format.json { render :show, status: :created, location: @investor }
       else
         logger.debug @investor.errors.full_messages

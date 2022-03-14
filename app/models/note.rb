@@ -14,7 +14,7 @@
 #
 
 class Note < ApplicationRecord
-  include Trackable
+  # include Trackable
 
   encrypts :details
   validates :details, presence: true
