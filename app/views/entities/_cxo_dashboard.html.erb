@@ -15,11 +15,15 @@
 <%= render "investments/charts", entity: current_user.entity %>
 
 <% if current_user.entity.notes.count > 0 %>
+<div class="associated_entity">
     <%= render "notes/index", notes: current_user.entity.notes.order("id desc").limit(5), title: "Recent Notes" %>
+</div>
 <% end %>
 
 <% if current_user.entity.investors.not_interacted(30).count > 0 %>
+<div class="associated_entity">
     <%= render "investors/index", investors: current_user.entity.investors.not_interacted(30).limit(5).page, title: "No Interaction in 30 Days" %>
+</div>
 <% end %>
 
 <% if PublicActivity::Activity.where(entity_id: current_user.entity_id).count > 0 %>
@@ -30,81 +34,3 @@
 
 
 
-<div class="row">
-
-    <div class="col-lg-6 mb-4">
-
-        <!-- Illustrations -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Investors</h6>
-            </div>
-            <div class="card-body">
-                <div class="text-center">
-                            <i class="fas fa-user-tie fa-5x text-gray-300"></i>
-                </div>
-                <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                    constantly updated collection of beautiful svg images that you can use
-                    completely free and without attribution!</p>
-                <a class="btn btn-primary" rel="nofollow" href="<%= investors_path %>">Setup Investors →</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6 mb-4">
-        <!-- Approach -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Investments</h6>
-            </div>
-            <div class="card-body">
-                <div class="text-center">
-                            <i class="fas fa-dollar-sign fa-5x text-gray-300"></i>
-                </div>
-                <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                    constantly updated collection of beautiful svg images that you can use
-                    completely free and without attribution!</p>
-                <a class="btn btn-primary" rel="nofollow" href="<%= investments_path %>">Setup Investments →</a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-
-    <div class="col-lg-6 mb-4">
-
-        <!-- Illustrations -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Users</h6>
-            </div>
-            <div class="card-body">
-                <div class="text-center">
-                            <i class="fas fa-users fa-5x text-gray-300"></i>
-                </div>
-                <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                    constantly updated collection of beautiful svg images that you can use
-                    completely free and without attribution!</p>
-                <a class="btn btn-primary" rel="nofollow" href="<%= new_user_path(entity_id: current_user.entity_id) %>">Setup Users →</a>
-            </div>
-        </div>
-
-    </div>
-    <div class="col-lg-6 mb-4">
-    
-        <!-- Approach -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Documents</h6>
-            </div>
-            <div class="card-body">
-                <div class="text-center">
-                            <i class="fas fa-folder fa-5x text-gray-300"></i>
-                </div>
-                <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                    constantly updated collection of beautiful svg images that you can use
-                    completely free and without attribution!</p>
-                <a class="btn btn-primary" rel="nofollow" href="<%= documents_path %>">Setup Documents →</a>
-            </div>
-        </div>
-    </div>
-</div>

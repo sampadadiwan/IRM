@@ -1,9 +1,9 @@
 module StatisticsHelper
   def investment_by_dilution(entity)
-    diluted = Investment.where(investee_entity_id: entity.id, investment_instrument: %w[Equity Preferred])
+    diluted = Investment.where(investee_entity_id: entity.id, investment_instrument: %w[Equity Preferred Option ESOP])
                         .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
                         .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.percentage_holding }] }
-    undiluted = Investment.where(investee_entity_id: entity.id, investment_instrument: %w[Equity Preferred])
+    undiluted = Investment.where(investee_entity_id: entity.id, investment_instrument: %w[Equity Preferred Option ESOP])
                           .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
                           .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.diluted_percentage }] }
     data = [

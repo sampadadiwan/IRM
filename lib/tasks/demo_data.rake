@@ -166,7 +166,8 @@ namespace :irm do
     Investor.holding.each do |investor|
       puts "Holdings for #{investor.to_json}"
       (1..8).each do |j|
-        user = FactoryBot.create(:user, entity: investor.investor_entity, first_name: "Emp#{j}-#{investor.id}")
+        user = User.where(first_name: "Emp#{j}-#{investor.id}").first
+        user ||= FactoryBot.create(:user, entity: investor.investor_entity, first_name: "Emp#{j}-#{investor.id}")
         puts user.to_json
         
         InvestorAccess.create!(investor:investor, user: user, email: user.email, 

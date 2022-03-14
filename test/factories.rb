@@ -69,7 +69,7 @@ FactoryBot.define do
   factory :holding do
     user { User.all.sample }
     entity { Entity.all.sample }
-    quantity { rand(10) * 10000000 }
+    quantity { rand(10) * 1000000 }
     holding_type { "Employee" }
     value {  }
   end
@@ -153,8 +153,8 @@ FactoryBot.define do
     # investor { Investor.where(investee_entity_id: investee_entity_id).all.sample }
     investment_instrument { Investment::INSTRUMENT_TYPES[rand(Investment::INSTRUMENT_TYPES.length)] }
     category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
-    quantity { (rand(3..10) * 10000000) }
-    price { rand(3..10) * 1000000 }
+    quantity { (rand(3..10) * 100000) }
+    price { rand(3..10) * 100000 }
 
     current_value {}
   end

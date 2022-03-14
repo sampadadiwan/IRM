@@ -18,6 +18,8 @@ class Holding < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :entity
   belongs_to :investor
+  belongs_to :investment, optional: true
+  counter_culture :investment, column_name: 'quantity', delta_column: 'quantity'
 
   validates :quantity, :holding_type, presence: true
 
@@ -27,31 +29,22 @@ class Holding < ApplicationRecord
   # end
 
   # Only update the investment if its coming from an employee of a holding company
-  after_create :update_investment, if: proc { |h| %w[Employee Founder].include?(h.holding_type) }
-  before_destroy :reduce_investment, if: proc { |h| %w[Employee Founder].include?(h.holding_type) }
+  before_save :update_investment, if: proc { |h| %w[Employee Founder].include?(h.holding_type) }
+  after_save ->(holding) { holding.investment.update_percentage_holdings }, if: proc { |h| %w[Employee Founder].include?(h.holding_type) }
 
   def update_investment
-    investment = entity.investments.where(employee_holdings: true,
-                                          investment_instrument: investment_instrument, category: holding_type).first
-    unless investment
+    self.investment = entity.investments.where(employee_holdings: true,
+                                               investment_instrument: investment_instrument,
+                                               category: holding_type).first
+    if investment.nil?
       # Rails.logger.debug { "Updating investment for #{to_json}" }
       employee_investor = Investor.for(user, entity).first
-      investment = Investment.new(investment_type: "#{holding_type} Holdings", investment_instrument: investment_instrument,
-                                  category: holding_type, investee_entity_id: entity.id, investor_id: employee_investor.id,
-                                  employee_holdings: true, quantity: 0, price: 0, currency: entity.currency)
+      self.investment = Investment.create(investment_type: "#{holding_type} Holdings",
+                                          investment_instrument: investment_instrument,
+                                          category: holding_type, investee_entity_id: entity.id,
+                                          investor_id: employee_investor.id, employee_holdings: true,
+                                          quantity: 0, price: 0, currency: entity.currency)
     end
-
-    investment.quantity += quantity
-    investment.save
-    investment.update_percentage_holdings
-  end
-
-  def reduce_investment
-    investment = entity.investments.where(employee_holdings: true, category: holding_type,
-                                          investment_instrument: investment_instrument).first
-    investment.quantity -= quantity
-    investment.save
-    investment.update_percentage_holdings
   end
 
   def active_secondary_sale

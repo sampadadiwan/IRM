@@ -45,8 +45,10 @@ class Investment < ApplicationRecord
   delegate :investor_entity_id, to: :investor
   belongs_to :investee_entity, class_name: "Entity"
 
+  has_many :holdings, dependent: :destroy
+
   counter_culture :investee_entity
-  counter_culture :investee_entity, column_name: 'total_investments', delta_column: 'initial_value'
+  counter_culture :investee_entity, column_name: 'total_investments', delta_column: 'amount_cents'
 
   # Handled by money-rails gem
   monetize :amount_cents, :price_cents, with_model_currency: :currency
@@ -114,7 +116,7 @@ class Investment < ApplicationRecord
       else
         holding = Holding.new(entity_id: investee_entity_id, investor_id: investor_id,
                               holding_type: "Investor", investment_instrument: investment_instrument,
-                              quantity: quantity)
+                              quantity: quantity, investment: self)
       end
 
       holding.save!
