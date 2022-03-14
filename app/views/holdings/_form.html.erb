@@ -24,11 +24,15 @@
     <%= form.text_field :entity_id, class: "form-control", hidden: true  %>
   </div>
 
+  <% if holding.holding_type.blank? || holding.id.present? %>
   <div class="form-group">
     <%= form.label :holding_type %>
     <%= form.select :holding_type, ["Employee", "Founder"] , 
       {include_blank: true}, {class: "form-control"} %>
   </div>
+  <% else %>
+    <%= form.text_field :holding_type, class: "form-control", hidden: true  %>
+  <% end %>
 
   <div class="form-group">
     <%= form.label :quantity %>

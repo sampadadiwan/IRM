@@ -37,20 +37,20 @@
 
   <div class="form-group">
     <%= form.label :pre_money_valuation %>
-    <%= form.text_field :pre_money_valuation, class: "form-control"  %>
+    <%= form.number_field :pre_money_valuation, class: "form-control"  %>
     <small class="text-muted">In <%= deal_investor.deal.currency %>. Leave blank if not available</small>
   </div>
   
   <div class="form-group">
     <%= form.label :primary_amount %>
-    <%= form.text_field :primary_amount, class: "form-control"  %>
+    <%= form.number_field :primary_amount, class: "form-control"  %>
     <small class="text-muted">In <%= deal_investor.deal.currency %></small>
   </div>
 
 
   <div class="form-group">
     <%= form.label :secondary_investment %>
-    <%= form.text_field :secondary_investment, class: "form-control"  %>
+    <%= form.number_field :secondary_investment, class: "form-control"  %>
     <small class="text-muted">In <%= deal_investor.deal.currency %></small>
   </div>
 

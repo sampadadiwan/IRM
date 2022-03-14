@@ -149,7 +149,7 @@ Given('Given I create a holding for each employee with quantity {string}') do |a
     find("#investor_access_#{emp.id}").click_link("Add Holding")
     fill_in('holding_quantity', with: @holding_quantity)
     select("Equity", from: "holding_investment_instrument")
-    select("Employee", from: "holding_holding_type")
+    # select("Employee", from: "holding_holding_type")
 
     click_on("Save")
     sleep(1)

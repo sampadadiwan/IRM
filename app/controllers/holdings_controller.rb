@@ -23,7 +23,7 @@ class HoldingsController < ApplicationController
   def new
     @holding = Holding.new(holding_params)
     @holding.entity_id = current_user.entity_id
-
+    @holding.holding_type = @holding.investor.category
     authorize @holding
   end
 
