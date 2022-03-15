@@ -16,6 +16,9 @@
 #
 
 class ImportUpload < ApplicationRecord
+  SAMPLES = { "IA_SAMPLE" => "/sample_uploads/investor_access.xlsx",
+              "HOLDINGS_SAMPLE" => "/sample_uploads/holdings.xlsx" }.freeze
+
   belongs_to :entity
   belongs_to :owner, polymorphic: true
   belongs_to :user
