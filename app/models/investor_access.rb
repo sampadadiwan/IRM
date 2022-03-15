@@ -16,12 +16,15 @@
 
 class InvestorAccess < ApplicationRecord
   include Trackable
+  include ActivityTrackable
 
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   validates :email, presence: true
   belongs_to :entity
+  counter_culture :entity, column_name: proc { |ia| ia.approved ? nil : 'pending_accesses_count' }
+
   belongs_to :investor
   counter_culture :investor, column_name: proc { |model| model.approved ? 'investor_access_count' : 'unapproved_investor_access_count' }
 

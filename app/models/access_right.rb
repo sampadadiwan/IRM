@@ -18,6 +18,7 @@
 
 class AccessRight < ApplicationRecord
   include Trackable
+  include ActivityTrackable
 
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 

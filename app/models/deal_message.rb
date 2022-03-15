@@ -20,6 +20,8 @@ class DealMessage < ApplicationRecord
 
   belongs_to :user
   belongs_to :entity
+  counter_culture :entity, column_name: proc { |msg| msg.is_task && !msg.task_done ? 'tasks_count' : nil }
+
   belongs_to :deal_investor
   has_rich_text :content
   encrypts :content

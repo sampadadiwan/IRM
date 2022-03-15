@@ -21,6 +21,7 @@
 
 class Deal < ApplicationRecord
   include Trackable
+  include ActivityTrackable
   include Impressionable
 
   encrypts :name
@@ -51,7 +52,11 @@ class Deal < ApplicationRecord
   def create_activites
     deal_investors.each(&:create_activites)
   end
-
+  after_create :set_active_deal
+  def set_active_deal
+    entity.active_deal_id = id
+    entity.save
+  end
   after_create :create_activity_template
   def create_activity_template
     seq = 1

@@ -31,6 +31,7 @@ class User < ApplicationRecord
   include PublicActivity::Model
   tracked except: :update, owner: proc { |controller, _model| controller.current_user if controller && controller.current_user },
           entity_id: proc { |controller, _model| controller.current_user.entity_id if controller && controller.current_user }
+
   has_many :activities, as: :trackable, class_name: 'PublicActivity::Activity', dependent: :destroy
   has_many :holdings, dependent: :destroy
   has_many :offers, dependent: :destroy

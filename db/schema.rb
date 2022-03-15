@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_14_104220) do
+ActiveRecord::Schema.define(version: 2022_03_15_024726) do
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -242,8 +242,6 @@ ActiveRecord::Schema.define(version: 2022_03_14_104220) do
     t.string "url"
     t.string "category"
     t.date "founded"
-    t.float "funding_amount"
-    t.string "funding_unit", limit: 10
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "logo_url"
@@ -251,7 +249,6 @@ ActiveRecord::Schema.define(version: 2022_03_14_104220) do
     t.string "entity_type", limit: 15
     t.integer "created_by"
     t.string "investor_categories"
-    t.string "investment_types"
     t.string "instrument_types"
     t.string "s3_bucket"
     t.datetime "deleted_at", precision: 6
@@ -272,6 +269,9 @@ ActiveRecord::Schema.define(version: 2022_03_14_104220) do
     t.string "units", limit: 15
     t.date "trial_end_date"
     t.boolean "trial", default: false
+    t.integer "tasks_count"
+    t.integer "pending_accesses_count"
+    t.integer "active_deal_id"
     t.index ["deleted_at"], name: "index_entities_on_deleted_at"
     t.index ["name"], name: "index_entities_on_name", unique: true
     t.index ["parent_entity_id"], name: "index_entities_on_parent_entity_id"
@@ -280,8 +280,8 @@ ActiveRecord::Schema.define(version: 2022_03_14_104220) do
   create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "body", size: :medium
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -309,6 +309,8 @@ ActiveRecord::Schema.define(version: 2022_03_14_104220) do
     t.decimal "amount_raised_cents", precision: 20, scale: 2, default: "0.0"
     t.string "status", default: "Open"
     t.date "closed_on"
+    t.datetime "deleted_at", precision: 6
+    t.index ["deleted_at"], name: "index_funding_rounds_on_deleted_at"
     t.index ["entity_id"], name: "index_funding_rounds_on_entity_id"
   end
 
@@ -547,6 +549,8 @@ ActiveRecord::Schema.define(version: 2022_03_14_104220) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "total_offered_quantity", default: 0
     t.boolean "visible_externally", default: false
+    t.datetime "deleted_at", precision: 6
+    t.index ["deleted_at"], name: "index_secondary_sales_on_deleted_at"
     t.index ["entity_id"], name: "index_secondary_sales_on_entity_id"
   end
 

@@ -8,8 +8,8 @@
 #  start_date             :date
 #  end_date               :date
 #  percent_allowed        :integer          default("0")
-#  min_price              :decimal(5, 2)
-#  max_price              :decimal(5, 2)
+#  min_price              :decimal(20, 2)
+#  max_price              :decimal(20, 2)
 #  active                 :boolean          default("1")
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -19,6 +19,7 @@
 
 class SecondarySale < ApplicationRecord
   include Trackable
+  include ActivityTrackable
 
   belongs_to :entity
   has_many :access_rights, as: :owner, dependent: :destroy

@@ -21,7 +21,6 @@ class EntityDashboard < Administrate::BaseDashboard
     entity_type: Field::Select.with_options(collection: Entity::TYPES),
     created_by: Field::Number,
     investor_categories: Field::String,
-    investment_types: Field::String,
     instrument_types: Field::String,
     trial: Field::BooleanEmoji,
     trial_end_date: Field::Date,
@@ -59,7 +58,6 @@ class EntityDashboard < Administrate::BaseDashboard
     entity_type
     created_by
     investor_categories
-    investment_types
     instrument_types
     trial
     trial_end_date
@@ -80,7 +78,6 @@ class EntityDashboard < Administrate::BaseDashboard
     active
     entity_type
     investor_categories
-    investment_types
     instrument_types
     trial
     trial_end_date

@@ -23,7 +23,7 @@
 #  currency               :string(10)
 #  units                  :string(15)
 #  amount_cents           :decimal(20, 2)   default("0.00")
-#  price_cents            :decimal(10, 2)   default("0.00")
+#  price_cents            :decimal(20, 2)
 #  funding_round_id       :integer
 #  liquidation_preference :decimal(4, 2)
 #

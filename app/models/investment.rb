@@ -23,7 +23,7 @@
 #  currency               :string(10)
 #  units                  :string(15)
 #  amount_cents           :decimal(20, 2)   default("0.00")
-#  price_cents            :decimal(10, 2)   default("0.00")
+#  price_cents            :decimal(20, 2)
 #  funding_round_id       :integer
 #  liquidation_preference :decimal(4, 2)
 #
@@ -53,9 +53,6 @@ class Investment < ApplicationRecord
   # Handled by money-rails gem
   monetize :amount_cents, :price_cents, with_model_currency: :currency
 
-  # "Series A,Series B,Series C"
-  INVESTMENT_TYPES = ENV["INVESTMENT_TYPES"].split(",")
-
   # "Equity,Preferred,Debt,ESOPs"
   INSTRUMENT_TYPES = ENV["INSTRUMENT_TYPES"].split(",")
 
@@ -70,11 +67,6 @@ class Investment < ApplicationRecord
   scope :equity_or_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
   scope :options_or_esop, -> { where(investment_instrument: %w[ESOP Option]) }
   scope :debt, -> { where(investment_instrument: "Debt") }
-
-  # These functions override the defaults based on entities customization
-  def self.INVESTMENT_TYPES(entity = nil)
-    entity && entity.investment_types.present? ? entity.investment_types.split(",").map(&:strip) : INVESTMENT_TYPES
-  end
 
   def self.INVESTOR_CATEGORIES(entity = nil)
     entity && entity.investor_categories.present? ? entity.investor_categories.split(",").map(&:strip) : INVESTOR_CATEGORIES
