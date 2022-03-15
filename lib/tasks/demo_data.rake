@@ -232,14 +232,16 @@ namespace :irm do
       
       sale.entity.holdings.each do |h|
 
-        puts h.to_json
-        offer = Offer.new(holding:h, secondary_sale: sale, 
-          user: h.user, investor: h.investor, entity: h.entity)
+        if h.user
+          puts h.to_json
+          offer = Offer.new(holding:h, secondary_sale: sale, 
+            user: h.user, investor: h.investor, entity: h.entity)
 
-        offer.quantity = offer.allowed_quantity
-        offer.approved = rand(4) > 0
-        offer.save!
-        puts offer.to_json
+          offer.quantity = offer.allowed_quantity
+          offer.approved = rand(4) > 0
+          offer.save!
+          puts offer.to_json
+        end
       end
 
       sale.reload
