@@ -7,8 +7,7 @@ class NotesController < ApplicationController
 
     @notes = @notes.where(investor_id: params[:investor_id]) if params[:investor_id]
 
-    @notes = @notes.with_all_rich_text.includes(:user, investor: :investor_entity)
-                   .joins(:user, :investor)
+    @notes = @notes.with_all_rich_text.includes(:user, :investor)
                    .order("notes.id desc").page params[:page]
 
     respond_to do |format|

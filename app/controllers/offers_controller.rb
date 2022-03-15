@@ -3,7 +3,7 @@ class OffersController < ApplicationController
 
   # GET /offers or /offers.json
   def index
-    @offers = policy_scope(Offer)
+    @offers = policy_scope(Offer).includes(:user, :investor, :secondary_sale)
     @offers = @offers.where(secondary_sale_id: params[:secondary_sale_id]) if params[:secondary_sale_id].present?
   end
 

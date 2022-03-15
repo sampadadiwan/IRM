@@ -3,7 +3,7 @@ class InterestsController < ApplicationController
 
   # GET /interests or /interests.json
   def index
-    @interests = policy_scope(Interest)
+    @interests = policy_scope(Interest).includes(:interest_entity, :user)
     @interests = @interests.where(secondary_sale_id: params[:secondary_sale_id]) if params[:secondary_sale_id].present?
   end
 

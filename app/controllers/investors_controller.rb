@@ -5,8 +5,8 @@ class InvestorsController < ApplicationController
   # GET /investors or /investors.json
   def index
     @investors = policy_scope(Investor)
-    @investors = @investors.order("investors.id desc").joins(:investor_entity, :investee_entity)
-                           .includes(:investor_entity, :investee_entity, tags: :taggings)
+    @investors = @investors.order("investors.id desc")
+                           .includes(tags: :taggings)
   end
 
   def search
