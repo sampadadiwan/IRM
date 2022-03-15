@@ -20,14 +20,14 @@ class FundingRound < ApplicationRecord
   include Trackable
   include ActivityTrackable
 
-  monetize  :total_amount_cents, :pre_money_valuation_cents,
+  monetize  :pre_money_valuation_cents,
             :amount_raised_cents, :post_money_valuation_cents,
             with_model_currency: :currency
 
   belongs_to :entity
   has_many :investments, dependent: :destroy
 
-  validates :name, :total_amount_cents, :currency, :pre_money_valuation_cents, :status, presence: true
+  validates :name, :currency, :pre_money_valuation_cents, :status, presence: true
 
   scope :open, -> { where(status: "Open") }
 

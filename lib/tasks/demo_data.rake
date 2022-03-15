@@ -143,7 +143,7 @@ namespace :irm do
           InvestorAccess.create!(investor:inv, user: user, email: user.email, approved: rand(2), entity_id: inv.investee_entity_id)
         end
 
-        round = FactoryBot.create(:funding_round, entity: e) if rand(6) < 2 
+        round = FactoryBot.create(:funding_round, entity: e) if rand(10) < 2 
         i = FactoryBot.create(:investment, investee_entity: e, investor: inv, funding_round: round)
         puts "Investment #{i.to_json}"
       end

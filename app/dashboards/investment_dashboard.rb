@@ -15,9 +15,9 @@ class InvestmentDashboard < Administrate::BaseDashboard
     investor_type: Field::String,
     status: Field::String,
     investment_instrument: Field::String,
-    quantity: Field::Number,
-    initial_value: Field::String.with_options(searchable: false),
-    current_value: Field::String.with_options(searchable: false),
+    quantity: ObfuscatedField,
+    amount_cents: ObfuscatedField,
+    price_cents: ObfuscatedField,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     category: Field::String
@@ -35,7 +35,6 @@ class InvestmentDashboard < Administrate::BaseDashboard
     investee_entity
     investment_instrument
     quantity
-    initial_value
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -49,8 +48,6 @@ class InvestmentDashboard < Administrate::BaseDashboard
     status
     investment_instrument
     quantity
-    initial_value
-    current_value
     created_at
     updated_at
   ].freeze
@@ -59,15 +56,7 @@ class InvestmentDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    category
-    investor
-    investee_entity
-    investment_type
     status
-    investment_instrument
-    quantity
-    initial_value
-    current_value
   ].freeze
 
   # COLLECTION_FILTERS

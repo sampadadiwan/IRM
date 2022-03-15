@@ -12,7 +12,6 @@ class DealActivityDashboard < Administrate::BaseDashboard
     deal_investor: Field::BelongsTo,
     entity: Field::BelongsTo,
     deal_docs: Field::HasMany,
-    rich_text_details: RichTextAreaField,
     id: Field::Number,
     by_date: Field::Date,
     status: Field::String,
@@ -43,7 +42,6 @@ class DealActivityDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
     title
-    rich_text_details
     id
     by_date
     status
@@ -63,18 +61,8 @@ class DealActivityDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    versions
-    deal
-    deal_investor
-    entity
-    deal_docs
-    rich_text_details
-    by_date
     status
     completed
-    title
-    details
-    sequence
     days
   ].freeze
 

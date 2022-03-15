@@ -13,7 +13,7 @@ class DocumentDashboard < Administrate::BaseDashboard
     folder: Field::BelongsTo,
     rich_text_text: RichTextAreaField,
     id: Field::Number,
-    name: Field::String,
+    name: ObfuscatedField,
     visible_to: Field::String,
     text: Field::String,
     created_at: Field::DateTime,

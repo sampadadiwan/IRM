@@ -15,7 +15,7 @@ class InvestorDashboard < Administrate::BaseDashboard
     category: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    investor_name: Field::String
+    investor_name: ObfuscatedField
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -69,6 +69,6 @@ class InvestorDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(investor)
-    investor.investor_name
+    investor.investor_name.last(3).rjust(investor.investor_name.length, '*')
   end
 end

@@ -11,8 +11,9 @@ class HoldingDashboard < Administrate::BaseDashboard
     user: Field::BelongsTo,
     entity: Field::BelongsTo,
     id: Field::Number,
-    quantity: Field::Number,
-    value: Field::String.with_options(searchable: false),
+    quantity: ObfuscatedField,
+    value: ObfuscatedField,
+    price: ObfuscatedField,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     investment_instrument: Field::Select.with_options(collection: Investment::INSTRUMENT_TYPES)
@@ -39,6 +40,7 @@ class HoldingDashboard < Administrate::BaseDashboard
     entity
     investment_instrument
     quantity
+    price
     value
     created_at
     updated_at
@@ -49,9 +51,7 @@ class HoldingDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    quantity
-    value
-    investment_instrument
+
   ].freeze
 
   # COLLECTION_FILTERS

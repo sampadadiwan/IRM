@@ -11,7 +11,6 @@ class DealDocDashboard < Administrate::BaseDashboard
     versions: Field::HasMany,
     deal: Field::BelongsTo,
     deal_investor: Field::BelongsTo,
-    deal_activity: Field::BelongsTo,
     user: Field::BelongsTo,
     id: Field::Number,
     name: Field::String,
@@ -29,19 +28,16 @@ class DealDocDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    versions
+    name
     deal
     deal_investor
-    deal_activity
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    versions
     deal
     deal_investor
-    deal_activity
     user
     id
     name
@@ -57,16 +53,7 @@ class DealDocDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    versions
-    deal
-    deal_investor
-    deal_activity
-    user
     name
-    file_file_name
-    file_content_type
-    file_file_size
-    file_updated_at
   ].freeze
 
   # COLLECTION_FILTERS
@@ -84,7 +71,7 @@ class DealDocDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how deal docs are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(deal_doc)
-  #   "DealDoc ##{deal_doc.id}"
-  # end
+  def display_resource(deal_doc)
+    deal_doc.name
+  end
 end

@@ -18,13 +18,13 @@ class SecondarySaleDashboard < Administrate::BaseDashboard
     name: Field::String,
     start_date: Field::Date,
     end_date: Field::Date,
-    percent_allowed: Field::Number,
-    min_price: Field::String.with_options(searchable: false),
-    max_price: Field::String.with_options(searchable: false),
+    percent_allowed: ObfuscatedField,
+    min_price: ObfuscatedField,
+    max_price: ObfuscatedField,
     active: Field::BooleanEmoji,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    total_offered_quantity: Field::Number,
+    total_offered_quantity: ObfuscatedField,
     visible_externally: Field::BooleanEmoji
   }.freeze
 

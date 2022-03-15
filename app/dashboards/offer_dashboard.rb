@@ -32,7 +32,7 @@ class OfferDashboard < Administrate::BaseDashboard
     user
     entity
     secondary_sale
-    holding
+    quantity
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES

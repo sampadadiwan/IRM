@@ -46,7 +46,6 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :investors
     resources :users
-    resources :notes
     resources :entities
     resources :documents
     resources :investments
@@ -55,7 +54,6 @@ Rails.application.routes.draw do
     resources :deal_investors
     resources :deal_activities
     resources :deal_docs
-    resources :deal_messages
     resources :holdings
     resources :offers
     resources :interests
@@ -63,6 +61,8 @@ Rails.application.routes.draw do
     resources :investor_accesses
     resources :secondary_sales
     resources :roles
+    resources :funding_rounds
+
     root to: "investors#index"
   end
 

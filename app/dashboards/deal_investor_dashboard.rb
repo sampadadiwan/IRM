@@ -12,12 +12,11 @@ class DealInvestorDashboard < Administrate::BaseDashboard
     investor: Field::BelongsTo,
     entity: Field::BelongsTo,
     deal_activities: Field::HasMany,
-    deal_messages: Field::HasMany,
     deal_docs: Field::HasMany,
     id: Field::Number,
     status: Field::String,
-    primary_amount: Field::String.with_options(searchable: false),
-    secondary_investment: Field::String.with_options(searchable: false),
+    primary_amount: ObfuscatedField,
+    secondary_investment: ObfuscatedField,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     investor_entity_id: Field::Number
@@ -50,7 +49,6 @@ class DealInvestorDashboard < Administrate::BaseDashboard
     created_at
     updated_at
     deal_activities
-    deal_messages
     deal_docs
   ].freeze
 
@@ -58,12 +56,8 @@ class DealInvestorDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    deal
-    investor
-    entity
     status
-    primary_amount
-    secondary_investment
+
   ].freeze
 
   # COLLECTION_FILTERS
@@ -82,6 +76,7 @@ class DealInvestorDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(deal_investor)
-    deal_investor.investor_name
+    ob = deal_investor.investor_name
+    ob.to_s.last(3).rjust(ob.to_s.length, '*')
   end
 end
