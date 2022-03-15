@@ -41,9 +41,13 @@ class Offer < ApplicationRecord
     errors.add(:secondary_sale, "Is not active.") unless secondary_sale.active?
   end
 
-  before_save :set_percentage
-  def set_percentage
+  before_save :set_defaults
+  def set_defaults
     self.percentage = (100 * quantity) / holding.quantity
+
+    self.investor_id = holding.investor_id
+    self.user_id = holding.user_id
+    self.entity_id = holding.entity_id
   end
 
   def allowed_quantity

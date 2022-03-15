@@ -81,6 +81,7 @@ class Entity < ApplicationRecord
   scope :holdings, -> { where(entity_type: "Holding") }
   scope :vcs, -> { where(entity_type: "VC") }
   scope :startups, -> { where(entity_type: "Startup") }
+  scope :advisors, -> { where(entity_type: "Advisor") }
   scope :user_investor_entities, ->(user) { where('access_rights.access_to': user.email).includes(:access_rights) }
 
   before_save :check_url, :scrub_defaults

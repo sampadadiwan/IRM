@@ -74,4 +74,5 @@
     <% if Pundit.policy(current_user, @offer).update? %>
       <%= link_to "Edit" , edit_offer_path(@offer), {class: "btn btn-primary" } %>
     <% end %>
+    <%= link_to "Secondary Sale" , secondary_sale_path(@offer.secondary_sale), {class: "btn btn-primary" } %>
   </div>

@@ -24,10 +24,10 @@
     <%= number_to_currency interest.price %>
   </td>
   <td id="short_listed">
-    <%= interest.short_listed? ? "Yes" : "No" %>
+    <span class="badge <%= interest.short_listed? ? 'bg-success' : 'bg-warning' %>"><%= interest.short_listed? ? "Yes" : "No" %></span>
   </td>
   <td id="escrow_deposited">
-    <%= interest.escrow_deposited? ? "Yes" : "No" %>
+    <span class="badge <%= interest.escrow_deposited? ? 'bg-success' : 'bg-warning' %>"><%= interest.escrow_deposited? ? "Yes" : "No" %></span>
   </td>
   
   <td>

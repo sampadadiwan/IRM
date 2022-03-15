@@ -214,13 +214,53 @@ namespace :irm do
         deal.start_deal if rand(2).positive?
       end
 
-      FactoryBot.create(:secondary_sale, entity:e)
+      FactoryBot.create(:secondary_sale, entity:e, start_date:Date.today, end_date:Date.today + 10.days)
+
     end
   rescue Exception => e
     puts e.backtrace.join("\n")
     raise e
   end
 
+  desc "generates fake Offers for testing"
+  task generateFakeOffers: :environment do
+    SecondarySale.all.each do |sale|
+
+      sale.entity.investors.holding.each do |inv|
+        AccessRight.create(owner: sale, access_type: "SecondarySale", entity: sale.entity, investor: inv)
+      end
+      
+      sale.entity.holdings.each do |h|
+
+        puts h.to_json
+        offer = Offer.new(holding:h, secondary_sale: sale, 
+          user: h.user, investor: h.investor, entity: h.entity)
+
+        offer.quantity = offer.allowed_quantity
+        offer.approved = rand(4) > 0
+        offer.save!
+        puts offer.to_json
+      end
+
+      sale.reload
+      Entity.advisors.each do | advisor |
+        qty = ((sale.total_offered_quantity / 100) - rand(10))*100
+        price = rand(2) > 0 ? sale.min_price : sale.max_price
+        short_listed = rand(4) > 0
+        escrow_deposited = rand(2) > 0
+        interest = Interest.create(offer_entity_id: sale.entity_id, 
+            interest_entity_id: advisor.id, secondary_sale: sale,
+            quantity: qty, price: price, user_id: advisor.employees.first.id, 
+            short_listed: short_listed, escrow_deposited: escrow_deposited)
+        
+        puts interest.to_json
+      end
+      
+    end
+  rescue Exception => e
+    puts e.backtrace.join("\n")
+    raise e
+  end
 
   desc "generates fake load testing users"
   task generateFakeLoadTestUsers: :environment do
@@ -238,7 +278,8 @@ namespace :irm do
 
 
   task :generateAll => [:generateFakeEntities, :generateFakeInvestments, :generateFakeDeals, 
-                        :generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes, :generateFakeBlankEntities] do
+                        :generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes, 
+                        :generateFakeOffers, :generateFakeBlankEntities] do
     puts "Generating all Fake Data"
     Sidekiq.redis(&:flushdb)
   end

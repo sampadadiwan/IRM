@@ -61,15 +61,15 @@ FactoryBot.define do
     start_date { Time.zone.today }
     end_date { start_date + (2 + rand(10)).days }
     percent_allowed { (1 + rand(9)) * 10 }
-    min_price { (1 + rand(9)) * 1000000 }
-    max_price { min_price + (1 + rand(9)) * 1000000 }
+    min_price { (1 + rand(9)) * 1000 }
+    max_price { min_price + (1 + rand(9)) * 1000 }
     active { true }
   end
 
   factory :holding do
     user { User.all.sample }
     entity { Entity.all.sample }
-    quantity { rand(10) * 1000000 }
+    quantity { rand(10) * 10000 }
     price_cents { rand(3..10) * 10000 }
     holding_type { "Employee" }
     value_cents { quantity * price_cents }
@@ -117,9 +117,9 @@ FactoryBot.define do
     deal { Deal.all.sample }
     investor { deal.entity.investors.sample }
     status { DealInvestor::STATUS[rand(DealInvestor::STATUS.length)] }
-    primary_amount_cents { rand(3..11) * 100_000_000_000 }
-    pre_money_valuation_cents { rand(3..11) * 100_000_000_000 }
-    secondary_investment_cents { rand(3..11) * 100_000_000_000 }
+    primary_amount_cents { rand(3..11) * 100_000_000 }
+    pre_money_valuation_cents { rand(3..11) * 100_000_000 }
+    secondary_investment_cents { rand(3..11) * 100_000_000 }
     entity { deal.entity }
     company_advisor { Faker::Company.name }
     investor_advisor { Faker::Company.name }
@@ -154,8 +154,8 @@ FactoryBot.define do
     # investor { Investor.where(investee_entity_id: investee_entity_id).all.sample }
     investment_instrument { Investment::INSTRUMENT_TYPES[rand(Investment::INSTRUMENT_TYPES.length)] }
     category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
-    quantity { (rand(3..10) * 100000) }
-    price { rand(3..10) * 100000 }
+    quantity { (rand(3..10) * 10000) }
+    price { rand(3..10) * 1000}
 
     current_value {}
   end
