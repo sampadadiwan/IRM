@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_16_082018) do
+ActiveRecord::Schema.define(version: 2022_03_16_145429) do
+
+  create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "controller_name"
+    t.string "action_name"
+    t.string "tour_name"
+    t.integer "creator_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_abraham_histories_on_created_at"
+    t.index ["creator_id"], name: "index_abraham_histories_on_creator_id"
+    t.index ["updated_at"], name: "index_abraham_histories_on_updated_at"
+  end
 
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
@@ -280,8 +292,8 @@ ActiveRecord::Schema.define(version: 2022_03_16_082018) do
   create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "body", size: :medium
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -543,6 +555,9 @@ ActiveRecord::Schema.define(version: 2022_03_16_082018) do
     t.bigint "entity_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "cloned_from"
+    t.datetime "deleted_at", precision: 6
+    t.index ["deleted_at"], name: "index_scenarios_on_deleted_at"
     t.index ["entity_id"], name: "index_scenarios_on_entity_id"
   end
 

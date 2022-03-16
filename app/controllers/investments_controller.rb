@@ -6,15 +6,12 @@ class InvestmentsController < ApplicationController
   def index
     @entity = current_user.entity
 
-    @investments = policy_scope(Investment).includes(:investor, :investee_entity)
+    @investments = policy_scope(Investment).includes(:investor, :investee_entity, :scenario, :funding_round)
 
-    scenario_id = params[:scenario_id].presence || cookies[:scenario_id]
-    scenario_id ||= @entity.actual_scenario.id
-    cookies[:scenario_id] = scenario_id
+    scenario_id = helpers.current_scenario(@entity)
 
     @investments = @investments.where(scenario_id: scenario_id)
     @investments = @investments.order(initial_value: :desc)
-                               .joins(:investor, :investee_entity)
 
     respond_to do |format|
       format.xlsx do
@@ -138,6 +135,7 @@ class InvestmentsController < ApplicationController
   def investment_params
     params.require(:investment).permit(:funding_round_id, :investor_id, :price,
                                        :investee_entity_id, :investor_type, :investment_instrument, :quantity,
-                                       :category, :initial_value, :current_value, :status, :liquidation_preference)
+                                       :category, :initial_value, :current_value,
+                                       :status, :liquidation_preference)
   end
 end

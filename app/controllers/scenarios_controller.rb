@@ -53,7 +53,7 @@ class ScenariosController < ApplicationController
   # DELETE /scenarios/1 or /scenarios/1.json
   def destroy
     @scenario.destroy
-
+    cookies.delete(:scenario_id, domain: :all) if cookies[:scenario_id]
     respond_to do |format|
       format.html { redirect_to scenarios_url, notice: "Scenario was successfully destroyed." }
       format.json { head :no_content }
@@ -70,6 +70,6 @@ class ScenariosController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def scenario_params
-    params.require(:scenario).permit(:name, :entity_id)
+    params.require(:scenario).permit(:name, :entity_id, :cloned_from)
   end
 end

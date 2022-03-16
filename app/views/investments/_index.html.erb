@@ -6,7 +6,8 @@
   <% if title == "Equity" %>
     <%= render "investments/currency_form" %>
     <%= render "investments/scenarios_form" %>
-
+    <%= link_to "Scenarios", scenarios_path, {class: "btn btn-primary"} %>
+    
     <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id,
                                                     "investment[investment_instrument]": title), 
       {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
