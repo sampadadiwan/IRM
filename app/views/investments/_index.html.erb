@@ -5,6 +5,7 @@
   
   <% if title == "Equity" %>
     <%= render "investments/currency_form" %>
+    <%= render "investments/scenarios_form" %>
 
     <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id,
                                                     "investment[investment_instrument]": title), 

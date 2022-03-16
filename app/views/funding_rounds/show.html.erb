@@ -81,5 +81,10 @@
   </div>
 
   <div class="associated_entity" data-controller="investments">
-    <%= render "investments/index", investments: @funding_round.investments, entity: @funding_round.entity, title: "Equity" %>
+    <% 
+      scenario_id = params[:scenario_id].present? ? params[:scenario_id] : cookies[:scenario_id] 
+      scenario_id ||= @entity.actual_scenario.id
+    %>
+    <%= render "investments/index", investments: @funding_round.investments.where(scenario_id: scenario_id), 
+                      entity: @funding_round.entity, title: "Equity" %>
   </div>

@@ -51,7 +51,7 @@ class Investment < ApplicationRecord
 
   has_many :holdings, dependent: :destroy
 
-  counter_culture :investee_entity
+  counter_culture :investee_entity, column_name: proc { |i| i.scenario.actual? ? 'investments_count' : nil }
   counter_culture :investee_entity, column_name: proc { |i| i.scenario.actual? ? 'total_investments' : nil }, delta_column: 'amount_cents'
 
   # Handled by money-rails gem

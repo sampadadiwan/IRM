@@ -3,7 +3,8 @@
   <div class="form-group" data-controller="currency">
     <% selected = params[:units].present? ? params[:units] : cookies[:currency_units] %>
     <%= form.select :units, ["Crores", "Lakhs", "Million", "None"], {selected: selected, include_blank: "Select Currency Units"}, 
-        { id: "currency_units", class: "form-control", data: { action: "change->currency#setCurrencyUnit" } } %>
+        { id: "currency_units", class: "form-control", 
+        data: { action: "change->currency#setCurrencyUnit", toggle: "tooltip", title: "Choose Currency Units" } } %>
   </div>
 
   

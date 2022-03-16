@@ -5,4 +5,12 @@ class Scenario < ApplicationRecord
   def actual?
     name == "Actual"
   end
+
+  def from(scenario)
+    scenario.investments.each do |inv|
+      new_inv = inv.dup
+      new_inv.scenario = self
+      new_inv.save
+    end
+  end
 end

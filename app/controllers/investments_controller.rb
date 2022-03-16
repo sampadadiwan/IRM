@@ -5,7 +5,14 @@ class InvestmentsController < ApplicationController
   # GET /investments or /investments.json
   def index
     @entity = current_user.entity
+
     @investments = policy_scope(Investment).includes(:investor, :investee_entity)
+
+    scenario_id = params[:scenario_id].presence || cookies[:scenario_id]
+    scenario_id ||= @entity.actual_scenario.id
+    cookies[:scenario_id] = scenario_id
+
+    @investments = @investments.where(scenario_id: scenario_id)
     @investments = @investments.order(initial_value: :desc)
                                .joins(:investor, :investee_entity)
 
