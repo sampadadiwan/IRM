@@ -70,6 +70,7 @@ class Entity < ApplicationRecord
   has_many :investee_entities, through: :investees
   has_many :notes, dependent: :destroy
   has_many :folders, dependent: :destroy
+  has_many :scenarios, dependent: :destroy
 
   has_many :investor_accesses, dependent: :destroy
   has_many :access_rights, dependent: :destroy
@@ -101,7 +102,10 @@ class Entity < ApplicationRecord
 
   after_create :setup_root_folder
   def setup_root_folder
-    Folder.create(name: "/", entity_id: id, level: 0)
+    if entity_type == "Startup"
+      Folder.create(name: "/", entity_id: id, level: 0)
+      Scenario.create(name: "Actual", entity_id: id)
+    end
   end
 
   after_create :setup_holding_entity, if: proc { |model| model.entity_type == "Startup" }
@@ -134,5 +138,9 @@ class Entity < ApplicationRecord
 
   def self.for_investor(user)
     Entity.joins(:investor_accesses).where("investor_accesses.user_id=?", user.id).distinct
+  end
+
+  def actual_scenario
+    scenarios.where(name: "Actual").first
   end
 end

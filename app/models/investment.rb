@@ -38,9 +38,13 @@ class Investment < ApplicationRecord
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
+  # Investments which belong to the Actual scenario are the real ones
+  # All others are imaginary scenarios for planning and dont add to the real
+  belongs_to :scenario
+
   belongs_to :investor
   belongs_to :funding_round, optional: true
-  counter_culture :funding_round, column_name: 'amount_raised_cents', delta_column: 'amount_cents'
+  counter_culture :funding_round, column_name: proc { |i| i.scenario.actual? ? 'amount_raised_cents' : nil }, delta_column: 'amount_cents'
 
   delegate :investor_entity_id, to: :investor
   belongs_to :investee_entity, class_name: "Entity"
@@ -48,7 +52,7 @@ class Investment < ApplicationRecord
   has_many :holdings, dependent: :destroy
 
   counter_culture :investee_entity
-  counter_culture :investee_entity, column_name: 'total_investments', delta_column: 'amount_cents'
+  counter_culture :investee_entity, column_name: proc { |i| i.scenario.actual? ? 'total_investments' : nil }, delta_column: 'amount_cents'
 
   # Handled by money-rails gem
   monetize :amount_cents, :price_cents, with_model_currency: :currency
@@ -100,13 +104,13 @@ class Investment < ApplicationRecord
     self.investment_type = funding_round.name if funding_round
   end
 
-  after_destroy :destroy_investor_holdings
+  after_destroy :destroy_investor_holdings, if: proc { |i| i.scenario.actual? }
   def destroy_investor_holdings
     holding = Holding.where(investor_id: investor_id, investment_instrument: investment_instrument).first
     holding&.destroy
   end
 
-  after_save :update_investor_holdings
+  after_save :update_investor_holdings, if: proc { |i| i.scenario.actual? }
   def update_investor_holdings
     if (investment_instrument == "Equity" || investment_instrument == "Preferred") && !investor.is_holdings_entity
       holding = Holding.where(investor_id: investor_id, investment_instrument: investment_instrument).first
@@ -127,8 +131,8 @@ class Investment < ApplicationRecord
 
   # after_save :update_percentage_holdings
   def update_percentage_holdings
-    equity_investments = Investment.where(investee_entity_id: investee_entity_id).equity_or_pref
-    esop_investments = Investment.where(investee_entity_id: investee_entity_id).options_or_esop
+    equity_investments = scenario.investments.where(investee_entity_id: investee_entity_id).equity_or_pref
+    esop_investments = scenario.investments.where(investee_entity_id: investee_entity_id).options_or_esop
     equity_quantity = equity_investments.sum(:quantity)
     esop_quantity = esop_investments.sum(:quantity)
 
@@ -146,17 +150,18 @@ class Investment < ApplicationRecord
   end
 
   def self.for_investor(current_user, entity)
-    investments = Investment
-                  # Ensure the access rights for Investment
-                  .joins(investee_entity: %i[investors access_rights])
-                  .merge(AccessRight.for_access_type("Investment"))
-                  # Ensure that the user is an investor and tis investor has been given access rights
-                  .where("entities.id=?", entity.id)
-                  .where("investors.investor_entity_id=?", current_user.entity_id)
-                  .where("investors.category=access_rights.access_to_category OR access_rights.access_to_investor_id=investors.id")
-                  # Ensure this user has investor access
-                  .joins(investee_entity: :investor_accesses)
-                  .merge(InvestorAccess.approved_for(current_user, entity))
+    actual_scenario = entity.actual_scenario
+    investments = actual_scenario.investments
+                                 # Ensure the access rights for Investment
+                                 .joins(investee_entity: %i[investors access_rights])
+                                 .merge(AccessRight.for_access_type("Investment"))
+                                 # Ensure that the user is an investor and tis investor has been given access rights
+                                 .where("entities.id=?", entity.id)
+                                 .where("investors.investor_entity_id=?", current_user.entity_id)
+                                 .where("investors.category=access_rights.access_to_category OR access_rights.access_to_investor_id=investors.id")
+                                 # Ensure this user has investor access
+                                 .joins(investee_entity: :investor_accesses)
+                                 .merge(InvestorAccess.approved_for(current_user, entity))
 
     # return investments if investments.blank?
 
@@ -184,4 +189,6 @@ class Investment < ApplicationRecord
 
     investments
   end
+
+  delegate :actual_scenario, to: :investee_entity
 end

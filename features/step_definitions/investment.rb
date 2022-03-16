@@ -87,6 +87,7 @@ end
 Given('given there is a investment {string} for the entity') do |arg1|
   @investment = FactoryBot.build(:investment, investor: @investor, investee_entity: @entity)
   @investment.currency = @entity.currency
+  @investment.scenario = @investment.actual_scenario
   key_values(@investment, arg1)
   @investment.save!
   puts "\n####Investment####\n"
@@ -204,7 +205,9 @@ Given('there are {string} exisiting investments {string} from my firm in startup
     @startup_entity = FactoryBot.create(:entity, entity_type: "Startup", name: "Startup #{i}")
     @investor = FactoryBot.create(:investor, investor_entity: @entity, investee_entity: @startup_entity)
     (1..count.to_i).each do 
-      @investment = FactoryBot.create(:investment, investee_entity: @startup_entity, investor: @investor)
+      @investment = FactoryBot.build(:investment, investee_entity: @startup_entity, investor: @investor)
+      @investment.scenario = @investment.actual_scenario
+      @investment.save
     end
   end
 end
@@ -215,7 +218,9 @@ Given('there are {string} exisiting investments {string} from another firm in st
   Entity.startups.each do |startup|
     @investor = FactoryBot.create(:investor, investor_entity: @another_entity, investee_entity: startup)
     (1..count.to_i).each do 
-      @investment = FactoryBot.create(:investment, investee_entity: startup, investor: @investor)
+      @investment = FactoryBot.build(:investment, investee_entity: startup, investor: @investor)
+      @investment.scenario = @investment.actual_scenario
+      @investment.save
     end
   end
 end

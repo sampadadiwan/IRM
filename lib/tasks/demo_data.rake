@@ -136,6 +136,7 @@ namespace :irm do
     Entity.startups.each do |e|
       i = nil
       round = FactoryBot.create(:funding_round, entity: e)
+      scenario = Scenario.where(entity_id: e.id).first
       Entity.vcs.each do |vc|
         inv = FactoryBot.create(:investor, investee_entity: e, investor_entity: vc)
         puts "Investor #{inv.id}"
@@ -144,7 +145,7 @@ namespace :irm do
         end
 
         round = FactoryBot.create(:funding_round, entity: e) if rand(10) < 2 
-        i = FactoryBot.create(:investment, investee_entity: e, investor: inv, funding_round: round)
+        i = FactoryBot.create(:investment, investee_entity: e, investor: inv, funding_round: round, scenario: scenario)
         puts "Investment #{i.to_json}"
       end
 

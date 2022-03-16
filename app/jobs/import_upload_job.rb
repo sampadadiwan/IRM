@@ -89,7 +89,7 @@ class ImportUploadJob < ApplicationJob
                           price_cents: user_data["Price"].to_f * 100,
                           investment_instrument: user_data["Instrument"])
 
-    holding.save
+    holding.save!
   end
 
   def save_investor_access(user_data, import_upload)

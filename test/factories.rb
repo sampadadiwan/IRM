@@ -1,4 +1,9 @@
 FactoryBot.define do
+  factory :scenario do
+    name { "MyString" }
+    entity { nil }
+  end
+
   factory :funding_round do
     name { "Series A,Series B,Series C".split(",")[rand(3)] }
     total_amount_cents { rand(5..10) * 1000000 }
