@@ -3,7 +3,7 @@ module StatisticsHelper
     pie_chart data, library: { plotOptions: { pie: {
       dataLabels: {
         enabled: true,
-        format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %'
+        format: '{point.name}:<br>{point.percentage:.1f} %'
       }
     } } },
                     #  stacked: false,
@@ -42,33 +42,26 @@ module StatisticsHelper
                             .map { |k, v| [k, v] }
 
     column_chart investments, library: {
-      plotOptions: {
-        column: {
-          dataLabels: {
-            # enabled: true,
-            # format: "<b>{point.y:,.2f}</b>"
-          }
+      plotOptions: { column: {
+        dataLabels: {
+          enabled: true,
+          format: "{point.y:,.2f}"
         }
-      }
-    },
-                              prefix: "#{entity.currency}:"
+      } }
+    }, prefix: "#{entity.currency}:"
   end
 
   def funding_rounds_chart(entity)
     column_chart FundingRound.where(entity_id: entity.id).order(id: :asc)
                              .map { |f| ["#{f.name} - #{l(f.created_at.to_date)}", f.amount_raised_cents / 100] },
                  library: {
-                   plotOptions: {
-                     column: {
-                       dataLabels: {
-                         enabled: true,
-                         format: "<b>{point.y:,.2f}</b>"
-                       }
+                   plotOptions: { column: {
+                     dataLabels: {
+                       enabled: true,
+                       format: "{point.y:,.2f}"
                      }
-                   }
-                 },
-                 decimal: ",",
-                 prefix: "#{entity.currency}:"
+                   } }
+                 }, decimal: ",", prefix: "#{entity.currency}:"
   end
 
   def investment_by_investor(entity)
@@ -77,9 +70,14 @@ module StatisticsHelper
     column_chart Investment.where(investee_entity_id: entity.id, scenario_id: scenario_id)
                            .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
                            .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
-                 stacked: true,
-                 decimal: ",",
-                 prefix: "#{entity.currency}:"
+                 library: {
+                   plotOptions: { column: {
+                     dataLabels: {
+                       enabled: true,
+                       format: "{point.y:,.2f}"
+                     }
+                   } }
+                 }, decimal: ",", prefix: "#{entity.currency}:"
   end
 
   def count_by_investor(entity)
@@ -92,7 +90,7 @@ module StatisticsHelper
                   pie: {
                     dataLabels: {
                       enabled: true,
-                      format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %'
+                      format: '{point.name}:<br>{point.percentage:.1f} %'
                     }
                   }
                 }
