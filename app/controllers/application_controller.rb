@@ -37,4 +37,9 @@ class ApplicationController < ActionController::Base
       current_user: current_user
     }
   end
+
+  def after_sign_out_path_for(_resource_or_scope)
+    cookies.delete(:scenario_id, domain: :all) if cookies[:scenario_id]
+    request.referer
+  end
 end

@@ -13,6 +13,7 @@ class Scenario < ApplicationRecord
     scenario.investments.each do |inv|
       new_inv = inv.dup
       new_inv.scenario = self
+      new_inv.funding_round = nil
       new_inv.save
     end
   end

@@ -136,6 +136,6 @@ class InvestmentsController < ApplicationController
     params.require(:investment).permit(:funding_round_id, :investor_id, :price,
                                        :investee_entity_id, :investor_type, :investment_instrument, :quantity,
                                        :category, :initial_value, :current_value,
-                                       :status, :liquidation_preference)
+                                       :status, :liquidation_preference, :scenario_id)
   end
 end
