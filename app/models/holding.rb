@@ -51,7 +51,7 @@ class Holding < ApplicationRecord
                                           category: holding_type, investee_entity_id: entity.id,
                                           investor_id: employee_investor.id, employee_holdings: true,
                                           quantity: 0, price_cents: price_cents,
-                                          currency: entity.currency, scenario: entity.scenarios.first)
+                                          currency: entity.currency, scenario: entity.actual_scenario)
     end
   end
 

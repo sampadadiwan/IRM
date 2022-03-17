@@ -5,7 +5,9 @@ import "@rails/actiontext"
 import "controllers"
 import "@popperjs/core"
 import "chartkick"
-import "Chart.bundle"
+// import "Chart.bundle"
+import Highcharts from "highcharts"
+window.Highcharts = Highcharts
 
 $(document).on('turbo:before-cache', function() {     
   if( $('.select2-container').length > 0 ){

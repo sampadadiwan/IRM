@@ -9,5 +9,7 @@ pin "trix"
 pin "@rails/actiontext", to: "actiontext.js"
 pin "@popperjs/core", to: "https://ga.jspm.io/npm:@popperjs/core@2.11.2/lib/index.js"
 pin "chartkick", to: "chartkick.js"
-pin "Chart.bundle", to: "Chart.bundle.js"
+# pin "Chart.bundle", to: "Chart.bundle.js"
 pin "@rails/activestorage", to: "https://ga.jspm.io/npm:@rails/activestorage@7.0.1/app/assets/javascripts/activestorage.esm.js"
+pin "highcharts" # @10.0.0
+pin "chartkick", to: "chartkick.js"

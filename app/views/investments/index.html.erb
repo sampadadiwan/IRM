@@ -1,7 +1,7 @@
 <%= render "/layouts/alerts" %>
 <% if params[:charts].present? %>
     <div class="associated_entity">
-        <%= render "investments/cap_table_charts", entity: @entity %>
+        <%= render "investments/cap_table_charts", entity: @entity, investments: @investments %>
     </div>
 <% else %>
     <div data-controller="investments">

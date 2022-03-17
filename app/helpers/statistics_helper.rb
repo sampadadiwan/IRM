@@ -1,43 +1,84 @@
 module StatisticsHelper
-  def investment_by_dilution(entity)
-    diluted = Investment.where(investee_entity_id: entity.id, investment_instrument: %w[Equity Preferred Option ESOP])
-                        .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
-                        .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.percentage_holding }] }
-    undiluted = Investment.where(investee_entity_id: entity.id, investment_instrument: %w[Equity Preferred Option ESOP])
-                          .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
-                          .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.diluted_percentage }] }
-    data = [
-      { name: "Diluted", data: diluted },
-      { name: "Undiluted", data: undiluted }
-    ]
-    column_chart data,
-                 #  stacked: false,
-                 prefix: "%"
+  def pie_chart_with_options(data)
+    pie_chart data, library: { plotOptions: { pie: {
+      dataLabels: {
+        enabled: true,
+        format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %'
+      }
+    } } },
+                    #  stacked: false,
+                    decimal: ",",
+                    prefix: "%"
+  end
+
+  def investment_diluted(entity)
+    scenario_id = current_scenario(entity)
+    investments = Investment.where(investee_entity_id: entity.id, scenario_id: scenario_id,
+                                   investment_instrument: %w[Equity Preferred Option ESOP])
+                            .joins(:investor).includes(:investor)
+    diluted = investments.group_by { |i| i.investor.investor_name }
+                         .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.percentage_holding }] }
+
+    pie_chart_with_options diluted
+  end
+
+  def investment_undiluted(entity)
+    scenario_id = current_scenario(entity)
+    investments = Investment.where(investee_entity_id: entity.id, scenario_id: scenario_id,
+                                   investment_instrument: %w[Equity Preferred Option ESOP])
+                            .joins(:investor).includes(:investor)
+
+    undiluted = investments.group_by { |i| i.investor.investor_name }
+                           .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.diluted_percentage }] }
+
+    pie_chart_with_options undiluted
   end
 
   def investment_by_intrument(entity)
-    column_chart Investment.where(investee_entity_id: entity.id)
-                           .group_by(&:investment_instrument)
-                           .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] }
-                           .map { |k, v| [k, v] },
-                 prefix: "#{entity.currency}:"
+    scenario_id = current_scenario(entity)
+    investments = Investment.where(investee_entity_id: entity.id, scenario_id: scenario_id)
+                            .group_by(&:investment_instrument)
+                            .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] }
+                            .map { |k, v| [k, v] }
+
+    column_chart investments, library: {
+      plotOptions: {
+        column: {
+          dataLabels: {
+            enabled: true,
+            format: "<b>{point.y:,.2f}</b>"
+          }
+        }
+      }
+    },
+                              prefix: "#{entity.currency}:"
   end
 
   def funding_rounds_chart(entity)
     column_chart FundingRound.where(entity_id: entity.id).order(id: :asc)
                              .map { |f| ["#{f.name} - #{l(f.created_at.to_date)}", f.amount_raised_cents / 100] },
+                 library: {
+                   plotOptions: {
+                     column: {
+                       dataLabels: {
+                         enabled: true,
+                         format: "<b>{point.y:,.2f}</b>"
+                       }
+                     }
+                   }
+                 },
+                 decimal: ",",
                  prefix: "#{entity.currency}:"
   end
 
   def investment_by_investor(entity)
-    # pie_chart Investment.where(investee_entity_id: entity.id)
-    #                     .joins(:investor).includes(:investor).group("investors.investor_name").sum(:initial_value),
-
+    scenario_id = current_scenario(entity)
     # We cant use the DB, as values are encrypted
-    column_chart Investment.where(investee_entity_id: entity.id)
+    column_chart Investment.where(investee_entity_id: entity.id, scenario_id: scenario_id)
                            .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
                            .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
                  stacked: true,
+                 decimal: ",",
                  prefix: "#{entity.currency}:"
   end
 
@@ -46,6 +87,16 @@ module StatisticsHelper
                       .group("category").count,
               #   xtitle: "Investment Amount",
               #   ytitle: "Type",
+              library: {
+                plotOptions: {
+                  pie: {
+                    dataLabels: {
+                      enabled: true,
+                      format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %'
+                    }
+                  }
+                }
+              },
               donut: true
   end
 
