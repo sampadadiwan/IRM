@@ -20,6 +20,10 @@ en:
     create: 'Note was created'
     update: 'Note was updated'
     destroy: 'Note was deleted'
+  funding_round:
+    create: 'Funding round was created'
+    update: 'Funding round was updated'
+    destroy: 'Funding round was deleted'
   deal:
     create: 'Deal was created'
     update: 'Deal was updated'

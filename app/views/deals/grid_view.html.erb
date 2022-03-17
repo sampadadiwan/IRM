@@ -3,6 +3,9 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4" data-controller="nudge">
     <h1 class="h3 mb-0 text-gray-800">Deal Grid View</h1>
     <span>
+
+        <%= render "investments/currency_form" %>
+
         <% if params[:all].blank? %>
             <%= link_to "All Investors", deal_path(id: @deal.id, grid_view: true, all:true), {class: "btn btn-primary"}  %>
         <% else %>
@@ -26,7 +29,10 @@
             <i class="fa-lg fa-regular fa-file-excel"></i> Download
         <% end %>
 
-        <%= render "investments/currency_form" %>
+        <%= link_to deal_path(id: @deal.id, chart: true), {class: "btn btn-success"} do %>
+            <i class="fas fa-chart-line"></i> Charts
+        <% end %>
+
 
     </span>
 </div>

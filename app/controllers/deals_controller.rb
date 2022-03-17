@@ -39,8 +39,9 @@ class DealsController < ApplicationController
 
     if params[:grid_view] == "false" || @deal.start_date.nil?
       render "show"
+    elsif params[:chart].present?
+      render "deal_charts"
     else
-
       respond_to do |format|
         format.xlsx do
           @activity_names = %w[Investor Status Primary Secondary] + DealActivity.templates(@deal)

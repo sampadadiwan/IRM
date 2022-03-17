@@ -45,8 +45,8 @@ module StatisticsHelper
       plotOptions: {
         column: {
           dataLabels: {
-            enabled: true,
-            format: "<b>{point.y:,.2f}</b>"
+            # enabled: true,
+            # format: "<b>{point.y:,.2f}</b>"
           }
         }
       }
