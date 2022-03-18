@@ -6,25 +6,28 @@
   <% if title == "Equity" %>
     <%= render "investments/currency_form" %>
 
-    <% if show_scenarios %>
-      <%= render "investments/scenarios_form"  %>
-      <%= link_to "Scenarios", scenarios_path, {class: "btn btn-primary"} %>
+    <% if current_user.entity_id == entity.id %>
+    
+      <% if show_scenarios %>
+        <%= render "investments/scenarios_form"  %>
+        <%= link_to "Scenarios", scenarios_path, {class: "btn btn-primary"} %>
+      <% end %>
+
+      <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id,
+                                                      "investment[investment_instrument]": title,
+                                                      "investment[scenario_id]": current_scenario), 
+        {class: "btn btn-primary"} %>
+
+      <%= link_to "Funding Rounds", funding_rounds_path, {class: "btn btn-primary"} %>
+      <%= link_to investments_path(format: :xlsx), {class: "btn btn-success"} do %>
+        <i class="fa-lg fa-regular fa-file-excel"></i> Download
+      <% end %>
+
+      <%= link_to investments_path(charts: true), {class: "btn btn-success"} do %>
+        <i class="fas fa-chart-line"></i> Graphs
+      <% end %>
+
     <% end %>
-
-    <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id,
-                                                    "investment[investment_instrument]": title,
-                                                    "investment[scenario_id]": current_scenario), 
-      {class: "btn btn-primary"} if current_user.entity_id == entity.id %>
-
-    <%= link_to "Funding Rounds", funding_rounds_path, {class: "btn btn-primary"} %>
-    <%= link_to investments_path(format: :xlsx), {class: "btn btn-success"} do %>
-      <i class="fa-lg fa-regular fa-file-excel"></i> Download
-    <% end %>
-
-    <%= link_to investments_path(charts: true), {class: "btn btn-success"} do %>
-      <i class="fas fa-chart-line"></i> Graphs
-    <% end %>
-
 
   <% end %>
   
