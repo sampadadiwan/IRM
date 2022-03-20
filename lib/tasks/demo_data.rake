@@ -135,6 +135,7 @@ namespace :irm do
   task generateFakeInvestors: :environment do
     Entity.startups.each do |e|
       i = nil
+      
       round = FactoryBot.create(:funding_round, entity: e)
       scenario = Scenario.where(entity_id: e.id).first
       Entity.vcs.each do |vc|
@@ -157,11 +158,13 @@ namespace :irm do
       round = FactoryBot.create(:funding_round, entity: e)
       scenario = Scenario.where(entity_id: e.id).first
       Entity.vcs.each do |vc|
-        inv = e.investors.sample
-        
-        round = FactoryBot.create(:funding_round, entity: e) if rand(10) < 2 
-        i = FactoryBot.create(:investment, investee_entity: e, investor: inv, funding_round: round, scenario: scenario)
-        puts "Investment #{i.to_json}"
+        inv = e.investors.not_holding.sample
+        (1..3).each do
+          round = FactoryBot.create(:funding_round, entity: e) if rand(10) < 2 
+          i = FactoryBot.create(:investment, investee_entity: e, investor: inv, 
+              funding_round: round, scenario: scenario, notes: "generateFakeInvestments")
+          puts "Investment #{i.to_json}"
+        end
       end
 
       i&.update_percentage_holdings
@@ -172,6 +175,9 @@ namespace :irm do
                            entity: e, access_to_category: Investor::INVESTOR_CATEGORIES[rand(Investor::INVESTOR_CATEGORIES.length)])
       end
     end
+
+    AggregateInvestment.all.each.map(&:update_percentage_holdings)
+    
   rescue Exception => e
     puts e.backtrace.join("\n")
     raise e
@@ -192,7 +198,7 @@ namespace :irm do
         Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
             quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000,
             investment_instrument: ["Equity", "Preferred", "Option"][rand(3)], 
-            holding_type: investor.category, funding_round: investee_entity.funding_rounds.sample)
+            holding_type: investor.category, funding_round: investor.investee_entity.funding_rounds.sample)
       end
     end
   rescue Exception => e

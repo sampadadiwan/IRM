@@ -4,6 +4,7 @@ class AggregateInvestmentsController < ApplicationController
   # GET /aggregate_investments or /aggregate_investments.json
   def index
     @aggregate_investments = policy_scope(AggregateInvestment)
+    @aggregate_investments.includes(:investor, :investee_entity, :scenario, :funding_round)
   end
 
   # GET /aggregate_investments/1 or /aggregate_investments/1.json

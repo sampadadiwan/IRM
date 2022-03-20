@@ -25,10 +25,7 @@ class FundingRound < ApplicationRecord
             with_model_currency: :currency
 
   belongs_to :entity
-  # counter_culture :entity, column_name: "equity", delta_column: "equity"
-  # counter_culture :entity, column_name: "preferred", delta_column: "preferred"
-  # counter_culture :entity, column_name: "option", delta_column: "option"
-
+  has_many :holdings, dependent: :destroy
   has_many :investments, dependent: :destroy
   has_many :aggregate_investments, dependent: :destroy
 

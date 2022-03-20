@@ -29,6 +29,7 @@ export default class extends Controller {
       let instrument = $(this).data('instrument');
       let entity = $(this).data('entity');
       let category = $(this).data('category');
+      let funding_round_id = $(this).data('funding_round');
       var tr = $(this).closest('tr');
       var row = t1.row(tr);
 
@@ -41,7 +42,7 @@ export default class extends Controller {
       else {
 
         $.ajax({
-          url: `/holdings.json?entity_id=${entity}&investment_instrument=${instrument}&holding_type=${category}&limit=5`
+          url: `/holdings.json?funding_round_id=${funding_round_id}&entity_id=${entity}&investment_instrument=${instrument}&holding_type=${category}&limit=5`
         }).then(function(data) {
             console.log(data);
             row.child(format(data, category, instrument)).show();
@@ -54,6 +55,7 @@ export default class extends Controller {
 
     function rowHtml(row, index) {
       return '<tr>'+
+                '<td>'+row.funding_round_name+'</td>'+
                 '<td>'+row.holder_name+'</td>'+
                 '<td>'+row.investment_instrument+'</td>'+
                 '<td>'+row.quantity+'</td>'+
@@ -63,19 +65,17 @@ export default class extends Controller {
     }
 
     function format ( data, category, instrument ) {
-      // `d` is the original data object for the row
 
       let rows = "";
       for (var i = 0; i < data.length; i++) { 
         rows += rowHtml(data[i]); 
       }
 
-      // return rows;
-
       return '<div class="nested_holdings">'+
       `<span class="mb-0 text-gray-800">Top 5 ${category} ${instrument} Holdings</span>`+
       '<table class="table table-bordered table-striped dataTable">'+
           '<tr>'+
+            '<th>Funding Round</th>'+
             '<th>Name</th>'+
             '<th>Instrument</th>'+
             '<th>Quantity</th>'+

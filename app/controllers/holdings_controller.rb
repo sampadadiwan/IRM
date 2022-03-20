@@ -4,13 +4,14 @@ class HoldingsController < ApplicationController
   # GET /holdings or /holdings.json
   def index
     @holdings = policy_scope(Holding).order(quantity: :desc)
-    @holdings = @holdings.includes(:user, :entity, :investor)
+    @holdings = @holdings.includes(:user, :entity, :investor, :funding_round)
     @secondary_sale = nil
     if params[:secondary_sale_id]
       @secondary_sale = SecondarySale.find(params[:secondary_sale_id])
       @holdings = @holdings.where(entity_id: @secondary_sale.entity_id)
     end
     @holdings = @holdings.where(entity_id: params[:entity_id]) if params[:entity_id].present?
+    @holdings = @holdings.where(funding_round_id: params[:funding_round_id]) if params[:funding_round_id].present?
     @holdings = @holdings.where(holding_type: params[:holding_type]) if params[:holding_type].present?
     @holdings = @holdings.where(investment_instrument: params[:investment_instrument]) if params[:investment_instrument].present?
     @holdings = @holdings.limit params[:limit] if params[:limit]

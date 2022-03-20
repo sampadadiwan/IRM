@@ -32,6 +32,7 @@ class Investment < ApplicationRecord
   include Trackable
 
   encrypts :investment_type
+  has_rich_text :notes
 
   validates :investment_instrument, :quantity, :price, presence: true
 

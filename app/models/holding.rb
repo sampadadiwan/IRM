@@ -21,6 +21,7 @@ class Holding < ApplicationRecord
 
   belongs_to :user, optional: true
   belongs_to :entity
+  belongs_to :funding_round
   belongs_to :investor
   belongs_to :investment, optional: true
   counter_culture :investment, column_name: proc { |h| INVESTMENT_FOR.include?(h.holding_type) ? 'quantity' : nil }, delta_column: 'quantity'
@@ -40,7 +41,7 @@ class Holding < ApplicationRecord
   end
 
   def update_investment
-    self.investment = entity.investments.where(employee_holdings: true,
+    self.investment = entity.investments.where(employee_holdings: true, funding_round_id: funding_round.id,
                                                investment_instrument: investment_instrument,
                                                category: holding_type).first
     if investment.nil?
@@ -51,7 +52,8 @@ class Holding < ApplicationRecord
                                            category: holding_type, investee_entity_id: entity.id,
                                            investor_id: employee_investor.id, employee_holdings: true,
                                            quantity: 0, price_cents: price_cents,
-                                           currency: entity.currency, scenario: entity.actual_scenario)
+                                           currency: entity.currency, funding_round: funding_round,
+                                           scenario: entity.actual_scenario, notes: "Holdings Investment")
     end
   end
 

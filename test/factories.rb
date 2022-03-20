@@ -17,7 +17,7 @@ FactoryBot.define do
   end
 
   factory :funding_round do
-    name { "Series A,Series B,Series C".split(",")[rand(3)] }
+    name { "Series A,Series B,Series C,Series D,Series E, Series F".split(",")[rand(6)] + " - " + rand(5).to_s }
     total_amount_cents { rand(5..10) * 1000000 }
     pre_money_valuation_cents { rand(5..10) * 1000000 }
     entity { Entity.all.sample }

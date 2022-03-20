@@ -15,7 +15,7 @@
           Funding Round
         </td>
         <td>
-          <%= @aggregate_investment.funding_round.name %>
+          <%= link_to @aggregate_investment.funding_round.name, @aggregate_investment.funding_round %>
         </td>    
       </tr>
           <tr>
@@ -23,7 +23,7 @@
           Shareholder
         </td>
         <td>
-          <%= @aggregate_investment.shareholder %>
+          <%= @aggregate_investment.investor.category %>
         </td>    
       </tr>
           <tr>
@@ -31,7 +31,7 @@
           Investor
         </td>
         <td>
-          <%= @aggregate_investment.investor.investor_name %>
+          <%= link_to @aggregate_investment.investor.investor_name, @aggregate_investment.investor %>
         </td>    
       </tr>
           <tr>
