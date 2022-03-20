@@ -63,7 +63,7 @@ class InvestmentDashboard < Administrate::BaseDashboard
   # a hash that defines filters that can be used while searching via the search
   # field of the dashboard.
   #
-  # For example to add an option to search for open resources by typing "open:"
+  # For example to add an options to search for open resources by typing "open:"
   # in the search field:
   #
   #   COLLECTION_FILTERS = {

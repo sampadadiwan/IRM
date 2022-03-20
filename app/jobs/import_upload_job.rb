@@ -83,13 +83,25 @@ class ImportUploadJob < ApplicationJob
       Rails.logger.debug ia.errors.full_messsages if ia.errors.present?
     end
 
-    # Create the Holding
+    fr = funding_round(user_data, import_upload)
     holding = Holding.new(user: user, investor: investor, holding_type: user_data["Founder or Employee"],
                           entity_id: import_upload.owner_id, quantity: user_data["Quantity"],
                           price_cents: user_data["Price"].to_f * 100,
-                          investment_instrument: user_data["Instrument"])
+                          investment_instrument: user_data["Instrument"],
+                          funding_round: fr)
 
     holding.save!
+  end
+
+  def funding_round(user_data, import_upload)
+    # Create the Holding
+    fr = FundingRound.where(entity_id: import_upload.owner_id, name: user_data["Funding Round"]).first
+    fr ||= FundingRound.create(name: user_data["Funding Round"].strip,
+                               entity_id: import_upload.owner_id,
+                               currency: import_upload.owner.currency,
+                               status: "Open")
+
+    fr
   end
 
   def save_investor_access(user_data, import_upload)

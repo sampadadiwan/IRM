@@ -39,6 +39,17 @@ class Investment < ApplicationRecord
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
+  scope :prospective, -> { where(investor_type: "Prospective") }
+  scope :shareholders, -> { where(investor_type: "Shareholder") }
+  scope :debt, -> { where(investment_instrument: "Debt") }
+  scope :not_debt, -> { where("investment_instrument <> 'Debt'") }
+  scope :equity, -> { where(investment_instrument: "Equity") }
+  scope :preferred, -> { where(investment_instrument: "Preferred") }
+  scope :options, -> { where(investment_instrument: "Options") }
+  scope :equity_or_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
+  scope :options_or_esop, -> { where(investment_instrument: %w[ESOP Options]) }
+  scope :debt, -> { where(investment_instrument: "Debt") }
+
   # Investments which belong to the Actual scenario are the real ones
   # All others are imaginary scenarios for planning and dont add to the real
   belongs_to :scenario
@@ -46,10 +57,21 @@ class Investment < ApplicationRecord
   belongs_to :investor
   belongs_to :funding_round, optional: true
   counter_culture :funding_round, column_name: proc { |i| i.scenario.actual? ? 'amount_raised_cents' : nil }, delta_column: 'amount_cents'
-  counter_culture %i[funding_round entity], column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Option].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil }, delta_column: 'quantity'
+  counter_culture %i[funding_round entity], column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Options].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil }, delta_column: 'quantity'
+
+  before_save :update_amount
+  before_create :create_aggregate_investment,
+                if: proc { |i| %w[Equity Preferred Options].include? i.investment_instrument }
+  counter_culture :aggregate_investment,
+                  column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Options].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
+                  column_names: {
+                    Investment.equity => :equity,
+                    Investment.preferred => :preferred,
+                    Investment.options => :options
+                  },
+                  delta_column: 'quantity'
 
   belongs_to :aggregate_investment, optional: true
-  counter_culture :aggregate_investment, column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Option].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil }, delta_column: 'quantity'
 
   delegate :investor_entity_id, to: :investor
   belongs_to :investee_entity, class_name: "Entity"
@@ -69,15 +91,6 @@ class Investment < ApplicationRecord
   # "Lead Investor,Co-Investor,Founder,Individual,Employee"
   INVESTOR_CATEGORIES = ENV["INVESTOR_CATEGORIES"].split(",")
 
-  scope :prospective, -> { where(investor_type: "Prospective") }
-  scope :shareholders, -> { where(investor_type: "Shareholder") }
-  scope :debt, -> { where(investment_instrument: "Debt") }
-  scope :not_debt, -> { where("investment_instrument <> 'Debt'") }
-  scope :equity, -> { where(investment_instrument: "Equity") }
-  scope :equity_or_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
-  scope :options_or_esop, -> { where(investment_instrument: %w[ESOP Option]) }
-  scope :debt, -> { where(investment_instrument: "Debt") }
-
   def self.INVESTOR_CATEGORIES(entity = nil)
     entity && entity.investor_categories.present? ? entity.investor_categories.split(",").map(&:strip) : INVESTOR_CATEGORIES
   end
@@ -90,21 +103,18 @@ class Investment < ApplicationRecord
     investor.investor_name
   end
 
-  before_save :update_amount
   before_create :update_employee_holdings
   def update_employee_holdings
     self.employee_holdings = true if investment_type == "Employee Holdings"
   end
 
-  before_create :create_aggregate_investment,
-                if: proc { |i| %w[Equity Preferred Option].include? i.investment_instrument }
   def create_aggregate_investment
     ai = AggregateInvestment.where(investor_id: investor_id,
                                    entity_id: investee_entity_id,
                                    funding_round_id: funding_round_id).first
-    self.aggregate_investment = ai.presence || AggregateInvestment.create!(investor_id: investor_id,
-                                                                           entity_id: investee_entity_id,
-                                                                           funding_round_id: funding_round_id)
+    self.aggregate_investment = ai.presence || AggregateInvestment.create(investor_id: investor_id,
+                                                                          entity_id: investee_entity_id,
+                                                                          funding_round_id: funding_round_id)
   end
 
   def update_amount
@@ -119,6 +129,7 @@ class Investment < ApplicationRecord
     self.currency = investee_entity.currency
     self.units = investee_entity.units
     self.investment_type = funding_round.name if funding_round
+    self.investment_instrument = investment_instrument.strip
   end
 
   after_destroy :destroy_investor_holdings, if: proc { |i| i.scenario.actual? }

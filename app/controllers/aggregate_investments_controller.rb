@@ -68,6 +68,6 @@ class AggregateInvestmentsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def aggregate_investment_params
     params.require(:aggregate_investment).permit(:entity_id, :funding_round_id, :shareholder,
-                                                 :investor_id, :equity, :preferred, :option, :percentage, :full_diluted_percentage)
+                                                 :investor_id, :equity, :preferred, :options, :percentage, :full_diluted_percentage)
   end
 end

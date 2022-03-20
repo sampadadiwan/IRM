@@ -23,18 +23,28 @@ class Holding < ApplicationRecord
   belongs_to :entity
   belongs_to :funding_round
   belongs_to :investor
-  belongs_to :investment, optional: true
-  counter_culture :investment, column_name: proc { |h| INVESTMENT_FOR.include?(h.holding_type) ? 'quantity' : nil }, delta_column: 'quantity'
-  counter_culture :investment, column_name: proc { |h| INVESTMENT_FOR.include?(h.holding_type) ? 'amount_cents' : nil }, delta_column: 'value_cents'
+  has_many :offers, dependent: :destroy
+
+  # Only update the investment if its coming from an employee of a holding company
+  before_validation :update_investment, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
+  before_save :update_value
+
+  belongs_to :investment
+  has_one :aggregated_investment, through: :investment
+
+  counter_culture :investment,
+                  column_name: proc { |h| INVESTMENT_FOR.include?(h.holding_type) ? 'quantity' : nil },
+                  delta_column: 'quantity'
+  counter_culture :investment,
+                  column_name: proc { |h| INVESTMENT_FOR.include?(h.holding_type) ? 'amount_cents' : nil },
+                  delta_column: 'value_cents'
 
   monetize :price_cents, :value_cents, with_currency: ->(i) { i.entity.currency }
 
   validates :quantity, :holding_type, presence: true
 
-  # Only update the investment if its coming from an employee of a holding company
-  before_save :update_investment, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
-  before_save :update_value
-  after_save ->(holding) { holding.investment.update_percentage_holdings }, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
+  after_save ->(_holding) { HoldingUpdateJob.perform_later(id) },
+             if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
 
   def update_value
     self.value_cents = quantity * price_cents
@@ -47,13 +57,14 @@ class Holding < ApplicationRecord
     if investment.nil?
       # Rails.logger.debug { "Updating investment for #{to_json}" }
       employee_investor = Investor.for(user, entity).first
-      self.investment = Investment.create!(investment_type: "#{holding_type} Holdings",
-                                           investment_instrument: investment_instrument,
-                                           category: holding_type, investee_entity_id: entity.id,
-                                           investor_id: employee_investor.id, employee_holdings: true,
-                                           quantity: 0, price_cents: price_cents,
-                                           currency: entity.currency, funding_round: funding_round,
-                                           scenario: entity.actual_scenario, notes: "Holdings Investment")
+      self.investment = Investment.create(investment_type: "#{holding_type} Holdings",
+                                          investment_instrument: investment_instrument,
+                                          category: holding_type, investee_entity_id: entity.id,
+                                          investor_id: employee_investor.id, employee_holdings: true,
+                                          quantity: 0, price_cents: price_cents,
+                                          currency: entity.currency, funding_round: funding_round,
+                                          scenario: entity.actual_scenario, notes: "Holdings Investment")
+
     end
   end
 

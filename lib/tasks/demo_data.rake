@@ -195,12 +195,19 @@ namespace :irm do
         InvestorAccess.create!(investor:investor, user: user, email: user.email, 
           approved: false, entity_id: investor.investee_entity_id)
 
+
+        funding_round = investor.investee_entity.funding_rounds.sample
+
         Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
             quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000,
-            investment_instrument: ["Equity", "Preferred", "Option"][rand(3)], 
-            holding_type: investor.category, funding_round: investor.investee_entity.funding_rounds.sample)
+            investment_instrument: ["Equity", "Preferred", "Options"][rand(3)], 
+            holding_type: investor.category, funding_round: funding_round)
       end
     end
+
+    # This is a bug - a holdings Investment does not update the aggregate_investment
+    # So manually fix it
+    Investment.counter_culture_fix_counts :only=>:aggregate_investment, verbose: true
   rescue Exception => e
     puts e.backtrace.join("\n")
     raise e
