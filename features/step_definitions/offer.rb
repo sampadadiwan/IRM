@@ -14,7 +14,8 @@
   
   Given('there is a holding {string} for each employee investor') do |args|
     @investor_entity.employees.each do |emp|
-        holding = FactoryBot.build(:holding, user: emp, entity: @entity, investor_id: @entity.investors.first.id)
+        holding = FactoryBot.build(:holding, user: emp, entity: @entity, 
+                                    funding_round: @funding_round, investor_id: @entity.investors.first.id)
         key_values(holding, args)
         holding.save!
     end

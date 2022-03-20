@@ -85,7 +85,9 @@ Then('I should see the investment details') do
 end
 
 Given('given there is a investment {string} for the entity') do |arg1|
-  @investment = FactoryBot.build(:investment, investor: @investor, investee_entity: @entity)
+
+  @funding_round ||= FactoryBot.create(:funding_round, entity: @entity)
+  @investment = FactoryBot.build(:investment, investor: @investor, investee_entity: @entity, funding_round: @funding_round)
   @investment.currency = @entity.currency
   @investment.scenario = @investment.actual_scenario
   key_values(@investment, arg1)
@@ -151,6 +153,7 @@ Given('Given I create a holding for each employee with quantity {string}') do |a
     fill_in('holding_quantity', with: @holding_quantity)
     fill_in('holding_price', with: 1000*emp.user_id)
     select("Equity", from: "holding_investment_instrument")
+    select(@funding_round.name, from: "holding_funding_round_id")
     # select("Employee", from: "holding_holding_type")
 
     click_on("Save")
@@ -175,12 +178,14 @@ Then('There should be a corresponding holdings created for each employee') do
 end
 
 Then('There should be a corresponding investment created') do
-  @holding_investment = Investment.first
+  @holding_investment = Investment.last
   @holding_investment.investee_entity_id.should == @entity.id
   @holding_investment.investor_entity_id.should == @investor_entity.id
   @holding_investment.investment_instrument.should == "Equity"
   @holding_investment.quantity.should == Holding.all.sum(:quantity)
-  @holding_investment.investment_type.should == "Employee Holdings"
+  @holding_investment.category.should == "Employee"
+  @holding_investment.investment_type.should == @funding_round.name
+  @holding_investment.funding_round.id.should == @funding_round.id
 end
 
 Then('Investments is updated with the holdings') do
@@ -190,6 +195,13 @@ Then('Investments is updated with the holdings') do
     h.investment.price_cents.should == h.investment.holdings.sum(:value_cents) / h.investment.holdings.sum(:quantity)
   end
 end
+
+Given('there is a FundingRound {string}') do |args|
+  @funding_round = FactoryBot.build(:funding_round, entity: @entity)
+  key_values(@funding_round, args)
+  @funding_round.save
+end
+
 
 
 

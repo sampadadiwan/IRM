@@ -31,7 +31,7 @@
 class Investment < ApplicationRecord
   include Trackable
 
-  encrypts :investment_type
+  # encrypts :investment_type
   has_rich_text :notes
 
   validates :investment_instrument, :quantity, :price, presence: true
@@ -55,7 +55,7 @@ class Investment < ApplicationRecord
   belongs_to :scenario
 
   belongs_to :investor
-  belongs_to :funding_round, optional: true
+  belongs_to :funding_round
   counter_culture :funding_round, column_name: proc { |i| i.scenario.actual? ? 'amount_raised_cents' : nil }, delta_column: 'amount_cents'
   counter_culture %i[funding_round entity], column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Options].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil }, delta_column: 'quantity'
 
