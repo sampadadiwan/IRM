@@ -61,19 +61,18 @@ class Investment < ApplicationRecord
 
   belongs_to :investor
   belongs_to :funding_round
-  counter_culture :funding_round, column_name: proc { |i| i.scenario.actual? ? 'amount_raised_cents' : nil }, delta_column: 'amount_cents'
-  counter_culture %i[funding_round entity], column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Options].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil }, delta_column: 'quantity'
+  counter_culture :funding_round,
+                  column_name: proc { |i| i.scenario.actual? ? 'amount_raised_cents' : nil },
+                  delta_column: 'amount_cents'
+  counter_culture %i[funding_round entity],
+                  column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Options].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
+                  delta_column: 'quantity'
 
   before_save :update_amount
-  before_create :create_aggregate_investment,
-                if: proc { |i| %w[Equity Preferred Options].include? i.investment_instrument }
+  before_save :update_aggregate_investment,
+              if: proc { |i| %w[Equity Preferred Options].include? i.investment_instrument }
   counter_culture :aggregate_investment,
-                  column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Options].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
-                  column_names: {
-                    Investment.equity => :equity,
-                    Investment.preferred => :preferred,
-                    Investment.options => :options
-                  },
+                  column_name: proc { |i| %w[Equity Preferred Options].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
                   delta_column: 'quantity'
 
   belongs_to :aggregate_investment, optional: true
@@ -113,13 +112,16 @@ class Investment < ApplicationRecord
     self.employee_holdings = true if investment_type == "Employee Holdings"
   end
 
-  def create_aggregate_investment
+  def update_aggregate_investment
     ai = AggregateInvestment.where(investor_id: investor_id,
                                    entity_id: investee_entity_id,
-                                   funding_round_id: funding_round_id).first
+                                   funding_round_id: funding_round_id,
+                                   scenario_id: scenario_id).first
     self.aggregate_investment = ai.presence || AggregateInvestment.create(investor_id: investor_id,
                                                                           entity_id: investee_entity_id,
-                                                                          funding_round_id: funding_round_id)
+                                                                          funding_round_id: funding_round_id,
+                                                                          scenario_id: scenario_id)
+    aggregate_investment.update_percentage_holdings
   end
 
   def update_amount

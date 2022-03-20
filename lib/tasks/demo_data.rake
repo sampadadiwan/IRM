@@ -176,7 +176,7 @@ namespace :irm do
       end
     end
 
-    AggregateInvestment.all.each.map(&:update_percentage_holdings)
+    # AggregateInvestment.all.each.map(&:update_percentage_holdings)
     
   rescue Exception => e
     puts e.backtrace.join("\n")

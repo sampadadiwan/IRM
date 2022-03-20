@@ -2,6 +2,12 @@
 
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Aggregate Investments</h1>
+    
+    <span>
+      <%= render "investments/scenarios_form"  %>
+      <%= link_to "Scenarios", scenarios_path, {class: "btn btn-primary"} %>
+    </span>
+
   </div>
 
   <div class="table-responsive" data-controller="datatable">

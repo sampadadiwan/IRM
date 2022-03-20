@@ -47,6 +47,10 @@ class Holding < ApplicationRecord
                   column_name: proc { |h| INVESTMENT_FOR.include?(h.holding_type) ? 'amount_cents' : nil },
                   delta_column: 'value_cents'
 
+  counter_culture %i[investment funding_round],
+                  column_name: proc { |h| h.investment.scenario.actual? && INVESTMENT_FOR.include?(h.holding_type) ? 'amount_raised_cents' : nil },
+                  delta_column: 'value_cents'
+
   monetize :price_cents, :value_cents, with_currency: ->(i) { i.entity.currency }
 
   validates :quantity, :holding_type, presence: true

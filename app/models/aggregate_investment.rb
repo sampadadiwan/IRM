@@ -3,6 +3,10 @@ class AggregateInvestment < ApplicationRecord
   belongs_to :funding_round
   belongs_to :investor
 
+  # Investments which belong to the Actual scenario are the real ones
+  # All others are imaginary scenarios for planning and dont add to the real
+  belongs_to :scenario
+
   def update_percentage_holdings
     entity.aggregate_investments.each do |ai|
       eq = (entity.equity + entity.preferred)
