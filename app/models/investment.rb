@@ -50,6 +50,11 @@ class Investment < ApplicationRecord
   scope :options_or_esop, -> { where(investment_instrument: %w[ESOP Options]) }
   scope :debt, -> { where(investment_instrument: "Debt") }
 
+  scope :for, lambda { |holding|
+                where(employee_holdings: true, funding_round_id: holding.funding_round_id,
+                      investment_instrument: holding.investment_instrument,
+                      category: holding.holding_type)
+              }
   # Investments which belong to the Actual scenario are the real ones
   # All others are imaginary scenarios for planning and dont add to the real
   belongs_to :scenario

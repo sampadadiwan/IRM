@@ -207,7 +207,7 @@ namespace :irm do
 
     # This is a bug - a holdings Investment does not update the aggregate_investment
     # So manually fix it
-    Investment.counter_culture_fix_counts :only=>:aggregate_investment, verbose: true
+    # Investment.counter_culture_fix_counts :only=>:aggregate_investment, verbose: true
   rescue Exception => e
     puts e.backtrace.join("\n")
     raise e

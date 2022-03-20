@@ -10,6 +10,10 @@
         <td class=""></td>
     <% end %>
 <% end %>
+
+<td>
+    <%= investment.category %>
+</td>
 <td>
     <%= investment.funding_round ? link_to(investment.investment_type, investment.funding_round) : investment.investment_type %>
 </td>  

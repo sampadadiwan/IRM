@@ -26,15 +26,23 @@ class Holding < ApplicationRecord
   has_many :offers, dependent: :destroy
 
   # Only update the investment if its coming from an employee of a holding company
-  before_validation :update_investment, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
+  before_validation :setup_investment, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
   before_save :update_value
 
   belongs_to :investment
   has_one :aggregated_investment, through: :investment
 
+  # Add the quantity to the investment
   counter_culture :investment,
                   column_name: proc { |h| INVESTMENT_FOR.include?(h.holding_type) ? 'quantity' : nil },
                   delta_column: 'quantity'
+
+  # Add the quantity to the aggregate_investment, counter culture does not
+  # automatically update aggregate_investment even though the investment is updated
+  counter_culture %i[investment aggregate_investment],
+                  column_name: proc { |h| %w[Equity Preferred Options].include?(h.investment_instrument) ? h.investment_instrument.downcase : nil },
+                  delta_column: 'quantity'
+
   counter_culture :investment,
                   column_name: proc { |h| INVESTMENT_FOR.include?(h.holding_type) ? 'amount_cents' : nil },
                   delta_column: 'value_cents'
@@ -50,10 +58,9 @@ class Holding < ApplicationRecord
     self.value_cents = quantity * price_cents
   end
 
-  def update_investment
-    self.investment = entity.investments.where(employee_holdings: true, funding_round_id: funding_round.id,
-                                               investment_instrument: investment_instrument,
-                                               category: holding_type).first
+  def setup_investment
+    self.investment = Investment.for(self).first
+
     if investment.nil?
       # Rails.logger.debug { "Updating investment for #{to_json}" }
       employee_investor = Investor.for(user, entity).first
@@ -66,6 +73,8 @@ class Holding < ApplicationRecord
                                           scenario: entity.actual_scenario, notes: "Holdings Investment")
 
     end
+
+    investment
   end
 
   def active_secondary_sale

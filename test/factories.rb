@@ -163,14 +163,14 @@ FactoryBot.define do
   factory :investor do
     investor_entity_id { Entity.vcs.sample.id }
     investee_entity_id { Entity.startups.sample.id }
-    category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
+    category { ["Lead Investor", "Co-Investor"][rand(2)] }
   end
 
   factory :investment do
     # investee_entity_id { Entity.startups.sample.id }
     # investor { Investor.where(investee_entity_id: investee_entity_id).all.sample }
     investment_instrument { Investment::INSTRUMENT_TYPES[rand(Investment::INSTRUMENT_TYPES.length)] }
-    category { Investment::INVESTOR_CATEGORIES[rand(Investment::INVESTOR_CATEGORIES.length)] }
+    category { ["Lead Investor", "Co-Investor"][rand(2)] }
     quantity { (rand(3..10) * 10000) }
     price { rand(3..10) * 1000}
 
