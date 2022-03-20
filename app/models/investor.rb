@@ -36,6 +36,7 @@ class Investor < ApplicationRecord
   has_many :deals, through: :deal_investors
   has_many :holdings, dependent: :destroy
   has_many :notes, dependent: :destroy
+  has_many :aggregate_investments, dependent: :destroy
 
   delegate :name, to: :investee_entity, prefix: :investee
   validates :category, presence: true

@@ -1,0 +1,61 @@
+<%= render "/layouts/alerts" %>
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Aggregate Investments</h1>
+  </div>
+
+  <div class="table-responsive" data-controller="datatable">
+
+    <table id="aggregate_investments" class="table table-bordered dataTable jqDataTable">
+
+      <thead>
+        <tr>
+          <th>
+            Entity
+          </th>
+          <th>
+            Funding Round
+          </th>
+          <th>
+            Shareholder
+          </th>
+          <th>
+            Investor
+          </th>
+          <th>
+            Equity
+          </th>
+          <th>
+            Preferred
+          </th>
+          <th>
+            Total
+          </th>
+
+          <th>
+            Percentage
+          </th>
+
+          <th>
+            Options
+          </th>
+          <th>
+            Full Diluted
+          </th>
+          <th>
+            Full Diluted Percentage
+          </th>
+
+          <th>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @aggregate_investments.each do |aggregate_investment| %>
+          <%= render aggregate_investment %>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :aggregate_investments
   resources :scenarios
   resources :funding_rounds
   resources :payments

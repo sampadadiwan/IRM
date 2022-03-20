@@ -46,12 +46,12 @@ class Holding < ApplicationRecord
     if investment.nil?
       # Rails.logger.debug { "Updating investment for #{to_json}" }
       employee_investor = Investor.for(user, entity).first
-      self.investment = Investment.create(investment_type: "#{holding_type} Holdings",
-                                          investment_instrument: investment_instrument,
-                                          category: holding_type, investee_entity_id: entity.id,
-                                          investor_id: employee_investor.id, employee_holdings: true,
-                                          quantity: 0, price_cents: price_cents,
-                                          currency: entity.currency, scenario: entity.actual_scenario)
+      self.investment = Investment.create!(investment_type: "#{holding_type} Holdings",
+                                           investment_instrument: investment_instrument,
+                                           category: holding_type, investee_entity_id: entity.id,
+                                           investor_id: employee_investor.id, employee_holdings: true,
+                                           quantity: 0, price_cents: price_cents,
+                                           currency: entity.currency, scenario: entity.actual_scenario)
     end
   end
 

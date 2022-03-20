@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_16_145429) do
+ActiveRecord::Schema.define(version: 2022_03_20_102819) do
 
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
@@ -124,6 +124,23 @@ ActiveRecord::Schema.define(version: 2022_03_16_145429) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "aggregate_investments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.bigint "funding_round_id", null: false
+    t.string "shareholder"
+    t.bigint "investor_id", null: false
+    t.integer "equity", default: 0
+    t.integer "preferred", default: 0
+    t.integer "option", default: 0
+    t.decimal "percentage", precision: 5, scale: 2, default: "0.0"
+    t.decimal "full_diluted_percentage", precision: 5, scale: 2, default: "0.0"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["entity_id"], name: "index_aggregate_investments_on_entity_id"
+    t.index ["funding_round_id"], name: "index_aggregate_investments_on_funding_round_id"
+    t.index ["investor_id"], name: "index_aggregate_investments_on_investor_id"
   end
 
   create_table "deal_activities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -284,6 +301,9 @@ ActiveRecord::Schema.define(version: 2022_03_16_145429) do
     t.integer "tasks_count"
     t.integer "pending_accesses_count"
     t.integer "active_deal_id"
+    t.integer "equity", default: 0
+    t.integer "preferred", default: 0
+    t.integer "option", default: 0
     t.index ["deleted_at"], name: "index_entities_on_deleted_at"
     t.index ["name"], name: "index_entities_on_name", unique: true
     t.index ["parent_entity_id"], name: "index_entities_on_parent_entity_id"
@@ -322,6 +342,9 @@ ActiveRecord::Schema.define(version: 2022_03_16_145429) do
     t.string "status", default: "Open"
     t.date "closed_on"
     t.datetime "deleted_at", precision: 6
+    t.integer "equity", default: 0
+    t.integer "preferred", default: 0
+    t.integer "option", default: 0
     t.index ["deleted_at"], name: "index_funding_rounds_on_deleted_at"
     t.index ["entity_id"], name: "index_funding_rounds_on_entity_id"
   end
@@ -338,7 +361,9 @@ ActiveRecord::Schema.define(version: 2022_03_16_145429) do
     t.string "holding_type", limit: 15, null: false
     t.bigint "investment_id", null: false
     t.decimal "price_cents", precision: 20, scale: 2, default: "0.0"
+    t.bigint "funding_round_id", null: false
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
+    t.index ["funding_round_id"], name: "index_holdings_on_funding_round_id"
     t.index ["investment_id"], name: "index_holdings_on_investment_id"
     t.index ["investor_id"], name: "index_holdings_on_investor_id"
     t.index ["user_id"], name: "index_holdings_on_user_id"
@@ -428,6 +453,8 @@ ActiveRecord::Schema.define(version: 2022_03_16_145429) do
     t.bigint "funding_round_id"
     t.decimal "liquidation_preference", precision: 4, scale: 2
     t.bigint "scenario_id", null: false
+    t.bigint "aggregate_investment_id"
+    t.index ["aggregate_investment_id"], name: "index_investments_on_aggregate_investment_id"
     t.index ["deleted_at"], name: "index_investments_on_deleted_at"
     t.index ["funding_round_id"], name: "index_investments_on_funding_round_id"
     t.index ["investee_entity_id"], name: "index_investments_on_investee_entity_id"
@@ -662,6 +689,9 @@ ActiveRecord::Schema.define(version: 2022_03_16_145429) do
   add_foreign_key "access_rights", "entities"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "aggregate_investments", "entities"
+  add_foreign_key "aggregate_investments", "funding_rounds"
+  add_foreign_key "aggregate_investments", "investors"
   add_foreign_key "deal_activities", "deal_investors"
   add_foreign_key "deal_activities", "deals"
   add_foreign_key "deal_docs", "deal_activities"
@@ -678,6 +708,7 @@ ActiveRecord::Schema.define(version: 2022_03_16_145429) do
   add_foreign_key "folders", "entities"
   add_foreign_key "funding_rounds", "entities"
   add_foreign_key "holdings", "entities"
+  add_foreign_key "holdings", "funding_rounds"
   add_foreign_key "holdings", "investments"
   add_foreign_key "holdings", "investors"
   add_foreign_key "holdings", "users"
@@ -685,6 +716,7 @@ ActiveRecord::Schema.define(version: 2022_03_16_145429) do
   add_foreign_key "import_uploads", "users"
   add_foreign_key "interests", "secondary_sales"
   add_foreign_key "interests", "users"
+  add_foreign_key "investments", "aggregate_investments"
   add_foreign_key "investments", "funding_rounds"
   add_foreign_key "investments", "scenarios"
   add_foreign_key "nudges", "entities"

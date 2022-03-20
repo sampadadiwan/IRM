@@ -45,9 +45,14 @@ class Investment < ApplicationRecord
   belongs_to :investor
   belongs_to :funding_round, optional: true
   counter_culture :funding_round, column_name: proc { |i| i.scenario.actual? ? 'amount_raised_cents' : nil }, delta_column: 'amount_cents'
+  counter_culture %i[funding_round entity], column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Option].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil }, delta_column: 'quantity'
+
+  belongs_to :aggregate_investment, optional: true
+  counter_culture :aggregate_investment, column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Option].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil }, delta_column: 'quantity'
 
   delegate :investor_entity_id, to: :investor
   belongs_to :investee_entity, class_name: "Entity"
+  delegate :investor_name, to: :investor
 
   has_many :holdings, dependent: :destroy
 
@@ -90,6 +95,17 @@ class Investment < ApplicationRecord
     self.employee_holdings = true if investment_type == "Employee Holdings"
   end
 
+  before_create :create_aggregate_investment,
+                if: proc { |i| %w[Equity Preferred Option].include? i.investment_instrument }
+  def create_aggregate_investment
+    ai = AggregateInvestment.where(investor_id: investor_id,
+                                   entity_id: investee_entity_id,
+                                   funding_round_id: funding_round_id).first
+    self.aggregate_investment = ai.presence || AggregateInvestment.create!(investor_id: investor_id,
+                                                                           entity_id: investee_entity_id,
+                                                                           funding_round_id: funding_round_id)
+  end
+
   def update_amount
     if investor.is_holdings_entity
       # This is because each holding has a quantity, price and a value
@@ -118,8 +134,11 @@ class Investment < ApplicationRecord
         holding.quantity = quantity
       else
         holding = Holding.new(entity_id: investee_entity_id, investor_id: investor_id,
-                              holding_type: "Investor", investment_instrument: investment_instrument,
-                              quantity: quantity, price: price, value: amount, investment: self)
+                              funding_round_id: funding_round_id,
+                              holding_type: "Investor",
+                              investment_instrument: investment_instrument,
+                              quantity: quantity, price: price,
+                              value: amount, investment: self)
       end
 
       holding.save!

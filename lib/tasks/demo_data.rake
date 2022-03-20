@@ -22,7 +22,7 @@ namespace :irm do
 
   desc "generates fake Entity for testing"
   task generateFakeEntities: :environment do
-    startup_names = ["Urban Company", "PayTm", "Apna", "RazorPay", "Delhivery"]
+    startup_names = ["Urban Company"]#, "PayTm", "Apna", "RazorPay", "Delhivery"]
     startup_names.each do |name|
       e = FactoryBot.create(:entity, entity_type: "Startup", name: name)
       puts "Entity #{e.name}"
@@ -132,7 +132,7 @@ namespace :irm do
   end
 
   desc "generates fake Investments for testing"
-  task generateFakeInvestments: :environment do
+  task generateFakeInvestors: :environment do
     Entity.startups.each do |e|
       i = nil
       round = FactoryBot.create(:funding_round, entity: e)
@@ -143,7 +143,22 @@ namespace :irm do
         inv.investor_entity.employees.each do |user|
           InvestorAccess.create!(investor:inv, user: user, email: user.email, approved: rand(2), entity_id: inv.investee_entity_id)
         end
+      end
+    end
+  rescue Exception => e
+    puts e.backtrace.join("\n")
+    raise e
+  end
 
+  desc "generates fake Investments for testing"
+  task generateFakeInvestments: :environment do
+    Entity.startups.each do |e|
+      i = nil
+      round = FactoryBot.create(:funding_round, entity: e)
+      scenario = Scenario.where(entity_id: e.id).first
+      Entity.vcs.each do |vc|
+        inv = e.investors.sample
+        
         round = FactoryBot.create(:funding_round, entity: e) if rand(10) < 2 
         i = FactoryBot.create(:investment, investee_entity: e, investor: inv, funding_round: round, scenario: scenario)
         puts "Investment #{i.to_json}"
@@ -176,8 +191,8 @@ namespace :irm do
 
         Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
             quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000,
-            investment_instrument: ["Equity", "Preferred", "ESOP"][rand(3)], 
-            holding_type: investor.category)
+            investment_instrument: ["Equity", "Preferred", "Option"][rand(3)], 
+            holding_type: investor.category, funding_round: investee_entity.funding_rounds.sample)
       end
     end
   rescue Exception => e
@@ -280,7 +295,7 @@ namespace :irm do
   end
 
 
-  task :generateAll => [:generateFakeEntities, :generateFakeInvestments, :generateFakeDeals, 
+  task :generateAll => [:generateFakeEntities, :generateFakeInvestors, :generateFakeInvestments, :generateFakeDeals, 
                         :generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes, 
                         :generateFakeOffers, :generateFakeBlankEntities] do
     puts "Generating all Fake Data"

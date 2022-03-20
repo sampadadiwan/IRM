@@ -1,4 +1,16 @@
 FactoryBot.define do
+  factory :aggregate_investment do
+    entity { nil }
+    funding_round { nil }
+    shareholder { "MyString" }
+    investor { nil }
+    equity { 1 }
+    preferred { 1 }
+    options { 1 }
+    percentage { 1.5 }
+    full_diluted_percentage { 1.5 }
+  end
+
   factory :scenario do
     name { "MyString" }
     entity { nil }

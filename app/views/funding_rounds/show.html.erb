@@ -52,6 +52,31 @@
         <%= @funding_round.entity.name %>
       </td>
     </tr>
+
+    <tr>
+      <td>
+        Equity
+      </td>
+      <td>
+        <%= custom_format_number @funding_round.equity, params %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Preferred
+      </td>
+      <td>
+        <%= custom_format_number @funding_round.preferred, params %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Option
+      </td>
+      <td>
+        <%= custom_format_number @funding_round.option, params %>
+      </td>
+    </tr>
     <tr>
       <td>
         Status

@@ -1,0 +1,43 @@
+
+
+<tr id="<%= dom_id aggregate_investment %>">
+<td>
+    <%= aggregate_investment.entity.name %>
+</td>  
+<td>
+    <%= aggregate_investment.funding_round.name %>
+</td>  
+<td>
+    <%= aggregate_investment.shareholder %>
+</td>  
+<td>
+    <%= aggregate_investment.investor.investor_name %>
+</td>  
+<td>
+    <%= custom_format_number aggregate_investment.equity, params %>
+</td>  
+<td>
+    <%= custom_format_number aggregate_investment.preferred, params %>
+</td>  
+<td>
+  <%= custom_format_number (aggregate_investment.equity + aggregate_investment.preferred) , params %>
+</td>
+<td>
+  <%= aggregate_investment.percentage %> %
+</td>  
+
+<td>
+    <%= custom_format_number aggregate_investment.option, params %>
+</td>  
+
+<td>
+  <%= custom_format_number (aggregate_investment.equity + aggregate_investment.preferred + aggregate_investment.option), params %>
+</td>  
+
+<td>
+    <%= aggregate_investment.full_diluted_percentage %> %
+</td>  
+<td>
+  <%= link_to "Show", aggregate_investment , {class: "btn btn-primary"}%>
+</td>
+</tr>

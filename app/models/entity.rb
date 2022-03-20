@@ -75,6 +75,9 @@ class Entity < ApplicationRecord
   has_many :investor_accesses, dependent: :destroy
   has_many :access_rights, dependent: :destroy
   has_many :investments, foreign_key: "investee_entity_id", dependent: :destroy
+  has_many :aggregate_investments, dependent: :destroy
+
+  monetize :total_investments, as: "total", with_model_currency: :currency
 
   TYPES = ["VC", "Startup", "Holding", "Advisor", "Family Office"].freeze
   FUNDING_UNITS = %w[Lakhs Crores].freeze
