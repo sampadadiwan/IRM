@@ -3,6 +3,7 @@ class Scenario < ApplicationRecord
 
   belongs_to :entity
   has_many :investments, dependent: :destroy
+  has_many :aggregate_investments, dependent: :destroy
 
   def actual?
     name == "Actual"

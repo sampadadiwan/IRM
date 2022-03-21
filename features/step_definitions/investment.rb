@@ -230,6 +230,8 @@ Then('the entity round must be updated with the investment') do
   @entity.equity.should == Investment.equity.sum(:quantity)
   @entity.preferred.should == Investment.preferred.sum(:quantity)
   @entity.options.should == Investment.options.sum(:quantity)
+  @entity.total_investments.should == Investment.sum(:amount_cents)
+  @entity.investments_count.should == Investment.count
 end
 
 
