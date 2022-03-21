@@ -167,7 +167,7 @@ namespace :irm do
         end
       end
 
-      i&.update_percentage_holdings
+      i&.update_percentage
     
       5.times do
         inv = e.investors.sample

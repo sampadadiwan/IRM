@@ -13,6 +13,7 @@ Scenario Outline: Create new investment
   And a holding should be created for the investor  
   And the funding round must be updated with the investment
   And the entity round must be updated with the investment  
+  And the aggregate investments must be created
 
   Examples:
   	|user	      |entity               |investor     |investment                                                                                                             |msg	|
@@ -33,6 +34,7 @@ Scenario Outline: Edit investment
   And a holding should be created for the investor  
   And the funding round must be updated with the investment
   And the entity round must be updated with the investment  
+  And the aggregate investments must be created
 
   Examples:
   	|user	      |entity               |investor     |investment                                                                                                             |msg	|
@@ -49,6 +51,7 @@ Scenario Outline: Create new holding
   Then There should be a corresponding investment created
   And the funding round must be updated with the investment
   And the entity round must be updated with the investment  
+  And the aggregate investments must be created
 
 
 Scenario Outline: Import holding
@@ -61,6 +64,7 @@ Scenario Outline: Import holding
   And Investments is updated with the holdings 
   And the funding round must be updated with the investment
   And the entity round must be updated with the investment  
+  And the aggregate investments must be created
 
 
 Scenario Outline: Investments update funding round and entity
