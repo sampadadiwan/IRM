@@ -5,14 +5,15 @@ Given('I am at the investments page') do
 end
 
 Given('I create an investment {string}') do |arg1|
-  @funding_round = FactoryBot.create(:funding_round, entity: @entity)
+  @funding_round ||= FactoryBot.create(:funding_round, entity: @entity)
   @investment = FactoryBot.build(:investment, investee_entity: @entity, 
                       investment_type: @funding_round.name, funding_round: @funding_round)
   @investment.currency = @entity.currency
   key_values(@investment, arg1)
-  puts @investment.investor.to_json
-  # puts "investor_name = " + @investment.investor.investor_name
+  @investment.investor ||= Investor.not_holding.sample
 
+  puts @investment.investor.to_json
+  
   click_on("New Investment")
 
   select(@investment.investor.investor_name, from: "investment_investor_id")
@@ -265,8 +266,39 @@ Given('the aggregate investments must be created') do
     agg.equity.should == investments.equity.sum(:quantity)
     agg.preferred.should == investments.preferred.sum(:quantity)
     agg.options.should == investments.options.sum(:quantity)
+
+    
   end
 end
+
+
+Then('when I see the aggregated investments') do
+  sleep(1)
+  visit(aggregate_investments_path)
+end
+
+Then('I must see one {string} aggregated investment') do |string|
+  AggregateInvestment.count.should == 1
+end
+
+Then('I must see the aggregated investment with {string}') do |args|
+  @aggregate_investment = AggregateInvestment.last
+  kv = {}
+  key_values(kv, args)
+  puts kv
+  within("#aggregate_investment_#{@aggregate_investment.id}") do
+    within(".equity") do
+      expect(page).to have_content(kv["Equity"])
+    end
+    within(".preferred") do
+      expect(page).to have_content(kv["Preferred"])
+    end
+    within(".options") do
+      expect(page).to have_content(kv["Options"])
+    end
+  end
+end
+
 
 
 ############################################################################

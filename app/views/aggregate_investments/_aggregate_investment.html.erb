@@ -11,10 +11,10 @@
 <td>
     <%= link_to aggregate_investment.investor.investor_name, aggregate_investment.investor %>
 </td>  
-<td>
+<td class="equity">
     <%= custom_format_number aggregate_investment.equity, params %>
 </td>  
-<td>
+<td class="preferred">
     <%= custom_format_number aggregate_investment.preferred, params %>
 </td>  
 <td>
@@ -24,7 +24,7 @@
   <%= aggregate_investment.percentage %> %
 </td>  
 
-<td>
+<td class="options">
     <%= custom_format_number aggregate_investment.options, params %>
 </td>  
 

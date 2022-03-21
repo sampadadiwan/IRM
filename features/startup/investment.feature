@@ -21,6 +21,18 @@ Scenario Outline: Create new investment
     |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Preferred;quantity=80;price_cents=2000;investor_id=3     |Investment was successfully created|
     |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Options;quantity=80;price_cents=2000;investor_id=3     |Investment was successfully created|
 
+
+Scenario Outline: Create new investment
+  Given Im logged in as a user "last_name=Tester" for an entity "entity_type=Startup"
+  Given there is an existing investor "name=Sequoia"
+  And I am at the investments page
+  And I create an investment "investment_instrument=Equity;quantity=100"
+  And I create an investment "investment_instrument=Preferred;quantity=200"
+  And I create an investment "investment_instrument=Options;quantity=300"
+  Then when I see the aggregated investments
+  Then I must see one "1" aggregated investment
+  And I must see the aggregated investment with "Equity=100;Preferred=200;Options=300"
+
 Scenario Outline: Edit investment
   Given Im logged in as a user "<user>" for an entity "<entity>"
   Given there is an existing investor "<investor>"
@@ -67,7 +79,7 @@ Scenario Outline: Import holding
   And the aggregate investments must be created
 
 
-Scenario Outline: Investments update funding round and entity
+Scenario Outline: Investments updates funding round and entity
   Given there is a user "first_name=Test" for an entity "entity_type=Startup"
   Given there is are "3" investors
   Given there is a FundingRound "name=Series A"
@@ -84,7 +96,7 @@ Scenario Outline: Investments update funding round and entity
     |investment_instrument=Options;quantity=50     | investment_instrument=Equity;quantity=300   |
 
 
-Scenario Outline: Investments update funding round and entity
+Scenario Outline: Investments updates funding round and entity
   Given there is a user "first_name=Test" for an entity "entity_type=Startup"
   Given there is are "1" investors
   Given there is a FundingRound "name=Series A"

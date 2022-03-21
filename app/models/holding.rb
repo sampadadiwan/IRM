@@ -33,6 +33,10 @@ class Holding < ApplicationRecord
   belongs_to :investment
   has_one :aggregated_investment, through: :investment
 
+  scope :equity, -> { where(investment_instrument: "Equity") }
+  scope :preferred, -> { where(investment_instrument: "Preferred") }
+  scope :options, -> { where(investment_instrument: "Options") }
+
   # Add the quantity to the investment
   counter_culture :investment,
                   column_name: proc { |h| h.call_counter_cache? ? 'quantity' : nil },
@@ -51,6 +55,10 @@ class Holding < ApplicationRecord
   counter_culture %i[investment investee_entity],
                   column_name: proc { |h| h.call_counter_cache? ? h.investment_instrument.downcase : nil },
                   delta_column: 'quantity'
+
+  counter_culture %i[investment investee_entity],
+                  column_name: proc { |h| h.call_counter_cache? ? 'total_investments' : nil },
+                  delta_column: 'value_cents'
 
   counter_culture :funding_round,
                   column_name: proc { |h| h.call_counter_cache? ? 'amount_raised_cents' : nil },
