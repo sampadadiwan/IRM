@@ -3,6 +3,6 @@ class HoldingUpdateJob < ApplicationJob
 
   def perform(holding_id)
     holding = Holding.find(holding_id)
-    holding.investment.update_percentage_holdings
+    holding.investment.update_percentage
   end
 end

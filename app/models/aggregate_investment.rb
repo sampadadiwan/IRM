@@ -7,7 +7,7 @@ class AggregateInvestment < ApplicationRecord
   # All others are imaginary scenarios for planning and dont add to the real
   belongs_to :scenario
 
-  def update_percentage_holdings
+  def update_percentage
     entity.aggregate_investments.each do |ai|
       eq = (entity.equity + entity.preferred)
       ai.percentage = 100.0 * (ai.equity + ai.preferred) / eq if eq.positive?

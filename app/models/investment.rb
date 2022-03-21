@@ -121,7 +121,6 @@ class Investment < ApplicationRecord
                                                                           entity_id: investee_entity_id,
                                                                           funding_round_id: funding_round_id,
                                                                           scenario_id: scenario_id)
-    aggregate_investment.update_percentage_holdings
   end
 
   def update_amount
@@ -167,8 +166,13 @@ class Investment < ApplicationRecord
     funding_round&.save
   end
 
-  # after_save :update_percentage_holdings
-  def update_percentage_holdings
+  after_save :update_percentage_job
+  def update_percentage_job
+    # This will call update_percentage in a background job
+    InvestmentPercentageHoldingJob.perform_later(id)
+  end
+
+  def update_percentage
     equity_investments = scenario.investments.where(investee_entity_id: investee_entity_id).equity_or_pref
     esop_investments = scenario.investments.where(investee_entity_id: investee_entity_id).options_or_esop
     equity_quantity = equity_investments.sum(:quantity)

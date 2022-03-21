@@ -3,6 +3,7 @@ class InvestmentPercentageHoldingJob < ApplicationJob
 
   def perform(investment_id)
     investment = Investment.find(investment_id)
-    investment.update_percentage_holdings
+    investment.update_percentage
+    investment.aggregate_investment.update_percentage
   end
 end
