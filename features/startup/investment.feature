@@ -11,11 +11,14 @@ Scenario Outline: Create new investment
   And I should see the investment details on the details page
   And I should see the investment in all investments page
   And a holding should be created for the investor  
+  And the funding round must be updated with the investment
+  And the entity round must be updated with the investment  
 
   Examples:
   	|user	      |entity               |investor     |investment                                                                                                             |msg	|
   	|  	        |entity_type=Startup  |name=Sequoia |category=Lead Investor;investment_instrument=Equity;quantity=100;price_cents=1000;investor_id=3     |Investment was successfully created|
     |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Preferred;quantity=80;price_cents=2000;investor_id=3     |Investment was successfully created|
+    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Options;quantity=80;price_cents=2000;investor_id=3     |Investment was successfully created|
 
 Scenario Outline: Edit investment
   Given Im logged in as a user "<user>" for an entity "<entity>"
@@ -28,6 +31,8 @@ Scenario Outline: Edit investment
   And when I edit the investment "quantity=200;price_cents=3000"
   And I should see the investment details on the details page
   And a holding should be created for the investor  
+  And the funding round must be updated with the investment
+  And the entity round must be updated with the investment  
 
   Examples:
   	|user	      |entity               |investor     |investment                                                                                                             |msg	|
@@ -42,6 +47,8 @@ Scenario Outline: Create new holding
   And Given I create a holding for each employee with quantity "100"
   Then There should be a corresponding holdings created for each employee
   Then There should be a corresponding investment created
+  And the funding round must be updated with the investment
+  And the entity round must be updated with the investment  
 
 
 Scenario Outline: Import holding
@@ -52,3 +59,38 @@ Scenario Outline: Import holding
   And There should be "4" users created for the holdings  
   And There should be "4" Investments created for the holdings
   And Investments is updated with the holdings 
+  And the funding round must be updated with the investment
+  And the entity round must be updated with the investment  
+
+
+Scenario Outline: Investments update funding round and entity
+  Given there is a user "first_name=Test" for an entity "entity_type=Startup"
+  Given there is are "3" investors
+  Given there is a FundingRound "name=Series A"
+  Given there are "4" investments "<investment>"
+  Given there is a FundingRound "name=Series A"
+  Given there are "4" investments "<inv2>"
+  And the funding rounds must be updated with the right investment
+  And the entity round must be updated with the investment  
+  And the aggregate investments must be created
+ Examples:
+  	|investment                                    | inv2                                           |
+  	|investment_instrument=Equity;quantity=100     | investment_instrument=Preferred;quantity=200   |
+    |investment_instrument=Preferred;quantity=80   | investment_instrument=Options;quantity=100   |
+    |investment_instrument=Options;quantity=50     | investment_instrument=Equity;quantity=300   |
+
+
+Scenario Outline: Investments update funding round and entity
+  Given there is a user "first_name=Test" for an entity "entity_type=Startup"
+  Given there is are "1" investors
+  Given there is a FundingRound "name=Series A"
+  Given there are "2" investments "<investment>"
+  Given there are "2" investments "<inv2>"
+  And the funding rounds must be updated with the right investment
+  And the entity round must be updated with the investment  
+  And the aggregate investments must be created
+ Examples:
+  	|investment                                    | inv2                                           |
+  	|investment_instrument=Equity;quantity=100     | investment_instrument=Preferred;quantity=200   |
+    |investment_instrument=Preferred;quantity=80   | investment_instrument=Options;quantity=100   |
+    |investment_instrument=Options;quantity=50     | investment_instrument=Equity;quantity=300   |

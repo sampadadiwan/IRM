@@ -30,7 +30,9 @@
 
 class Investment < ApplicationRecord
   include Trackable
+  include InvestmentScopes
 
+  EQUITY_LIKE = %w[Equity Preferred Options].freeze
   # encrypts :investment_type
   has_rich_text :notes
 
@@ -39,47 +41,36 @@ class Investment < ApplicationRecord
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
-  scope :prospective, -> { where(investor_type: "Prospective") }
-  scope :shareholders, -> { where(investor_type: "Shareholder") }
-  scope :debt, -> { where(investment_instrument: "Debt") }
-  scope :not_debt, -> { where("investment_instrument <> 'Debt'") }
-  scope :equity, -> { where(investment_instrument: "Equity") }
-  scope :preferred, -> { where(investment_instrument: "Preferred") }
-  scope :options, -> { where(investment_instrument: "Options") }
-  scope :equity_or_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
-  scope :options_or_esop, -> { where(investment_instrument: %w[ESOP Options]) }
-  scope :debt, -> { where(investment_instrument: "Debt") }
-
-  scope :for, lambda { |holding|
-                where(employee_holdings: true, funding_round_id: holding.funding_round_id,
-                      investment_instrument: holding.investment_instrument,
-                      category: holding.holding_type)
-              }
   # Investments which belong to the Actual scenario are the real ones
   # All others are imaginary scenarios for planning and dont add to the real
   belongs_to :scenario
 
   belongs_to :investor
+  delegate :investor_entity_id, to: :investor
+  delegate :investor_name, to: :investor
+
   belongs_to :funding_round
+
+  # Counter Cache for funding_round.amount_raised_cents
   counter_culture :funding_round,
                   column_name: proc { |i| i.scenario.actual? ? 'amount_raised_cents' : nil },
                   delta_column: 'amount_cents'
-  counter_culture %i[funding_round entity],
-                  column_name: proc { |i| i.scenario.actual? && %w[Equity Preferred Options].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
+  # Counter Cache for funding_round equity or preferred or options
+  counter_culture :funding_round,
+                  column_name: proc { |i| i.scenario.actual? && EQUITY_LIKE.include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
                   delta_column: 'quantity'
-
-  before_save :update_amount
-  before_save :update_aggregate_investment,
-              if: proc { |i| %w[Equity Preferred Options].include? i.investment_instrument }
-  counter_culture :aggregate_investment,
-                  column_name: proc { |i| %w[Equity Preferred Options].include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
+  # Counter Cache for entity equity or preferred or options
+  counter_culture %i[funding_round entity],
+                  column_name: proc { |i| i.scenario.actual? && EQUITY_LIKE.include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
                   delta_column: 'quantity'
 
   belongs_to :aggregate_investment, optional: true
+  counter_culture :aggregate_investment,
+                  column_name: proc { |i| EQUITY_LIKE.include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
+                  delta_column: 'quantity'
 
-  delegate :investor_entity_id, to: :investor
   belongs_to :investee_entity, class_name: "Entity"
-  delegate :investor_name, to: :investor
+  delegate :actual_scenario, to: :investee_entity
 
   has_many :holdings, dependent: :destroy
 
@@ -107,9 +98,27 @@ class Investment < ApplicationRecord
     investor.investor_name
   end
 
+  before_save :update_defaults
+  before_save :update_aggregate_investment,
+              if: proc { |i| %w[Equity Preferred Options].include? i.investment_instrument }
   before_create :update_employee_holdings
   def update_employee_holdings
     self.employee_holdings = true if investment_type == "Employee Holdings"
+  end
+
+  def update_defaults
+    if investor.is_holdings_entity
+      # This is because each holding has a quantity, price and a value
+      # The quantity and value is added to the investment
+      # So we compute the avg price
+      self.price = amount / quantity if quantity.positive?
+    else
+      self.amount = quantity * price
+    end
+    self.currency = investee_entity.currency
+    self.units = investee_entity.units
+    self.investment_type = funding_round.name
+    self.investment_instrument = investment_instrument.strip
   end
 
   def update_aggregate_investment
@@ -123,21 +132,6 @@ class Investment < ApplicationRecord
                                                                           scenario_id: scenario_id)
   end
 
-  def update_amount
-    if investor.is_holdings_entity
-      # This is because each holding has a quantity, price and a value
-      # The quantity and value is added to the investment
-      # So we compute the avg price
-      self.price = amount / quantity if quantity.positive?
-    else
-      self.amount = quantity * price
-    end
-    self.currency = investee_entity.currency
-    self.units = investee_entity.units
-    self.investment_type = funding_round.name if funding_round
-    self.investment_instrument = investment_instrument.strip
-  end
-
   after_destroy :destroy_investor_holdings, if: proc { |i| i.scenario.actual? }
   def destroy_investor_holdings
     holding = Holding.where(investor_id: investor_id, investment_instrument: investment_instrument).first
@@ -145,28 +139,32 @@ class Investment < ApplicationRecord
   end
 
   after_save :update_investor_holdings, if: proc { |i| i.scenario.actual? }
+  # For Actual Scenario, for Investors (Not Employees or Founders), we want to create a holding
+  # corresponding to this investment.
+  # There will be only one such Holding per investment
   def update_investor_holdings
-    if (investment_instrument == "Equity" || investment_instrument == "Preferred") && !investor.is_holdings_entity
-      holding = Holding.where(investor_id: investor_id, investment_instrument: investment_instrument).first
+    if EQUITY_LIKE.include?(investment_instrument) && !investor.is_holdings_entity
+      holding = holdings.first
       if holding
+        # Since there is only 1 holding per Investor Investment
+        # Just assign the quantityand price
         holding.quantity = quantity
+        holding.price = price
       else
-        holding = Holding.new(entity_id: investee_entity_id, investor_id: investor_id,
-                              funding_round_id: funding_round_id,
-                              holding_type: "Investor",
-                              investment_instrument: investment_instrument,
-                              quantity: quantity, price: price,
-                              value: amount, investment: self)
+        holding = holdings.build(entity_id: investee_entity_id, investor_id: investor_id,
+                                 funding_round_id: funding_round_id,
+                                 holding_type: "Investor",
+                                 investment_instrument: investment_instrument,
+                                 quantity: quantity, price: price, value: amount)
       end
 
       holding.save!
     else
+      # For Debt and other Non Equity - we dont need a holding
       Rails.logger.debug { "Not creating holdings for #{to_json}" }
     end
-    funding_round&.save
   end
 
-  after_save :update_percentage_job
   def update_percentage_job
     # This will call update_percentage in a background job
     InvestmentPercentageHoldingJob.perform_later(id)
@@ -231,6 +229,4 @@ class Investment < ApplicationRecord
 
     investments
   end
-
-  delegate :actual_scenario, to: :investee_entity
 end

@@ -203,6 +203,68 @@ Given('there is a FundingRound {string}') do |args|
 end
 
 
+Then('the funding round must be updated with the investment') do
+  sleep(2) #Allow job to run
+  @funding_round ||= FundingRound.last
+  puts @funding_round.reload.to_json
+  @funding_round.amount_raised_cents.should == Investment.all.sum(:amount_cents)
+  @funding_round.equity.should == Investment.equity.sum(:quantity)
+  @funding_round.preferred.should == Investment.preferred.sum(:quantity)
+  @funding_round.options.should == Investment.options.sum(:quantity)
+end
+
+
+Given('the funding rounds must be updated with the right investment') do
+  FundingRound.all.each do |funding_round|
+    puts funding_round.to_json
+    funding_round.amount_raised_cents.should == funding_round.investments.sum(:amount_cents)
+    funding_round.equity.should == funding_round.investments.equity.sum(:quantity)
+    funding_round.preferred.should == funding_round.investments.preferred.sum(:quantity)
+    funding_round.options.should == funding_round.investments.options.sum(:quantity)
+  end
+end
+
+
+Then('the entity round must be updated with the investment') do
+  puts @entity.reload.to_json
+  @entity.equity.should == Investment.equity.sum(:quantity)
+  @entity.preferred.should == Investment.preferred.sum(:quantity)
+  @entity.options.should == Investment.options.sum(:quantity)
+end
+
+
+Given('there is are {string} investors') do |count|
+  (1..count.to_i).each do |i|
+    vc = FactoryBot.create(:entity, entity_type: "VC")
+    inv = FactoryBot.create(:investor, investee_entity: @entity, investor_entity: vc)
+  end
+end
+
+Given('there are {string} investments {string}') do |count, args|
+  (1..count.to_i).each do 
+    i = FactoryBot.build(:investment, investee_entity: @entity, investor: Investor.not_holding.sample, 
+      funding_round: @funding_round, scenario: @entity.actual_scenario)
+    key_values(i, args)
+    i.save!
+    puts "\n####Investment Created####\n"
+    puts i.to_json
+  end
+end
+
+
+Given('the aggregate investments must be created') do
+  AggregateInvestment.all.each do |agg|
+    puts "\n####AggregateInvestment####\n"
+    puts agg.to_json
+    
+    agg.entity_id.should == @entity.id
+    investments = Investment.where(investor_id: agg.investor_id, scenario_id: agg.scenario_id, 
+                                    funding_round_id: agg.funding_round_id)
+    agg.equity.should == investments.equity.sum(:quantity)
+    agg.preferred.should == investments.preferred.sum(:quantity)
+    agg.options.should == investments.options.sum(:quantity)
+  end
+end
 
 
 ############################################################################
@@ -312,7 +374,7 @@ Given('Given I upload a holdings file') do
   fill_in('import_upload_name', with: "Test Upload")
   attach_file('import_upload_import_file', File.absolute_path('./public/sample_uploads/holdings.xlsx'))
   click_on("Save")
-  sleep(4)
+  sleep(5)
 end
 
 Then('There should be {string} holdings created') do |count|
