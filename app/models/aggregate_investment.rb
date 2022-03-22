@@ -2,6 +2,8 @@ class AggregateInvestment < ApplicationRecord
   belongs_to :entity
   delegate :actual_scenario, to: :entity
 
+  has_many :investments, dependent: :destroy
+
   belongs_to :investor
   delegate :investor_name, to: :investor
 

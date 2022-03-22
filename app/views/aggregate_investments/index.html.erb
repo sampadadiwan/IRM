@@ -27,7 +27,8 @@
       <%= link_to investments_path(charts: true), {class: "btn btn-success"} do %>
         <i class="fas fa-chart-line"></i> Graphs
       <% end %>
-
+    <% else %>
+      <%= link_to "Details View", investor_investments_investments_path(entity_id: @entity.id), {class: "btn btn-primary"} %>
     <% end %>
 
     </span>

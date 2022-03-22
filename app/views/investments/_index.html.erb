@@ -29,6 +29,9 @@
         <i class="fas fa-chart-line"></i> Graphs
       <% end %>
 
+    <% else %>
+      <%= link_to "Aggregate View", investor_investments_aggregate_investments_path(entity_id: entity.id), 
+                  {class: "btn btn-primary"} %>
     <% end %>
 
   <% end %>
