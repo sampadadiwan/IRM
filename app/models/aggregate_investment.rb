@@ -1,6 +1,5 @@
 class AggregateInvestment < ApplicationRecord
   belongs_to :entity
-  belongs_to :funding_round
   belongs_to :investor
 
   # Investments which belong to the Actual scenario are the real ones

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_20_172542) do
+ActiveRecord::Schema.define(version: 2022_03_22_035016) do
 
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
@@ -128,7 +128,6 @@ ActiveRecord::Schema.define(version: 2022_03_20_172542) do
 
   create_table "aggregate_investments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "entity_id", null: false
-    t.bigint "funding_round_id", null: false
     t.string "shareholder"
     t.bigint "investor_id", null: false
     t.integer "equity", default: 0
@@ -140,7 +139,6 @@ ActiveRecord::Schema.define(version: 2022_03_20_172542) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "scenario_id", null: false
     t.index ["entity_id"], name: "index_aggregate_investments_on_entity_id"
-    t.index ["funding_round_id"], name: "index_aggregate_investments_on_funding_round_id"
     t.index ["investor_id"], name: "index_aggregate_investments_on_investor_id"
     t.index ["scenario_id"], name: "index_aggregate_investments_on_scenario_id"
   end
@@ -692,7 +690,6 @@ ActiveRecord::Schema.define(version: 2022_03_20_172542) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aggregate_investments", "entities"
-  add_foreign_key "aggregate_investments", "funding_rounds"
   add_foreign_key "aggregate_investments", "investors"
   add_foreign_key "aggregate_investments", "scenarios"
   add_foreign_key "deal_activities", "deal_investors"

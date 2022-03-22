@@ -124,11 +124,9 @@ class Investment < ApplicationRecord
   def update_aggregate_investment
     ai = AggregateInvestment.where(investor_id: investor_id,
                                    entity_id: investee_entity_id,
-                                   funding_round_id: funding_round_id,
                                    scenario_id: scenario_id).first
     self.aggregate_investment = ai.presence || AggregateInvestment.create(investor_id: investor_id,
                                                                           entity_id: investee_entity_id,
-                                                                          funding_round_id: funding_round_id,
                                                                           scenario_id: scenario_id)
   end
 

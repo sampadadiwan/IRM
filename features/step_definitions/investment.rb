@@ -261,8 +261,9 @@ Given('the aggregate investments must be created') do
     puts agg.to_json
     
     agg.entity_id.should == @entity.id
-    investments = Investment.where(investor_id: agg.investor_id, scenario_id: agg.scenario_id, 
-                                    funding_round_id: agg.funding_round_id)
+    investments = Investment.where(investor_id: agg.investor_id, 
+                                   scenario_id: agg.scenario_id,
+                                   investee_entity_id: agg.entity_id)
     agg.equity.should == investments.equity.sum(:quantity)
     agg.preferred.should == investments.preferred.sum(:quantity)
     agg.options.should == investments.options.sum(:quantity)

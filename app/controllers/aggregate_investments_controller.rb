@@ -9,7 +9,7 @@ class AggregateInvestmentsController < ApplicationController
     scenario_id = helpers.current_scenario(@entity)
     @aggregate_investments = @aggregate_investments.where(scenario_id: scenario_id)
 
-    @aggregate_investments = @aggregate_investments.includes(:investor, :entity, :scenario, :funding_round)
+    @aggregate_investments = @aggregate_investments.includes(:investor, :entity, :scenario)
   end
 
   # GET /aggregate_investments/1 or /aggregate_investments/1.json
@@ -72,7 +72,7 @@ class AggregateInvestmentsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def aggregate_investment_params
-    params.require(:aggregate_investment).permit(:entity_id, :funding_round_id, :shareholder,
-                                                 :investor_id, :equity, :preferred, :options, :percentage, :full_diluted_percentage)
+    params.require(:aggregate_investment).permit(:entity_id, :shareholder, :investor_id, :equity, :preferred,
+                                                 :options, :percentage, :full_diluted_percentage)
   end
 end

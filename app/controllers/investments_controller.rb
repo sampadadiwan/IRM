@@ -11,7 +11,11 @@ class InvestmentsController < ApplicationController
     scenario_id = helpers.current_scenario(@entity)
 
     @investments = @investments.where(scenario_id: scenario_id)
-    @investments = @investments.order(initial_value: :desc)
+    @investments = @investments.where(investor_id: params[:investor_id]) if params[:investor_id]
+    @investments = @investments.where(funding_round_id: params[:funding_round_id]) if params[:funding_round_id]
+    @investments = @investments.where(investment_instrument: Investment::EQUITY_LIKE) if params[:equity_like]
+
+    @investments = @investments.order(id: :asc)
 
     respond_to do |format|
       format.xlsx do

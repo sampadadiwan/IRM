@@ -2,9 +2,11 @@
 
 <tr id="<%= dom_id aggregate_investment %>">
 
-<td>
-    <%= link_to aggregate_investment.funding_round.name, aggregate_investment.funding_round %>
-</td>  
+<td class="dt-control"  
+    data-entity="<%=aggregate_investment.entity_id%>"
+    data-investor="<%=aggregate_investment.investor_id%>">
+</td>
+
 <td>
     <%= aggregate_investment.investor.category %>
 </td>  
