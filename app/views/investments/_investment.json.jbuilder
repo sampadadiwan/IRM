@@ -6,6 +6,6 @@ json.url investment_url(investment, format: :json)
 json.category investment.investor.category
 json.investor_name investment.investor.investor_name
 json.funding_round investment.funding_round.name
-json.price money_to_currency investment.price, params
+json.price money_to_currency investment.price, params, true
 json.amount money_to_currency investment.price, params
 json.quantity custom_format_number investment.quantity, params
