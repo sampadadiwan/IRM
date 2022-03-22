@@ -35,7 +35,6 @@
         cloned = @scenario.aggregate_investments[i] 
         ai.investor_id.should == cloned.investor_id
         ai.entity_id.should == cloned.entity_id
-        ai.funding_round_id.should == cloned.funding_round_id
         ai.equity.should == cloned.equity
         ai.preferred.should == cloned.preferred
         ai.options.should == cloned.options
