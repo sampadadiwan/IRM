@@ -11,7 +11,9 @@ class PaymentsController < ApplicationController
 
   # GET /payments/new
   def new
-    @payment = Payment.new
+    @payment = Payment.new(payment_params)
+    @payment.entity_id = current_user.entity_id
+    @payment.user_id = current_user.id
     authorize @payment
   end
 
@@ -21,6 +23,8 @@ class PaymentsController < ApplicationController
   # POST /payments or /payments.json
   def create
     @payment = Payment.new(payment_params)
+    @payment.entity_id = current_user.entity_id
+    @payment.user_id = current_user.id
     authorize @payment
 
     respond_to do |format|
@@ -36,6 +40,8 @@ class PaymentsController < ApplicationController
 
   # PATCH/PUT /payments/1 or /payments/1.json
   def update
+    @payment.entity_id = current_user.entity_id
+    @payment.user_id = current_user.id
     respond_to do |format|
       if @payment.update(payment_params)
         format.html { redirect_to payment_url(@payment), notice: "Payment was successfully updated." }
@@ -67,6 +73,6 @@ class PaymentsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def payment_params
-    params.require(:payment).permit(:entity_id, :amount, :plan, :discount, :reference_number, :user_id)
+    params.require(:payment).permit(:amount, :plan, :discount, :reference_number)
   end
 end
