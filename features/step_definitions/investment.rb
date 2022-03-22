@@ -88,7 +88,10 @@ end
 Given('given there is a investment {string} for the entity') do |arg1|
 
   @funding_round ||= FactoryBot.create(:funding_round, entity: @entity)
-  @investment = FactoryBot.build(:investment, investor: @investor, investee_entity: @entity, funding_round: @funding_round)
+  @investment = FactoryBot.build(:investment, investor: @investor, 
+                                  investee_entity: @entity, 
+                                  funding_round: @funding_round,
+                                  investment_instrument: Investment::EQUITY_LIKE[rand(3)])
   @investment.currency = @entity.currency
   @investment.scenario = @investment.actual_scenario
   key_values(@investment, arg1)
@@ -102,9 +105,19 @@ Given('I should have access to the investment') do
 end
 
 
+Given('I should have access to the aggregate_investment') do
+  Pundit.policy(@user, @investment.aggregate_investment).show?.should == true
+end
+
+
 Given('another user has {string} access to the investment') do |arg|
   Pundit.policy(@another_user, @investment).show?.to_s.should == arg
 end
+
+Then('another user has {string} access to the aggregate_investment') do |arg|
+  Pundit.policy(@another_user, @investment.aggregate_investment).show?.to_s.should == arg
+end
+
 
 Given('investor has access right {string} in the investment') do |arg1|
   @access_right = AccessRight.new(owner: @entity, entity: @entity)
@@ -310,26 +323,32 @@ end
 
 
 Given('there are {string} exisiting investments {string} from my firm in startups') do |count, args|
+  @funding_round ||= FactoryBot.create(:funding_round, entity: @entity)
+
   (1..count.to_i).each do |i|
     @startup_entity = FactoryBot.create(:entity, entity_type: "Startup", name: "Startup #{i}")
     @investor = FactoryBot.create(:investor, investor_entity: @entity, investee_entity: @startup_entity)
     (1..count.to_i).each do 
-      @investment = FactoryBot.build(:investment, investee_entity: @startup_entity, investor: @investor)
+      @investment = FactoryBot.build(:investment, investee_entity: 
+          @startup_entity, investor: @investor, funding_round: @funding_round)
       @investment.scenario = @investment.actual_scenario
-      @investment.save
+      @investment.save!
     end
   end
 end
 
 
 Given('there are {string} exisiting investments {string} from another firm in startups') do |count, args|
+  @funding_round ||= FactoryBot.create(:funding_round, entity: @entity)
+
   @another_entity = FactoryBot.create(:entity, entity_type: "VC", name: "Another VC Firm")
   Entity.startups.each do |startup|
     @investor = FactoryBot.create(:investor, investor_entity: @another_entity, investee_entity: startup)
     (1..count.to_i).each do 
-      @investment = FactoryBot.build(:investment, investee_entity: startup, investor: @investor)
+      @investment = FactoryBot.build(:investment, investee_entity: startup, 
+                        investor: @investor, funding_round: @funding_round)
       @investment.scenario = @investment.actual_scenario
-      @investment.save
+      @investment.save!
     end
   end
 end
@@ -368,6 +387,8 @@ Then('I should be able to see the investments for each entity') do
     entity.investments.each do |inv|
       visit(investor_entities_entities_path)
       find("#investments_entity_#{entity.id}").click
+      click_on("Details View")
+      
       @investment = inv
       steps %(
         Then I should see the investment details   
@@ -384,6 +405,8 @@ Then('I should be able to see only my investments for each entity') do
     entity.investments.each do |inv|
       visit(investor_entities_entities_path)
       find("#investments_entity_#{entity.id}").click
+      click_on("Details View")
+
       @investment = inv
       if @investment.investor_entity_id == @entity.id
       steps %(

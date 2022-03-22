@@ -7,6 +7,7 @@ Scenario Outline: Access Investment employee
   And another entity is an investor "category=Lead Investor" in entity
   And given there is a investment "<investment>" for the entity 
   And I should have access to the investment
+  And I should have access to the aggregate_investment
 
   Examples:
   	|user	    |entity               |investment                     |
@@ -20,6 +21,7 @@ Scenario Outline: Access Investment as Other User
   And another entity is an investor "category=Lead Investor" in entity
   And given there is a investment "<investment>" for the entity 
   Then another user has "false" access to the investment
+  Then another user has "false" access to the aggregate_investment
 
   Examples:
   	|user	    |entity               |investment                     |
@@ -33,6 +35,7 @@ Scenario Outline: Access Investment as Investor without access
   And another entity is an investor "category=Lead Investor" in entity
   And given there is a investment "<investment>" for the entity 
   Then another user has "false" access to the investment
+  Then another user has "false" access to the aggregate_investment
 
   Examples:
   	|user	    |entity               |investment                     |
@@ -48,6 +51,7 @@ Scenario Outline: Access Investment as Investor with access
   And investor has access right "<access_right>" in the investment
   And another user has investor access "<investor_access>" in the investor
   And another user has "<should>" access to the investment 
+  And another user has "<should>" access to the aggregate_investment 
 
   Examples:
   	|should	    |entity               |investment   | access_right                                                         | investor_access |
@@ -67,6 +71,7 @@ Scenario Outline: Access Investment as Investor without investor access
   And given there is a investment "<investment>" for the entity 
   And investor has access right "<access_right>" in the investment
   And another user has "<should>" access to the investment 
+  And another user has "<should>" access to the aggregate_investment 
 
   Examples:
   	|should	    |entity               |investment   | access_right     |
@@ -81,6 +86,7 @@ Scenario Outline: Access Investment as Investor without access right
   And given there is a investment "<investment>" for the entity 
   And another user has investor access "<investor_access>" in the investor
   And another user has "<should>" access to the investment 
+  And another user has "<should>" access to the aggregate_investment 
 
   Examples:
   	|should	    |entity               |investment                     | investor_access     |
