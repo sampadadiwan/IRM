@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :aggregate_investments
+  resources :aggregate_investments do
+    get 'investor_investments', on: :collection
+  end
   resources :scenarios
   resources :funding_rounds
   resources :payments

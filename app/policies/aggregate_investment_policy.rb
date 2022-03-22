@@ -14,7 +14,13 @@ class AggregateInvestmentPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+    if user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+      true
+    else
+      user.entity.enable_investments &&
+        AggregateInvestment.for_investor(user, record.entity)
+                           .where("aggregate_investments.id=?", record.id).first.present?
+    end
   end
 
   def create?

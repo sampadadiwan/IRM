@@ -40,8 +40,10 @@
 
       <thead>
         <tr>
-         <th></th>
 
+          <% if current_user.entity_id == @entity.id %>
+            <th></th>
+          <% end %>
           <th>
             Category
           </th>

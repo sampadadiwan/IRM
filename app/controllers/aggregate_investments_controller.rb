@@ -1,5 +1,6 @@
 class AggregateInvestmentsController < ApplicationController
   before_action :set_aggregate_investment, only: %i[show edit update destroy]
+  after_action :verify_authorized, except: %i[index search investor_investments]
 
   # GET /aggregate_investments or /aggregate_investments.json
   def index
@@ -12,55 +13,20 @@ class AggregateInvestmentsController < ApplicationController
     @aggregate_investments = @aggregate_investments.includes(:investor, :entity, :scenario)
   end
 
+  def investor_investments
+    if params[:entity_id].present?
+      @entity = Entity.find(params[:entity_id])
+      @aggregate_investments = AggregateInvestment.for_investor(current_user, @entity)
+    end
+
+    @aggregate_investments = @aggregate_investments.order(id: :desc)
+                                                   .includes(:investor, :entity, :scenario).distinct
+
+    render "index"
+  end
+
   # GET /aggregate_investments/1 or /aggregate_investments/1.json
   def show; end
-
-  # GET /aggregate_investments/new
-  def new
-    @aggregate_investment = AggregateInvestment.new
-    authorize @aggregate_investment
-  end
-
-  # GET /aggregate_investments/1/edit
-  def edit; end
-
-  # POST /aggregate_investments or /aggregate_investments.json
-  def create
-    @aggregate_investment = AggregateInvestment.new(aggregate_investment_params)
-    authorize @aggregate_investment
-    respond_to do |format|
-      if @aggregate_investment.save
-        format.html { redirect_to aggregate_investment_url(@aggregate_investment), notice: "Aggregate investment was successfully created." }
-        format.json { render :show, status: :created, location: @aggregate_investment }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @aggregate_investment.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /aggregate_investments/1 or /aggregate_investments/1.json
-  def update
-    respond_to do |format|
-      if @aggregate_investment.update(aggregate_investment_params)
-        format.html { redirect_to aggregate_investment_url(@aggregate_investment), notice: "Aggregate investment was successfully updated." }
-        format.json { render :show, status: :ok, location: @aggregate_investment }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @aggregate_investment.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /aggregate_investments/1 or /aggregate_investments/1.json
-  def destroy
-    @aggregate_investment.destroy
-
-    respond_to do |format|
-      format.html { redirect_to aggregate_investments_url, notice: "Aggregate investment was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
 
   private
 

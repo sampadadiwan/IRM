@@ -39,7 +39,6 @@ class InvestmentsController < ApplicationController
 
     @investments = @investments.order(initial_value: :desc)
                                .includes(:investee_entity, investor: :investor_entity).distinct
-                               .page params[:page]
 
     render "index"
   end
