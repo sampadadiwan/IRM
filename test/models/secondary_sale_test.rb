@@ -15,6 +15,7 @@
 #  updated_at             :datetime         not null
 #  total_offered_quantity :integer          default("0")
 #  visible_externally     :boolean          default("0")
+#  deleted_at             :datetime
 #
 
 require "test_helper"

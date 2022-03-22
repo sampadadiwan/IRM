@@ -14,11 +14,12 @@
 #  holding_type          :string(15)       not null
 #  investment_id         :integer          not null
 #  price_cents           :decimal(20, 2)   default("0.00")
+#  funding_round_id      :integer          not null
 #
 
 class Holding < ApplicationRecord
-  INVESTMENT_FOR = %w[Employee Founder].freeze
-  EQUITY_LIKE = %w[Equity Preferred Options].freeze
+  include HoldingCounters
+  include HoldingScopes
 
   belongs_to :user, optional: true
   belongs_to :entity
@@ -33,50 +34,9 @@ class Holding < ApplicationRecord
   belongs_to :investment
   has_one :aggregated_investment, through: :investment
 
-  scope :equity, -> { where(investment_instrument: "Equity") }
-  scope :preferred, -> { where(investment_instrument: "Preferred") }
-  scope :options, -> { where(investment_instrument: "Options") }
-
-  # Add the quantity to the investment
-  counter_culture :investment,
-                  column_name: proc { |h| h.call_counter_cache? ? 'quantity' : nil },
-                  delta_column: 'quantity'
-
-  counter_culture :investment,
-                  column_name: proc { |h| h.call_counter_cache? ? 'amount_cents' : nil },
-                  delta_column: 'value_cents'
-
-  # Add the quantity to the aggregate_investment, counter culture does not
-  # automatically update aggregate_investment even though the investment is updated
-  counter_culture %i[investment aggregate_investment],
-                  column_name: proc { |h| h.call_counter_cache? ? h.investment_instrument.downcase : nil },
-                  delta_column: 'quantity'
-
-  counter_culture %i[investment investee_entity],
-                  column_name: proc { |h| h.call_counter_cache? ? h.investment_instrument.downcase : nil },
-                  delta_column: 'quantity'
-
-  counter_culture %i[investment investee_entity],
-                  column_name: proc { |h| h.call_counter_cache? ? 'total_investments' : nil },
-                  delta_column: 'value_cents'
-
-  counter_culture :funding_round,
-                  column_name: proc { |h| h.call_counter_cache? ? 'amount_raised_cents' : nil },
-                  delta_column: 'value_cents'
-
-  counter_culture :funding_round,
-                  column_name: proc { |h| h.call_counter_cache? ? h.investment_instrument.downcase : nil },
-                  delta_column: 'quantity'
-
   monetize :price_cents, :value_cents, with_currency: ->(i) { i.entity.currency }
 
   validates :quantity, :holding_type, presence: true
-
-  def call_counter_cache?
-    investment.scenario.actual? &&
-      INVESTMENT_FOR.include?(holding_type) &&
-      EQUITY_LIKE.include?(investment_instrument)
-  end
 
   after_save ->(_holding) { HoldingUpdateJob.perform_later(id) },
              if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }

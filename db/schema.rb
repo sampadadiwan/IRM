@@ -442,7 +442,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_083549) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "category", limit: 100
     t.datetime "deleted_at", precision: 6
-    t.decimal "percentage_holding", precision: 5, scale: 2
+    t.decimal "percentage_holding", precision: 5, scale: 2, default: "0.0"
     t.boolean "employee_holdings", default: false
     t.integer "diluted_quantity", default: 0
     t.decimal "diluted_percentage", precision: 5, scale: 2, default: "0.0"

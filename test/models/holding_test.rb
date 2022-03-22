@@ -14,6 +14,7 @@
 #  holding_type          :string(15)       not null
 #  investment_id         :integer          not null
 #  price_cents           :decimal(20, 2)   default("0.00")
+#  funding_round_id      :integer          not null
 #
 
 require "test_helper"

@@ -14,6 +14,10 @@
 #  amount_raised_cents        :decimal(20, 2)   default("0.00")
 #  status                     :string(255)      default("Open")
 #  closed_on                  :date
+#  deleted_at                 :datetime
+#  equity                     :integer          default("0")
+#  preferred                  :integer          default("0")
+#  options                    :integer          default("0")
 #
 
 require "test_helper"

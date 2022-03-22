@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: aggregate_investments
+#
+#  id                      :integer          not null, primary key
+#  entity_id               :integer          not null
+#  shareholder             :string(255)
+#  investor_id             :integer          not null
+#  equity                  :integer          default("0")
+#  preferred               :integer          default("0")
+#  options                 :integer          default("0")
+#  percentage              :decimal(5, 2)    default("0.00")
+#  full_diluted_percentage :decimal(5, 2)    default("0.00")
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  scenario_id             :integer          not null
+#
+
 class AggregateInvestment < ApplicationRecord
   belongs_to :entity
   delegate :actual_scenario, to: :entity
@@ -10,18 +28,6 @@ class AggregateInvestment < ApplicationRecord
   # Investments which belong to the Actual scenario are the real ones
   # All others are imaginary scenarios for planning and dont add to the real
   belongs_to :scenario
-
-  def update_percentage
-    entity.aggregate_investments.each do |ai|
-      eq = (entity.equity + entity.preferred)
-      ai.percentage = 100.0 * (ai.equity + ai.preferred) / eq if eq.positive?
-
-      eq_op = (entity.equity + entity.preferred + entity.options)
-      ai.full_diluted_percentage = 100.0 * (ai.equity + ai.preferred + ai.options) / eq_op if eq_op.positive?
-
-      ai.save
-    end
-  end
 
   def self.for_investor(current_user, entity)
     actual_scenario = entity.actual_scenario

@@ -2,44 +2,51 @@
 #
 # Table name: investments
 #
-#  id                     :integer          not null, primary key
-#  investment_type        :string(100)
-#  investor_id            :integer
-#  investor_type          :string(100)
-#  investee_entity_id     :integer
-#  status                 :string(20)
-#  investment_instrument  :string(100)
-#  quantity               :integer          default("0")
-#  initial_value          :decimal(20, 2)   default("0.00")
-#  current_value          :decimal(20, 2)   default("0.00")
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  category               :string(100)
-#  deleted_at             :datetime
-#  percentage_holding     :decimal(5, 2)
-#  employee_holdings      :boolean          default("0")
-#  diluted_quantity       :integer          default("0")
-#  diluted_percentage     :decimal(5, 2)    default("0.00")
-#  currency               :string(10)
-#  units                  :string(15)
-#  amount_cents           :decimal(20, 2)   default("0.00")
-#  price_cents            :decimal(20, 2)
-#  funding_round_id       :integer
-#  liquidation_preference :decimal(4, 2)
+#  id                      :integer          not null, primary key
+#  investment_type         :string(100)
+#  investor_id             :integer
+#  investor_type           :string(100)
+#  investee_entity_id      :integer
+#  status                  :string(20)
+#  investment_instrument   :string(100)
+#  quantity                :integer          default("0")
+#  initial_value           :decimal(20, 2)   default("0.00")
+#  current_value           :decimal(20, 2)   default("0.00")
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  category                :string(100)
+#  deleted_at              :datetime
+#  percentage_holding      :decimal(5, 2)    default("0.00")
+#  employee_holdings       :boolean          default("0")
+#  diluted_quantity        :integer          default("0")
+#  diluted_percentage      :decimal(5, 2)    default("0.00")
+#  currency                :string(10)
+#  units                   :string(15)
+#  amount_cents            :decimal(20, 2)   default("0.00")
+#  price_cents             :decimal(20, 2)
+#  funding_round_id        :integer
+#  liquidation_preference  :decimal(4, 2)
+#  scenario_id             :integer          not null
+#  aggregate_investment_id :integer
 #
 
 class Investment < ApplicationRecord
   include Trackable
   include InvestmentScopes
+  include InvestmentCounters
+  # Make all models searchable
+  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
-  EQUITY_LIKE = %w[Equity Preferred Options].freeze
+  # "Equity,Preferred,Debt,ESOPs"
+  INSTRUMENT_TYPES = ENV["INSTRUMENT_TYPES"].split(",")
+
+  # "Lead Investor,Co-Investor,Founder,Individual,Employee"
+  INVESTOR_CATEGORIES = ENV["INVESTOR_CATEGORIES"].split(",")
+
   # encrypts :investment_type
   has_rich_text :notes
 
   validates :investment_instrument, :quantity, :price, presence: true
-
-  # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   # Investments which belong to the Actual scenario are the real ones
   # All others are imaginary scenarios for planning and dont add to the real
@@ -51,40 +58,15 @@ class Investment < ApplicationRecord
 
   belongs_to :funding_round
 
-  # Counter Cache for funding_round.amount_raised_cents
-  counter_culture :funding_round,
-                  column_name: proc { |i| i.scenario.actual? ? 'amount_raised_cents' : nil },
-                  delta_column: 'amount_cents'
-  # Counter Cache for funding_round equity or preferred or options
-  counter_culture :funding_round,
-                  column_name: proc { |i| i.scenario.actual? && EQUITY_LIKE.include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
-                  delta_column: 'quantity'
-  # Counter Cache for entity equity or preferred or options
-  counter_culture %i[funding_round entity],
-                  column_name: proc { |i| i.scenario.actual? && EQUITY_LIKE.include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
-                  delta_column: 'quantity'
-
   belongs_to :aggregate_investment, optional: true
-  counter_culture :aggregate_investment,
-                  column_name: proc { |i| EQUITY_LIKE.include?(i.investment_instrument) ? i.investment_instrument.downcase : nil },
-                  delta_column: 'quantity'
 
   belongs_to :investee_entity, class_name: "Entity"
   delegate :actual_scenario, to: :investee_entity
 
   has_many :holdings, dependent: :destroy
 
-  counter_culture :investee_entity, column_name: proc { |i| i.scenario.actual? ? 'investments_count' : nil }
-  counter_culture :investee_entity, column_name: proc { |i| i.scenario.actual? ? 'total_investments' : nil }, delta_column: 'amount_cents'
-
   # Handled by money-rails gem
   monetize :amount_cents, :price_cents, with_model_currency: :currency
-
-  # "Equity,Preferred,Debt,ESOPs"
-  INSTRUMENT_TYPES = ENV["INSTRUMENT_TYPES"].split(",")
-
-  # "Lead Investor,Co-Investor,Founder,Individual,Employee"
-  INVESTOR_CATEGORIES = ENV["INVESTOR_CATEGORIES"].split(",")
 
   def self.INVESTOR_CATEGORIES(entity = nil)
     entity && entity.investor_categories.present? ? entity.investor_categories.split(",").map(&:strip) : INVESTOR_CATEGORIES
@@ -100,11 +82,7 @@ class Investment < ApplicationRecord
 
   before_save :update_defaults
   before_save :update_aggregate_investment,
-              if: proc { |i| %w[Equity Preferred Options].include? i.investment_instrument }
-  before_create :update_employee_holdings
-  def update_employee_holdings
-    self.employee_holdings = true if investment_type == "Employee Holdings"
-  end
+              if: proc { |i| EQUITY_LIKE.include? i.investment_instrument }
 
   def update_defaults
     if investor.is_holdings_entity
@@ -119,6 +97,7 @@ class Investment < ApplicationRecord
     self.units = investee_entity.units
     self.investment_type = funding_round.name
     self.investment_instrument = investment_instrument.strip
+    self.employee_holdings = true if investment_type == "Employee Holdings"
   end
 
   def update_aggregate_investment
@@ -128,12 +107,6 @@ class Investment < ApplicationRecord
     self.aggregate_investment = ai.presence || AggregateInvestment.create(investor_id: investor_id,
                                                                           entity_id: investee_entity_id,
                                                                           scenario_id: scenario_id)
-  end
-
-  after_destroy :destroy_investor_holdings, if: proc { |i| i.scenario.actual? }
-  def destroy_investor_holdings
-    holding = Holding.where(investor_id: investor_id, investment_instrument: investment_instrument).first
-    holding&.destroy
   end
 
   after_save :update_investor_holdings, if: proc { |i| i.scenario.actual? }
@@ -160,30 +133,6 @@ class Investment < ApplicationRecord
     else
       # For Debt and other Non Equity - we dont need a holding
       Rails.logger.debug { "Not creating holdings for #{to_json}" }
-    end
-  end
-
-  def update_percentage_job
-    # This will call update_percentage in a background job
-    InvestmentPercentageHoldingJob.perform_later(id)
-  end
-
-  def update_percentage
-    equity_investments = scenario.investments.where(investee_entity_id: investee_entity_id).equity_or_pref
-    esop_investments = scenario.investments.where(investee_entity_id: investee_entity_id).options_or_esop
-    equity_quantity = equity_investments.sum(:quantity)
-    esop_quantity = esop_investments.sum(:quantity)
-
-    equity_investments.each do |inv|
-      inv.percentage_holding = (inv.quantity * 100.0) / equity_quantity
-      inv.diluted_percentage = (inv.quantity * 100.0) / (equity_quantity + esop_quantity)
-      inv.save
-    end
-
-    esop_investments.each do |inv|
-      inv.percentage_holding = 0
-      inv.diluted_percentage = (inv.quantity * 100.0) / (equity_quantity + esop_quantity)
-      inv.save
     end
   end
 

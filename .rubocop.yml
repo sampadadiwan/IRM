@@ -93,3 +93,4 @@ Metrics/BlockLength:
     - draw
     - configure
     - group    
+    - included

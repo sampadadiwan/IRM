@@ -37,6 +37,9 @@
 #  tasks_count            :integer
 #  pending_accesses_count :integer
 #  active_deal_id         :integer
+#  equity                 :integer          default("0")
+#  preferred              :integer          default("0")
+#  options                :integer          default("0")
 #
 
 class Entity < ApplicationRecord
