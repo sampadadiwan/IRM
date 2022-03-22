@@ -13,6 +13,8 @@
         <%= link_to "Scenarios", scenarios_path, {class: "btn btn-primary"} %>
       <% end %>
 
+      <%= link_to "Aggregated View", aggregate_investments_path, {class: "btn btn-primary"} %>
+
       <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id,
                                                       "investment[investment_instrument]": title,
                                                       "investment[scenario_id]": current_scenario), 

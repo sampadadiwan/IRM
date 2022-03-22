@@ -1,11 +1,35 @@
 <%= render "/layouts/alerts" %>
 
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Aggregate Investments</h1>
+    <h1 class="h3 mb-0 text-gray-800">Investments</h1>
     
     <span>
+
+    <%#= render "investments/currency_form" %>
+
+    <% if current_user.entity_id == @entity.id %>
+
       <%= render "investments/scenarios_form"  %>
       <%= link_to "Scenarios", scenarios_path, {class: "btn btn-primary"} %>
+
+      <%= link_to "Details View", investments_path, {class: "btn btn-primary"} %>
+
+
+      <%= link_to "New Investment", new_investment_path("investment[investee_entity_id]": current_user.entity_id,
+                                                      "investment[scenario_id]": current_scenario), 
+        {class: "btn btn-primary"} %>
+
+      <%= link_to "Funding Rounds", funding_rounds_path, {class: "btn btn-primary"} %>
+      <%= link_to investments_path(format: :xlsx), {class: "btn btn-success"} do %>
+        <i class="fa-lg fa-regular fa-file-excel"></i> Download
+      <% end %>
+
+      <%= link_to investments_path(charts: true), {class: "btn btn-success"} do %>
+        <i class="fas fa-chart-line"></i> Graphs
+      <% end %>
+
+    <% end %>
+
     </span>
 
   </div>

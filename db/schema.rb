@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_035016) do
     t.string "action_name"
     t.string "tour_name"
     t.integer "creator_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_abraham_histories_on_created_at"
     t.index ["creator_id"], name: "index_abraham_histories_on_creator_id"
     t.index ["updated_at"], name: "index_abraham_histories_on_updated_at"
@@ -312,8 +312,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_035016) do
   create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "body", size: :medium
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -691,7 +691,6 @@ ActiveRecord::Schema.define(version: 2022_03_22_035016) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aggregate_investments", "entities"
   add_foreign_key "aggregate_investments", "investors"
-  add_foreign_key "aggregate_investments", "scenarios"
   add_foreign_key "deal_activities", "deal_investors"
   add_foreign_key "deal_activities", "deals"
   add_foreign_key "deal_docs", "deal_activities"
@@ -708,7 +707,6 @@ ActiveRecord::Schema.define(version: 2022_03_22_035016) do
   add_foreign_key "folders", "entities"
   add_foreign_key "funding_rounds", "entities"
   add_foreign_key "holdings", "entities"
-  add_foreign_key "holdings", "funding_rounds"
   add_foreign_key "holdings", "investments"
   add_foreign_key "holdings", "investors"
   add_foreign_key "holdings", "users"
