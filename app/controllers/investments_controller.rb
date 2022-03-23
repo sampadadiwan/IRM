@@ -1,4 +1,6 @@
 class InvestmentsController < ApplicationController
+  include InvestmentConcern
+
   before_action :set_investment, only: %w[show update destroy edit]
   after_action :verify_authorized, except: %i[index search investor_investments]
 
@@ -82,17 +84,16 @@ class InvestmentsController < ApplicationController
 
   # POST /investments or /investments.json
   def create
-    @investment = Investment.new(investment_params)
-    @investment.investee_entity_id = current_user.entity_id
-    @investment.currency = current_user.entity.currency
-    @investment.scenario_id ||= @investment.actual_scenario.id
+    investments = new_multi_investments(params, investment_params)
 
-    authorize @investment
+    Investment.transaction do
+      investments.each(&:save!)
+    end
 
     respond_to do |format|
-      if @investment.save
+      if investments.length.positive? && @investment.id
         InvestmentPercentageHoldingJob.perform_later(@investment.id)
-        format.html { redirect_to investment_url(@investment), notice: "Investment was successfully created." }
+        format.html { redirect_to investments_path, notice: "Investment was successfully created." }
         format.json { render :show, status: :created, location: @investment }
       else
         format.html { render :new, status: :unprocessable_entity }

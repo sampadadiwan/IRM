@@ -46,8 +46,6 @@ class Investment < ApplicationRecord
   # encrypts :investment_type
   has_rich_text :notes
 
-  validates :investment_instrument, :quantity, :price, presence: true
-
   # Investments which belong to the Actual scenario are the real ones
   # All others are imaginary scenarios for planning and dont add to the real
   belongs_to :scenario

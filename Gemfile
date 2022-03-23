@@ -81,7 +81,7 @@ gem 'counter_culture', '~> 2.0'
 gem 'impressionist'
 gem 'roo'
 
-# gem 'acts-as-taggable-on', '~> 9.0'
+gem 'client_side_validations'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
