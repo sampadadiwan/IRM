@@ -1,4 +1,4 @@
-<%= form_with(model: deal_activity) do |form| %>
+<%= form_with(model: deal_activity, validate: true) do |form| %>
   <% if deal_activity.errors.any? %>
     <div class="alert alert-danger">
       <h2><%= pluralize(deal_activity.errors.count, "error") %> prohibited this deal_activity from being saved:</h2>

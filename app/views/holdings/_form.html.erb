@@ -1,4 +1,4 @@
-<%= form_with(model: holding) do |form| %>
+<%= form_with(model: holding, validate: true) do |form| %>
   <% if holding.errors.any? %>
     <div class="alert alert-danger">
       <h2><%= pluralize(holding.errors.count, "error") %> prohibited this holding from being saved:</h2>

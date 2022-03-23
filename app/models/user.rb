@@ -50,7 +50,8 @@ class User < ApplicationRecord
   # Only if this user is an employee of the entity
   belongs_to :entity, optional: true
 
-  validates :first_name, :last_name, :email, presence: true
+  validates :first_name, :last_name, presence: true
+  validates :email, format: { with: /\A[^@\s]+@[^@\s]+\z/ }, presence: true
 
   # "CxO", "Founder", "Angel", "VC", "Admin",
   ROLES = ["Employee"].freeze

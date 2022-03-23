@@ -13,3 +13,5 @@ pin "chartkick", to: "chartkick.js"
 pin "@rails/activestorage", to: "https://ga.jspm.io/npm:@rails/activestorage@7.0.1/app/assets/javascripts/activestorage.esm.js"
 pin "highcharts" # @10.0.0
 pin "chartkick", to: "chartkick.js"
+
+pin "@client-side-validations/client-side-validations/src", to: "/js/client_side_validations.js"

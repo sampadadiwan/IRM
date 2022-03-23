@@ -1,4 +1,4 @@
-<%= form_with(model: import_upload) do |form| %>
+<%= form_with(model: import_upload, validate: true) do |form| %>
   <% if import_upload.errors.any? %>
     <div class="alert alert-danger">
       <h2><%= pluralize(import_upload.errors.count, "error") %> prohibited this import_upload from being saved:</h2>

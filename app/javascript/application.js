@@ -5,6 +5,8 @@ import "@rails/actiontext"
 import "controllers"
 import "@popperjs/core"
 import "chartkick"
+import '@client-side-validations/client-side-validations/src'
+
 // import "Chart.bundle"
 import Highcharts from "highcharts"
 window.Highcharts = Highcharts

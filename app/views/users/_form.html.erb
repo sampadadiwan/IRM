@@ -5,7 +5,7 @@
   </div>
   <div class="card-body">
 
-<%= form_with(model: user, data: {"turbo": "false"}) do |form| %>
+<%= form_with(model: user, data: {"turbo": "false"}, validate: true) do |form| %>
   <% if user.errors.any? %>
     <div class="alert alert-danger">
       <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>

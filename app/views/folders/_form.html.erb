@@ -4,7 +4,7 @@
   </div>
   <div class="card-body">
 
-<%= form_with(model: folder) do |form| %>
+<%= form_with(model: folder, validate: true) do |form| %>
   <% if folder.errors.any? %>
     <div class="alert alert-danger">
       <h2><%= pluralize(folder.errors.count, "error") %> prohibited this folder from being saved:</h2>

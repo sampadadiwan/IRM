@@ -5,7 +5,7 @@
   </div>
   <div class="card-body">
 
-<%= form_with(model: entity) do |form| %>
+<%= form_with(model: entity, validate: true) do |form| %>
   
   <%= render "form_fields", entity: entity, form: form %>
 

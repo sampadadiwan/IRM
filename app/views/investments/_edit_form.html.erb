@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
   
-  <%= form_with(model: investment) do |form| %>
+  <%= form_with(model: investment, validate: true) do |form| %>
     <% if investment.errors.any? %>
       <div class="alert alert-danger">
         <span><%= pluralize(investment.errors.count, "error") %> prohibited this investment from being saved:</span>

@@ -49,6 +49,9 @@ Lint/DuplicateBranch:
   Exclude:
     - 'app/helpers/investments_helper.rb'
 
+Rails/OutputSafety:
+  Exclude:
+    - 'config/initializers/client_side_validations.rb'
 Style/OptionalBooleanParameter:
   Exclude:
     - 'app/helpers/investments_helper.rb'

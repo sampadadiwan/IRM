@@ -33,7 +33,7 @@ class FundingRound < ApplicationRecord
   has_many :investments, dependent: :destroy
   has_many :aggregate_investments, dependent: :destroy
 
-  validates :name, :currency, :pre_money_valuation_cents, :status, presence: true
+  validates :name, :currency, :pre_money_valuation, :pre_money_valuation_cents, :status, presence: true
 
   scope :open, -> { where(status: "Open") }
 

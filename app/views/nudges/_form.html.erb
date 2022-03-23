@@ -1,4 +1,4 @@
-<%= form_with(model: nudge) do |form| %>
+<%= form_with(model: nudge, validate: true) do |form| %>
   <% if nudge.errors.any? %>
     <div class="alert alert-danger">
       <h2><%= pluralize(nudge.errors.count, "error") %> prohibited this nudge from being saved:</h2>

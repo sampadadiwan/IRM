@@ -9,7 +9,7 @@
   <div class="card-body">
   <div id="toasts" aria-live="polite" aria-atomic="true" style="position: relative;"></div>
 
-<%= form_with(model: investor_access) do |form| %>
+<%= form_with(model: investor_access, validate: true) do |form| %>
   <% if investor_access.errors.any? %>
     <div class="alert alert-danger">
       <h2><%= pluralize(investor_access.errors.count, "error") %> prohibited this investor_access from being saved:</h2>

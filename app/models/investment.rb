@@ -37,6 +37,7 @@ class Investment < ApplicationRecord
   # Make all models searchable
   ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
+  validates :quantity, :price, presence: true
   # "Equity,Preferred,Debt,ESOPs"
   INSTRUMENT_TYPES = ENV["INSTRUMENT_TYPES"].split(",")
 

@@ -1,4 +1,4 @@
-<%= form_with(model: secondary_sale) do |form| %>
+<%= form_with(model: secondary_sale, validate: true) do |form| %>
   <% if secondary_sale.errors.any? %>
     <div class="alert alert-danger">
       <h2><%= pluralize(secondary_sale.errors.count, "error") %> prohibited this secondary_sale from being saved:</h2>
