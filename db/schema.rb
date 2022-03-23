@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_22_083549) do
+ActiveRecord::Schema.define(version: 2022_03_22_152536) do
 
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
@@ -325,6 +325,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_083549) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "entity_id", null: false
     t.integer "documents_count", default: 0, null: false
+    t.string "path_ids"
     t.index ["entity_id"], name: "index_folders_on_entity_id"
     t.index ["parent_folder_id"], name: "index_folders_on_parent_folder_id"
   end

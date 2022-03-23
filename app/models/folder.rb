@@ -14,26 +14,33 @@
 #
 
 class Folder < ApplicationRecord
+  include TreeBuilder
+
   belongs_to :parent, class_name: "Folder", foreign_key: :parent_folder_id, optional: true
   belongs_to :entity
   has_many :documents, dependent: :destroy
 
+  # Stores all the ids of folders till root from this Folder, i.e all ids from root till here
+  serialize :path_ids
+
   validates :name, presence: true
 
-  before_save :update_level
+  before_create :set_defaults
   after_create :touch_root
   before_destroy :destroy_child_folders
   after_destroy :touch_root
 
   scope :for, ->(user) { where("folders.entity_id=?", user.entity_id).order("full_path asc") }
 
-  def update_level
+  def set_defaults
     if parent
       self.level = parent.level + 1
       self.full_path = level == 1 ? "#{parent.full_path}#{name}" : "#{parent.full_path}/#{name}"
+      self.path_ids = parent.path_ids + [parent.id]
     else
       self.level = 0
       self.full_path = "/"
+      self.path_ids = []
     end
   end
 
@@ -45,25 +52,5 @@ class Folder < ApplicationRecord
 
   def touch_root
     Folder.where(entity_id: entity_id, level: 0).first.touch
-  end
-
-  def self.build_tree(folders)
-    map = {}
-    tree = {}
-    parent = nil
-
-    folders.each do |f|
-      node = { details: f, children: {} }
-      map[f.id] = node
-      if parent.nil? || map[f.parent_folder_id].nil?
-        tree[f.id] = node
-        parent = node
-      else
-        parent = map[f.parent_folder_id]
-        parent[:children][f.id] = node
-      end
-    end
-
-    tree
   end
 end

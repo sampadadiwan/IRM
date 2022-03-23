@@ -14,8 +14,8 @@ class InvestmentPercentageHoldingJob < ApplicationJob
   private
 
   def update_investment_percentage(investment)
-    equity_investments = investment.scenario.investments.where(investee_entity_id: investee_entity_id).equity_or_pref
-    esop_investments = investment.scenario.investments.where(investee_entity_id: investee_entity_id).options_or_esop
+    equity_investments = investment.scenario.investments.equity_or_pref
+    esop_investments = investment.scenario.investments.options_or_esop
     equity_quantity = equity_investments.sum(:quantity)
     esop_quantity = esop_investments.sum(:quantity)
 
@@ -32,12 +32,17 @@ class InvestmentPercentageHoldingJob < ApplicationJob
     end
   end
 
-  def update_aggregate_percentage(_aggregate_investment)
-    entity.aggregate_investments.each do |ai|
-      eq = (entity.equity + entity.preferred)
+  def update_aggregate_percentage(aggregate_investment)
+    all = aggregate_investment.scenario.aggregate_investments
+    equity = all.sum(:equity)
+    preferred = all.sum(:preferred)
+    options = all.sum(:options)
+
+    all.each do |ai|
+      eq = (equity + preferred)
       ai.percentage = 100.0 * (ai.equity + ai.preferred) / eq if eq.positive?
 
-      eq_op = (entity.equity + entity.preferred + entity.options)
+      eq_op = (equity + preferred + options)
       ai.full_diluted_percentage = 100.0 * (ai.equity + ai.preferred + ai.options) / eq_op if eq_op.positive?
 
       ai.save

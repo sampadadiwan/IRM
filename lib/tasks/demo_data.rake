@@ -167,7 +167,7 @@ namespace :irm do
         end
       end
 
-      i&.update_percentage
+      InvestmentPercentageHoldingJob.perform_now(i.id)
     
       5.times do
         inv = e.investors.sample
