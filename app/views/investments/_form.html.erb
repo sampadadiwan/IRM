@@ -24,7 +24,7 @@
     <%= form.label :investor %>
     <%= form.select :investor_id, 
       current_user.entity.investors.includes(:investor_entity).order("entities.name").map{|c| [c.investor_name, c.id]}, 
-      {include_blank: true}, class: "form-control select2", data: { action: "change->newinvestment#setCategory" }  %>
+      {include_blank: true}, class: "form-control select2 required", data: { action: "change->newinvestment#setCategory" }  %>
   </div>
 
   <% if current_user.has_cached_role?(:super) %>
@@ -38,13 +38,13 @@
   <div class="form-group">
     <%= form.label :category %>
     <%= form.select :category, Investment.INVESTOR_CATEGORIES(current_user.entity) , 
-      {include_blank: true}, {class: "form-control"} %>
+      {include_blank: true}, {class: "form-control  required"} %>
   </div>
 
   <div class="form-group">
     <%= form.label :funding_round %>
     <%= form.select :funding_round_id, current_user.entity.funding_rounds.open.collect {|u| [u.name, u.id]}, 
-      {include_blank: true}, {class: "form-control"} %>
+      {include_blank: true}, {class: "form-control required"} %>
     <small class="text-muted">Create a <%= link_to "New Funding Round", new_funding_round_path %></small>
   
   </div>
@@ -55,7 +55,7 @@
       <div class="form-group col-md-5">
         <%= form.label :investment_instrument %>
         <%= form.select :investment_instrument, Investment.INSTRUMENT_TYPES(current_user.entity) , 
-          {include_blank: true}, {class: "form-control", name: "investment[investment_instrument][]"} %>
+          {include_blank: true}, {class: "form-control required", name: "investment[investment_instrument][]"} %>
       </div>
 
       
@@ -64,13 +64,13 @@
         <% if investment.category == "Employee" %>  
           <%= form.number_field :quantity, class: "form-control", disabled: true  %>
         <% else %>
-          <%= form.number_field :quantity, class: "form-control", name: "investment[quantity][]"  %>
+          <%= form.number_field :quantity, class: "form-control required", name: "investment[quantity][]"  %>
         <% end %>
       </div>
 
       <div class="form-group col-md-2">
         <%= form.label :price %>
-        <%= form.number_field :price, class: "form-control", name: "investment[price][]"  %>
+        <%= form.number_field :price, class: "form-control required", name: "investment[price][]"  %>
       </div>
 
 
@@ -103,7 +103,7 @@
   </div>
 
   <div class="form-group">
-    <%= form.submit "Save", {class: "btn btn-primary"}%>
+    <%= form.submit "Save", {class: "btn btn-primary", data: {action: "click->newinvestment#checkRequiredFilled"}} %>
   </div>
 <% end %>
 
