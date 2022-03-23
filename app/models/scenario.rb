@@ -14,6 +14,7 @@
 class Scenario < ApplicationRecord
   includes acts_as_paranoid
 
+  validates :name, presence: true
   belongs_to :entity
   has_many :investments, dependent: :destroy
   has_many :aggregate_investments, dependent: :destroy
