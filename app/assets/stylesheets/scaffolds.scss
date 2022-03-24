@@ -277,6 +277,9 @@ div.divider {
 .investment_row_container {
   .card {
     margin-bottom: 30px;
+    .card-body {
+      margin-left: 30px;
+    }
   }
   .delete-form-row {
     display: block;
