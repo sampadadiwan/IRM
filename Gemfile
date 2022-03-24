@@ -82,6 +82,7 @@ gem 'impressionist'
 gem 'roo'
 
 gem 'client_side_validations'
+gem 'rack-attack'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
