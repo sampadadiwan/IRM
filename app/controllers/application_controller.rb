@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_paper_trail_whodunnit
 
+  before_action do
+    ActiveStorage::Current.host = request.base_url
+  end
+
   # skip_before_action :verify_authenticity_token, if: lambda { ENV["skip_authenticity_token"].present? }
 
   protected

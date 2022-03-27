@@ -10,7 +10,7 @@
     <% if current_user.entity_id == @entity.id %>
 
       <%= render "investments/scenarios_form"  %>
-      <%= link_to "Scenarios", scenarios_path, {class: "btn btn-primary"} %>
+      <%= link_to "Scenarios", scenarios_path, {class: "btn btn-primary", data: {toggle: "tooltip", title: "View all scenarios"} } %>
 
       <%= link_to "Details View", investments_path, {class: "btn btn-primary"} %>
 
@@ -88,3 +88,10 @@
     </table>
 
   </div>
+
+<div class="text-center">
+  <small class="text-muted">
+    This is where you see your aggregated investments, i.e investments per investor. 
+    To see individual investments click on the drill down or click on the 'Details View' button
+  </small>
+</div>
