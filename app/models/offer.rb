@@ -46,7 +46,7 @@ class Offer < ApplicationRecord
     self.percentage = (100 * quantity) / holding.quantity
 
     self.investor_id = holding.investor_id
-    self.user_id = holding.user_id
+    self.user_id = holding.user_id if holding.user_id
     self.entity_id = holding.entity_id
   end
 

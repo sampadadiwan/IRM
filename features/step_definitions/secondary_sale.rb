@@ -218,3 +218,38 @@ Given('I should see my holdings in the holdings tab') do
   end
 end
 
+
+Given('when I make an offer for my holdings') do
+  h = Holding.first
+  within("#holding_#{h.id}") do
+    click_on("Offer")   
+  end
+  sleep(1)
+  click_on("Save")
+  sleep(1)
+end
+
+Then('I should see the offer') do
+  h = Holding.first
+  
+  @offer = Offer.last
+
+  @offer.user_id.should == @user.id
+  @offer.secondary_sale_id.should == @sale.id
+  @offer.entity_id.should == @startup.id
+  @offer.quantity.should == @sale.percent_allowed * h.quantity / 100.0
+  @offer.holding_id.should == h.id
+
+  expect(page).to have_content(@user.full_name)
+  expect(page).to have_content(@startup.name)
+  expect(page).to have_content(@sale.name)
+  expect(page).to have_content(@sale.percent_allowed)
+  expect(page).to have_content(@sale.percent_allowed * h.quantity / 100)
+  expect(page).to have_content("No")
+end
+
+Then('the sale offer amount must be updated') do
+  @sale.reload
+  puts @sale.to_json
+  @sale.total_offered_quantity.should == @offer.quantity  
+end

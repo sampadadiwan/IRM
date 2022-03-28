@@ -41,6 +41,8 @@ class OffersController < ApplicationController
   # POST /offers or /offers.json
   def create
     @offer = Offer.new(offer_params)
+    @offer.user_id = current_user.id
+
     authorize @offer
 
     respond_to do |format|

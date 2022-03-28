@@ -54,6 +54,9 @@ Scenario Outline: View sale - make offer
   And the investor has access rights to the sale
   And I should see the sale details on the details page
   And I should see my holdings in the holdings tab
+  And when I make an offer for my holdings
+  Then I should see the offer 
+  And the sale offer amount must be updated
 
   Examples:
   	|user	    |entity               |sale                                     |msg	|
