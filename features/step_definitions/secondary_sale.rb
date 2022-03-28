@@ -1,3 +1,5 @@
+  include InvestmentsHelper
+
   Given('I am at the sales page') do
     visit(secondary_sales_path)
   end
@@ -34,22 +36,31 @@
   end
   
   Then('I should see the sale details on the details page') do
+    visit(secondary_sale_path(@sale))
+    @input_sale ||= @sale # This is for times when the sale is not created from the ui in tests
+
     expect(page).to have_content(@input_sale.name)
     expect(page).to have_content(@input_sale.start_date.strftime("%d/%m/%Y"))
     expect(page).to have_content(@input_sale.end_date.strftime("%d/%m/%Y"))
-    expect(page).to have_content(@input_sale.percent_allowed)
-    expect(page).to have_content(@input_sale.min_price)
-    expect(page).to have_content(@input_sale.max_price)
+    if @user.entity_id == @sale.entity_id
+      expect(page).to have_content(@input_sale.percent_allowed)
+      expect(page).to have_content(@input_sale.min_price)
+      expect(page).to have_content(@input_sale.max_price)
+    end
   end
   
   Then('I should see the sale in all sales page') do
     visit(secondary_sales_path)
+    @input_sale ||= @sale # This is for times when the sale is not created from the ui in tests
+
     expect(page).to have_content(@input_sale.name)
     expect(page).to have_content(@input_sale.start_date.strftime("%d/%m/%Y"))
     expect(page).to have_content(@input_sale.end_date.strftime("%d/%m/%Y"))
-    expect(page).to have_content(@input_sale.percent_allowed)
-    expect(page).to have_content(@input_sale.min_price)
-    expect(page).to have_content(@input_sale.max_price)
+    if @user.entity_id == @sale.entity_id
+      expect(page).to have_content(@input_sale.percent_allowed) 
+      expect(page).to have_content(@input_sale.min_price)
+      expect(page).to have_content(@input_sale.max_price)
+    end
   end
   
   
@@ -141,5 +152,69 @@ Given('existing investor has access rights to the sale') do
   puts "\n####AccessRight####\n"
   puts ar.to_json
     
+end
+
+
+
+############################################################################
+############################################################################
+#######################  VC related test steps #############################  
+############################################################################
+############################################################################
+
+
+
+
+
+Given('my firm is an investor in the startup') do
+  @startup = Entity.startups.first
+  @investor = Investor.create!(investee_entity: @startup, investor_entity: @entity, category: "Lead Investor")
+
+  InvestorAccess.create!(investor:@investor, user: @user, email: @user.email, approved: true, 
+    entity_id: @startup.id)
+
+  puts @investor.to_json
+end
+
+Given('I should not see the sale in all sales page') do
+  visit(secondary_sales_path)
+end
+
+Given('I should not see the sale details on the details page') do
+  expect(page).to have_no_content(@sale.name)
+end
+
+Given('the investor has access rights to the sale') do
+  AccessRight.create!(owner: @sale, access_to_investor_id: @investor.id, access_type: "SecondarySale", entity: @startup)
+end
+
+Given('there are {string} investments {string} in the startup') do |count, args|
+  (1..count.to_i).each do 
+    i = FactoryBot.build(:investment, investee_entity: @startup, investor: @investor, 
+      funding_round: @funding_round, scenario: @startup.actual_scenario)
+    key_values(i, args)
+    i.save!
+    puts "\n####Investment Created####\n"
+    puts i.to_json
+  end
+end
+
+
+Given('I should see my holdings in the holdings tab') do
+  Investment.all.each do |inv|
+    inv.holdings.each do |h|
+      within("#holding_#{h.id}") do
+        expect(page).to have_content(h.funding_round.name)
+        expect(page).to have_content(h.holding_type)
+        expect(page).to have_content(@investor.investor_name)
+        expect(page).to have_content(h.investment_instrument)
+        expect(page).to have_content(h.quantity)
+        expect(page).to have_content(h.price)
+        expect(page).to have_content(money_to_currency(h.value))
+        expect(page).to have_content("Offer")
+        
+      end
+    end
+  end
 end
 
