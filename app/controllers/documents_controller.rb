@@ -3,6 +3,10 @@ class DocumentsController < ApplicationController
   after_action :verify_authorized, except: %i[index search investor_documents]
   after_action :verify_policy_scoped, only: []
 
+  before_action do
+    ActiveStorage::Current.host = request.base_url
+  end
+
   impressionist actions: [:show]
 
   # GET /documents or /documents.json
