@@ -248,8 +248,20 @@ Then('I should see the offer') do
   expect(page).to have_content("No")
 end
 
+Then('the sale offer amount must not be updated') do
+  @sale.reload
+  puts @sale.to_json
+  @sale.total_offered_quantity.should_not == @offer.quantity  
+end
+
 Then('the sale offer amount must be updated') do
   @sale.reload
   puts @sale.to_json
   @sale.total_offered_quantity.should == @offer.quantity  
 end
+
+Then('when the offer is approved') do
+  @offer.approved = true
+  @offer.save
+end
+

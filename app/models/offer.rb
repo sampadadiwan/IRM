@@ -23,7 +23,9 @@ class Offer < ApplicationRecord
   belongs_to :investor
   belongs_to :entity
   belongs_to :secondary_sale
-  counter_culture :secondary_sale, column_name: 'total_offered_quantity', delta_column: 'quantity'
+  counter_culture :secondary_sale,
+                  column_name: proc { |o| o.approved ? 'total_offered_quantity' : nil },
+                  delta_column: 'quantity'
 
   belongs_to :holding
   belongs_to :granter, class_name: "User", foreign_key: :granted_by_user_id, optional: true

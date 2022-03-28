@@ -56,7 +56,10 @@ Scenario Outline: View sale - make offer
   And I should see my holdings in the holdings tab
   And when I make an offer for my holdings
   Then I should see the offer 
-  And the sale offer amount must be updated
+  And the sale offer amount must not be updated
+  And when the offer is approved
+  Then the sale offer amount must be updated
+  
 
   Examples:
   	|user	    |entity               |sale                                     |msg	|
