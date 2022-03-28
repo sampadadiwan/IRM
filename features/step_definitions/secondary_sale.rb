@@ -57,7 +57,7 @@
     expect(page).to have_content(@input_sale.start_date.strftime("%d/%m/%Y"))
     expect(page).to have_content(@input_sale.end_date.strftime("%d/%m/%Y"))
     if @user.entity_id == @sale.entity_id
-      expect(page).to have_content(@input_sale.percent_allowed) 
+      # expect(page).to have_content(@input_sale.percent_allowed) 
       expect(page).to have_content(@input_sale.min_price)
       expect(page).to have_content(@input_sale.max_price)
     end
@@ -96,7 +96,7 @@
         within("tr#holding_#{h.id}") do
             expect(page).to have_content(h.holding_type)
             expect(page).to have_content(h.user.full_name)
-            expect(page).to have_content(h.user.email)
+            # expect(page).to have_content(h.user.email)
             # expect(page).to have_content(h.entity.name)
             expect(page).to have_content(h.investment_instrument)
             expect(page).to have_content(h.quantity)
