@@ -31,7 +31,7 @@ Scenario Outline: Express Interest
   Given there is a user "<user>" for an entity "entity_type=Startup"
   Given there is a sale "<sale>"
   Given Im logged in as a user "first_name=Emp1" for an entity "<entity>"
-  Given there are approved offers for the sale
+  Given there are "approved" offers for the sale
   Then I should be able to create an interest in the sale
   Then I should see the interest details
 

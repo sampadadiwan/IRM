@@ -29,9 +29,11 @@ Scenario Outline: Place an offer
   And I am at the sales details page
   Then when I place an offer "<offer>"
   Then I should see the offer details
-  And the sales total_offered_quantity should be "<total_quantity>"
   And I am at the sales details page
   Then I should see the offer in the offers tab
+  And when the offer is approved
+  Then the sales total_offered_quantity should be "<total_quantity>"
+  
 Examples:
     |user	    |entity               |sale                                                         |offer	             | total_quantity |
     |  	        |entity_type=Startup  |name=Grand Sale;visible_externally=true;percent_allowed=100  |quantity=100        | 100            |
@@ -63,11 +65,12 @@ Scenario Outline: Approve holdings as a startup
   Given there is a FundingRound "name=Series A"
   And there is a holding "quantity=100;investment_instrument=Equity" for each employee investor
   Given there is a sale "<sale>"
-  And there is an offer "quantity=100" for each employee investor
+  And there is an "unapproved" offer "quantity=100" for each employee investor
   And I am at the sales details page
   Then I should see all the offers
-  And the sales total_offered_quantity should be "200"  
+  And the sales total_offered_quantity should be "0"  
   And When I approve the offers the offers should be approved
+  And the sales total_offered_quantity should be "200"  
 Examples:
     |user	    |entity               |sale                                                         |quantity	|
     |  	        |entity_type=Startup  |name=Grand Sale;visible_externally=true;percent_allowed=100  |100        |

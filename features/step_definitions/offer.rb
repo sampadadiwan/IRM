@@ -80,10 +80,12 @@
 
 
 
-Given('there is an offer {string} for each employee investor') do |args|
+Given('there is an {string} offer {string} for each employee investor') do | approved_arg, args|
+
+  approved = approved_arg == "approved"
   Holding.all.each do |h|
     offer = Offer.new(holding_id: h.id, user_id:h.user_id, entity_id: h.entity_id,
-                secondary_sale_id: @sale.id, investor_id: h.investor_id)
+                secondary_sale_id: @sale.id, investor_id: h.investor_id, approved: approved)
     key_values(offer, args)
     offer.save!
     puts "\n####Offer####\n"
@@ -103,7 +105,11 @@ Then('I should see all the offers') do
         expect(page).to have_content(offer.quantity)
         expect(page).to have_content(offer.percentage)
         within("td.approved") do
-          expect(page).to have_content("No")
+          if offer.approved
+            expect(page).to have_content("Yes") 
+          else
+            expect(page).to have_content("No") 
+          end
         end
     end
   end

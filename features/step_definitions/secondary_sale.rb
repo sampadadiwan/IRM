@@ -261,6 +261,9 @@ Then('the sale offer amount must be updated') do
 end
 
 Then('when the offer is approved') do
+  @offer = Offer.last
+  puts @offer.to_json
+
   @offer.approved = true
   @offer.save
 end
