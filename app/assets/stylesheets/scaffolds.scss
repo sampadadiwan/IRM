@@ -287,3 +287,11 @@ div.divider {
     height: auto;
   }
 }
+
+#offers {
+  td {
+    .badge {
+      display: table;
+    }
+  }
+}

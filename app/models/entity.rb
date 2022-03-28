@@ -68,6 +68,9 @@ class Entity < ApplicationRecord
   has_many :investors, foreign_key: "investee_entity_id", dependent: :destroy
   has_many :investor_entities, through: :investors
 
+  has_many :interests_shown, class_name: "Interest", foreign_key: "interest_entity_id", dependent: :destroy
+  
+
   # List of investors where this entity is an investor
   has_many :investees, foreign_key: "investor_entity_id", class_name: "Investor", dependent: :destroy
   has_many :investee_entities, through: :investees

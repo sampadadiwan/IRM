@@ -14,11 +14,6 @@
   <td>
     <%= l secondary_sale.end_date %>
   </td>
-  <% unless Pundit.policy(current_user, secondary_sale).show_interest? %>
-  <td>
-    <%= secondary_sale.percent_allowed %> %
-  </td>
-  <% end %>
   <td>
     <%= custom_format_number secondary_sale.min_price, params %>
   </td>

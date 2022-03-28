@@ -28,7 +28,7 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def see_private_docs?
-    user.entity_id == record.entity_id || user.interests.short_listed.where(secondary_sale_id: record.id).present?
+    user.entity_id == record.entity_id || user.entity.interests_shown.short_listed.where(secondary_sale_id: record.id).present?
   end
 
   def show?
