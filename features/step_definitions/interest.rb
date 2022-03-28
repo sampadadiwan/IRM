@@ -48,6 +48,9 @@
   Then('I should see the interest details') do
     sleep(1)
     @created_interest = Interest.last
+
+    @interest ||= @created_interest # If the interest was not created thru UI in the tests 
+    
     puts "\n####Created Interest####\n"
     puts @created_interest.to_json
 

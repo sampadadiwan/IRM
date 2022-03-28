@@ -265,3 +265,23 @@ Then('when the offer is approved') do
   @offer.save
 end
 
+
+Given('there are approved offers for the sale') do
+  steps %(
+    Given there are "3" exisiting investments "" from another firm in startups
+  )
+  Holding.all.each do |h|
+    offer = Offer.create!(holding: h, entity: h.entity, secondary_sale: @sale, 
+                          user: h.entity.employees.sample, investor: h.investor,
+                          quantity: h.quantity * @sale.percent_allowed / 100, approved: true)
+  end
+end
+
+Then('I should be able to create an interest in the sale') do
+  visit(secondary_sale_path(@sale))
+  click_on("New Interest")
+  fill_in("interest_quantity", with: @sale.total_offered_quantity)
+  fill_in("interest_price", with: @sale.min_price)
+  click_on("Save")
+  sleep(1)
+end

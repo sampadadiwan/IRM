@@ -36,7 +36,7 @@ class Offer < ApplicationRecord
   validate :already_offered, :sale_active, on: :create
 
   def already_offered
-    errors.add(:secondary_sale, "An existing offer from this user already exists. Pl modify or delete that one.") if secondary_sale.offers.where(user_id: user_id).first.present?
+    errors.add(:secondary_sale, "An existing offer from this user already exists. Pl modify or delete that one.") if secondary_sale.offers.where(user_id: user_id, holding_id: holding_id).first.present?
   end
 
   def sale_active

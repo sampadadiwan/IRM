@@ -327,6 +327,7 @@ Given('there are {string} exisiting investments {string} from my firm in startup
 
   (1..count.to_i).each do |i|
     @startup_entity = FactoryBot.create(:entity, entity_type: "Startup", name: "Startup #{i}")
+    @startup_entity_employee = FactoryBot.create(:user, entity: @startup_entity)
     @investor = FactoryBot.create(:investor, investor_entity: @entity, investee_entity: @startup_entity)
     (1..count.to_i).each do 
       @investment = FactoryBot.build(:investment, investee_entity: 
@@ -342,6 +343,8 @@ Given('there are {string} exisiting investments {string} from another firm in st
   @funding_round ||= FactoryBot.create(:funding_round, entity: @entity)
 
   @another_entity = FactoryBot.create(:entity, entity_type: "VC", name: "Another VC Firm")
+  @another_entity_employee = FactoryBot.create(:user, entity: @another_entity)
+
   Entity.startups.each do |startup|
     @investor = FactoryBot.create(:investor, investor_entity: @another_entity, investee_entity: startup)
     (1..count.to_i).each do 
