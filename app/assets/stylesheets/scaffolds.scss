@@ -240,9 +240,11 @@ div.divider {
     left: 0px;
   }
 
-  .dropdown-toggle {
-    z-index: -100;
-  }  
+  .deal_activity_cell {
+    .dropdown {
+      position: unset;
+    }
+  }
 }
 
 #currency_units_form, #scenarios_form {
