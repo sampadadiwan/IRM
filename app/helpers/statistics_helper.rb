@@ -39,7 +39,7 @@ module StatisticsHelper
     investments = Investment.where(investee_entity_id: entity.id, scenario_id: scenario_id)
                             .group_by(&:investment_instrument)
                             .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] }
-                            .map { |k, v| [k, v] }
+                            .sort_by { |_k, v| v }.reverse
 
     column_chart investments, library: {
       plotOptions: { column: {
@@ -69,7 +69,8 @@ module StatisticsHelper
     # We cant use the DB, as values are encrypted
     column_chart Investment.where(investee_entity_id: entity.id, scenario_id: scenario_id)
                            .joins(:investor).includes(:investor).group_by { |i| i.investor.investor_name }
-                           .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] },
+                           .map { |k, v| [k, v.inject(0) { |sum, e| sum + (e.amount_cents / 100) }] }
+                           .sort_by { |_k, v| v }.reverse,
                  library: {
                    plotOptions: { column: {
                      dataLabels: {
