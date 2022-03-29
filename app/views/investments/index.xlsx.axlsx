@@ -2,10 +2,13 @@ wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "Investments") do |sheet|
   # Create the header row
-  sheet.add_row ["Type", "Investor", "Category", "Startup", "Instrument", "Quantity", "Initial Value"]
+  sheet.add_row ["Category", "Funding Round", "Investor", "Instrument", "Quantity", "Percentage",
+                 "Fully Diluted", "Price", "Amount", "Scenario"]
   # Create entries for each item
-  @investments.each do |investment|
-    sheet.add_row [investment.investment_type, investment.investor.investor_name, investment.category,
-                   investment.investee_entity.name, investment.investment_instrument, investment.quantity, investment.initial_value]
+  @investments.each do |inv|
+    sheet.add_row [inv.category, inv.funding_round.name, inv.investor.investor_name,
+                   inv.investment_instrument, custom_format_number(inv.quantity, params), inv.percentage_holding,
+                   inv.diluted_percentage, money_to_currency(inv.price, params, true),
+                   money_to_currency(inv.amount, params), inv.scenario.name]
   end
 end

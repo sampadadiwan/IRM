@@ -11,6 +11,19 @@ class AggregateInvestmentsController < ApplicationController
     @aggregate_investments = @aggregate_investments.where(scenario_id: scenario_id)
 
     @aggregate_investments = @aggregate_investments.includes(:investor, :entity, :scenario)
+
+    respond_to do |format|
+      format.xlsx do
+        response.headers[
+          'Content-Disposition'
+        ] = "attachment; filename=aggregate_investments.xlsx"
+      end
+      format.html { render :index }
+      format.json { render :index }
+      format.pdf do
+        render template: "aggregate_investments/index", formats: [:html], pdf: "#{@entity.name} Aggregate Investments"
+      end
+    end
   end
 
   def investor_investments

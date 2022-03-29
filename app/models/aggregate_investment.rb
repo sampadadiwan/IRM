@@ -66,4 +66,12 @@ class AggregateInvestment < ApplicationRecord
 
     investments
   end
+
+  def total_equity
+    equity + preferred
+  end
+
+  def fully_diluted
+    equity + preferred + options
+  end
 end

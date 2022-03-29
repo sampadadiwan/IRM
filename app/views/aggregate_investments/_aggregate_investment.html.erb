@@ -24,7 +24,7 @@
     <%= custom_format_number aggregate_investment.preferred, params %>
 </td>  
 <td>
-  <%= custom_format_number (aggregate_investment.equity + aggregate_investment.preferred) , params %>
+  <%= custom_format_number (aggregate_investment.total_equity) , params %>
 </td>
 <td>
   <%= aggregate_investment.percentage %> %
@@ -35,7 +35,7 @@
 </td>  
 
 <td>
-  <%= custom_format_number (aggregate_investment.equity + aggregate_investment.preferred + aggregate_investment.options), params %>
+  <%= custom_format_number (aggregate_investment.fully_diluted), params %>
 </td>  
 
 <td>
