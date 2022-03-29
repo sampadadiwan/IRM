@@ -40,6 +40,10 @@ class DealPolicy < ApplicationPolicy
     update?
   end
 
+  def recreate_activities?
+    start_deal?
+  end
+
   def edit?
     create?
   end

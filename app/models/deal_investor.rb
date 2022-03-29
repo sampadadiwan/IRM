@@ -65,6 +65,11 @@ class DealInvestor < ApplicationRecord
     investor_name
   end
 
+  def short_name
+    names = investor_name.split("-")
+    %w[Employees Founders].include?(names[1].strip) ? names[1] : names[0]
+  end
+
   def create_activites
     start_date = deal.start_date
     by_date = nil

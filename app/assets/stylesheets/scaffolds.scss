@@ -285,7 +285,7 @@ div.divider {
     display: block;
     margin-bottom: 10px;
     height: auto;
-  }
+  }display: inline;
 }
 
 #offers {
@@ -293,5 +293,11 @@ div.divider {
     .badge {
       display: table;
     }
+  }
+}
+
+.info {
+  .button_to {
+    display: inline;
   }
 }

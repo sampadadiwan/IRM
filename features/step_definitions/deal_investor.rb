@@ -3,6 +3,7 @@ include InvestmentsHelper
 
   When('I create a new deal investor {string}') do |arg1|
     @deal_investor = FactoryBot.build(:deal_investor)
+    @deal_investor.investor_name = @deal_investor.investor.investor_name
     key_values(@deal_investor, arg1)
     puts "\n####DealInvestor####\n"
     puts @deal_investor.to_json

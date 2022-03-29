@@ -2,12 +2,12 @@
 
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <% if params[:template].present? || template %>
-      <h1 class="h3 mb-0 text-gray-800">Deal Stage Templates</h1>
-      <%= link_to "New Stage Template", new_deal_activity_path("deal_activity[deal_id]": params[:deal_id], 
+      <h1 class="h3 mb-0 text-gray-800">Deal Step Templates</h1>
+      <%= link_to "New Step Template", new_deal_activity_path("deal_activity[deal_id]": params[:deal_id], 
                       back_to: params[:back_to]), {class: "btn btn-primary"} if params[:deal_id] %>
 
     <% else %>
-      <h1 class="h3 mb-0 text-gray-800">Deal Stages</h1>
+      <h1 class="h3 mb-0 text-gray-800">Deal Steps</h1>
     <% end %>
   </div>
 
@@ -20,7 +20,7 @@
             Sequence
           </th>
           <th>
-            Stage
+            Step
           </th>
           <th class="">
             Deal
@@ -55,6 +55,11 @@
   <% if params[:template].present? %>
       <%= link_to "Change Sequence", update_sequence_deal_activity_path( id: 0, sequence: 0), id: "sort_link", hidden: true %>
       <div data-controller="activitytemplatesort"></div>
+      <div class="info text-center alert alert-info">
+        The deal steps are generated based on the templates here. Modify/Add/Reorder these templates before starting the deal.</br>
+        If you want to change the templates after the deal has been started, make all required changes to the templates </br>
+        Then <%= button_to "Click Here", recreate_activities_deal_path(id: params[:deal_id]), class:"btn-primary btn-sm" %> to regenerate the deal steps.        
+      </div>
   <% end %>
 
 <% end %>

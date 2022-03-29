@@ -1,5 +1,5 @@
 class DealsController < ApplicationController
-  before_action :set_deal, only: %w[show update destroy edit start_deal]
+  before_action :set_deal, only: %w[show update destroy edit start_deal recreate_activities]
   after_action :verify_authorized, except: %i[index search investor_deals]
   impressionist actions: [:show]
 
@@ -31,9 +31,15 @@ class DealsController < ApplicationController
     render "index"
   end
 
+  def recreate_activities
+    GenerateDealActivitiesJob.perform_later(@deal.id)
+    respond_to do |format|
+      format.html { redirect_to deal_url(@deal), notice: "Success! Deal activites will be recreated in a bit, please be patient." }
+    end
+  end
+
   # GET /deals/1 or /deals/1.json
   def show
-    authorize @deal
     @deal_investors = @deal.deal_investors.order("deal_investors.primary_amount_cents desc")
     @deal_investors = @deal_investors.not_declined if params[:all].blank?
 
@@ -66,12 +72,9 @@ class DealsController < ApplicationController
   end
 
   # GET /deals/1/edit
-  def edit
-    authorize @deal
-  end
+  def edit; end
 
   def start_deal
-    authorize @deal
     Deal.public_activity_off
     @deal.start_deal
     Deal.public_activity_on
@@ -102,8 +105,6 @@ class DealsController < ApplicationController
 
   # PATCH/PUT /deals/1 or /deals/1.json
   def update
-    authorize @deal
-
     respond_to do |format|
       if @deal.update(deal_params)
         format.html { redirect_to deal_url(@deal), notice: "Deal was successfully updated." }
@@ -117,7 +118,6 @@ class DealsController < ApplicationController
 
   # DELETE /deals/1 or /deals/1.json
   def destroy
-    authorize @deal
     @deal.destroy
 
     respond_to do |format|
@@ -131,6 +131,7 @@ class DealsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_deal
     @deal = Deal.find(params[:id])
+    authorize(@deal)
   end
 
   # Only allow a list of trusted parameters through.

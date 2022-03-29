@@ -2,14 +2,14 @@
     <td class="sticky-col first-col">        
         <div class="dropdown">
             <span type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= deal_investor.investor_name %>      
+                <%= deal_investor.short_name %>      
             </span>
             <div class="dropdown-menu">
                 <%= link_to "Nudge", new_nudge_path("nudge[item_id]": deal_investor.id, "nudge[item_type]": "DealInvestor", back_to: deal_path(deal_investor.deal, grid_view: true)), class: "dropdown-item" %>
                 <%= link_to "View Investor", deal_investor_path(id: deal_investor.id), class: "dropdown-item" %>
                 <%= link_to "View Docs", deal_docs_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
                 <%= link_to "View Tasks", deal_messages_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
-                <%= link_to "View Stages", deal_activities_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
+                <%= link_to "View Steps", deal_activities_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id), class: "dropdown-item" %>
             </div>
             
         </div>
@@ -30,7 +30,7 @@
         <% deal_investor.deal_activities.order("sequence ASC").each do |activity| %>
             <td>
                 
-                <div id="<%=dom_id(activity)%>" class="dropdown" data-toggle="tooltip" data-placement="right" title="By: <%= l activity.by_date %>">
+                <div id="<%=dom_id(activity)%>" class="dropdown" data-toggle="tooltip" data-placement="right" title="By: <%= l activity.by_date if activity.by_date %>">
                     <span class="btn btn-sm dropdown-toggle <%=activity_color(activity)%>" 
                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <%= activity.summary %>
