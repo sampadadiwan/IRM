@@ -30,4 +30,15 @@ class Interest < ApplicationRecord
   delegate :max_price, to: :secondary_sale
 
   scope :short_listed, -> { where(short_listed: true) }
+
+  before_save :notify_shortlist, if: :short_listed
+  after_create :notify_interest
+
+  def notify_interest
+    InterestMailer.with(interest_id: id).notify_interest.deliver_later
+  end
+
+  def notify_shortlist
+    InterestMailer.with(interest_id: id).notify_shortlist.deliver_later if short_listed_changed?
+  end
 end
