@@ -280,6 +280,19 @@ Given('there are approved offers for the sale') do
   end
 end
 
+Given('there are {string} offers for the sale') do |approved_flag|
+  steps %(
+    Given there are "3" exisiting investments "" from another firm in startups
+  )
+  approved = approved_flag == "approved"
+  Holding.all.each do |h|
+    offer = Offer.create!(holding: h, entity: h.entity, secondary_sale: @sale, 
+                          user: h.entity.employees.sample, investor: h.investor,
+                          quantity: h.quantity * @sale.percent_allowed / 100, approved: approved)
+  end
+end
+
+
 Then('I should be able to create an interest in the sale') do
   visit(secondary_sale_path(@sale))
   click_on("New Interest")
