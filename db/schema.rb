@@ -10,15 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_22_152536) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_03_29_074951) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
     t.string "tour_name"
     t.integer "creator_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_abraham_histories_on_created_at"
     t.index ["creator_id"], name: "index_abraham_histories_on_creator_id"
     t.index ["updated_at"], name: "index_abraham_histories_on_updated_at"
@@ -31,11 +30,11 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.integer "access_to_investor_id"
     t.string "access_type", limit: 15
     t.string "metadata"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "entity_id", null: false
     t.string "access_to_category", limit: 20
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_access_rights_on_deleted_at"
     t.index ["entity_id"], name: "index_access_rights_on_entity_id"
     t.index ["owner_type", "owner_id"], name: "index_access_rights_on_owner"
@@ -46,8 +45,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.text "body", size: :long
     t.string "record_type", null: false
     t.bigint "record_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
 
@@ -58,8 +57,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.bigint "resource_id"
     t.string "author_type"
     t.bigint "author_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
@@ -70,7 +69,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", precision: 6, null: false
+    t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -83,7 +82,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "service_name", null: false
     t.bigint "byte_size", null: false
     t.string "checksum"
-    t.datetime "created_at", precision: 6, null: false
+    t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -102,8 +101,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.text "parameters"
     t.string "recipient_type"
     t.bigint "recipient_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "entity_id"
     t.index ["entity_id"], name: "index_activities_on_entity_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
@@ -118,10 +117,10 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at", precision: 6
-    t.datetime "remember_created_at", precision: 6
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
@@ -135,8 +134,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.integer "options", default: 0
     t.decimal "percentage", precision: 5, scale: 2, default: "0.0"
     t.decimal "full_diluted_percentage", precision: 5, scale: 2, default: "0.0"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "scenario_id", null: false
     t.index ["entity_id"], name: "index_aggregate_investments_on_entity_id"
     t.index ["investor_id"], name: "index_aggregate_investments_on_investor_id"
@@ -150,13 +149,13 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "status", limit: 20
     t.boolean "completed"
     t.integer "entity_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "title"
     t.text "details"
     t.integer "sequence"
     t.integer "days"
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.integer "template_id"
     t.index ["deal_id"], name: "index_deal_activities_on_deal_id"
     t.index ["deal_investor_id"], name: "index_deal_activities_on_deal_investor_id"
@@ -170,13 +169,13 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.bigint "deal_investor_id"
     t.bigint "deal_activity_id"
     t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "file_file_name"
     t.string "file_content_type"
     t.bigint "file_file_size"
-    t.datetime "file_updated_at", precision: 6
-    t.datetime "deleted_at", precision: 6
+    t.datetime "file_updated_at"
+    t.datetime "deleted_at"
     t.integer "impressions_count", default: 0
     t.index ["deal_activity_id"], name: "index_deal_docs_on_deal_activity_id"
     t.index ["deal_id"], name: "index_deal_docs_on_deal_id"
@@ -192,10 +191,10 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.decimal "primary_amount_cents", precision: 20, scale: 2, default: "0.0"
     t.decimal "secondary_investment_cents", precision: 20, scale: 2, default: "0.0"
     t.bigint "entity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "investor_entity_id"
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.integer "impressions_count"
     t.integer "unread_messages_investor", default: 0
     t.integer "unread_messages_investee", default: 0
@@ -204,6 +203,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.decimal "pre_money_valuation_cents", precision: 20, scale: 2, default: "0.0"
     t.string "company_advisor", limit: 100
     t.string "investor_advisor", limit: 100
+    t.string "investor_name"
     t.index ["deal_id"], name: "index_deal_investors_on_deal_id"
     t.index ["deleted_at"], name: "index_deal_investors_on_deleted_at"
     t.index ["entity_id"], name: "index_deal_investors_on_entity_id"
@@ -215,11 +215,11 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
   create_table "deal_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "deal_investor_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "is_task", default: false
     t.boolean "task_done", default: false
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.boolean "not_msg", default: false
     t.bigint "entity_id", null: false
     t.index ["deal_investor_id"], name: "index_deal_messages_on_deal_investor_id"
@@ -233,12 +233,12 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "name"
     t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
     t.string "status", limit: 20
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "activity_list"
     t.date "start_date"
     t.date "end_date"
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.integer "impressions_count", default: 0
     t.boolean "archived", default: false
     t.string "currency", limit: 10
@@ -251,14 +251,14 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "name"
     t.string "visible_to", default: "--- []\n"
     t.string "text", default: "--- []\n"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "file_file_name"
     t.string "file_content_type"
     t.bigint "file_file_size"
-    t.datetime "file_updated_at", precision: 6
+    t.datetime "file_updated_at"
     t.bigint "entity_id", null: false
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.bigint "folder_id", null: false
     t.integer "impressions_count", default: 0
     t.index ["deleted_at"], name: "index_documents_on_deleted_at"
@@ -271,8 +271,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "url"
     t.string "category"
     t.date "founded"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "logo_url"
     t.boolean "active", default: true
     t.string "entity_type", limit: 15
@@ -280,7 +280,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "investor_categories"
     t.string "instrument_types"
     t.string "s3_bucket"
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.integer "investors_count", default: 0, null: false
     t.integer "investments_count", default: 0, null: false
     t.integer "deals_count", default: 0, null: false
@@ -312,8 +312,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
   create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "body", size: :medium
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -321,8 +321,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.integer "parent_folder_id"
     t.text "full_path"
     t.integer "level"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "entity_id", null: false
     t.integer "documents_count", default: 0, null: false
     t.string "path_ids"
@@ -337,12 +337,12 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.decimal "pre_money_valuation_cents", precision: 20, scale: 2, default: "0.0"
     t.decimal "post_money_valuation_cents", precision: 20, scale: 2, default: "0.0"
     t.bigint "entity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.decimal "amount_raised_cents", precision: 20, scale: 2, default: "0.0"
     t.string "status", default: "Open"
     t.date "closed_on"
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.integer "equity", default: 0
     t.integer "preferred", default: 0
     t.integer "options", default: 0
@@ -355,8 +355,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.bigint "entity_id", null: false
     t.integer "quantity", default: 0
     t.decimal "value_cents", precision: 20, scale: 2, default: "0.0"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "investment_instrument", limit: 100
     t.bigint "investor_id", null: false
     t.string "holding_type", limit: 15, null: false
@@ -379,8 +379,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "import_type", limit: 50
     t.string "status", limit: 50
     t.text "error_text"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["entity_id"], name: "index_import_uploads_on_entity_id"
     t.index ["owner_type", "owner_id"], name: "index_import_uploads_on_owner"
     t.index ["user_id"], name: "index_import_uploads_on_user_id"
@@ -399,8 +399,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.text "message"
     t.text "referrer"
     t.text "params"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["controller_name", "action_name", "ip_address"], name: "controlleraction_ip_index"
     t.index ["controller_name", "action_name", "request_hash"], name: "controlleraction_request_index"
     t.index ["controller_name", "action_name", "session_hash"], name: "controlleraction_session_index"
@@ -419,8 +419,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.bigint "user_id", null: false
     t.integer "interest_entity_id"
     t.bigint "secondary_sale_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "short_listed", default: false
     t.boolean "escrow_deposited", default: false
     t.index ["interest_entity_id"], name: "index_interests_on_interest_entity_id"
@@ -439,10 +439,10 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.integer "quantity", default: 0
     t.decimal "initial_value", precision: 20, scale: 2, default: "0.0"
     t.decimal "current_value", precision: 20, scale: 2, default: "0.0"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "category", limit: 100
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.decimal "percentage_holding", precision: 5, scale: 2, default: "0.0"
     t.boolean "employee_holdings", default: false
     t.integer "diluted_quantity", default: 0
@@ -470,9 +470,9 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.boolean "approved"
     t.integer "granted_by"
     t.integer "entity_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "deleted_at", precision: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_investor_accesses_on_deleted_at"
     t.index ["email"], name: "index_investor_accesses_on_email"
     t.index ["entity_id"], name: "index_investor_accesses_on_entity_id"
@@ -484,10 +484,10 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.integer "investor_entity_id"
     t.integer "investee_entity_id"
     t.string "category", limit: 100
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "investor_name"
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.date "last_interaction_date"
     t.integer "investor_access_count", default: 0
     t.integer "unapproved_investor_access_count", default: 0
@@ -504,9 +504,9 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.integer "entity_id"
     t.integer "user_id"
     t.integer "investor_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "deleted_at", precision: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.date "on"
     t.index ["deleted_at"], name: "index_notes_on_deleted_at"
     t.index ["entity_id"], name: "index_notes_on_entity_id"
@@ -522,8 +522,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.bigint "entity_id", null: false
     t.string "item_type"
     t.bigint "item_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "cc"
     t.text "bcc"
     t.index ["entity_id"], name: "index_nudges_on_entity_id"
@@ -538,8 +538,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.integer "quantity", default: 0
     t.decimal "percentage", precision: 10, default: "0"
     t.text "notes"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "holding_id", null: false
     t.boolean "approved", default: false
     t.integer "granted_by_user_id"
@@ -559,9 +559,9 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.decimal "discount", precision: 10, scale: 2, default: "0.0"
     t.string "reference_number"
     t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "deleted_at", precision: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_payments_on_deleted_at"
     t.index ["entity_id"], name: "index_payments_on_entity_id"
     t.index ["user_id"], name: "index_payments_on_user_id"
@@ -571,9 +571,9 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "name"
     t.string "resource_type"
     t.bigint "resource_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "deleted_at", precision: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_roles_on_deleted_at"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
@@ -583,10 +583,10 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
   create_table "scenarios", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 100
     t.bigint "entity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "cloned_from"
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_scenarios_on_deleted_at"
     t.index ["entity_id"], name: "index_scenarios_on_entity_id"
   end
@@ -600,11 +600,11 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.decimal "min_price", precision: 20, scale: 2
     t.decimal "max_price", precision: 20, scale: 2
     t.boolean "active", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "total_offered_quantity", default: 0
     t.boolean "visible_externally", default: false
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_secondary_sales_on_deleted_at"
     t.index ["entity_id"], name: "index_secondary_sales_on_entity_id"
   end
@@ -616,7 +616,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "tagger_type"
     t.bigint "tagger_id"
     t.string "context", limit: 128
-    t.datetime "created_at", precision: 6
+    t.datetime "created_at"
     t.string "tenant", limit: 128
     t.index ["context"], name: "index_taggings_on_context"
     t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
@@ -634,8 +634,8 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
 
   create_table "tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", collation: "utf8_bin"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
@@ -643,24 +643,24 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at", precision: 6
-    t.datetime "remember_created_at", precision: 6
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.string "phone", limit: 100
     t.boolean "active", default: true
     t.string "confirmation_token"
-    t.datetime "confirmed_at", precision: 6
-    t.datetime "confirmation_sent_at", precision: 6
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
     t.integer "entity_id"
-    t.datetime "deleted_at", precision: 6
+    t.datetime "deleted_at"
     t.boolean "system_created", default: false
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at", precision: 6
-    t.datetime "last_sign_in_at", precision: 6
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
@@ -685,7 +685,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_152536) do
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object", size: :long
-    t.datetime "created_at", precision: 6
+    t.datetime "created_at"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 

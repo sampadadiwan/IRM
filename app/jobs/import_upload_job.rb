@@ -90,7 +90,7 @@ class ImportUploadJob < ApplicationJob
                           investment_instrument: user_data["Instrument"],
                           funding_round: fr)
 
-    holding.save!
+    holding.save
   end
 
   def funding_round(user_data, import_upload)

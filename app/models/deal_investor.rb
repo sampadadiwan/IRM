@@ -44,7 +44,6 @@ class DealInvestor < ApplicationRecord
 
   has_many :deal_docs, dependent: :destroy
 
-  delegate :investor_name, to: :investor
   delegate :name, to: :entity, prefix: :entity
   delegate :name, to: :deal, prefix: :deal
 
@@ -59,6 +58,7 @@ class DealInvestor < ApplicationRecord
   before_save :set_investor_entity_id
   def set_investor_entity_id
     self.investor_entity_id = investor.investor_entity_id
+    self.investor_name = investor.investor_name
   end
 
   def to_s

@@ -32,12 +32,13 @@
                     <thead>
                         <tr>
                             <th>From</th>
+                            <th>Investor</th>
                             <th>Task</th>
                             <th>Done</th>
                         </tr>
                     </thead>
                     <tbody id="tasks_body">
-                        <% tasks.each do |msg| %>          
+                        <% tasks.order(id: :desc).each do |msg| %>          
                             <%= render "deal_messages/deal_message", deal_message: msg%>
                         <% end %>
                     </tbody>

@@ -1,5 +1,6 @@
-<%= turbo_stream.replace('deal_message_form', partial: "deal_messages/form",
-                            locals: { deal_message: DealMessage.new(deal_investor_id: @deal_message.deal_investor_id) }) %>
+<%= turbo_stream.replace('new_deal_message', partial: "deal_messages/new",
+                            locals: { deal_message: DealMessage.new(deal_investor_id: @deal_message.deal_investor_id, 
+                                                                    is_task: true, not_msg: true) }) %>
 
 <%= turbo_stream.prepend('tasks_body', partial: "deal_messages/deal_message",
                             locals: { deal_message: @deal_message }) if @deal_message.not_msg %>

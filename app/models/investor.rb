@@ -74,4 +74,9 @@ class Investor < ApplicationRecord
   def to_s
     "#{investor_name} : #{category}"
   end
+
+  def short_name
+    names = investor_name.split("-")
+    is_holdings_entity ? names[1] : names[0]
+  end
 end
