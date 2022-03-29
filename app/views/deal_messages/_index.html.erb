@@ -10,7 +10,7 @@
                     <%= link_to label, deal_messages_path(deal_investor_id: deal_investor.id, deal_id: deal_investor.deal_id, show_all: params[:show_all] != "true"), class: "btn btn-sm btn-primary"%>    
                     <%= link_to "New Task", new_deal_message_path("deal_message[deal_investor_id]": deal_investor.id, 
                                 "deal_message[is_task]": true, "deal_message[not_msg]": true), 
-                                { data: { turbo_frame: 'new_deal_message' },
+                                { data: { turbo_frame: 'new_task_message' },
                                 method: :get, class: "btn btn-sm btn-primary"} %>    
                 </span>
 
@@ -23,7 +23,7 @@
 
         <div class="card-body">
 
-            <%= turbo_frame_tag "new_deal_message" do %>
+            <%= turbo_frame_tag "new_task_message" do %>
             <% end %>
             <% tasks = params[:show_all]=='true' ? deal_messages.tasks : deal_messages.tasks_not_done %>
 

@@ -18,7 +18,7 @@
       </div> <!-- end chat-history -->
       
       <div class="chat-message clearfix">
-        <%= render "deal_messages/form", deal_message: DealMessage.new(deal_investor_id: deal_investor.id) %>
+        <%= render "deal_messages/new", deal_message: DealMessage.new(deal_investor_id: deal_investor.id) %>
       </div>
       
     </div> <!-- end chat -->
