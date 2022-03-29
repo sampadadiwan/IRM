@@ -239,7 +239,7 @@ Given('the funding rounds must be updated with the right investment') do
 end
 
 
-Then('the entity round must be updated with the investment') do
+Then('the entity must be updated with the investment') do
   puts @entity.reload.to_json
   @entity.equity.should == Investment.equity.sum(:quantity)
   @entity.preferred.should == Investment.preferred.sum(:quantity)
@@ -284,6 +284,15 @@ Given('the aggregate investments must be created') do
     
   end
 end
+
+Given('the percentage must be computed correctly') do
+  InvestmentPercentageHoldingJob.new.perform(Investment.first.id)
+  Investment.sum(:percentage_holding).should == 100
+  Investment.sum(:diluted_percentage).should == 100
+  AggregateInvestment.sum(:percentage).should == 100
+  AggregateInvestment.sum(:full_diluted_percentage).should == 100
+end
+
 
 
 Then('when I see the aggregated investments') do

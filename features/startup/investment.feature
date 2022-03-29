@@ -12,7 +12,7 @@ Scenario Outline: Create new investment
   And I should see the investment in all investments page
   And a holding should be created for the investor  
   And the funding round must be updated with the investment
-  And the entity round must be updated with the investment  
+  And the entity must be updated with the investment  
   And the aggregate investments must be created
 
   Examples:
@@ -45,7 +45,7 @@ Scenario Outline: Edit investment
   And I should see the investment details on the details page
   And a holding should be created for the investor  
   And the funding round must be updated with the investment
-  And the entity round must be updated with the investment  
+  And the entity must be updated with the investment  
   And the aggregate investments must be created
 
   Examples:
@@ -62,7 +62,7 @@ Scenario Outline: Create new holding
   Then There should be a corresponding holdings created for each employee
   Then There should be a corresponding investment created
   And the funding round must be updated with the investment
-  And the entity round must be updated with the investment  
+  And the entity must be updated with the investment  
   And the aggregate investments must be created
 
 
@@ -75,7 +75,7 @@ Scenario Outline: Import holding
   And There should be "4" Investments created for the holdings
   And Investments is updated with the holdings 
   And the funding round must be updated with the investment
-  And the entity round must be updated with the investment  
+  And the entity must be updated with the investment  
   And the aggregate investments must be created
 
 
@@ -87,8 +87,9 @@ Scenario Outline: Investments updates funding round and entity
   Given there is a FundingRound "name=Series A"
   Given there are "4" investments "<inv2>"
   And the funding rounds must be updated with the right investment
-  And the entity round must be updated with the investment  
+  And the entity must be updated with the investment  
   And the aggregate investments must be created
+  And the percentage must be computed correctly
  Examples:
   	|investment                                    | inv2                                           |
   	|investment_instrument=Equity;quantity=100     | investment_instrument=Preferred;quantity=200   |
@@ -103,7 +104,7 @@ Scenario Outline: Investments updates funding round and entity
   Given there are "2" investments "<investment>"
   Given there are "2" investments "<inv2>"
   And the funding rounds must be updated with the right investment
-  And the entity round must be updated with the investment  
+  And the entity must be updated with the investment  
   And the aggregate investments must be created
  Examples:
   	|investment                                    | inv2                                           |

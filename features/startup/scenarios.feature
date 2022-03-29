@@ -9,7 +9,7 @@ Scenario Outline: Investments update funding round and entity
   Given there is a FundingRound "name=Series A"
   Given there are "4" investments "<inv2>"
   And the funding rounds must be updated with the right investment
-  And the entity round must be updated with the investment  
+  And the entity must be updated with the investment  
   And the aggregate investments must be created
   And I clone the actual scenario to "Test Scenario"
   Then the investments must be cloned for the new scenario
