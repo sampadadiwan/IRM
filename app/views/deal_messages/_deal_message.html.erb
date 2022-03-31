@@ -1,7 +1,7 @@
 
 <tr id="<%= dom_id deal_message %>">
   <td>
-      <%= deal_message.user.name %>
+      <%= link_to deal_message.user.name, deal_messages_path(user_id: deal_message.user_id, tasks: true) %>
   </td>  
   <td>
     <%= link_to deal_message.deal_investor.investor_name, deal_message.deal_investor %>

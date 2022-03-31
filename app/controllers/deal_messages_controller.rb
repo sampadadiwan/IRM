@@ -23,6 +23,9 @@ class DealMessagesController < ApplicationController
     else
       @deal_messages = DealMessage.none
     end
+
+    @deal_messages = @deal_messages.where(investor_id: params[:investor_id]) if params[:investor_id].present?
+    @deal_messages = @deal_messages.where(user_id: params[:user_id]) if params[:user_id].present?
   end
 
   # GET /deal_messages/1 or /deal_messages/1.json
