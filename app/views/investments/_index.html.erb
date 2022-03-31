@@ -2,7 +2,7 @@
   <h1 class="h3 mb-0 text-gray-800"><%= title %></h1>
   <span>
   <% show_scenarios ||= false %>
-  <% if title == "Equity" %>
+  <% if title == "Equity" && params[:investor_id].blank? %>
     <%= render "investments/currency_form" %>
 
     <% if current_user.entity_id == entity.id %>
