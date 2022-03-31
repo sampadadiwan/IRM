@@ -6,7 +6,7 @@
     <%= l note.on if note.on %>
 </td>    
 <td>
-    <%= link_to note.investor.investor_name, notes_path(investor_id: note.investor_id) %>
+    <%= link_to note.investor.investor_name, note.investor %>
 </td>  
 <td class="">
     <%= note.details %>

@@ -1,7 +1,11 @@
 <%= render "layouts/alerts" %>
+
+<%= turbo_frame_tag "notes_frame", target: "_top" do %>
+
 <%=render "index" , notes: @notes %>
 <%=paginate @notes %>
 
+<% end %>
             <!-- <div data-controller="notesdatatable">
                 <table id="notes-datatable" data-source="<%= notes_path(format: :json) %>"
                     class="table table-bordered table-striped dataTable">

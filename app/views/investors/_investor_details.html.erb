@@ -13,6 +13,11 @@
           data-action="click->tabdetails#loadData">
         Investments
     </a>
+
+    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#notes-tab" 
+          data-action="click->tabdetails#loadData">
+        Notes
+    </a>
   </nav>
 
   <div class="tab-content" data-controller="datatable">
@@ -41,6 +46,16 @@
             <span>Loading...</span>
           <% end %>
           <%= turbo_frame_tag "investments_frame", target: "_top" do %>
+          <% end %>
+        </div>     
+      </div>
+
+      <div id="notes-tab" class="tab-pane fade">
+        <div id="notes" class="associated_entity">
+          <%= link_to notes_path(investor_id: investor.id), class: "load_data_link", data: { turbo_frame: 'notes_frame' } do %>
+            <span>Loading...</span>
+          <% end %>
+          <%= turbo_frame_tag "notes_frame", target: "_top" do %>
           <% end %>
         </div>     
       </div>
