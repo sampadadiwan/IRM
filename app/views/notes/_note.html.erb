@@ -1,12 +1,12 @@
 <tr id="<%= dom_id note %>">
 <td>
-    <%= note.user.name %>
+    <%= link_to note.user.name, notes_path(user_id: note.user_id) %>
 </td>
 <td>
     <%= l note.on if note.on %>
 </td>    
 <td>
-    <%= note.investor.investor_name %>
+    <%= link_to note.investor.investor_name, notes_path(investor_id: note.investor_id) %>
 </td>  
 <td class="">
     <%= note.details %>

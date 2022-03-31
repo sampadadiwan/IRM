@@ -6,6 +6,7 @@ class NotesController < ApplicationController
     @notes = policy_scope(Note)
 
     @notes = @notes.where(investor_id: params[:investor_id]) if params[:investor_id]
+    @notes = @notes.where(user_id: params[:user_id]) if params[:user_id]
 
     @notes = @notes.with_all_rich_text.includes(:user, :investor)
                    .order("notes.id desc").page params[:page]
