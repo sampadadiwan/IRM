@@ -1,10 +1,18 @@
-<div class="associated_entity" data-controller="tabs">
+<div class="associated_entity" data-controller="tabs tabdetails">
 
   <% label = investor.is_holdings_entity ? "#{investor.category} Investors" : "Investor User" %>
 
   <nav class="nav nav-tabs nav-fill nav-justified"  role="tablist">
-    <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">Access Rights</a>
-    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#investors-tab"><%= label %></a>
+    <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">
+          Access Rights
+    </a>
+    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#investors-tab">
+      <%= label %>
+    </a>
+    <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#investments-tab" 
+          data-action="click->tabdetails#loadData">
+        Investments
+    </a>
   </nav>
 
   <div class="tab-content" data-controller="datatable">
@@ -24,6 +32,16 @@
         <div id="investor_accesses" class="associated_entity">
           <%= render "/investor_accesses/index", investor_accesses: investor.investor_accesses, 
               investor: investor, label: label %>
+        </div>     
+      </div>
+
+      <div id="investments-tab" class="tab-pane fade">
+        <div id="investments" class="associated_entity">
+          <%= link_to investments_path(investor_id: investor.id), class: "load_data_link", data: { turbo_frame: 'investments_frame' } do %>
+            <span>Loading...</span>
+          <% end %>
+          <%= turbo_frame_tag "investments_frame", target: "_top" do %>
+          <% end %>
         </div>     
       </div>
   </div>

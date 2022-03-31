@@ -1,4 +1,7 @@
 <%= render "/layouts/alerts" %>
+
+<%= turbo_frame_tag "investments_frame", target: "_top" do %>
+
 <% if params[:charts].present? %>
     <div class="associated_entity">
         <%= render "investments/cap_table_charts", entity: @entity, investments: @investments %>
@@ -9,4 +12,6 @@
         <div class="divider"></div>
         <%= render "investments/index", investments: @investments.debt, entity: @entity, title: "Debt" %>
     </div>
+<% end %>
+
 <% end %>
