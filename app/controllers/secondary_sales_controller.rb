@@ -11,6 +11,17 @@ class SecondarySalesController < ApplicationController
                        end
   end
 
+  def search
+    @secondary_sales = if current_user.has_cached_role?(:startup)
+                         SecondarySale.search(params[:query], star: true,
+                                                              with: { entity_id: current_user.entity_id })
+                       else
+                         SecondarySale.search(params[:query], star: true,
+                                                              with: { active: true, visible_externally: true })
+                       end
+    render "index"
+  end
+
   # GET /secondary_sales/1 or /secondary_sales/1.json
   def show; end
 

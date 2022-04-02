@@ -22,6 +22,9 @@ class SecondarySale < ApplicationRecord
   include Trackable
   include ActivityTrackable
 
+  # Make all models searchable
+  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+
   belongs_to :entity
   has_many :access_rights, as: :owner, dependent: :destroy
   has_many_attached :public_docs, service: :amazon

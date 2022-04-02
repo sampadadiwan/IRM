@@ -21,6 +21,8 @@ class Holding < ApplicationRecord
   include HoldingCounters
   include HoldingScopes
 
+  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+
   belongs_to :user, optional: true
   belongs_to :entity
   belongs_to :funding_round

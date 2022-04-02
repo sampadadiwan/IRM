@@ -17,6 +17,13 @@ class HoldingsController < ApplicationController
     @holdings = @holdings.limit params[:limit] if params[:limit]
   end
 
+  def search
+    @entity = current_user.entity
+    @holdings = Holding.search(params[:query], star: false, with: { entity_id: current_user.entity_id })
+
+    render "index"
+  end
+
   # GET /holdings/1 or /holdings/1.json
   def show; end
 

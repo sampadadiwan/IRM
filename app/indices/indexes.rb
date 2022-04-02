@@ -131,3 +131,32 @@ ThinkingSphinx::Index.define :investor_access, with: :real_time do
   has entity_id, type: :integer
   has approved, type: :boolean
 end
+
+ThinkingSphinx::Index.define :holding, with: :real_time do
+  # fields
+  indexes user.name, sortable: true
+  indexes entity.name
+  indexes investor.investor_name
+  indexes funding_round.name
+  indexes investment_instrument
+  indexes holding_type
+
+  # attributes
+  has created_at, type: :timestamp
+  has entity_id, type: :integer
+  has approved, type: :boolean
+end
+
+ThinkingSphinx::Index.define :secondary_sale, with: :real_time do
+  # fields
+  indexes name, sortable: true
+  indexes entity.name
+  indexes start_date
+  indexes end_date
+
+  # attributes
+  has created_at, type: :timestamp
+  has entity_id, type: :integer
+  has active, type: :boolean
+  has visible_externally, type: :boolean
+end
