@@ -4,15 +4,15 @@
 %>
 <div class="associated_entity" data-controller="tabs">
     <nav class="nav nav-tabs nav-fill nav-justified"  role="tablist">
-      <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#docs-tab">Documents</a>
+      <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#docs-tab">Deal Docs</a>
       
       <% if show_deal == "Yes" %>
         <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#deal-tab">Deal</a>
       <% end %>
-      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#activities-tab">Deal Steps</a>
       <% if show_investors == "Yes" %>
         <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#investors-tab">Investments</a>
       <% end %>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#activities-tab">Deal Steps</a>
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#access-tab">Access Rights</a>
     </nav>
     

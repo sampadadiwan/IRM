@@ -1,5 +1,7 @@
 <%= render "layouts/alerts" %>
 
+<%= render "/layouts/steps", steps: ["Add / Manage Notes", "Search Notes", "View Investor Notes"].freeze %>
+
 <%= turbo_frame_tag "notes_frame", target: "_top" do %>
 
 <%=render "index" , notes: @notes %>

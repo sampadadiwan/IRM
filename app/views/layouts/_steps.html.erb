@@ -1,0 +1,12 @@
+<div class="multi-step">
+    <ul class="multi-step-list">
+        <% steps.each_with_index do |step, index| %>
+        <li class="multi-step-item ">
+            <div class="item-wrap">
+                <p class="item-title">Step <%= index + 1 %></p>
+                <p class="item-subtitle"><%= step %></p>
+            </div>
+        </li>
+        <% end %>
+    </ul>
+</div>

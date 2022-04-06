@@ -15,10 +15,12 @@ class DocumentsController < ApplicationController
       @entity = Entity.find(params[:entity_id])
       @documents = Document.for_investor(current_user, @entity)
       @folders, _map = Folder.build_full_tree(Folder.joins(:documents).merge(@documents).order(parent_folder_id: :asc).distinct)
+      @show_steps = false
     else
       @entity = current_user.entity
       @documents = policy_scope(Document)
       @folders, _map = Folder.build_full_tree(Folder.where(entity_id: @entity.id).order(parent_folder_id: :asc))
+      @show_steps = true
     end
 
     @documents = @documents.order(id: :desc)

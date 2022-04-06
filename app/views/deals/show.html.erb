@@ -4,7 +4,10 @@
 <%= render "/deals/show", deal: @deal %>
 
 <% if current_user.entity_id == @deal.entity_id %>
-
+  
+  <%= render "/layouts/steps", steps: ["Setup Deal Details", "Upload Deal Docs", "Add Investments", 
+          "Customize Deal Steps", "Setup Access Rights", "Start Deal"].freeze %>
+          
   <%= render "/deals/deal_details", deal: @deal, show_deal: "No" %>
   
 <% else %>
