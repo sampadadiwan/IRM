@@ -62,7 +62,7 @@ class Investor < ApplicationRecord
 
   before_create :update_name
   def update_name
-    self.investor_name = "#{investor_entity.name} - #{investee_entity.name}" if investor_name.blank?
+    self.investor_name = investor_entity.name if investor_name.blank?
     self.last_interaction_date ||= Time.zone.today - 10.years
     if investor_entity_id.blank?
       e = Entity.create(name: investor_name.split("-")[0], entity_type: "VC")
@@ -73,10 +73,5 @@ class Investor < ApplicationRecord
 
   def to_s
     "#{investor_name} : #{category}"
-  end
-
-  def short_name
-    names = investor_name.split("-")
-    is_holdings_entity ? names[1] : names[0]
   end
 end

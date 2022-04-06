@@ -2,7 +2,7 @@
     <td class="sticky-col first-col">        
         <div class="dropdown">
             <span type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= deal_investor.short_name %>      
+                <%= deal_investor.investor_name %>      
             </span>
             <div class="dropdown-menu">
                 <%= link_to "Nudge", new_nudge_path("nudge[item_id]": deal_investor.id, "nudge[item_type]": "DealInvestor", back_to: deal_path(deal_investor.deal, grid_view: true)), class: "dropdown-item" %>
