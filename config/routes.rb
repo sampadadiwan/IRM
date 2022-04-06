@@ -99,7 +99,7 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: {
     registrations: "users/registrations",
-    passwords: "users/passwords",
+    # passwords: "users/passwords",
     confirmations: 'users/confirmations'
   }
 
@@ -113,6 +113,7 @@ Rails.application.routes.draw do
   resources :users do
     get 'search', on: :collection
     get 'welcome', on: :collection
+    post 'reset_password', on: :collection
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

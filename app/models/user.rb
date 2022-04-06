@@ -119,4 +119,8 @@ class User < ApplicationRecord
   def active_for_authentication?
     active && !confirmed_at.nil?
   end
+
+  def reset_password?
+    sign_in_count == 1 && system_created
+  end
 end

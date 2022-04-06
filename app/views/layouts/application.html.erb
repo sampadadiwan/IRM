@@ -68,11 +68,12 @@
             <!-- Main Content -->
             <div id="content">
 
-              
+                
                 <%= render "/layouts/topbar" %>
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <%= render "/users/reset_password" if current_user && current_user.reset_password? %>
                     <span id="alert"></span>
                     <%= yield %>
                 </div>

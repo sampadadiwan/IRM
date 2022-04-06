@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, except: ["welcome"]
   before_action :set_user, only: %w[show update destroy edit]
-  after_action :verify_authorized, except: %i[welcome index search]
+  after_action :verify_authorized, except: %i[welcome index search reset_password]
 
   # GET /users or /users.json
   def index
@@ -60,6 +60,18 @@ class UsersController < ApplicationController
       format.html { redirect_to users_url, notice: "User was successfully deleted." }
       format.json { head :no_content }
     end
+  end
+
+  # This is used to reset password only for system generated users on the first login
+  def reset_password
+    raw, hashed = Devise.token_generator.generate(User, :reset_password_token)
+    current_user.reset_password_token = hashed
+    current_user.reset_password_sent_at = Time.now.utc
+    current_user.save
+
+    sign_out current_user
+
+    redirect_to edit_user_password_path(reset_password_token: raw)
   end
 
   private
