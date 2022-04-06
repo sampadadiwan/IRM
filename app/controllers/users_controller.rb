@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, except: ["welcome"]
   before_action :set_user, only: %w[show update destroy edit]
-  after_action :verify_authorized, except: %i[welcome index search reset_password]
+  after_action :verify_authorized, except: %i[welcome index search reset_password accept_terms]
 
   # GET /users or /users.json
   def index
@@ -60,6 +60,15 @@ class UsersController < ApplicationController
       format.html { redirect_to users_url, notice: "User was successfully deleted." }
       format.json { head :no_content }
     end
+  end
+
+  def accept_terms
+    current_user.accept_terms = true
+    current_user.save
+
+    # puts current_user.to_json
+
+    redirect_to root_path
   end
 
   # This is used to reset password only for system generated users on the first login

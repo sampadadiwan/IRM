@@ -114,6 +114,7 @@ Rails.application.routes.draw do
     get 'search', on: :collection
     get 'welcome', on: :collection
     post 'reset_password', on: :collection
+    post 'accept_terms', on: :collection
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

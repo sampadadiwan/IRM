@@ -73,7 +73,9 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <%= render "/users/reset_password" if current_user && current_user.reset_password? %>
+                    <%= render "/users/reset_password" if (current_user && current_user.reset_password?) %>
+                    <%= render "/layouts/accept_terms" if (current_user && !current_user.accept_terms) %>
+
                     <span id="alert"></span>
                     <%= yield %>
                 </div>
@@ -102,8 +104,8 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <%= render "/layouts/modal" %>
-    
+    <%= render "/layouts/logout_modal" %>    
+    <%= render "/layouts/terms" if (current_user && !current_user.accept_terms) %>
 
 </body>
 
