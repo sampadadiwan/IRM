@@ -26,6 +26,9 @@ $animation-time: 0.5s;
 
 .multi-step {
 	margin: ($base-margin / 2) 0;
+	@media only screen and (max-width: $screen-xs-max) {
+		display: none;
+	}
 }
 
 // Setting up flexbox for list
