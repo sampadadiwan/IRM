@@ -11,7 +11,7 @@ Scenario Outline: Login Successfully
   	|user	              |entity               |msg	|
   	|  	                |entity_type=VC       |Signed in successfully|
     |  	                |entity_type=Startup  |Signed in successfully|
-    |accept_terms=false |entity_type=Startup  |Please accept the terms and conditions|
+    |accept_terms=false |entity_type=Startup  |Please accept the Terms and Conditions|
     |system_created=true|entity_type=Startup  |Please change your password at the earliest|
 
 Scenario Outline: Login Successfully
