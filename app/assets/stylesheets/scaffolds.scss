@@ -312,4 +312,8 @@ div.divider {
 
 .terms_modal {
   max-width: 80% !important;
+  .modal-body {
+    overflow-y: scroll;
+    max-height: 80vh;
+  }
 }
