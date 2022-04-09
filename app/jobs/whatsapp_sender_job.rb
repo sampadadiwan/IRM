@@ -14,12 +14,12 @@ class WhatsappSenderJob < ApplicationJob
     request = Net::HTTP::Post.new(uri)
     request.content_type = "application/x-www-form-urlencoded"
     request["Cache-Control"] = "no-cache"
-    request["Apikey"] = "dluub9kzqvymelc6kngr8op1oz1pxlwf"
+    request["Apikey"] = (ENV['WHATSAPP_API_KEY']).to_s
     request.set_form_data(
       "channel" => "whatsapp",
       "destination" => phone,
       "message" => "{\"type\":\"text\",\"text\":\"#{msg}\"}",
-      "source" => "917834811114",
+      "source" => (ENV['WHATSAPP_SOURCE_PHONE']).to_s,
       "src.name" => "AltConnects"
     )
 
