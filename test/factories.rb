@@ -103,7 +103,7 @@ FactoryBot.define do
 
   factory :document do
     name { "Fact Sheet,Cap Table,Latest Financials,Conversion Stats,Deal Sheet".split(",").sample }
-    text { Faker::Quotes::Rajnikanth.joke }
+    text { Faker::Company.catch_phrase }
     entity { Entity.all.sample }
     file { File.new("public/img/undraw_profile.svg", "r") }
     folder { Folder.first }
@@ -114,14 +114,14 @@ FactoryBot.define do
     deal_investor { DealInvestor.all.sample }
     entity_id { deal_investor.entity_id}
     user { rand(2).positive? ? deal_investor.investor.investor_entity.employees.sample : deal_investor.investor.investee_entity.employees.sample }
-    content { Faker::Quotes::Rajnikanth.joke }
+    content { Faker::Company.catch_phrase }
     is_task { rand(2) }
     not_msg { rand(2) }
   end
 
   factory :deal_activity do
     title { Faker::Company.catch_phrase }
-    details { Faker::Quotes::Rajnikanth.joke }
+    details { Faker::Company.catch_phrase }
     deal { Deal.all.sample }
     deal_investor { deal.deal_investors.sample }
     by_date { Date.today + rand(10).days }
@@ -153,7 +153,7 @@ FactoryBot.define do
 
   factory :note do
     investor { Investor.all.sample }
-    details { Faker::Quotes::Rajnikanth.joke }
+    details { Faker::Company.catch_phrase }
     entity_id { investor.investee_entity_id }
     user { investor.investee_entity.employees.sample }
     created_at {Time.now - rand(120).days}

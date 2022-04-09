@@ -317,3 +317,16 @@ div.divider {
     max-height: 75vh;
   }
 }
+
+$screen-xs-max: 786px;
+
+.enable_whatsapp {
+
+  .click_btn { display: none; } 
+
+  display: inline;
+    @media only screen and (max-width: $screen-xs-max) {
+      .qr_code { display: none; } 
+      .click_btn { display: block;}  
+    }
+}
