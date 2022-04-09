@@ -3,22 +3,6 @@ namespace :irm do
   require 'digest/sha1'
   require 'factory_bot'
 
-  desc "Cleans p DB - DELETES everything -  watch out"
-  task emptyDB: :environment do
-    PaperTrail::Version.delete_all
-    AccessRight.delete_all
-    DealMessage.delete_all
-    DealActivity.delete_all
-    DealDoc.delete_all
-    DealInvestor.delete_all
-    Deal.delete_all
-    Document.delete_all
-    Investment.delete_all
-    Investor.delete_all
-    Note.delete_all
-    User.delete_all
-    Entity.delete_all
-  end
 
   desc "generates fake Entity for testing"
   task generateFakeEntities: :environment do
@@ -113,9 +97,32 @@ namespace :irm do
         folders.each do |f|
           Folder.create(entity: e, name: f, parent: root)
         end
-      
+
+        e.reload
+        folders = ["Q1", "Q2", "Q3", "Q4"]
+        root = e.folders.where(name: "Finances").first
+        folders.each do |f|
+          Folder.create(entity: e, name: f, parent: root)
+        end
+
+
+        e.reload
+        folders = ["Operational", "Sales", "People", "Tech"]
+        root = e.folders.where(name: "Metrics").first
+        folders.each do |f|
+          Folder.create(entity: e, name: f, parent: root)
+        end
+
+        e.reload
+        folders = ["East", "West", "North", "South"]
+        root = e.folders.where(name: "Sales").first
+        folders.each do |f|
+          Folder.create(entity: e, name: f, parent: root)
+        end
+
+
         (0..4).each do |i|
-          doc = Document.create!(entity: e, name: dnames[i], text: Faker::Quotes::Rajnikanth.joke, folder: e.folders.sample,
+          doc = Document.create!(entity: e, name: dnames[i], text: Faker::Company.catch_phrase, folder: e.folders.sample,
                                  file: File.new("public/img/#{files[i]}", "r"))
 
           5.times do
