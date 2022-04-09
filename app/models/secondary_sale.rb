@@ -54,6 +54,7 @@ class SecondarySale < ApplicationRecord
       # Ensure this user has investor access
       .joins(entity: :investor_accesses)
       .merge(InvestorAccess.approved_for(user, entity))
+      .distinct
   end
 
   def active?

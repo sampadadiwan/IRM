@@ -10,7 +10,7 @@ class AccessRightsMailer < ApplicationMailer
       mail(to: ENV['SUPPORT_EMAIL'],
            bcc: emails,
            cc: ENV['SUPPORT_EMAIL'],
-           subject: "Access: #{@access_right.owner.name}")
+           subject: "Access Granted to #{@access_right.owner_type} #{@access_right.owner.name} by #{@access_right.entity.name}")
     end
   end
 end

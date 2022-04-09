@@ -3,7 +3,7 @@
 <p>
 
     You have been granted access as an investor to <%= @investor_access.entity_name %>
-    Please <%= link_to "Login", new_user_session_url(email: @investor_access.email) %> or 
-    <%= link_to "Register", new_user_registration_url(email: @investor_access.email) %> 
+
+    <p class="btn btn-primary"><%= link_to  "Login to Access", new_user_session_url(email: @investor_access.email) %></p>
 
 </p>

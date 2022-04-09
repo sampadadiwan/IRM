@@ -24,7 +24,7 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def show_interest?
-    (record.active? && user.has_cached_role?(:secondary_buyer) && record.visible_externally)
+    record.active? && user.has_cached_role?(:secondary_buyer)
   end
 
   def see_private_docs?
