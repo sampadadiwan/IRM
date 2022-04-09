@@ -1,8 +1,13 @@
 class InvestorAccessMailer < ApplicationMailer
   def notify_access
     @investor_access = InvestorAccess.find params[:investor_access_id]
+
+    subj = "Access Granted to #{@investor_access.entity_name}"
     mail(to: @investor_access.email,
          cc: ENV['SUPPORT_EMAIL'],
-         subject: "Access Granted to #{@investor_access.entity_name} ")
+         subject: subj)
+
+    msg = "Access Granted to #{@investor_access.entity_name} to AltConnects. Please login to view details."
+    WhatsappSenderJob.new.perform(msg, @investor_access.user) if @investor_access.user
   end
 end

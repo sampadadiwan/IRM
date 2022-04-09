@@ -1,0 +1,36 @@
+class WhatsappSenderJob < ApplicationJob
+  queue_as :default
+
+  def perform(msg, user)
+    if user.whatsapp_enabled
+      send(msg, user.phone)
+    else
+      Rails.logger.debug "Whatsapp msg not sent. User has not enabled it"
+    end
+  end
+
+  def send(msg, phone)
+    uri = URI.parse("https://api.gupshup.io/sm/api/v1/msg")
+    request = Net::HTTP::Post.new(uri)
+    request.content_type = "application/x-www-form-urlencoded"
+    request["Cache-Control"] = "no-cache"
+    request["Apikey"] = "dluub9kzqvymelc6kngr8op1oz1pxlwf"
+    request.set_form_data(
+      "channel" => "whatsapp",
+      "destination" => phone,
+      "message" => "{\"type\":\"text\",\"text\":\"#{msg}\"}",
+      "source" => "917834811114",
+      "src.name" => "AltConnects"
+    )
+
+    req_options = {
+      use_ssl: uri.scheme == "https"
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    logger.debug "Whatsapp msg to #{phone}, Response Code: #{response.code}, Response Body: #{response.body}"
+  end
+end

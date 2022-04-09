@@ -13,5 +13,8 @@ class InterestMailer < ApplicationMailer
     mail(to: emails,
          cc: ENV['SUPPORT_EMAIL'],
          subject: "Interest Shortlisted for #{@interest.secondary_sale.name} ")
+
+    msg = "Interest Shortlisted for #{@interest.secondary_sale.name} from #{@interest.secondary_sale.entity.name}. #{secondary_sale_url(@interest.secondary_sale)}"
+    WhatsappSenderJob.new.perform(msg, @interest.user)
   end
 end
