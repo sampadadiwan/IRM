@@ -19,6 +19,9 @@
         </div>
     </td>
     <td>
+        <%= deal_investor.entity.name %>
+    </td>
+    <td>
         <%= money_to_currency deal_investor.pre_money_valuation, params %>
     </td>
     <td>
@@ -57,5 +60,9 @@
             </span>  
             <% end %> 
         <% end %>
+    </td>
+
+    <td>
+        <%= link_to "Show", deal_investor, class: "btn btn-primary" %>
     </td>
 </tr>

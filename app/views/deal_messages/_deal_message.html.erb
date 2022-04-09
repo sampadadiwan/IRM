@@ -1,10 +1,18 @@
 
 <tr id="<%= dom_id deal_message %>">
   <td>
-      <%= link_to deal_message.user.name, deal_messages_path(user_id: deal_message.user_id, tasks: true) %>
+      <% if deal_message.entity_id == current_user.entity_id %>
+        <%= link_to deal_message.user.name, deal_messages_path(user_id: deal_message.user_id, tasks: true) %>
+      <% else %>
+        <%= deal_message.user.name %>
+      <% end %>
   </td>  
   <td>
-    <%= link_to deal_message.deal_investor.investor_name, deal_message.deal_investor %>
+    <% if deal_message.entity_id == current_user.entity_id %>
+      <%= link_to deal_message.deal_investor.investor_name, deal_message.deal_investor %>
+      <% else %>
+        <%= deal_message.deal_investor.investor_name %>
+      <% end %>
   </td>
   <td>
       <%= deal_message.content %>
