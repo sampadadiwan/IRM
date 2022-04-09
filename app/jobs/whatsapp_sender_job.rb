@@ -10,6 +10,8 @@ class WhatsappSenderJob < ApplicationJob
   end
 
   def send(msg, phone)
+    phone = "+91#{phone}" unless phone.starts_with?("+91")
+
     uri = URI.parse("https://api.gupshup.io/sm/api/v1/msg")
     request = Net::HTTP::Post.new(uri)
     request.content_type = "application/x-www-form-urlencoded"
