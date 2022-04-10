@@ -1,3 +1,4 @@
 <%= render "/layouts/alerts" %>
-
-<%= render "/users/index", users: @users %>
+<div data-controller="datatable">
+    <%= render "/users/index", users: @users %>
+</div>

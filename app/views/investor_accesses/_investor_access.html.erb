@@ -9,7 +9,9 @@
     <%= investor_access.email %>
   </td>
   <td>
-    <%= investor_access.approved ? "Yes" : "No" %>
+    <span class="badge <%= investor_access.approved ? 'bg-success' : 'bg-warning' %>">
+      <%= investor_access.approved ? "Yes" : "No" %>
+    </span>
   </td>
   <td>
     <%= investor_access.granter&.name %>

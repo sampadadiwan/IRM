@@ -7,6 +7,8 @@
                     </button>
 
                     <!-- Topbar Search -->
+                    <% if @search_controller %>
+
                     <form action="/<%=@search_controller%>/search"
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
@@ -20,10 +22,12 @@
                             </div>
                         </div>
                     </form>
+                    <% end %>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
+                        <% if @search_controller %>
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -33,6 +37,7 @@
                             <!-- Dropdown - Messages -->
                             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                                 aria-labelledby="searchDropdown">
+
                                 <form class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
                                         <input type="text" class="form-control bg-light border-0 small"
@@ -45,9 +50,12 @@
                                         </div>
                                     </div>
                                 </form>
+
+
                             </div>
                         </li>
 
+                        <% end %>
 
       
                         <div class="topbar-divider "></div>
@@ -75,6 +83,17 @@
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Entity Details
                                 </a>
+
+                                <a class="dropdown-item" href="<%= users_path %>">
+                                    <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Entity Users
+                                </a>
+
+                                <a class="dropdown-item" href="<%= access_rights_path %>">
+                                    <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Access Rights
+                                </a>
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

@@ -20,8 +20,9 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name phone role entity_id whatsapp_enabled])
   end
 
+  SEARCH_CONTROLLERS = ["notes"].freeze
   def set_search_controller
-    @search_controller = params[:controller] == "home" ? "entities" : params[:controller]
+    @search_controller = SEARCH_CONTROLLERS.include?(params[:controller]) ? params[:controller] : nil
   end
 
   rescue_from Pundit::NotAuthorizedError do |_exception|
