@@ -153,9 +153,25 @@ FactoryBot.define do
 
   factory :note do
     investor { Investor.all.sample }
-    details { Faker::Company.catch_phrase }
+    details { 
+      [
+        "investor is keen on the space; have invested in peers globally",
+        "investment size over $75m",
+        "want to see positive cash flows ",
+        "Meeting rescheduled 4 times; led by analyst and MD didn't show up",
+        "Want to track company for 3-4 quarters before investing ",
+        "Very keen on the space; have met all the peers and will come in for primary or secondary at short notice ",
+        "Partner is alumni from business school and a techie at heart",
+        "IC will focus on customer acquisition and market share gains over revenue / profitability ",
+        "Sweet spot of $20-40million investment; this is a high conviction sector for them",
+        "Arrogant investor; thinks we won't survive  ",
+        "Invested in peers; probably fishing for information ",
+        "High energy team; have offered to make introductions with the Silicon valley biggies for US roll-out"
+      ].sample 
+    }
     entity_id { investor.investee_entity_id }
     user { investor.investee_entity.employees.sample }
+    on { Time.now - rand(120).days }
     created_at {Time.now - rand(120).days}
   end
 
