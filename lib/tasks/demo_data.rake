@@ -99,7 +99,7 @@ namespace :irm do
         end
 
         e.reload
-        folders = ["Q1", "Q2", "Q3", "Q4"]
+        folders = ["Q1", "Q2", "Q3", "Q4", "Series A"]
         root = e.folders.where(name: "Finances").first
         folders.each do |f|
           Folder.create(entity: e, name: f, parent: root)
@@ -114,8 +114,8 @@ namespace :irm do
         end
 
         e.reload
-        folders = ["East", "West", "North", "South"]
-        root = e.folders.where(name: "Sales").first
+        folders = ["Product Demos", "Founder Interviews", "2022 Roadmap"]
+        root = e.folders.where(name: "Investor Notes").first
         folders.each do |f|
           Folder.create(entity: e, name: f, parent: root)
         end

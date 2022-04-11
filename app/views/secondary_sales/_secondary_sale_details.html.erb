@@ -9,13 +9,12 @@
 
   <nav class="nav nav-tabs nav-fill nav-justified"  role="tablist" data-controller="tabdetails">
     <% if current_user.entity_id == secondary_sale.entity_id %>
-      <% holdings_active = true %>
-      <input hidden=true value="#holdings-tab" id="clickOnLoad" />
+      <% access_right_active = true %>
+      <input hidden=true value="#access-rights-tab" id="clickOnLoad" />
 
-      <a class="nav-link <%= holdings_active ? 'active' : '' %>" data-bs-toggle="pill" data-toggle="tab" href="#holdings-tab">Holdings</a>
+      <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">Access Rights</a>
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#offerings-tab" data-action="click->tabdetails#loadData">Offers</a>
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#interests-tab" data-action="click->tabdetails#loadData">Interests</a>
-      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">Access Rights</a>
     
     <% elsif current_user.has_cached_role?(:holding) %>
       <% holdings_active = true %>
@@ -41,7 +40,7 @@
   </nav>
 
   <div class="tab-content">
-      <div id="access-rights-tab" class="tab-pane fade">
+      <div id="access-rights-tab" class="tab-pane fade <%= access_right_active ? 'in show active' : '' %>">
         <div id="access_rights" class="associated_entity">
           <% access_right = AccessRight.new(
               owner_id: secondary_sale.id, 

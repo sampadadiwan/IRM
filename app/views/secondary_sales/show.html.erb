@@ -136,4 +136,6 @@
     <% end %>
   </div>
 
+  <%= render "/layouts/steps", steps: ["Setup Access Rights", "View / Approve Offers", "View / Shortlist Interests"].freeze if @secondary_sale.entity_id == current_user.entity_id %>
+
   <%= render "/secondary_sales/secondary_sale_details" , secondary_sale: @secondary_sale %>
