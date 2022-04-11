@@ -6,7 +6,7 @@ class InvestmentPercentageHoldingJob < ApplicationJob
     # Ensure that all investments of the investee entity are adjusted for percentage
     update_investment_percentage(investment)
     # Ensure that all aggregate investments of the investee entity are adjusted for percentage
-    update_aggregate_percentage(investment.aggregate_investment)
+    update_aggregate_percentage(investment.aggregate_investment) if investment.aggregate_investment
     # We also update the funding round to reflect the amount_raised
     investment.funding_round&.save
   end

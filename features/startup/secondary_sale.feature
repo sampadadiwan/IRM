@@ -41,7 +41,6 @@ Scenario Outline: Create new sale with holdings
   And Given I create a holding for each employee with quantity "<quantity>"
   Given there is a sale "<sale>"
   And I am at the sales details page
-  Then I should see the holdings
 Examples:
     |user	      |entity               |sale             |quantity	|
     |  	        |entity_type=Startup  |name=Grand Sale  |100        |

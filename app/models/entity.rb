@@ -149,6 +149,6 @@ class Entity < ApplicationRecord
   end
 
   def actual_scenario
-    scenarios.where(name: "Actual").first
+    self.scenarios.where(name: "Actual").first
   end
 end
