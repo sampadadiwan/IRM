@@ -66,6 +66,7 @@ class EntityDashboard < Administrate::BaseDashboard
     enable_investments
     enable_holdings
     enable_secondary_sale
+    employees
   ].freeze
 
   # FORM_ATTRIBUTES

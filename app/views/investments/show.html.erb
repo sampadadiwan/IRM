@@ -124,7 +124,7 @@
 <% if current_user.entity_id == @investment.investee_entity_id %>
 
    <div>
-      <%= link_to "Edit", edit_investment_path(@investment), {class: "btn btn-primary"} %> |
+      <%= link_to "Edit", edit_investment_path(@investment), {class: "btn btn-primary"} unless @investment.employee_holdings %> |
       <%= link_to "Back", investments_path, {class: "btn btn-primary"} %> |
 
       <% if current_user.entity_id == @investment.investee_entity_id %>

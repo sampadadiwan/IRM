@@ -36,7 +36,7 @@ class InvestmentPolicy < ApplicationPolicy
   end
 
   def edit?
-    create?
+    create? && !employee_holdings
   end
 
   def destroy?
