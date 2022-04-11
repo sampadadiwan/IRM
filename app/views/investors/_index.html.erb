@@ -4,8 +4,14 @@
     <h1 class="h3 mb-0 text-gray-800">
       <%= header %>
     </h1>
+
+    <span>
     <%= link_to "New Investor" , new_investor_path("investor[investee_entity_id]": current_user.entity_id),
       {class: "btn btn-primary" } %>
+    
+    <%= link_to "All Notes" , notes_path, {class: "btn btn-primary" } %>
+
+    </span>
 </div>
 
 <div class="table-responsive" data-controller="datatable">
