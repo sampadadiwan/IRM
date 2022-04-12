@@ -17,6 +17,13 @@ Highcharts.setOptions({
   }
 });
 
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-4CPQNX69HM');
+
+
 $(document).on('turbo:before-cache', function() {     
   if( $('.select2-container').length > 0 ){
     // Hack to make sure select2 does not get duplicated due to turbolinks
