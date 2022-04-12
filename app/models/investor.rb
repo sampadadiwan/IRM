@@ -60,13 +60,15 @@ class Investor < ApplicationRecord
     Investment.INVESTOR_CATEGORIES(entity) + ["Prospective"]
   end
 
-  before_create :update_name
+  before_validation :update_name
   def update_name
     self.investor_name = investor_entity.name if investor_name.blank?
     self.last_interaction_date ||= Time.zone.today - 10.years
-    if investor_entity_id.blank?
-      e = Entity.create(name: investor_name.split("-")[0], entity_type: "VC")
 
+    # Ensure we have an investor entity
+    if investor_entity_id.blank?
+      e = Entity.where(name: investor_name).first
+      e ||= Entity.create(name: investor_name, entity_type: "VC")
       self.investor_entity = e
     end
   end

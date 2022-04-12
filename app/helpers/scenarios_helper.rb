@@ -6,6 +6,10 @@ module ScenariosHelper
     scenario_id
   end
 
+  def clear_current_scenario
+    cookies.delete :scenario_id
+  end
+
   # # This is a critical helper method for Investment & AggregateInvestment to fuction properly
   # # It dictates which Investment and AI are shown based on the current_scenario
   # # Also any new Investment created are set to the current_scenario

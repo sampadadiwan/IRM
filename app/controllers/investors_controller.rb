@@ -41,20 +41,6 @@ class InvestorsController < ApplicationController
     @investor.investee_entity_id = current_user.entity_id unless current_user.has_role?(:super)
     authorize @investor
 
-    if investor_params[:investor_entity_id].blank?
-      entity = Entity.create(name: params[:investor][:investor_entity_name],
-                             entity_type: "VC", created_by: current_user.id)
-
-      @investor.investor_entity_id = entity.id
-
-    end
-
-    # Sometimes we dont have an investor entity
-    if @investor.investor_entity_id.blank?
-      e = Entity.new(name: @investor.investor_name, entity_type: "VC")
-      @investor.investor_entity = e
-    end
-
     respond_to do |format|
       if @investor.save
         redirect_url = params[:back_to].presence || investor_url(@investor)

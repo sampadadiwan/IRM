@@ -27,6 +27,8 @@ class AggregateInvestmentsController < ApplicationController
   end
 
   def investor_investments
+    helpers.clear_current_scenario
+
     if params[:entity_id].present?
       @entity = Entity.find(params[:entity_id])
       @aggregate_investments = AggregateInvestment.for_investor(current_user, @entity)

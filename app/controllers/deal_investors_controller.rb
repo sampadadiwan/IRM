@@ -1,10 +1,14 @@
 class DealInvestorsController < ApplicationController
   before_action :set_deal_investor, only: %w[show update destroy edit]
+  after_action :verify_policy_scoped, except: %i[index search]
 
   # GET /deal_investors or /deal_investors.json
   def index
-    @deal_investors = policy_scope(DealInvestor).includes(:investor, :deal)
-
+    @deal_investors = if params[:for_investor].present?
+                        DealInvestor.for_investor(current_user)
+                      else
+                        policy_scope(DealInvestor).includes(:investor, :deal)
+                      end
     @deal_investors = @deal_investors.where(deal_id: params[:deal_id]) if params[:deal_id].present?
   end
 
