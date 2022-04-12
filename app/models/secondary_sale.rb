@@ -66,6 +66,6 @@ class SecondarySale < ApplicationRecord
   end
 
   def notify_open_for_offers
-    SecondarySaleMailer.with(id: id).notify_open_for_offers.deliver_now
+    SecondarySaleMailer.with(id: id).notify_open_for_offers.deliver_later
   end
 end
