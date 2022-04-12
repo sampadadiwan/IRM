@@ -15,10 +15,16 @@
     <%= investment.category %>
 </td>
 <td>
-    <%= investment.funding_round ? link_to(investment.investment_type, investment.funding_round) : investment.investment_type %>
+    <% if current_user.entity_id == investment.investee_entity_id %>
+        <%= investment.funding_round ? link_to(investment.investment_type, investment.funding_round) : investment.investment_type %>
+    <% else %>
+        <%= investment.investment_type %>
+    <% end %>
+
 </td>  
 <td>
-    <%= link_to investment.investor.investor_name, investment.investor %>
+    <%= (current_user.entity_id == investment.investee_entity_id) ? 
+            link_to(investment.investor.investor_name, investment.investor) : investment.investor.investor_name %>
     <div><span class="badge badge-info"><%= investment.category %><span></div>
 </td>  
 

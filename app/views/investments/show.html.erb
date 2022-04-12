@@ -5,7 +5,11 @@
          Investment Type
       </td>
       <td>
-         <%= @investment.funding_round ? link_to(@investment.investment_type, @investment.funding_round) : @investment.investment_type %>
+         <% if current_user.entity_id == @investment.investee_entity_id %>
+            <%= @investment.funding_round ? link_to(@investment.investment_type, @investment.funding_round) : @investment.investment_type %>
+         <% else %>
+            <%= @investment.investment_type %>
+         <% end %>
       </td>
    </tr>
    <tr>
@@ -13,7 +17,8 @@
          Investor
       </td>
       <td>
-         <%= link_to @investment.investor.investor_name, @investment.investor %>
+         <%= (current_user.entity_id == @investment.investee_entity_id) ? 
+            link_to(@investment.investor.investor_name, @investment.investor) : @investment.investor.investor_name %>
       </td>
    </tr>
    <tr>
@@ -21,7 +26,7 @@
          Investee Entity
       </td>
       <td>
-         <%= link_to @investment.investee_entity.name, @investment.investee_entity %>
+         <%= @investment.investee_entity.name %>
       </td>
    </tr>
 
@@ -109,14 +114,16 @@
       </td>
    </tr>
 
-   <tr>
-      <td>
-         Notes
-      </td>
-      <td>
-         <%= @investment.notes %>
-      </td>
-   </tr>
+   <% if current_user.entity_id == @investment.investee_entity_id %>
+      <tr>
+         <td>
+            Notes
+         </td>
+         <td>
+            <%= @investment.notes %>
+         </td>
+      </tr>
+   <% end %>
 
    <% end %>
 </table>
