@@ -60,4 +60,12 @@ class SecondarySale < ApplicationRecord
   def active?
     start_date <= Time.zone.today && end_date >= Time.zone.today
   end
+
+  def notify_advisors
+    SecondarySaleMailer.with(id: id).notify_advisors.deliver_later
+  end
+
+  def notify_open_for_offers
+    SecondarySaleMailer.with(id: id).notify_open_for_offers.deliver_now
+  end
 end

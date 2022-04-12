@@ -1,0 +1,26 @@
+<h3>Dear User</h3>
+
+<p>
+    A new secondary sale <%= @secondary_sale.name %> has been opened by <%= @secondary_sale.entity.name %>  
+    and is accepting offers. If you have holdings and want to offer them out in the sale, 
+    then this is your chance. 
+    
+</p>
+
+
+<p>
+    <%= render "/secondary_sale_mailer/sale", secondary_sale: @secondary_sale, current_user: nil %>
+</p>
+
+<p class="btn btn-primary"><%= link_to 'View Sale', secondary_sale_url(@secondary_sale) %></p>
+
+<h3>Next Steps</h3>
+<p>
+    <ul>
+        <li>Login and enter an offer.</li>
+        <li>Wait for the offer to be approved.</li>
+        <li>Wait for notification that the purchase has gone through</li>
+        <li>A separate email will send you the details of the sale and the deposit to your account</li>
+    </ul>
+</p>
+

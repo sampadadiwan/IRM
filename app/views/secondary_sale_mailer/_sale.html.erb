@@ -1,0 +1,68 @@
+<table class="table table-bordered dataTable">
+
+    <tr>
+        <td>
+            Name
+        </td>
+        <td>
+            <%= secondary_sale.name %>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Entity
+        </td>
+        <td>
+            <%= secondary_sale.entity.name %>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Total Quantity Offered
+        </td>
+        <td>
+            <%= secondary_sale.total_offered_quantity %>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Start Date
+        </td>
+        <td>
+            <%= l secondary_sale.start_date %>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            End Date
+        </td>
+        <td>
+            <%= l secondary_sale.end_date %>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Min Price
+        </td>
+        <td>
+            <%= secondary_sale.min_price %>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Max Price
+        </td>
+        <td>
+            <%= secondary_sale.max_price %>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Active
+        </td>
+        <td>
+            <%= secondary_sale.active? ? "Yes" : "No" %>
+        </td>
+    </tr>
+
+</table>
