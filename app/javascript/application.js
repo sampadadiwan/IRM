@@ -34,11 +34,13 @@ $(document).on('turbo:before-cache', function() {
 
 $( document ).on('turbo:load', function() {
 
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-4CPQNX69HM');
+    if (document.location.hostname.search("localhost") !== 0) {
+      console.log("Google Analytics Enabled");
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4CPQNX69HM');
+    }
 
     $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});
     $('.toast').toast('show');
