@@ -18,7 +18,10 @@
         <% if @holding.user %>
           <%=  @holding.user.full_name %>, <%= @holding.user.email %>
         <% else %>
-          <%= link_to @holding.investor.investor_name, @holding.investor %>
+
+          <%= current_user.entity_id == @holding.entity_id ?  
+              link_to(@holding.investor.investor_name, @holding.investor) : @holding.investor.investor_name  %>
+
         <% end %>
       </td>
     </tr>

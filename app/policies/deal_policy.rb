@@ -19,8 +19,9 @@ class DealPolicy < ApplicationPolicy
     if user.has_cached_role?(:super) || (user.entity_id == record.entity_id && user.entity.enable_deals)
       true
     else
-      user.entity.enable_deals &&
-        Deal.for_investor(user).where("deals.id=?", record.id).first.present?
+      false
+      # user.entity.enable_deals &&
+      #   Deal.for_investor(user).where("deals.id=?", record.id).first.present?
     end
   end
 

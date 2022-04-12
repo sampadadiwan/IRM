@@ -6,13 +6,16 @@
         <%= deal_activity.sequence %>
     </td>
     <td>
-        <%= link_to deal_activity.title, deal_activity %>
+        <%= link_to(deal_activity.title, deal_activity) %>
     </td>
     <td class="">
-        <%= link_to deal_activity.deal_name, deal_activity.deal %>
+        <%= current_user.entity_id == deal_activity.entity_id ? 
+                link_to(deal_activity.deal_name, deal_activity.deal) : deal_activity.deal_name %>
+        
     </td>
     <td class="">
-        <%= link_to deal_activity.investor_name, deal_activity.deal_investor if deal_activity.deal_investor %>
+        <%= current_user.entity_id == deal_activity.entity_id && deal_activity.deal_investor ? 
+            link_to(deal_activity.investor_name, deal_activity.deal_investor) : deal_activity.investor_name %>
     </td>
     <td>
         <%= l deal_activity.by_date if deal_activity.by_date %>
