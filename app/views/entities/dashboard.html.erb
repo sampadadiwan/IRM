@@ -1,11 +1,13 @@
 <%= render "/layouts/alerts" %>
 
-
-
 <% if current_user.entity %>
     <% if current_user.entity.entity_type == "Startup" %>
         <%= render "cxo_dashboard" %>
-    <% else %>
+    <% elsif current_user.entity.entity_type == "VC" %>
         <%= render "vc_dashboard" %>
+    <% elsif current_user.entity.entity_type == "Holding" %>
+        <%= render "holding_dashboard" %>
+    <% elsif current_user.entity.entity_type == "Holding" %>
+        <%= render "advisor_dashboard" %>
     <% end %>
 <% end %>

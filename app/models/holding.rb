@@ -40,6 +40,10 @@ class Holding < ApplicationRecord
 
   validates :quantity, :holding_type, presence: true
 
+  scope :investors, -> { where(holding_type: "Investor") }
+  scope :employees, -> { where(holding_type: "Employee") }
+  scope :founders, -> { where(holding_type: "Founder") }
+
   after_save ->(_holding) { HoldingUpdateJob.perform_later(id) },
              if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
 
