@@ -1,6 +1,6 @@
 class DealInvestorsController < ApplicationController
   before_action :set_deal_investor, only: %w[show update destroy edit]
-  after_action :verify_policy_scoped, except: %i[index search]
+  after_action :verify_policy_scoped, only: %i[]
 
   # GET /deal_investors or /deal_investors.json
   def index
