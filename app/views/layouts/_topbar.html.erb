@@ -24,8 +24,12 @@
                     </form>
                     <% end %>
 
+
+                    
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
+
 
                         <% if @search_controller %>
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -57,7 +61,11 @@
 
                         <% end %>
 
-      
+                        <% if current_user && current_user.has_cached_role?(:startup) && current_user.has_cached_role?(:investor) %>
+                            <div class="topbar-divider "></div>
+                            <%= render "/layouts/persona" %>
+                        <% end %>
+
                         <div class="topbar-divider "></div>
 
                         <!-- Nav Item - User Information -->

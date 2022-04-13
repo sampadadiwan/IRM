@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, except: ["welcome"]
   before_action :set_user, only: %w[show update destroy edit]
-  after_action :verify_authorized, except: %i[welcome index search reset_password accept_terms]
+  after_action :verify_authorized, except: %i[welcome index search reset_password accept_terms set_persona]
 
   # GET /users or /users.json
   def index
@@ -68,6 +68,11 @@ class UsersController < ApplicationController
 
     # puts current_user.to_json
 
+    redirect_to root_path
+  end
+
+  def set_persona
+    cookies[:persona] = params[:persona]
     redirect_to root_path
   end
 

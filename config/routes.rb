@@ -113,6 +113,7 @@ Rails.application.routes.draw do
   resources :users do
     get 'search', on: :collection
     get 'welcome', on: :collection
+    get 'set_persona', on: :collection
     post 'reset_password', on: :collection
     post 'accept_terms', on: :collection
   end
