@@ -62,6 +62,10 @@ class AccessRight < ApplicationRecord
                                   investor.investee_entity_id, investor.id, investor.category)
                           }
 
+  scope :access_filter, lambda {
+    where("investors.category=access_rights.access_to_category OR access_rights.access_to_investor_id=investors.id")
+  }
+
   validate :any_present?
 
   def any_present?

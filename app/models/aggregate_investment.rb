@@ -34,14 +34,13 @@ class AggregateInvestment < ApplicationRecord
     investments = actual_scenario.aggregate_investments
                                  # Ensure the access rights for Investment
                                  .joins(entity: %i[investors access_rights])
-                                 .merge(AccessRight.for_access_type("Investment"))
+                                 .merge(AccessRight.access_filter)
                                  # Ensure that the user is an investor and tis investor has been given access rights
                                  .where("entities.id=?", entity.id)
                                  .where("investors.investor_entity_id=?", current_user.entity_id)
-                                 .where("investors.category=access_rights.access_to_category OR access_rights.access_to_investor_id=investors.id")
                                  # Ensure this user has investor access
                                  .joins(entity: :investor_accesses)
-                                 .merge(InvestorAccess.approved_for(current_user, entity))
+                                 .merge(InvestorAccess.approved_for_user(current_user))
 
     # return investments if investments.blank?
 
