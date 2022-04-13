@@ -73,12 +73,10 @@ class AccessRight < ApplicationRecord
   end
 
   def access_to_label
-    label = ""
+    label = access_to_category if access_to_category.present?
+    label ||= investor.investor_name if access_to_investor_id.present?
 
-    label += "#{access_to_category}, " if access_to_category.present?
-    label += "#{investor.investor_name}, " if access_to_investor_id.present?
-
-    label[0..-3]
+    label
   end
 
   def investor_emails
