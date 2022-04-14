@@ -5,11 +5,11 @@ class SecondarySaleMailer < ApplicationMailer
     @secondary_sale = SecondarySale.find(params[:id])
 
     # Should we send emails to all advisors ? Or all second
-    advisor_emails = User.joins(:entity).where('entities.entity_type in (?) or users.sale_notification=?',
-                                               ["Advisor", "Family Office"], true).collect(&:email)
+    sale_emails = User.joins(:entity).where('entities.entity_type in (?) or users.sale_notification=?',
+                                            ["Advisor", "Family Office"], true).collect(&:email)
 
     mail(to: ENV['SUPPORT_EMAIL'],
-         bcc: advisor_emails.join(','),
+         bcc: sale_emails.join(','),
          subject: "New Secondary Sale: #{@secondary_sale.name} by #{@secondary_sale.entity.name}")
   end
 
