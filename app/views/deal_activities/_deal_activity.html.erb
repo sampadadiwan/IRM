@@ -8,19 +8,19 @@
     <td>
         <%= link_to(deal_activity.title, deal_activity) %>
     </td>
-    <td class="">
+    <td class="hideMobP">
         <%= current_user.entity_id == deal_activity.entity_id ? 
                 link_to(deal_activity.deal_name, deal_activity.deal) : deal_activity.deal_name %>
         
     </td>
-    <td class="">
+    <td class="hideMobP">
         <%= current_user.entity_id == deal_activity.entity_id && deal_activity.deal_investor ? 
             link_to(deal_activity.investor_name, deal_activity.deal_investor) : deal_activity.investor_name %>
     </td>
-    <td>
+    <td class="hideMobP">
         <%= l deal_activity.by_date if deal_activity.by_date %>
     </td>
-    <td class="">
+    <td class="hideMobP">
         <%= deal_activity.status %>
     </td>
     <td>
@@ -28,7 +28,7 @@
             <%= deal_activity.completed_status %>
         </span>
     </td>
-    <td class="">
+    <td class="hideMobP">
         <%= deal_activity.days %>
     </td>
 </tr>

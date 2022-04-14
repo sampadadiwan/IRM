@@ -1,8 +1,8 @@
 <tr id="<%= dom_id investor_access %>">
-  <td>
+  <td class="hideMobP">
     <%= investor_access.investor_name %>
   </td>
-  <td>
+  <td class="hideMobP">
     <%= investor_access.user.name if investor_access.user %>
   </td>
   <td>
@@ -13,7 +13,7 @@
       <%= investor_access.approved ? "Yes" : "No" %>
     </span>
   </td>
-  <td>
+  <td class="hideMobP">
     <%= investor_access.granter&.name %>
   </td>
   <td>

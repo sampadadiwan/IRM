@@ -2,13 +2,13 @@
 <td>
     <%= link_to note.user.name, notes_path(user_id: note.user_id) %>
 </td>
-<td>
+<td class="hideMobP">
     <%= l note.on if note.on %>
 </td>    
 <td>
     <%= link_to note.investor.investor_name, note.investor %>
 </td>  
-<td class="">
+<td class="hideMobP">
     <%= note.details %>
 </td>  
 

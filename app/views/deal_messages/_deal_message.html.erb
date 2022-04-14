@@ -1,6 +1,6 @@
 
 <tr id="<%= dom_id deal_message %>">
-  <td>
+  <td class="hideMobP">
       <% if deal_message.entity_id == current_user.entity_id %>
         <%= link_to deal_message.user.name, deal_messages_path(user_id: deal_message.user_id, tasks: true) %>
       <% else %>

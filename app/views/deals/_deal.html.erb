@@ -1,6 +1,6 @@
 
 <tr id="<%= dom_id deal %>">
-<td>
+<td class="hideMobP">
     <%= deal.entity.name %>
 </td>  
 <td>
@@ -20,7 +20,7 @@
 <td>
     <%= money_to_currency deal.amount, params %>
 </td>  
-<td>    
+<td class="hideMobP">    
     <span class="badge bg-info"><%= deal.status %></span>
     <% if deal.archived %>
         <span class="badge bg-danger">Archived</span>

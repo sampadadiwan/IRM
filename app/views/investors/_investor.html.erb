@@ -2,13 +2,13 @@
 <td>
     <%= link_to investor.investor_name, investor %>
 </td>  
-<td>
+<td class="hideMobP hideTab">
   <%= raw investor.tags.map{|tag| link_to(tag.name, search_investors_path(query: tag.name))}.join(", ") %>
 </td>  
 <td>
   <%= investor.category %>
 </td>
-<td>
+<td class="hideMobP">
   <% if investor.investor_access_count > 0 %>
     <span class="badge badge-success">
       <%= link_to "Approved #{investor.investor_access_count}", investor_path(investor, tab: "investors-tab") %>
