@@ -61,6 +61,11 @@ class DealInvestor < ApplicationRecord
     self.investor_name = investor.investor_name
   end
 
+  after_save :create_activities_later, :if => Proc.new {|di| di.deal.started? }
+  def create_activities_later
+    GenerateDealActivitiesJob.perform_later(id, "DealInvestor")
+  end
+
   def to_s
     investor_name
   end
@@ -70,7 +75,7 @@ class DealInvestor < ApplicationRecord
     %w[Employees Founders].include?(names[1].strip) ? names[1] : names[0]
   end
 
-  def create_activites
+  def create_activities
     start_date = deal.start_date
     by_date = nil
     seq = 1

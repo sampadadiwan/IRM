@@ -49,8 +49,8 @@ class Deal < ApplicationRecord
   before_create :set_defaults
   def set_defaults; end
 
-  def create_activites
-    deal_investors.each(&:create_activites)
+  def create_activities
+    deal_investors.each(&:create_activities)
   end
 
   after_create :set_active_deal
@@ -73,7 +73,7 @@ class Deal < ApplicationRecord
   def start_deal
     self.start_date = Time.zone.today
     save
-    GenerateDealActivitiesJob.perform_later(id)
+    GenerateDealActivitiesJob.perform_later(id, "Deal")
   end
 
   def started?

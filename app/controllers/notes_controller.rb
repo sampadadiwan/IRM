@@ -35,6 +35,7 @@ class NotesController < ApplicationController
   # GET /notes/new
   def new
     @note = Note.new(note_params)
+    @note.entity_id = current_user.entity_id
     @note.on = Time.zone.today
     authorize @note
   end

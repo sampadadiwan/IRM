@@ -58,7 +58,7 @@ class DealActivity < ApplicationRecord
     # If the deal has already started && this template for the deal is saved
     if status == "Template" && deal.started?
       # Then we recreate the activities for the deal
-      GenerateDealActivitiesJob.perform_later(deal_id)
+      GenerateDealActivitiesJob.perform_later(deal_id, "Deal")
     end
   end
 
