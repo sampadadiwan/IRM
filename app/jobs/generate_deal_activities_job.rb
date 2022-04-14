@@ -2,10 +2,11 @@ class GenerateDealActivitiesJob < ApplicationJob
   queue_as :default
 
   def perform(id, class_name)
-    if class_name == "Deal"
+    case class_name
+    when "Deal"
       @deal = Deal.find(id)
       @deal.create_activities
-    elsif class_name == "DealInvestor"
+    when "DealInvestor"
       @deal_investor = DealInvestor.find(id)
       @deal_investor.create_activities
     end

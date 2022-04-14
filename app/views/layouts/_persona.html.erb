@@ -2,7 +2,7 @@
 
   <div class="form-group" data-controller="persona">
     <% selected = params[:persona].present? ? params[:persona] : cookies[:persona] %>
-    <%= form.select :persona, [ ["My Startup", :startup], ["My Investment",:investor] ], {selected: selected, include_blank: "Select Persona"}, 
+    <%= form.select :persona, [ ["My Company", :startup], ["My Investments",:investor] ], {selected: selected, include_blank: "Select Persona"}, 
         { id: "persona", class: "form-control", 
         data: { action: "change->persona#setPersona", toggle: "tooltip", title: "Choose Persona" } } %>
   </div>
