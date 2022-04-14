@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_09_085942) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_14_031332) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
     t.string "tour_name"
     t.integer "creator_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["created_at"], name: "index_abraham_histories_on_created_at"
     t.index ["creator_id"], name: "index_abraham_histories_on_creator_id"
     t.index ["updated_at"], name: "index_abraham_histories_on_updated_at"
@@ -312,8 +312,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_085942) do
   create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "body", size: :medium
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -665,6 +665,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_085942) do
     t.string "last_sign_in_ip"
     t.boolean "accept_terms", default: false
     t.boolean "whatsapp_enabled", default: false
+    t.boolean "sale_notification", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true

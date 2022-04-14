@@ -5,7 +5,8 @@ class SecondarySaleMailer < ApplicationMailer
     @secondary_sale = SecondarySale.find(params[:id])
 
     # Should we send emails to all advisors ? Or all second
-    advisor_emails = User.joins(:entity).where('entities.entity_type': "Advisor").collect(&:email)
+    advisor_emails = User.joins(:entity).where('entities.entity_type in (?) or users.sale_notification=?',
+                                               ["Advisor", "Family Office"], true).collect(&:email)
 
     mail(to: ENV['SUPPORT_EMAIL'],
          bcc: advisor_emails.join(','),
@@ -15,7 +16,9 @@ class SecondarySaleMailer < ApplicationMailer
   def notify_open_for_offers
     @secondary_sale = SecondarySale.find(params[:id])
 
-    open_for_offers_emails = @secondary_sale.access_rights.collect(&:investor_emails).flatten
+    # Get all emails of investors & holding company employees
+    open_for_offers_emails = @secondary_sale.access_rights.collect(&:investor_emails).flatten +
+                             @secondary_sale.access_rights.collect(&:holding_employees_emails).flatten
 
     mail(to: ENV['SUPPORT_EMAIL'],
          bcc: open_for_offers_emails.join(','),

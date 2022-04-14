@@ -38,17 +38,6 @@
     <%= form.text_field :phone, class: "form-control" %>
   </div>
 
-
-  <div class="form-group">
-    <%= form.label :whatsapp_enabled %>
-    <%= form.check_box :whatsapp_enabled, class: "form-control form-checkbox" %>
-    <small class="text-muted">
-      Additional step is required to enable whatsapp messages, 
-      you will need to scan a QR shown post saving your profile or 
-      click the 'Receive Whatsapp Updates' button in this app on your phone.
-    </small>
-  </div>
-
   <% if !user.id.present? %>
     <div class="form-group">
       <%= form.label :password %>
@@ -61,6 +50,28 @@
     </div>
   <% end %>
 
+
+  <div class="form-group">
+    <%= form.label :whatsapp_enabled %>
+    <%= form.check_box :whatsapp_enabled, class: "form-control form-checkbox" %>
+    <small class="text-muted">
+      Additional step is required to enable whatsapp messages, 
+      you will need to scan a QR shown post saving your profile or 
+      click the 'Receive Whatsapp Updates' button in this app on your phone.
+    </small>
+  </div>
+
+  <% if Entity::SECONDARY_BUYERS.include? user.entity.entity_type %>
+  <div class="form-group">
+    <%= form.label :sale_notification, "Receive secondary sale notifications" %>
+    <%= form.check_box :sale_notification, class: "form-control form-checkbox" %>
+    <small class="text-muted">
+      Receive alerts on secondary sales by startups across our eco system
+    </small>
+  </div>
+  <% end %>
+
+ 
   <%= form.text_field :entity_id, class: "form-control", hidden: true %>
 
 

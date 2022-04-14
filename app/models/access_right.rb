@@ -83,10 +83,11 @@ class AccessRight < ApplicationRecord
     label
   end
 
+  # Emails of all approved investor users
   def investor_emails
     emails = []
 
-    if access_to_investor_id.present?
+    if access_to_investor_id.present? && !investor.is_holdings_entity
       # Get all the investor -> investor access that are approved, and get the email addresses
       emails = investor.investor_accesses.approved.collect(&:email)
     elsif access_to_category.present?
@@ -95,6 +96,18 @@ class AccessRight < ApplicationRecord
       investors.each do |investor|
         emails += investor.investor_accesses.approved.collect(&:email)
       end
+    end
+
+    emails
+  end
+
+  # Emails of all holding investor users
+  def holding_employees_emails
+    emails = []
+
+    if access_to_investor_id.present? && investor.is_holdings_entity
+      # Get all the investor -> investor access that are approved, and get the email addresses
+      emails = investor.investor_accesses.collect(&:email)
     end
 
     emails

@@ -85,6 +85,8 @@ class Entity < ApplicationRecord
   monetize :total_investments, as: "total", with_model_currency: :currency
 
   TYPES = ["VC", "Startup", "Holding", "Advisor", "Family Office"].freeze
+  SECONDARY_BUYERS = ["VC", "Advisor", "Family Office"].freeze
+
   FUNDING_UNITS = %w[Lakhs Crores].freeze
   PLANS = ENV['PLANS'].split(",")
   scope :holdings, -> { where(entity_type: "Holding") }
