@@ -21,6 +21,7 @@
 #  pre_money_valuation_cents  :decimal(20, 2)   default("0.00")
 #  company_advisor            :string(100)
 #  investor_advisor           :string(100)
+#  investor_name              :string(255)
 #
 
 class DealInvestor < ApplicationRecord

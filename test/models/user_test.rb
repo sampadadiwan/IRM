@@ -25,6 +25,9 @@
 #  last_sign_in_at        :datetime
 #  current_sign_in_ip     :string(255)
 #  last_sign_in_ip        :string(255)
+#  accept_terms           :boolean          default("0")
+#  whatsapp_enabled       :boolean          default("0")
+#  sale_notification      :boolean          default("0")
 #
 
 require "test_helper"

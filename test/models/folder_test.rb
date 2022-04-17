@@ -11,6 +11,7 @@
 #  updated_at       :datetime         not null
 #  entity_id        :integer          not null
 #  documents_count  :integer          default("0"), not null
+#  path_ids         :string(255)
 #
 
 require "test_helper"
