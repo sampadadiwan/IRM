@@ -75,7 +75,7 @@ class User < ApplicationRecord
   end
 
   def setup_defaults
-    if entty
+    if entity
       if entity.entity_type == "Startup"
         add_role :startup
         self.primary_role = :startup
