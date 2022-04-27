@@ -33,6 +33,14 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def set_current_role
+    current_user.current_role = if current_persona
+                                  current_persona.to_sym
+                                else
+                                  current_user.primary_role
+                                end
+  end
+
   def prepare_exception_notifier
     request.env["exception_notifier.exception_data"] = {
       current_user: current_user

@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def current_persona
+    cookies[:persona]
+  end
+
   def current_persona?(persona)
     # setup default persona
     cookies[:persona] ||= current_user.entity.entity_type == "Startup" ? "startup" : nil

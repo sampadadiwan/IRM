@@ -6,7 +6,7 @@ namespace :irm do
 
   desc "generates fake Entity for testing"
   task generateFakeEntities: :environment do
-    startup_names = ["Urban Company", "Wakefit"]#, "PayTm", "Apna", "RazorPay", "Delhivery"]
+    startup_names = ["Urban Company", "Wakefit", "Demo Startup"]#, "PayTm", "Apna", "RazorPay", "Delhivery"]
     startup_names.each do |name|
       e = FactoryBot.create(:entity, entity_type: "Startup", name: name)
       puts "Entity #{e.name}"
@@ -48,15 +48,15 @@ namespace :irm do
 
   desc "generates fake Blank Entity for testing"
   task generateFakeBlankEntities: :environment do
-    startup_names = ["Demo-Startup"]
-    startup_names.each do |name|
-      e = FactoryBot.create(:entity, entity_type: "Startup", name: name)
-      puts "Entity #{e.name}"
-      (1..1).each do |j|
-        user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
-        puts user.to_json
-      end
-    end
+    # startup_names = ["Demo-Startup"]
+    # startup_names.each do |name|
+    #   e = FactoryBot.create(:entity, entity_type: "Startup", name: name)
+    #   puts "Entity #{e.name}"
+    #   (1..1).each do |j|
+    #     user = FactoryBot.create(:user, entity: e, first_name: "Emp#{j}")
+    #     puts user.to_json
+    #   end
+    # end
 
     wm_names = ["Demo-Advisor"]
     wm_names.each do |name|

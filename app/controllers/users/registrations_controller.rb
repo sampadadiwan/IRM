@@ -5,8 +5,7 @@ module Users
     # POST /resource
     def create
       build_resource(sign_up_params)
-      # Ensure role is always Employee
-      resource.add_role :employee
+
       ensure_entity(resource)
       resource.save
 

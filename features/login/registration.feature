@@ -22,9 +22,9 @@ Scenario Outline: User Registration Successfully
   Then the user should have the roles "<roles>"
   Examples:
   	|user		|entity               |roles		|	
-  	| 	    |entity_type=VC       |employee,investor,secondary_buyer	|
-    |       |entity_type=Startup  |employee,startup   |
-    | 	    |entity_type=Holding  |employee,holding   |
-    | 	    |entity_type=Advisor  |employee,secondary_buyer   |
-    | 	    |entity_type=Family Office  |employee,secondary_buyer   |
+  	| 	    |entity_type=VC       |investor,secondary_buyer	|
+    |       |entity_type=Startup  |startup   |
+    | 	    |entity_type=Holding  |holding   |
+    | 	    |entity_type=Advisor  |secondary_buyer   |
+    | 	    |entity_type=Family Office  |secondary_buyer   |
 

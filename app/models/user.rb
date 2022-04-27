@@ -56,20 +56,11 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true
   validates :email, format: { with: /\A[^@\s]+@[^@\s]+\z/ }, presence: true
 
-  # "CxO", "Founder", "Angel", "VC", "Admin",
-  ROLES = ["Employee"].freeze
-
-  # "CxO": "CxO of a Startup", "Founder": "Founder of a Startup",
-  # "Angel": "Angel Investor", "VC": "Venture Capitalist",
-  # "Admin": "Entity Admin",
-  ROLES_DESC = { Employee: "Employee" }.freeze
-
-  scope :cxos, -> { where(role: "CxO") }
-  scope :admins, -> { where(role: "Admin") }
-  scope :employees, -> { where(role: "Employee") }
-
   before_create :setup_defaults
   after_create :update_investor_access
+
+  # Some startups can be investors - so what role are they currently having
+  attr :current_role
 
   def to_s
     full_name
@@ -84,10 +75,23 @@ class User < ApplicationRecord
   end
 
   def setup_defaults
-    add_role :employee
-    add_role :investor if (entity && entity.entity_type == "VC") || InvestorAccess.where(user_id: id).first.present?
-    add_role :secondary_buyer if entity && ["Advisor", "Family Office", "VC"].include?(entity.entity_type)
-    add_role :startup if entity && (entity.entity_type == "Startup")
+    if entty
+      if entity.entity_type == "Startup"
+        add_role :startup
+        self.primary_role = :startup
+      end
+
+      if entity.entity_type == "VC" || InvestorAccess.where(user_id: id).first.present?
+        add_role :investor
+        self.primary_role ||= :investor
+      end
+
+      if ["Advisor", "Family Office", "VC"].include?(entity.entity_type)
+        add_role :secondary_buyer
+        self.primary_role ||= :investor
+      end
+    end
+
     self.active = true
   end
 
