@@ -56,9 +56,8 @@ test: &test
 #
 production:
   <<: *default
+  host: <%= ENV.fetch("DB_HOST") %>
   database: IRM_production
-  username: IRM
-  password: <%= ENV["FINTECH_DATABASE_PASSWORD"] %>
 
 cucumber:
   <<: *test
