@@ -9,7 +9,6 @@
 server "65.0.147.14", user: "ubuntu", roles: %w[app db web]
 set :rails_env, "production"
 set :stage, :production
-set "RAILS_MASTER_KEY", "85f318c01c558263ae7c047922078b0b"
 
 # role-based syntax
 # ==================

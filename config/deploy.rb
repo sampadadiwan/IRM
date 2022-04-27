@@ -55,11 +55,10 @@ namespace :deploy do
   desc "Uploads .env remote servers."
   task :upload_env do
     on roles(:app) do
-      rails_env = fetch(:rails_env)
       upload!("/data/work/IRM/.env", release_path.to_s, recursive: false)
       upload!("/data/work/IRM/.env.local", release_path.to_s, recursive: false)
-      upload!("/data/work/IRM/.env.staging", release_path.to_s, recursive: false) # if rails_env == :staging
-      upload!("/data/work/IRM/.env.production", release_path.to_s, recursive: false) if rails_env == :production
+      upload!("/data/work/IRM/.env.staging", release_path.to_s, recursive: false) if fetch(:stage) == :staging
+      upload!("/data/work/IRM/.env.production", release_path.to_s, recursive: false) if fetch(:stage) == :production
     end
   end
 
