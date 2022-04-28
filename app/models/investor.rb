@@ -18,6 +18,7 @@
 
 class Investor < ApplicationRecord
   # include Trackable
+  update_index('investor') { self }
 
   encrypts :investor_name, deterministic: true
 

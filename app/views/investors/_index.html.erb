@@ -40,7 +40,7 @@
 
       <tbody>
         <% investors.each do |investor| %>
-          <%= render investor %>
+          <%= render partial: "investors/investor", locals: {investor: investor} %>
         <% end %>
       </tbody>
 

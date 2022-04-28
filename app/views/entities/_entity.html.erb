@@ -1,8 +1,8 @@
 
-<tr id="<%= dom_id entity %>">
+<tr id="entity_<%= entity.id %>">
     
     <td>
-        <%= link_to entity.name, entity %>
+        <%= link_to entity.name, entity_path(entity.id) %>
     </td>  
     <td>
         <%= entity.category %>

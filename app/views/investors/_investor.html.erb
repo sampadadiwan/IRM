@@ -1,9 +1,10 @@
-<tr id="<%= dom_id investor %>">
+<tr id="investor_<%= investor.id %>">
 <td>
-    <%= link_to investor.investor_name, investor %>
+    <%= link_to investor.investor_name, investor_path(investor.id) %>
 </td>  
 <td class="hideMobP hideTab">
-  <%= raw investor.tags.map{|tag| link_to(tag.name, search_investors_path(query: tag.name))}.join(", ") %>
+  <%#= raw investor.tags.map{|tag| link_to(tag.name, search_investors_path(query: tag.name))}.join(", ") %>
+  <%= raw investor.tag_list.map{|tag| link_to(tag, search_investors_path(query: tag))}.join(", ") %>
 </td>  
 <td>
   <%= investor.category %>
@@ -11,12 +12,12 @@
 <td class="hideMobP">
   <% if investor.investor_access_count > 0 %>
     <span class="badge badge-success">
-      <%= link_to "Approved #{investor.investor_access_count}", investor_path(investor, tab: "investors-tab") %>
+      <%= link_to "Approved #{investor.investor_access_count}", investor_path(id: investor.id, tab: "investors-tab") %>
     </span>
   <% end %>
   <% if investor.unapproved_investor_access_count > 0 %>
     <span class="badge badge-warning">
-      <%= link_to "Pending #{investor.unapproved_investor_access_count}", investor_path(investor, tab: "investors-tab") %>
+      <%= link_to "Pending #{investor.unapproved_investor_access_count}", investor_path(id: investor.id, tab: "investors-tab") %>
     </span>
   <% end %>
 </td>  

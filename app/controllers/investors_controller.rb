@@ -12,12 +12,20 @@ class InvestorsController < ApplicationController
   end
 
   def search
-    @investors = if current_user.has_role?(:super)
-                   Investor.search(params[:query], star: true)
-                 else
-                   Investor.search(params[:query], star: false, with: { investee_entity_id: current_user.entity_id })
-                 end
+    query = params[:query]
+    if query.present?
+      @investors = if current_user.has_role?(:super)
 
+                     InvestorIndex.query(query_string: { fields: InvestorIndex::SEARCH_FIELDS,
+                                                         query: query, default_operator: 'and' })
+
+                   else
+                     InvestorIndex.filter(term: { investee_entity_id: current_user.entity_id })
+                                  .query(query_string: { fields: InvestorIndex::SEARCH_FIELDS,
+                                                         query: query, default_operator: 'and' })
+                   end
+
+    end
     render "index"
   end
 

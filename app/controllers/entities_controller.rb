@@ -18,7 +18,11 @@ class EntitiesController < ApplicationController
   end
 
   def search
-    @entities = Entity.search(params[:query], star: true)
+    query = params[:query]
+    if query.present?
+      @entities = EntityIndex.query(query_string: { fields: %i[name entity_type category],
+                                                    query: query, default_operator: 'and' })
+    end
 
     render "index", locals: { vc_view: true }
   end

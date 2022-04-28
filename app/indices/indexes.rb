@@ -16,7 +16,6 @@ ThinkingSphinx::Index.define :investor, with: :real_time do
   indexes tag_list
 
   # attributes
-  has investor_type, type: :string
   has created_at, type: :timestamp
   has investee_entity_id, type: :integer
 end

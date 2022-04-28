@@ -22,7 +22,7 @@
 
 
     <% entities.each do |entity| %>
-      <%= render "entities/entity", entity: entity, vc_view: vc_view %>
+      <%= render partial: "entities/entity", locals: {entity: entity, vc_view: vc_view} %>
     <% end %>
   </table>
 
