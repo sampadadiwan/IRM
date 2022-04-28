@@ -1,18 +1,18 @@
-<tr id="<%= dom_id note %>">
+<tr id="note_<%= note.id %>">
 <td>
-    <%= link_to note.user.name, notes_path(user_id: note.user_id) %>
+    <%= link_to note.user_full_name, notes_path(user_id: note.user_id) %>
 </td>
 <td class="hideMobP">
-    <%= l note.on if note.on %>
+    <%= note.on.is_a?(Date) ? l(note.on) : l(Date.parse(note.on)) %>
 </td>    
 <td>
-    <%= link_to note.investor.investor_name, note.investor %>
+    <%= link_to note.investor_name, investor_path(note.investor_id) %>
 </td>  
 <td class="hideMobP">
     <%= note.details %>
 </td>  
 
 <td>
-  <%= link_to "Show", note , {class: "btn btn-primary"}%>
+  <%= link_to "Show", note_path(note.id) , {class: "btn btn-primary"}%>
 </td>
 </tr>

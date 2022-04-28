@@ -23,7 +23,7 @@ class Document < ApplicationRecord
   include Impressionable
 
   # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+  update_index('document') { self }
 
   acts_as_taggable_on :tags
 
@@ -38,6 +38,8 @@ class Document < ApplicationRecord
   has_one_attached :video, service: :amazon
 
   validates :name, presence: true
+
+  delegate :full_path, to: :folder, prefix: :folder
 
   has_attached_file :file,
                     bucket: proc { |attachment|

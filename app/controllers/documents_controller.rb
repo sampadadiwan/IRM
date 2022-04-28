@@ -42,11 +42,20 @@ class DocumentsController < ApplicationController
 
   def search
     @entity = params[:entity_id].present? ? Entity.find(params[:entity_id]) : current_user.entity
-    @documents = if current_user.has_role?(:super)
-                   Document.search(params[:query], star: true)
-                 else
-                   Document.search(params[:query], star: false, with: { entity_id: @entity.id })
-                 end
+    query = params[:query]
+    if query.present?
+      @documents = if current_user.has_role?(:super)
+
+                     DocumentIndex.query(query_string: { fields: DocumentIndex::SEARCH_FIELDS,
+                                                         query: query, default_operator: 'and' })
+
+                   else
+                     DocumentIndex.filter(term: { entity_id: @entity.id })
+                                  .query(query_string: { fields: DocumentIndex::SEARCH_FIELDS,
+                                                         query: query, default_operator: 'and' })
+                   end
+
+    end
 
     render "index"
   end

@@ -15,17 +15,17 @@
 
 class Note < ApplicationRecord
   # include Trackable
+  update_index('note') { self }
 
   encrypts :details
   validates :details, presence: true
-
-  # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
 
   has_rich_text :details
   belongs_to :entity
   belongs_to :user
   belongs_to :investor
+  delegate :investor_name, to: :investor
+  delegate :full_name, to: :user, prefix: :user
 
   def to_s
     investor.investor_name

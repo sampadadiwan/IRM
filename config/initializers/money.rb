@@ -5,11 +5,15 @@ MoneyRails.configure do |config|
   config.default_currency = ENV['DEFAULT_CURRENCY'].to_sym
 
   # Set default bank object
-  config.default_bank = EuCentralBank.new
   unless Rails.env.test?
-    Rails.logger.debug "Reading exchange rates from tmp/exchange_rates.xml"
-    config.default_bank.save_rates("tmp/exchange_rates.xml")
-    config.default_bank.update_rates("tmp/exchange_rates.xml")
+    begin
+      config.default_bank = EuCentralBank.new
+      Rails.logger.debug "Reading exchange rates from tmp/exchange_rates.xml"
+      config.default_bank.save_rates("tmp/exchange_rates.xml")
+      config.default_bank.update_rates("tmp/exchange_rates.xml")
+    rescue StandardError
+      Rails.logger.warn "Could not load bank rates"
+    end
   end
 
   # Add exchange rates to current money bank object.

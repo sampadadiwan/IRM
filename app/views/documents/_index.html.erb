@@ -31,7 +31,7 @@
     </tr>
 
     <% documents.each do |document| %>
-      <%= render document %>
+      <%= render partial: "documents/document", locals: {document: document} %>
     <% end %>
   </table>
 

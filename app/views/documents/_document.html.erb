@@ -1,15 +1,15 @@
-<tr id="<%= dom_id document %>">
+<tr id="document_<%= document.id %>">
   <td>
-      <%= link_to document.name, document %>
+      <%= link_to document.name, document_path(document.id) %>
   </td>  
   <td>
-    <%= document&.folder.full_path %>
+    <%= document&.folder_full_path %>
   </td>
   <td class="hideMobP">
-      <%= raw document.tags.map{|tag| link_to(tag.name, search_documents_path(query: tag.name))}.join(", ") %>
+      <%= raw document.tag_list.map{|tag| link_to(tag, search_documents_path(query: tag))}.join(", ") %>
   </td>  
   <td class="hideMobP">
-    <%= l document.created_at %>
+    <%= document.created_at.is_a?(Time) ? l(document.created_at) : l(Time.parse(document.created_at)) %>
   </td>  
 
 </tr>
