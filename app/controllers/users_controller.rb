@@ -11,10 +11,16 @@ class UsersController < ApplicationController
   def welcome; end
 
   def search
+    query = params[:query]
     @users = if current_user.has_role?(:super)
-               User.search(params[:query], star: true)
-             else
-               User.search(params[:query], star: true, with: { entity_id: current_user.entity_id })
+               if query.present?
+                 UserIndex.query(query_string: { fields: %i[first_name last_name email],
+                                                 query: query, default_operator: 'and' })
+               end
+             elsif query.present?
+               UserIndex.filter(term: { entity_id: current_user.entity_id })
+                        .query(query_string: { fields: %i[first_name last_name email],
+                                               query: query, default_operator: 'and' })
              end
 
     render "index"

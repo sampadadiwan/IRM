@@ -32,6 +32,8 @@
 
 class User < ApplicationRecord
   include PublicActivity::Model
+  update_index('user') { self }
+
   tracked except: :update, owner: proc { |controller, _model| controller.current_user if controller && controller.current_user },
           entity_id: proc { |controller, _model| controller.current_user.entity_id if controller && controller.current_user }
 
@@ -58,6 +60,8 @@ class User < ApplicationRecord
 
   before_create :setup_defaults
   after_create :update_investor_access
+
+  delegate :name, to: :entity, prefix: :entity
 
   # Some startups can be investors - so what role are they currently having
   attr :current_role

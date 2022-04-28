@@ -1,6 +1,6 @@
-<tr id="<%= dom_id user %>">
+<tr id="user_<%= user.id %>">
   <td>
-    <%= link_to user.first_name, user %>
+    <%= link_to user.first_name, user_path(user.id) %>
   </td>
 
   <td>
@@ -8,7 +8,7 @@
   </td>
 
   <td>
-    <%= user.entity&.name %>
+    <%= user.entity_name %>
   </td>
 
 </tr>

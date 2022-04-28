@@ -20,7 +20,7 @@ module InvestorRelationshipManagement
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+    # config.eager_load_paths << Rails.root.join("indices")
 
     config.to_prepare do
       Devise::Mailer.layout "mailer" # simple.haml or simple.erb

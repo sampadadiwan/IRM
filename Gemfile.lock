@@ -222,6 +222,10 @@ GEM
     character_set (1.6.0)
       sorted_set (~> 1.0)
     chartkick (4.1.3)
+    chewy (7.2.5)
+      activesupport (>= 5.2)
+      elasticsearch (>= 7.12.0, < 7.14.0)
+      elasticsearch-dsl
     childprocess (4.1.0)
     choice (0.2.0)
     chronic (0.10.2)
@@ -297,6 +301,15 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
+    elasticsearch (7.13.3)
+      elasticsearch-api (= 7.13.3)
+      elasticsearch-transport (= 7.13.3)
+    elasticsearch-api (7.13.3)
+      multi_json
+    elasticsearch-dsl (0.1.10)
+    elasticsearch-transport (7.13.3)
+      faraday (~> 1)
+      multi_json
     erubi (1.10.0)
     eu_central_bank (1.7.0)
       money (~> 6.13, >= 6.13.6)
@@ -311,6 +324,29 @@ GEM
       railties (>= 5.0.0)
     faker (2.19.0)
       i18n (>= 1.6, < 2)
+    faraday (1.10.0)
+      faraday-em_http (~> 1.0)
+      faraday-em_synchrony (~> 1.0)
+      faraday-excon (~> 1.1)
+      faraday-httpclient (~> 1.0)
+      faraday-multipart (~> 1.0)
+      faraday-net_http (~> 1.0)
+      faraday-net_http_persistent (~> 1.0)
+      faraday-patron (~> 1.0)
+      faraday-rack (~> 1.0)
+      faraday-retry (~> 1.0)
+      ruby2_keywords (>= 0.0.4)
+    faraday-em_http (1.0.0)
+    faraday-em_synchrony (1.0.0)
+    faraday-excon (1.1.0)
+    faraday-httpclient (1.0.1)
+    faraday-multipart (1.0.3)
+      multipart-post (>= 1.2, < 3)
+    faraday-net_http (1.0.1)
+    faraday-net_http_persistent (1.2.0)
+    faraday-patron (1.0.0)
+    faraday-rack (1.0.0)
+    faraday-retry (1.0.3)
     ffi (1.15.5)
     foreman (0.87.2)
     globalid (1.0.0)
@@ -395,7 +431,9 @@ GEM
       money (~> 6.13)
       railties (>= 3.0)
     msgpack (1.4.2)
+    multi_json (1.15.0)
     multi_test (0.1.2)
+    multipart-post (2.1.1)
     mysql2 (0.5.3)
     net-imap (0.2.3)
       digest
@@ -531,6 +569,7 @@ GEM
     ruby-progressbar (1.11.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
+    ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     sanitize_email (2.0.3)
     sassc (2.4.0)
@@ -648,6 +687,7 @@ DEPENDENCIES
   caxlsx
   caxlsx_rails
   chartkick
+  chewy
   client_side_validations
   counter_culture (~> 2.0)
   cucumber-rails

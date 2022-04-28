@@ -40,6 +40,7 @@ gem 'sassc-rails'
 gem 'sidekiq', '~> 6.4'
 
 gem "aws-sdk-s3", require: false
+gem 'chewy'
 gem 'thinking-sphinx', '~> 5.4'
 
 gem 'kaminari'
@@ -152,6 +153,7 @@ group :test do
   gem "selenium-webdriver"
   gem 'simplecov', require: false, group: :test
   gem "webdrivers"
+  # gem 'elasticsearch-extensions'
 end
 
 gem "marginalia", "~> 1.11"

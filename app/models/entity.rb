@@ -44,6 +44,7 @@
 
 class Entity < ApplicationRecord
   include Trackable
+  update_index('entity') { self }
 
   encrypts :name, deterministic: true
   validates :name, uniqueness: true
