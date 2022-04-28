@@ -37,6 +37,11 @@ ActionController::Base.allow_rescue = false
 
 begin
   DatabaseCleaner.strategy = :truncation
+  Chewy.strategy :atomic
+
+  UserIndex.reset!
+  EntityIndex.reset!
+  InvestorIndex.reset!
 rescue NameError
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
@@ -44,6 +49,9 @@ end
 After do
   DatabaseCleaner.clean
   Sidekiq.redis(&:flushdb)
+  UserIndex.reset!
+  EntityIndex.reset!
+  InvestorIndex.reset!
 end
 
 Cucumber::Rails::Database.javascript_strategy = :truncation
