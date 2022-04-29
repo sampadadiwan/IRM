@@ -47,17 +47,23 @@ class InvestmentsController < ApplicationController
 
   def search
     @entity = current_user.entity
-    # params[:query] = params[:query].delete(' ') if params[:query].present? && params[:query].include?("Series")
-    if current_user.has_role?(:super)
-      @investments = Investment.search(params[:query], star: true)
-    else
-      # WE want to find investments that have the current_users entity as either and investor or investee
-      investor_or_investee = "*, IF(investor_entity_id = #{current_user.entity_id} OR investee_entity_id = #{current_user.entity_id}, 1, 0) AS inv"
-      @investments = Investment.search(params[:query], star: false,
-                                                       select: investor_or_investee, with: { 'inv' => 1 }, sql: { include: %i[investor investee_entity] })
+
+    query = params[:query]
+    if query.present?
+      @investments = if current_user.has_role?(:super)
+
+                       InvestmentIndex.query(query_string: { fields: InvestmentIndex::SEARCH_FIELDS,
+                                                             query: query, default_operator: 'and' }).objects
+
+                     else
+                       InvestmentIndex.filter(term: { investee_entity_id: current_user.entity_id })
+                                      .query(query_string: { fields: InvestmentIndex::SEARCH_FIELDS,
+                                                             query: query, default_operator: 'and' }).objects
+                     end
+
     end
 
-    render "index"
+    render "search"
   end
 
   # GET /investments/1 or /investments/1.json

@@ -56,11 +56,13 @@ class Investment < ApplicationRecord
   delegate :investor_name, to: :investor
 
   belongs_to :funding_round
+  delegate :name, to: :funding_round, prefix: :funding_round
 
   belongs_to :aggregate_investment, optional: true
 
   belongs_to :investee_entity, class_name: "Entity"
   delegate :actual_scenario, to: :investee_entity
+  delegate :name, to: :investee_entity, prefix: :investee
 
   has_many :holdings, dependent: :destroy
 
