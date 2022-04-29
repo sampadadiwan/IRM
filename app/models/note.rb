@@ -17,7 +17,7 @@ class Note < ApplicationRecord
   # include Trackable
   update_index('note') { self }
 
-  encrypts :details
+  # encrypts :details
   validates :details, presence: true
 
   has_rich_text :details

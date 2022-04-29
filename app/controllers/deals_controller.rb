@@ -20,7 +20,20 @@ class DealsController < ApplicationController
 
   def search
     @entity = current_user.entity
-    @deals = Deal.search(params[:query], star: false, with: { entity_id: current_user.entity_id })
+    query = params[:query]
+    if query.present?
+      @deals = if current_user.has_role?(:super)
+
+                 DealIndex.query(query_string: { fields: DealIndex::SEARCH_FIELDS,
+                                                 query: query, default_operator: 'and' }).objects
+
+               else
+                 DealIndex.filter(term: { entity_id: @entity.id })
+                          .query(query_string: { fields: DealIndex::SEARCH_FIELDS,
+                                                 query: query, default_operator: 'and' }).objects
+               end
+
+    end
 
     render "index"
   end

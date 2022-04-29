@@ -24,7 +24,7 @@ class Deal < ApplicationRecord
   include ActivityTrackable
   include Impressionable
 
-  encrypts :name
+  # encrypts :name
   monetize :amount_cents, with_model_currency: :currency
 
   # Make all models searchable
@@ -32,6 +32,7 @@ class Deal < ApplicationRecord
 
   belongs_to :entity
   counter_culture :entity
+  delegate :name, to: :entity, prefix: :entity
 
   has_many :deal_investors, dependent: :destroy
   has_many :investors, through: :deal_investors

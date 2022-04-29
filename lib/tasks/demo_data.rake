@@ -2,7 +2,7 @@ namespace :irm do
   require "faker"
   require 'digest/sha1'
   require 'factory_bot'
-
+  Chewy.strategy(:atomic)
 
   desc "generates fake Entity for testing"
   task generateFakeEntities: :environment do

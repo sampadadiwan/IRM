@@ -15,7 +15,20 @@ class AccessRightsController < ApplicationController
 
   def search
     @entity = current_user.entity
-    @access_rights = AccessRight.search(params[:query], star: false, with: { entity_id: current_user.entity_id })
+    query = params[:query]
+    if query.present?
+      @access_rights = if current_user.has_role?(:super)
+
+                         AccessRightIndex.query(query_string: { fields: AccessRightIndex::SEARCH_FIELDS,
+                                                                query: query, default_operator: 'and' }).objects
+
+                       else
+                         AccessRightIndex.filter(term: { entity_id: @entity.id })
+                                         .query(query_string: { fields: AccessRightIndex::SEARCH_FIELDS,
+                                                                query: query, default_operator: 'and' }).objects
+                       end
+
+    end
     render "index"
   end
 

@@ -24,7 +24,7 @@ class DealMessage < ApplicationRecord
 
   belongs_to :deal_investor
   has_rich_text :content
-  encrypts :content
+  # encrypts :content
   validates :content, presence: true
 
   scope :user_messages, lambda { |user|

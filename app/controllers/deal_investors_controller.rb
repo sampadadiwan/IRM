@@ -14,9 +14,22 @@ class DealInvestorsController < ApplicationController
 
   def search
     @entity = current_user.entity
-    investor_or_investee = "*, IF(investor_entity_id = #{current_user.entity_id} OR entity_id = #{current_user.entity_id}, 1, 0) AS inv"
-    @deal_investors = DealInvestor.search(params[:query], star: false,
-                                                          select: investor_or_investee, with: { 'inv' => 1 }, sql: { include: %i[investor deal] })
+    # investor_or_investee = "*, IF(investor_entity_id = #{current_user.entity_id} OR entity_id = #{current_user.entity_id}, 1, 0) AS inv"
+
+    query = params[:query]
+    if query.present?
+      @deal_investors = if current_user.has_role?(:super)
+
+                          DealInvestorIndex.query(query_string: { fields: DealInvestorIndex::SEARCH_FIELDS,
+                                                                  query: query, default_operator: 'and' }).objects
+
+                        else
+                          DealInvestorIndex.filter(term: { entity_id: @entity.id })
+                                           .query(query_string: { fields: DealInvestorIndex::SEARCH_FIELDS,
+                                                                  query: query, default_operator: 'and' }).objects
+                        end
+
+    end
 
     render "index"
   end
