@@ -12,13 +12,22 @@ class SecondarySalesController < ApplicationController
   end
 
   def search
-    @secondary_sales = if current_user.has_cached_role?(:startup)
-                         SecondarySale.search(params[:query], star: true,
-                                                              with: { entity_id: current_user.entity_id })
-                       else
-                         SecondarySale.search(params[:query], star: true,
-                                                              with: { active: true, visible_externally: true })
-                       end
+    @entity = current_user.entity
+
+    query = params[:query]
+    if query.present?
+      @secondary_sales = if current_user.has_role?(:super)
+
+                           SecondarySaleIndex.query(query_string: { fields: SecondarySaleIndex::SEARCH_FIELDS,
+                                                                    query: query, default_operator: 'and' }).objects
+
+                         else
+                           SecondarySaleIndex.filter(term: { entity_id: @entity.id })
+                                             .query(query_string: { fields: SecondarySaleIndex::SEARCH_FIELDS,
+                                                                    query: query, default_operator: 'and' }).objects
+                         end
+
+    end
     render "index"
   end
 
