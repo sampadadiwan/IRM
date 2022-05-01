@@ -1,7 +1,7 @@
 class ElasticImporterJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
+  def perform(*_args)
     UserIndex.import
     EntityIndex.import
     InvestmentIndex.import
@@ -13,5 +13,4 @@ class ElasticImporterJob < ApplicationJob
     NoteIndex.import
     SecondarySaleIndex.import
   end
-
 end
