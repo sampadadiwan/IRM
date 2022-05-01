@@ -19,7 +19,7 @@ class InvestorAccess < ApplicationRecord
   include ActivityTrackable
 
   # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+  update_index('investor_access') { self }
 
   validates :email, presence: true
   belongs_to :entity

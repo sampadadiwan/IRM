@@ -20,7 +20,7 @@ class AccessRight < ApplicationRecord
   include Trackable
   include ActivityTrackable
 
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+  update_index('access_right') { self }
 
   ALL = "All".freeze
   SELF = "Self".freeze

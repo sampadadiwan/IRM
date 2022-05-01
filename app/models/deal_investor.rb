@@ -32,7 +32,7 @@ class DealInvestor < ApplicationRecord
   monetize :pre_money_valuation_cents, with_currency: ->(i) { i.deal.currency }
 
   # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+  update_index('deal_investor') { self }
 
   has_rich_text :notes
   belongs_to :deal

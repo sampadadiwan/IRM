@@ -22,9 +22,6 @@ class DealDoc < ApplicationRecord
   include Trackable
   include Impressionable
 
-  # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
-
   acts_as_taggable_on :tags
 
   belongs_to :deal

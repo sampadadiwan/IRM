@@ -44,12 +44,11 @@
 
 class Entity < ApplicationRecord
   include Trackable
-  update_index('entity') { self }
 
   # encrypts :name, deterministic: true
   validates :name, uniqueness: true
   # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+  update_index('entity') { self }
 
   validates :name, :entity_type, presence: true
 

@@ -15,9 +15,6 @@
 #
 
 class DealMessage < ApplicationRecord
-  # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
-
   belongs_to :user
   belongs_to :entity
   counter_culture :entity, column_name: proc { |msg| msg.is_task && !msg.task_done ? 'tasks_count' : nil }

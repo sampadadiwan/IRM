@@ -28,7 +28,7 @@ class Deal < ApplicationRecord
   monetize :amount_cents, with_model_currency: :currency
 
   # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+  update_index('deal') { self }
 
   belongs_to :entity
   counter_culture :entity

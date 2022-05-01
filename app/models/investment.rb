@@ -35,7 +35,7 @@ class Investment < ApplicationRecord
   include InvestmentScopes
   include InvestmentCounters
   # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+  update_index('investment') { self }
 
   validates :quantity, :price, presence: true
   # "Equity,Preferred,Debt,ESOPs"

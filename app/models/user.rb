@@ -32,7 +32,6 @@
 
 class User < ApplicationRecord
   include PublicActivity::Model
-  update_index('user') { self }
 
   tracked except: :update, owner: proc { |controller, _model| controller.current_user if controller && controller.current_user },
           entity_id: proc { |controller, _model| controller.current_user.entity_id if controller && controller.current_user }
@@ -43,7 +42,7 @@ class User < ApplicationRecord
   has_many :interests, dependent: :destroy
 
   # Make all models searchable
-  ThinkingSphinx::Callbacks.append(self, behaviours: [:real_time])
+  update_index('user') { self }
 
   rolify
 
