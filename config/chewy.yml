@@ -3,5 +3,8 @@
 test:
   host: 'localhost:9200'
   prefix: 'test'
+staging:
+  host: 'https://vpc-dev-ova53iydsngksohawtxyruvnwu.ap-south-1.es.amazonaws.com'
+  prefix: 'staging'
 development:
   host: 'localhost:9200'

@@ -24,7 +24,6 @@ job_type :bundle, 'cd :path && :environment_variable=:environment bundle exec :t
 
 every 1.day, at: '00:01 am' do
   command "logrotate /home/ubuntu/IRM/shared/log/logrotate.conf --state /home/ubuntu/IRM/shared/log/logrotate.state --verbose"
-  command 'docker run --rm --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:7.11.1'
   runner "ElasticImporterJob.new.perform"
   runner "ClearMessagesCountJob.new.perform"
 end
