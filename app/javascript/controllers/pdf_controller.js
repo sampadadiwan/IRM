@@ -5,11 +5,13 @@ export default class extends Controller {
 
         Core.setWorkerPath('/lib/core');
 
-        $("#viewer").width(screen.availWidth * .9);
-
         let viewer_link = $("#viewer_link").val();
         let viewer_watermark = $("#viewer_watermark").val();
         let viewer_content_type = $("#viewer_content_type").val();
+
+        // Hide the direct download link
+        $(".document_download_icon").hide();
+        $("#viewer").hide();
 
         console.log(`pdf_controller connected: ${viewer_link}`);
 
@@ -27,6 +29,12 @@ export default class extends Controller {
             // initialDoc: 'https://pdftron.s3.amazonaws.com/downloads/pl/demo-annotated.pdf',
         }, document.getElementById('viewer'))
             .then(instance => {
+
+                instance.UI.disableElements(['ribbons']);
+                instance.UI.disableElements(['toolsHeader']);
+                instance.UI.openElements([ 'menuOverlay' ]);
+
+
                 const docViewer = instance.Core.documentViewer;
                 const annotManager = instance.Core.annotationManager;
 
@@ -35,6 +43,8 @@ export default class extends Controller {
                 });
 
                 $("#viewer_label").hide();
+                $("#viewer").show();
+        
 
                 const { documentViewer } = instance.Core;
 
@@ -60,28 +70,19 @@ export default class extends Controller {
                     }
                 });
 
-                // // call methods from instance, documentViewer and annotationManager as needed
-
-                // // you can also access major namespaces from the instance as follows:
-                // // const Tools = instance.Core.Tools;
-                // // const Annotations = instance.Core.Annotations;
-
-                // docViewer.addEventListener('documentLoaded', () => {
-                //     // call methods relating to the loaded document
-                // });
+                $(".document_download_icon").hide();
             });
     }
 
     officeToPDF(viewer_link, viewer_watermark) {
         
         PDFNet.initialize()
-            .then(() => this.convertOfficeToPDF(viewer_link, `converted.pdf`, viewer_watermark))
-            .then(() => {
-                console.log('Test Complete!');
-
-            })
+            .then(() =>  {
+                this.convertOfficeToPDF(viewer_link, `converted.pdf`, viewer_watermark)                
+             })            
             .catch(err => {
                 console.log('An error was encountered! :(', err);
+                $(".document_download_icon").show();
             });
     }
 
@@ -89,6 +90,10 @@ export default class extends Controller {
 
         Core.officeToPDFBuffer(inputUrl, { l }).then(buffer => {
             this.viewPDF(buffer, viewer_watermark);
+        }).catch(err => {
+            console.log('An error was encountered! :(', err);
+            $(".document_download_icon").show();
+            $("#pdf_viewer").remove();
         });
     }
 

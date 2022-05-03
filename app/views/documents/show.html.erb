@@ -23,10 +23,11 @@
                      <td>
 
                         <% if @document.file.exists? %>
-                           <%= link_to @document.file.expiring_url() do %>
+                           <%= link_to @document.file.expiring_url(), class: "document_download_icon" do %>
                               <i class="fas fa-download"></i>
-                              <%= @document.name.capitalize %>
                            <% end %>
+                           <%= @document.name.capitalize %>
+
                         <% end %>
                         
                         <% if @document.video.present? %>
@@ -91,7 +92,7 @@
 <div class="row">
     <% if  @document.video.present? || @document.video? %>
       <%= render "documents/video" %>
-    <% elsif true || @document.file.content_type == "application/pdf" %>
+    <% else %>
        <%= render "documents/pdf" %>
     <% end %>
 </div>
