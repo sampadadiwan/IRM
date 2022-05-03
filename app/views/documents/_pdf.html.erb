@@ -1,10 +1,16 @@
-<div id="pdf_viewer" data-controller="pdf">
-   <div id="viewer_label" class="viewer_label">
-      Loading PDF 
-      <i class="fa-solid fa-sync fa-spin"></i>
-   </div>
+<div id="pdf_viewer" data-controller="pdf" class="card">
+   
    <input id="viewer_content_type" , value="<%=@document.file.content_type%>" hidden="hidden"></input>
    <input id="viewer_link" , value="<%=@document.file.expiring_url()%>" hidden="hidden"></input>
    <input id="viewer_watermark" , value="Private Property of <%= current_user.entity.name %>" hidden="hidden"></input>
-   <div id='viewer'></div>
+
+   <div class="card-header">
+      <h6 class="m-0 font-weight-bold text-primary">Viewing: <%= @document.name %></h6>
+  </div>
+  <div id="viewer_label" class="card-body viewer_label">
+      Loading PDF 
+      <i class="fa-solid fa-sync fa-spin"></i>
+   </div>
+   <div id='viewer' class="card-body">      
+   </div>
 </div>

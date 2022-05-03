@@ -42,11 +42,15 @@ export default class extends Controller {
                     filename: 'myfile.pdf'
                 });
 
+                instance.UI.setFitMode(instance.FitMode.FitPage);
+
                 $("#viewer_label").hide();
                 $("#viewer").show();
         
 
                 const { documentViewer } = instance.Core;
+                
+
 
                 documentViewer.setWatermark({
                     // Draw diagonal watermark in middle of the document
