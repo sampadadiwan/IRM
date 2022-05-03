@@ -61,10 +61,10 @@ class SecondarySale < ApplicationRecord
   end
 
   def notify_advisors
-    SecondarySaleMailer.with(id: id).notify_advisors.deliver_later
+    SecondarySaleMailer.with(id:).notify_advisors.deliver_later
   end
 
   def notify_open_for_offers
-    SecondarySaleMailer.with(id: id).notify_open_for_offers.deliver_later
+    SecondarySaleMailer.with(id:).notify_open_for_offers.deliver_later
   end
 end

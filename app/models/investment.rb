@@ -102,12 +102,12 @@ class Investment < ApplicationRecord
   end
 
   def update_aggregate_investment
-    ai = AggregateInvestment.where(investor_id: investor_id,
+    ai = AggregateInvestment.where(investor_id:,
                                    entity_id: investee_entity_id,
-                                   scenario_id: scenario_id).first
-    self.aggregate_investment = ai.presence || AggregateInvestment.create(investor_id: investor_id,
+                                   scenario_id:).first
+    self.aggregate_investment = ai.presence || AggregateInvestment.create(investor_id:,
                                                                           entity_id: investee_entity_id,
-                                                                          scenario_id: scenario_id)
+                                                                          scenario_id:)
   end
 
   after_save :update_investor_holdings, if: proc { |i| i.scenario.actual? }
@@ -123,11 +123,11 @@ class Investment < ApplicationRecord
         holding.quantity = quantity
         holding.price = price
       else
-        holding = holdings.build(entity_id: investee_entity_id, investor_id: investor_id,
-                                 funding_round_id: funding_round_id,
+        holding = holdings.build(entity_id: investee_entity_id, investor_id:,
+                                 funding_round_id:,
                                  holding_type: "Investor",
-                                 investment_instrument: investment_instrument,
-                                 quantity: quantity, price: price, value: amount)
+                                 investment_instrument:,
+                                 quantity:, price:, value: amount)
       end
 
       holding.save!

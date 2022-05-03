@@ -16,12 +16,12 @@ class InvestorAccessesController < ApplicationController
       @investor_accesses = if current_user.has_role?(:super)
 
                              InvestorAccessIndex.query(query_string: { fields: InvestorAccessIndex::SEARCH_FIELDS,
-                                                                       query: query, default_operator: 'and' }).objects
+                                                                       query:, default_operator: 'and' }).objects
 
                            else
                              InvestorAccessIndex.filter(term: { entity_id: @entity.id })
                                                 .query(query_string: { fields: InvestorAccessIndex::SEARCH_FIELDS,
-                                                                       query: query, default_operator: 'and' }).objects
+                                                                       query:, default_operator: 'and' }).objects
                            end
 
     end

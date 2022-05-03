@@ -47,12 +47,12 @@ class DocumentsController < ApplicationController
       @documents = if current_user.has_role?(:super)
 
                      DocumentIndex.query(query_string: { fields: DocumentIndex::SEARCH_FIELDS,
-                                                         query: query, default_operator: 'and' })
+                                                         query:, default_operator: 'and' })
 
                    else
                      DocumentIndex.filter(term: { entity_id: @entity.id })
                                   .query(query_string: { fields: DocumentIndex::SEARCH_FIELDS,
-                                                         query: query, default_operator: 'and' })
+                                                         query:, default_operator: 'and' })
                    end
 
     end

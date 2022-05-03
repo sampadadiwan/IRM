@@ -25,6 +25,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - 'vendor/**/*'
+    - 'public/**/*'
     - 'db/**/*'
     - 'lib/**/*'
     - 'features/**/*'

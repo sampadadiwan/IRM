@@ -60,7 +60,7 @@ class InvestorAccess < ApplicationRecord
 
   def update_user
     self.email = email.strip
-    u = User.find_by(email: email)
+    u = User.find_by(email:)
     self.user = u if u
   end
 

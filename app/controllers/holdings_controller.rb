@@ -24,12 +24,12 @@ class HoldingsController < ApplicationController
       @holdings = if current_user.has_role?(:super)
 
                     HoldingIndex.query(query_string: { fields: HoldingIndex::SEARCH_FIELDS,
-                                                       query: query, default_operator: 'and' }).objects
+                                                       query:, default_operator: 'and' }).objects
 
                   else
                     HoldingIndex.filter(term: { entity_id: @entity.id })
                                 .query(query_string: { fields: HoldingIndex::SEARCH_FIELDS,
-                                                       query: query, default_operator: 'and' }).objects
+                                                       query:, default_operator: 'and' }).objects
                   end
 
     end

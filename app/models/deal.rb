@@ -66,7 +66,7 @@ class Deal < ApplicationRecord
     Deal::ACTIVITIES.each do |title, days|
       # Note that if deal_investor_id = nil then this is a template
       DealActivity.create!(deal_id: id, deal_investor_id: nil, status: "Template",
-                           entity_id: entity_id, title: title, sequence: seq, days: days.to_i)
+                           entity_id:, title:, sequence: seq, days: days.to_i)
       seq += 1
     end
   end

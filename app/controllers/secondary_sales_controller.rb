@@ -19,12 +19,12 @@ class SecondarySalesController < ApplicationController
       @secondary_sales = if current_user.has_role?(:super)
 
                            SecondarySaleIndex.query(query_string: { fields: SecondarySaleIndex::SEARCH_FIELDS,
-                                                                    query: query, default_operator: 'and' }).objects
+                                                                    query:, default_operator: 'and' }).objects
 
                          else
                            SecondarySaleIndex.filter(term: { entity_id: @entity.id })
                                              .query(query_string: { fields: SecondarySaleIndex::SEARCH_FIELDS,
-                                                                    query: query, default_operator: 'and' }).objects
+                                                                    query:, default_operator: 'and' }).objects
                          end
 
     end

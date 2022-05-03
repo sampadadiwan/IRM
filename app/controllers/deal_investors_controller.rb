@@ -21,12 +21,12 @@ class DealInvestorsController < ApplicationController
       @deal_investors = if current_user.has_role?(:super)
 
                           DealInvestorIndex.query(query_string: { fields: DealInvestorIndex::SEARCH_FIELDS,
-                                                                  query: query, default_operator: 'and' }).objects
+                                                                  query:, default_operator: 'and' }).objects
 
                         else
                           DealInvestorIndex.filter(term: { entity_id: @entity.id })
                                            .query(query_string: { fields: DealInvestorIndex::SEARCH_FIELDS,
-                                                                  query: query, default_operator: 'and' }).objects
+                                                                  query:, default_operator: 'and' }).objects
                         end
 
     end

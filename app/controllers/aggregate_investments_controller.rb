@@ -8,7 +8,7 @@ class AggregateInvestmentsController < ApplicationController
 
     @entity = current_user.entity
     scenario_id = helpers.current_scenario(@entity)
-    @aggregate_investments = @aggregate_investments.where(scenario_id: scenario_id)
+    @aggregate_investments = @aggregate_investments.where(scenario_id:)
 
     @aggregate_investments = @aggregate_investments.includes(:investor, :entity, :scenario)
 

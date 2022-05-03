@@ -52,6 +52,6 @@ class Folder < ApplicationRecord
   end
 
   def touch_root
-    Folder.where(entity_id: entity_id, level: 0).first.touch
+    Folder.where(entity_id:, level: 0).first.touch
   end
 end

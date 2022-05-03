@@ -13,7 +13,7 @@ class NotesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: NoteDatatable.new(params, current_user: current_user) }
+      format.json { render json: NoteDatatable.new(params, current_user:) }
     end
   end
 
@@ -23,12 +23,12 @@ class NotesController < ApplicationController
       @notes = if current_user.has_role?(:super)
 
                  NoteIndex.query(query_string: { fields: NoteIndex::SEARCH_FIELDS,
-                                                 query: query, default_operator: 'and' })
+                                                 query:, default_operator: 'and' })
 
                else
                  NoteIndex.filter(term: { entity_id: current_user.entity_id })
                           .query(query_string: { fields: NoteIndex::SEARCH_FIELDS,
-                                                 query: query, default_operator: 'and' })
+                                                 query:, default_operator: 'and' })
                end
 
     end

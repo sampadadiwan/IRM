@@ -101,8 +101,8 @@ class User < ApplicationRecord
   # There may be pending investor access given before the user is created.
   # Ensure those are updated with this users id
   def update_investor_access
-    InvestorAccess.where(email: email).update(user_id: id)
-    ia = InvestorAccess.where(email: email).first
+    InvestorAccess.where(email:).update(user_id: id)
+    ia = InvestorAccess.where(email:).first
     # Sometimes the invite goes out via the investor access, hence we need to associate the user to the entity
     if ia && (ia.investor && entity_id.nil?)
       # Set the users entity

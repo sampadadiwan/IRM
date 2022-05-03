@@ -26,7 +26,7 @@ class Nudge < ApplicationRecord
 
   after_create :send_nudge
   def send_nudge
-    NudgeMailer.with(id: id).send_nudge.deliver_later
+    NudgeMailer.with(id:).send_nudge.deliver_later
   end
 
   def pre_populate

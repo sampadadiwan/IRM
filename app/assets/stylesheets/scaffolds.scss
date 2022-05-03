@@ -344,4 +344,15 @@ $screen-xs-max: 786px;
     line-height: 1.5em;
   }
 
+
+}
+
+#viewer {
+  width:100%; 
+  height:600px;
+}
+.viewer_label {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
 }

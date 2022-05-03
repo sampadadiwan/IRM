@@ -9,6 +9,7 @@ class ElasticImporterJob < ApplicationJob
     DealInvestorIndex.import
     DocumentIndex.import
     HoldingIndex.import
+    InvestorIndex.import
     InvestorAccessIndex.import
     NoteIndex.import
     SecondarySaleIndex.import

@@ -12,7 +12,7 @@ class InvestmentsController < ApplicationController
 
     scenario_id = helpers.current_scenario(@entity)
 
-    @investments = @investments.where(scenario_id: scenario_id)
+    @investments = @investments.where(scenario_id:)
     @investments = @investments.where(investor_id: params[:investor_id]) if params[:investor_id]
     @investments = @investments.where(funding_round_id: params[:funding_round_id]) if params[:funding_round_id]
     @investments = @investments.where(investment_instrument: Investment::EQUITY_LIKE) if params[:equity_like]
@@ -53,12 +53,12 @@ class InvestmentsController < ApplicationController
       @investments = if current_user.has_role?(:super)
 
                        InvestmentIndex.query(query_string: { fields: InvestmentIndex::SEARCH_FIELDS,
-                                                             query: query, default_operator: 'and' }).objects
+                                                             query:, default_operator: 'and' }).objects
 
                      else
                        InvestmentIndex.filter(term: { investee_entity_id: current_user.entity_id })
                                       .query(query_string: { fields: InvestmentIndex::SEARCH_FIELDS,
-                                                             query: query, default_operator: 'and' }).objects
+                                                             query:, default_operator: 'and' }).objects
                      end
 
     end

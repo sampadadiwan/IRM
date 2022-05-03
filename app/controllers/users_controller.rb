@@ -15,12 +15,12 @@ class UsersController < ApplicationController
     @users = if current_user.has_role?(:super)
                if query.present?
                  UserIndex.query(query_string: { fields: %i[first_name last_name email],
-                                                 query: query, default_operator: 'and' })
+                                                 query:, default_operator: 'and' })
                end
              elsif query.present?
                UserIndex.filter(term: { entity_id: current_user.entity_id })
                         .query(query_string: { fields: %i[first_name last_name email],
-                                               query: query, default_operator: 'and' })
+                                               query:, default_operator: 'and' })
              end
 
     render "index"

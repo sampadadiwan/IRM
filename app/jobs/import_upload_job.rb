@@ -67,7 +67,7 @@ class ImportUploadJob < ApplicationJob
     user = User.find_by(email: user_data['Email'])
     unless user
       password = (0...8).map { rand(65..90).chr }.join
-      user = User.create!(email: user_data["Email"], password: password,
+      user = User.create!(email: user_data["Email"], password:,
                           first_name: user_data["First Name"],
                           last_name: user_data["Last Name"], active: true, system_created: true,
                           entity_id: investor.investor_entity_id)
@@ -84,7 +84,7 @@ class ImportUploadJob < ApplicationJob
     end
 
     fr = funding_round(user_data, import_upload)
-    holding = Holding.new(user: user, investor: investor, holding_type: user_data["Founder or Employee"],
+    holding = Holding.new(user:, investor:, holding_type: user_data["Founder or Employee"],
                           entity_id: import_upload.owner_id, quantity: user_data["Quantity"],
                           price_cents: user_data["Price"].to_f * 100,
                           investment_instrument: user_data["Instrument"],
@@ -113,7 +113,7 @@ class ImportUploadJob < ApplicationJob
 
     Rails.logger.debug user_data
     approved = user_data["Approved"] ? user_data["Approved"].strip == "Yes" : false
-    ia = InvestorAccess.new(email: user_data["Email"], approved: approved,
+    ia = InvestorAccess.new(email: user_data["Email"], approved:,
                             entity_id: import_upload.entity_id, investor_id: import_upload.owner_id,
                             granted_by: import_upload.user_id)
 
