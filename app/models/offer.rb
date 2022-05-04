@@ -29,8 +29,12 @@ class Offer < ApplicationRecord
 
   belongs_to :holding
   belongs_to :granter, class_name: "User", foreign_key: :granted_by_user_id, optional: true
+  has_many_attached :docs, service: :amazon
 
   delegate :quantity, to: :holding, prefix: :holding
+
+  scope :approved, -> { where(approved: true) }
+  scope :pending_approval, -> { where(approved: false) }
 
   validate :check_quantity
   validate :already_offered, :sale_active, on: :create

@@ -53,7 +53,7 @@
       </div>
       <div id="offerings-tab" class="tab-pane fade">
         <div id="offerings" class="associated_entity">
-          <%= link_to offers_path(secondary_sale_id: secondary_sale.id, show_entity: false, show_secondary_sale: false), class: "load_data_link", data: { turbo_frame: 'offers_frame' } do %>
+          <%= link_to offers_path(secondary_sale_id: secondary_sale.id, show_entity: false, show_secondary_sale: false, approved: false), class: "load_data_link", data: { turbo_frame: 'offers_frame' } do %>
             <span>Loading...</span>
           <% end %>
           

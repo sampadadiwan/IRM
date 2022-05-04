@@ -108,6 +108,7 @@ Rails.application.routes.draw do
     get 'investor_entities', on: :collection
     get 'dashboard', on: :collection
     get 'investor_view', on: :member
+    post 'delete_attachment', on: :collection
   end
 
   resources :users do

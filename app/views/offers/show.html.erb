@@ -65,7 +65,82 @@
       </td>
 
     </tr>
+    <tr>
+      <td colspan="2" class="bg-primary"></td>
+    </tr>
+    <tr>
+      <td>
+        First Name
+      </td>
+      <td>
+        <%= @offer.first_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Middle Name
+      </td>
+      <td>
+        <%= @offer.middle_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Last Name
+      </td>
+      <td>
+        <%= @offer.last_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Address
+      </td>
+      <td>
+        <%= @offer.address %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        PAN
+      </td>
+      <td>
+        <%= @offer.PAN %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Bank Account Number
+      </td>
+      <td>
+        <%= @offer.bank_account_number %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Bank Name
+      </td>
+      <td>
+        <%= @offer.bank_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Bank Routing Info
+      </td>
+      <td>
+        <%= @offer.bank_routing_info %>
+      </td>
+    </tr>
 
+    <tr>
+      <td>
+        Documents
+      </td>
+      <td>
+        <%= render "/layouts/attachments", attachments: @offer.docs %>
+      </td>
+    </tr>
 
   </table>
 

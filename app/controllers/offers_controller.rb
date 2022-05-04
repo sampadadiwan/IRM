@@ -4,6 +4,7 @@ class OffersController < ApplicationController
   # GET /offers or /offers.json
   def index
     @offers = policy_scope(Offer).includes(:user, :investor, :secondary_sale)
+    @offers = @offers.where(approved: params[:approved] == "true") if params[:approved].present?
     @offers = @offers.where(secondary_sale_id: params[:secondary_sale_id]) if params[:secondary_sale_id].present?
   end
 
@@ -14,6 +15,8 @@ class OffersController < ApplicationController
   def new
     @offer = Offer.new(offer_params)
     @offer.user_id = current_user.id
+    @offer.first_name = current_user.first_name
+    @offer.last_name = current_user.last_name
     @offer.entity_id = @offer.secondary_sale.entity_id
     @offer.quantity = @offer.allowed_quantity
 
@@ -95,6 +98,8 @@ class OffersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def offer_params
     params.require(:offer).permit(:user_id, :entity_id, :secondary_sale_id, :investor_id,
-                                  :holding_id, :quantity, :percentage, :notes)
+                                  :holding_id, :quantity, :percentage, :notes, :first_name, :last_name,
+                                  :middle_name, :PAN, :address, :bank_account_number, :bank_name,
+                                  :bank_routing_info, docs: [])
   end
 end

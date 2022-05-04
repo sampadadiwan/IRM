@@ -1,6 +1,6 @@
 class EntitiesController < ApplicationController
   before_action :set_entity, only: %w[show update destroy edit]
-  after_action :verify_authorized, except: %i[dashboard search index investor_entities]
+  after_action :verify_authorized, except: %i[dashboard search index investor_entities delete_attachment]
 
   # GET /entities or /entities.json
   def index
@@ -73,6 +73,18 @@ class EntitiesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to entities_url, notice: "Entity was successfully deleted." }
       format.json { head :no_content }
+    end
+  end
+
+  # Special method to delete attachments for any model
+  def delete_attachment
+    attachment = ActiveStorage::Attachment.where(id: params[:attachment_id]).first
+    record = attachment.record
+    if policy(record).update?
+      attachment.purge_later
+      redirect_to record, notice: "Attachment Deleted"
+    else
+      redirect_to record, notice: "Attachment Deletion Failed: Access Denied"
     end
   end
 
