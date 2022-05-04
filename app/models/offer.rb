@@ -32,27 +32,50 @@ class Offer < ApplicationRecord
 
   delegate :quantity, to: :holding, prefix: :holding
 
-  validates :quantity, comparison: { less_than_or_equal_to: :holding_quantity }
+  validate :check_quantity
   validate :already_offered, :sale_active, on: :create
 
   def already_offered
-    errors.add(:secondary_sale, "An existing offer from this user already exists. Pl modify or delete that one.") if secondary_sale.offers.where(user_id:, holding_id:).first.present?
+    errors.add(:secondary_sale, ": An existing offer from this user already exists. Pl modify or delete that one.") if secondary_sale.offers.where(user_id:, holding_id:).first.present?
   end
 
   def sale_active
-    errors.add(:secondary_sale, "Is not active.") unless secondary_sale.active?
+    errors.add(:secondary_sale, ": Is not active.") unless secondary_sale.active?
   end
 
   before_save :set_defaults
   def set_defaults
-    self.percentage = (100 * quantity) / holding.quantity
+    self.percentage = (100.0 * quantity) / total_holdings_quantity
 
     self.investor_id = holding.investor_id
     self.user_id = holding.user_id if holding.user_id
     self.entity_id = holding.entity_id
+
+    self.approved = false if quantity_changed?
+  end
+
+  def check_quantity
+    # holding users total holding amount
+    total_quantity = total_holdings_quantity
+    Rails.logger.debug { "total_holdings_quantity: #{total_quantity}" }
+
+    # already offered amount
+    already_offered = secondary_sale.offers.where(user_id: holding.user_id).sum(:quantity)
+    Rails.logger.debug { "already_offered: #{already_offered}" }
+
+    total_offered_quantity = already_offered + quantity
+    total_offered_quantity -= quantity_was unless new_record?
+    Rails.logger.debug { "total_offered_quantity: #{total_offered_quantity}" }
+
+    errors.add(:quantity, ": total offered quantity is > total holdings") if total_offered_quantity > total_quantity
+  end
+
+  def total_holdings_quantity
+    holding.user.holdings.eq_and_pref.sum(:quantity)
   end
 
   def allowed_quantity
-    (holding.quantity * secondary_sale.percent_allowed / 100).round
+    # holding users total holding amount
+    (total_holdings_quantity * secondary_sale.percent_allowed / 100).round
   end
 end

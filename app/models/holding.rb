@@ -44,6 +44,8 @@ class Holding < ApplicationRecord
   scope :employees, -> { where(holding_type: "Employee") }
   scope :founders, -> { where(holding_type: "Founder") }
 
+  scope :eq_and_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
+
   after_save ->(_holding) { HoldingUpdateJob.perform_later(id) },
              if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
 
@@ -72,7 +74,7 @@ class Holding < ApplicationRecord
 
   def active_secondary_sale
     entity.secondary_sales.where("secondary_sales.start_date <= ? and secondary_sales.end_date >= ?",
-                                 Time.zone.today, Time.zone.today).first
+                                 Time.zone.today, Time.zone.today).last
   end
 
   def holder_name

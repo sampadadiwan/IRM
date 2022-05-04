@@ -205,16 +205,15 @@ namespace :irm do
 
         funding_round = investor.investee_entity.funding_rounds.sample
 
-        Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
-            quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000,
-            investment_instrument: ["Equity", "Preferred", "Options"][rand(3)], 
-            holding_type: investor.category, funding_round: funding_round)
+        (1..3).each do |i|
+          Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
+              quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000,
+              investment_instrument: ["Equity", "Preferred", "Options"][rand(3)], 
+              holding_type: investor.category, funding_round: funding_round)
+        end
       end
     end
 
-    # This is a bug - a holdings Investment does not update the aggregate_investment
-    # So manually fix it
-    # Investment.counter_culture_fix_counts :only=>:aggregate_investment, verbose: true
   rescue Exception => e
     puts e.backtrace.join("\n")
     raise e
@@ -275,7 +274,7 @@ namespace :irm do
 
           offer.quantity = offer.allowed_quantity
           offer.approved = rand(4) > 0
-          offer.save!
+          offer.save
           puts offer.to_json
         end
       end
