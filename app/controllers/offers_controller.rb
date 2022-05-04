@@ -100,6 +100,6 @@ class OffersController < ApplicationController
     params.require(:offer).permit(:user_id, :entity_id, :secondary_sale_id, :investor_id,
                                   :holding_id, :quantity, :percentage, :notes, :first_name, :last_name,
                                   :middle_name, :PAN, :address, :bank_account_number, :bank_name,
-                                  :bank_routing_info, docs: [])
+                                  :bank_routing_info, signature: [], docs: [])
   end
 end

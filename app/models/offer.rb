@@ -30,6 +30,7 @@ class Offer < ApplicationRecord
   belongs_to :holding
   belongs_to :granter, class_name: "User", foreign_key: :granted_by_user_id, optional: true
   has_many_attached :docs, service: :amazon
+  has_many_attached :signature, service: :amazon
 
   delegate :quantity, to: :holding, prefix: :holding
 
