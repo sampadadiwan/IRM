@@ -237,14 +237,14 @@ Then('I should see the offer') do
   @offer.user_id.should == @user.id
   @offer.secondary_sale_id.should == @sale.id
   @offer.entity_id.should == @startup.id
-  @offer.quantity.should == @sale.percent_allowed * h.quantity / 100.0
+  @offer.quantity.should == @sale.percent_allowed * @offer.total_holdings_quantity / 100.0
   @offer.holding_id.should == h.id
 
   expect(page).to have_content(@user.full_name)
   expect(page).to have_content(@startup.name)
   expect(page).to have_content(@sale.name)
   expect(page).to have_content(@sale.percent_allowed)
-  expect(page).to have_content(@sale.percent_allowed * h.quantity / 100)
+  expect(page).to have_content(@offer.allowed_quantity / 100)
   expect(page).to have_content("No")
 end
 
@@ -289,6 +289,10 @@ Given('there are {string} offers for the sale') do |approved_flag|
     offer = Offer.create!(holding: h, entity: h.entity, secondary_sale: @sale, 
                           user: h.entity.employees.sample, investor: h.investor,
                           quantity: h.quantity * @sale.percent_allowed / 100, approved: approved)
+
+
+    offer.approved = approved
+    offer.save                          
   end
 end
 

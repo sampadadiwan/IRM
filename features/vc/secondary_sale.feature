@@ -50,7 +50,7 @@ Scenario Outline: View sale - make offer
   Given there is a sale "<sale>"
   Given Im logged in as a user "first_name=Emp1" for an entity "entity_type=VC"
   Given my firm is an investor in the startup
-  Given there are "2" investments "" in the startup
+  Given there are "2" investments "investment_instrument=Equity" in the startup
   And the investor has access rights to the sale
   And I should see the sale details on the details page
   And I should see my holdings in the holdings tab
