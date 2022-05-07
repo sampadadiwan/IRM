@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_04_055230) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_04_062430) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -553,6 +553,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_04_055230) do
     t.string "bank_account_number", limit: 40
     t.string "bank_name", limit: 50
     t.text "bank_routing_info"
+    t.string "buyer_confirmation", limit: 10
+    t.text "buyer_notes"
+    t.bigint "buyer_id"
+    t.index ["buyer_id"], name: "index_offers_on_buyer_id"
     t.index ["entity_id"], name: "index_offers_on_entity_id"
     t.index ["holding_id"], name: "index_offers_on_holding_id"
     t.index ["investor_id"], name: "index_offers_on_investor_id"
@@ -735,6 +739,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_04_055230) do
   add_foreign_key "nudges", "entities"
   add_foreign_key "nudges", "users"
   add_foreign_key "offers", "entities"
+  add_foreign_key "offers", "entities", column: "buyer_id"
   add_foreign_key "offers", "holdings"
   add_foreign_key "offers", "secondary_sales"
   add_foreign_key "offers", "users"

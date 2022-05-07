@@ -29,8 +29,11 @@ class Offer < ApplicationRecord
 
   belongs_to :holding
   belongs_to :granter, class_name: "User", foreign_key: :granted_by_user_id, optional: true
+  belongs_to :buyer, class_name: "Entity", optional: true
+
   has_many_attached :docs, service: :amazon
   has_many_attached :signature, service: :amazon
+  has_many_attached :buyer_docs, service: :amazon
 
   delegate :quantity, to: :holding, prefix: :holding
 
@@ -39,6 +42,8 @@ class Offer < ApplicationRecord
 
   validate :check_quantity
   validate :already_offered, :sale_active, on: :create
+
+  BUYER_STATUS = %w[Confirmed Rejected].freeze
 
   def already_offered
     errors.add(:secondary_sale, ": An existing offer from this user already exists. Pl modify or delete that one.") if secondary_sale.offers.where(user_id:, holding_id:).first.present?
@@ -76,7 +81,7 @@ class Offer < ApplicationRecord
   end
 
   def total_holdings_quantity
-    holding.user.holdings.eq_and_pref.sum(:quantity)
+    holding.user ? holding.user.holdings.eq_and_pref.sum(:quantity) : holding.investor.holdings.eq_and_pref.sum(:quantity)
   end
 
   def allowed_quantity

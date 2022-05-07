@@ -88,6 +88,10 @@ Given('there is an {string} offer {string} for each employee investor') do | app
                 secondary_sale_id: @sale.id, investor_id: h.investor_id, approved: approved)
     key_values(offer, args)
     offer.save!
+
+    offer.approved = approved
+    offer.save
+    
     puts "\n####Offer####\n"
     puts offer.to_json
   end
