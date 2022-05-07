@@ -32,7 +32,16 @@ class Interest < ApplicationRecord
   scope :short_listed, -> { where(short_listed: true) }
 
   before_save :notify_shortlist, if: :short_listed
+  before_save :set_defaults
   after_create :notify_interest
+
+  counter_culture :secondary_sale,
+                  column_name: proc { |o| o.short_listed ? 'total_interest_quantity' : nil },
+                  delta_column: 'quantity'
+
+  counter_culture :secondary_sale,
+                  column_name: proc { |o| o.short_listed ? 'total_interest_amount_cents' : nil },
+                  delta_column: 'amount_cents'
 
   def notify_interest
     InterestMailer.with(interest_id: id).notify_interest.deliver_later
@@ -40,5 +49,9 @@ class Interest < ApplicationRecord
 
   def notify_shortlist
     InterestMailer.with(interest_id: id).notify_shortlist.deliver_later if short_listed_changed?
+  end
+
+  def set_defaults
+    self.amount_cents = quantity * final_price if final_price.positive?
   end
 end

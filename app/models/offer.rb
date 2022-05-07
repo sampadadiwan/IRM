@@ -27,6 +27,10 @@ class Offer < ApplicationRecord
                   column_name: proc { |o| o.approved ? 'total_offered_quantity' : nil },
                   delta_column: 'quantity'
 
+  counter_culture :secondary_sale,
+                  column_name: proc { |o| o.approved ? 'total_offered_amount_cents' : nil },
+                  delta_column: 'amount_cents'
+
   belongs_to :holding
   belongs_to :granter, class_name: "User", foreign_key: :granted_by_user_id, optional: true
   belongs_to :buyer, class_name: "Entity", optional: true
@@ -62,6 +66,8 @@ class Offer < ApplicationRecord
     self.entity_id = holding.entity_id
 
     self.approved = false if quantity_changed?
+
+    self.amount_cents = quantity * final_price if final_price.positive?
   end
 
   def check_quantity

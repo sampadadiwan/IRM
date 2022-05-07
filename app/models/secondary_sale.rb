@@ -41,6 +41,11 @@ class SecondarySale < ApplicationRecord
                   .joins(access_rights: :investor)
               }
 
+  before_save :set_defaults
+  def set_defaults
+    self.allocation_percentage = total_interest_quantity * 1.0 / total_offered_quantity if total_offered_quantity.positive?
+  end
+
   def self.for_investor(user, entity)
     SecondarySale
       # Ensure the access rghts for Document
@@ -66,5 +71,26 @@ class SecondarySale < ApplicationRecord
 
   def notify_open_for_offers
     SecondarySaleMailer.with(id:).notify_open_for_offers.deliver_later
+  end
+
+  def fix_final_price(price)
+    self.final_price = price
+    save
+    update_offer_price
+    update_interests_price
+  end
+
+  def update_offer_price
+    offers.approved.each do |o|
+      o.final_price = final_price
+      o.save
+    end
+  end
+
+  def update_interests_price
+    interests.short_listed.each do |i|
+      i.final_price = final_price
+      i.save
+    end
   end
 end

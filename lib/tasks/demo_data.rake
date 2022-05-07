@@ -6,7 +6,7 @@ namespace :irm do
 
   desc "generates fake Entity for testing"
   task generateFakeEntities: :environment do
-    startup_names = ["Urban Company", "Wakefit", "Demo Startup"]#, "PayTm", "Apna", "RazorPay", "Delhivery"]
+    startup_names = ["Urban Company"]# , "Demo Startup", "Wakefit", "PayTm", "Apna", "RazorPay", "Delhivery"]
     startup_names.each do |name|
       e = FactoryBot.create(:entity, entity_type: "Startup", name: name)
       puts "Entity #{e.name}"
@@ -249,6 +249,16 @@ namespace :irm do
         deal.start_deal if rand(2).positive?
       end
 
+    end
+  rescue Exception => e
+    puts e.backtrace.join("\n")
+    raise e
+  end
+
+  desc "generates fake Sales for testing"
+  task generateFakeSales: :environment do
+    Entity.startups.each do |e|
+    
       FactoryBot.create(:secondary_sale, entity:e, start_date:Date.today, end_date:Date.today + 10.days)
 
     end
@@ -276,6 +286,9 @@ namespace :irm do
           offer.approved = rand(4) > 0
           offer.save
           puts offer.to_json
+
+          offer.approved = true
+          offer.save
         end
       end
 
@@ -315,7 +328,7 @@ namespace :irm do
 
 
   task :generateAll => [:generateFakeEntities, :generateFakeInvestors, :generateFakeInvestments, :generateFakeDeals, 
-                        :generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes, 
+                        :generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes, :generateFakeSales,
                         :generateFakeOffers, :generateFakeBlankEntities] do
     puts "Generating all Fake Data"
     Sidekiq.redis(&:flushdb)

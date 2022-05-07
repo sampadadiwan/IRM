@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_04_062430) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_07_100436) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -423,6 +423,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_04_062430) do
     t.datetime "updated_at", null: false
     t.boolean "short_listed", default: false
     t.boolean "escrow_deposited", default: false
+    t.decimal "final_price", precision: 10, scale: 2, default: "0.0"
+    t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
     t.index ["interest_entity_id"], name: "index_interests_on_interest_entity_id"
     t.index ["offer_entity_id"], name: "index_interests_on_offer_entity_id"
     t.index ["secondary_sale_id"], name: "index_interests_on_secondary_sale_id"
@@ -556,6 +558,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_04_062430) do
     t.string "buyer_confirmation", limit: 10
     t.text "buyer_notes"
     t.bigint "buyer_id"
+    t.decimal "final_price", precision: 10, scale: 2, default: "0.0"
+    t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
     t.index ["buyer_id"], name: "index_offers_on_buyer_id"
     t.index ["entity_id"], name: "index_offers_on_entity_id"
     t.index ["holding_id"], name: "index_offers_on_holding_id"
@@ -617,6 +621,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_04_062430) do
     t.integer "total_offered_quantity", default: 0
     t.boolean "visible_externally", default: false
     t.datetime "deleted_at"
+    t.decimal "final_price", precision: 10, scale: 2, default: "0.0"
+    t.decimal "total_offered_amount_cents", precision: 20, scale: 2, default: "0.0"
+    t.decimal "total_interest_amount_cents", precision: 20, scale: 2, default: "0.0"
+    t.integer "total_interest_quantity", default: 0
+    t.decimal "allocation_percentage", precision: 5, scale: 2, default: "0.0"
     t.index ["deleted_at"], name: "index_secondary_sales_on_deleted_at"
     t.index ["entity_id"], name: "index_secondary_sales_on_entity_id"
   end
@@ -739,7 +748,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_04_062430) do
   add_foreign_key "nudges", "entities"
   add_foreign_key "nudges", "users"
   add_foreign_key "offers", "entities"
-  add_foreign_key "offers", "entities", column: "buyer_id"
   add_foreign_key "offers", "holdings"
   add_foreign_key "offers", "secondary_sales"
   add_foreign_key "offers", "users"
