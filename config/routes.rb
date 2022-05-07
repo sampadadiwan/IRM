@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :secondary_sales do
     patch 'make_visible', on: :member
     get 'search', on: :collection
+    get 'download', on: :member
   end
 
   resources :holdings do

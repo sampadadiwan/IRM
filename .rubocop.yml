@@ -87,6 +87,8 @@ Metrics/MethodLength:
 Metrics/BlockLength:
   CountComments: false
   Max: 15
+  Exclude:
+    - 'app/views/secondary_sales/download.xlsx.axlsx'
   IgnoredMethods:
     - context
     - describe

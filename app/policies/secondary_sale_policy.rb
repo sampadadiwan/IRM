@@ -57,6 +57,10 @@ class SecondarySalePolicy < ApplicationPolicy
     update?
   end
 
+  def download?
+    update?
+  end
+
   def edit?
     update?
   end

@@ -29,6 +29,8 @@ class Interest < ApplicationRecord
   delegate :min_price, to: :secondary_sale
   delegate :max_price, to: :secondary_sale
 
+  monetize :amount_cents, with_currency: ->(i) { i.offer_entity.currency }
+
   scope :short_listed, -> { where(short_listed: true) }
 
   before_save :notify_shortlist, if: :short_listed

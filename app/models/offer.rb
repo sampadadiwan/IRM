@@ -47,6 +47,8 @@ class Offer < ApplicationRecord
   validate :check_quantity
   validate :already_offered, :sale_active, on: :create
 
+  monetize :amount_cents, with_currency: ->(o) { o.entity.currency }
+
   BUYER_STATUS = %w[Confirmed Rejected].freeze
 
   def already_offered

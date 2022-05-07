@@ -33,6 +33,9 @@ class SecondarySale < ApplicationRecord
   has_many :offers, dependent: :destroy
   has_many :interests, dependent: :destroy
 
+  monetize :total_offered_amount_cents, with_currency: ->(s) { s.entity.currency }
+  monetize :total_interest_amount_cents, with_currency: ->(s) { s.entity.currency }
+
   validates :name, :start_date, :end_date, :min_price, :percent_allowed, presence: true
 
   scope :for, lambda { |user|
