@@ -63,14 +63,13 @@ FactoryBot.define do
   # end
 
   
-  # factory :offer do
-  #   user { nil }
-  #   entity { nil }
-  #   secondary_sale { nil }
-  #   quantity { 1 }
-  #   percentage { "9.99" }
-  #   notes { "MyText" }
-  # end
+  factory :offer do
+    PAN {(0...10).map { (65 + rand(26)).chr }.join} 
+    address { Faker::Address.full_address }
+    bank_account_number  {Faker::Bank.account_number}
+    bank_name {Faker::Bank.name}
+    bank_routing_info {Faker::Bank.routing_number}
+  end
 
   factory :secondary_sale do
     name { "Sale-#{Time.zone.today}" }

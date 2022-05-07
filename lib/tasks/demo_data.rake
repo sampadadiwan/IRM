@@ -280,14 +280,9 @@ namespace :irm do
         if h.user
           puts h.to_json
 
-          PAN = (0...8).map { (65 + rand(26)).chr }.join
-          offer = Offer.new(holding:h, secondary_sale: sale, 
+          offer = FactoryBot.build(:offer, holding:h, secondary_sale: sale, 
             user: h.user, investor: h.investor, entity: h.entity,
-            first_name: h.user&.first_name, last_name: h.user&.last_name,
-            PAN: PAN, address: Faker::Address.full_address, 
-            bank_account_number: Faker::Bank.account_number,
-            bank_name: Faker::Bank.name,
-            bank_routing_info: Faker::Bank.routing_number)
+            first_name: h.user&.first_name, last_name: h.user&.last_name)
 
           offer.quantity = offer.allowed_quantity
           offer.approved = rand(4) > 0
