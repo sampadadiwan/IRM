@@ -47,3 +47,24 @@ Examples:
     |  	        |entity_type=Startup  |name=Winter Sale |200        |
 
 
+
+Scenario Outline: Express Interest
+  Given there is a user "first_name=Emp1" for an entity "entity_type=Startup"
+  Given there is a sale "<sale>"
+  Given there are "2" employee investors
+  Given there is a FundingRound "name=Series A"
+  And there is a holding "quantity=100;investment_instrument=Equity" for each employee investor
+  Given there are offers "<offer>" for the sale
+  Given there are "<interest_count>" interests "<interest>" for the sale
+  Then when the allocation is done
+  Then the sale allocation percentage must be "<allocation_percentage>"
+  Then the sale must be allocated correctly
+  Then the offers must be allocated correctly
+  Then the interests must be allocated correctly
+
+  Examples:
+  	|allocation_percentage |interest_count |interest                       |offer	                      |entity                     |sale                                     |
+  	| .5                   |1              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;final_price=10000;percent_allowed=100  |
+    | 1.0                  |2              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;final_price=10000;percent_allowed=100  |
+    | 1.5                  |3              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;final_price=10000;percent_allowed=100  |
+    

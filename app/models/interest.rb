@@ -29,13 +29,13 @@ class Interest < ApplicationRecord
   delegate :min_price, to: :secondary_sale
   delegate :max_price, to: :secondary_sale
 
-  monetize :amount_cents, :allocation_amount_cents, with_currency: ->(i) { i.offer_entity.currency }
-
   scope :short_listed, -> { where(short_listed: true) }
 
+  before_validation :set_defaults
   before_save :notify_shortlist, if: :short_listed
-  before_save :set_defaults
   after_create :notify_interest
+
+  monetize :amount_cents, :allocation_amount_cents, with_currency: ->(i) { i.offer_entity.currency }
 
   counter_culture :secondary_sale,
                   column_name: proc { |o| o.short_listed ? 'total_interest_quantity' : nil },
@@ -54,6 +54,8 @@ class Interest < ApplicationRecord
   end
 
   def set_defaults
+    self.interest_entity_id ||= user.entity_id
+    self.offer_entity_id ||= secondary_sale.entity_id
     self.amount_cents = quantity * final_price if final_price.positive?
     self.allocation_amount_cents = allocation_quantity * final_price if final_price.positive?
   end

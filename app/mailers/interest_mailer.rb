@@ -6,7 +6,7 @@ class InterestMailer < ApplicationMailer
     emails = @interest.offer_entity.employees.collect(&:email)
     mail(to: emails,
          cc: ENV['SUPPORT_EMAIL'],
-         subject: "New Interest for #{@interest.secondary_sale.name} ")
+         subject: "Interest for #{@interest.secondary_sale.name} ")
   end
 
   def notify_shortlist

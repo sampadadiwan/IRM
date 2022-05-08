@@ -73,10 +73,4 @@ class SecondarySale < ApplicationRecord
   def notify_open_for_offers
     SecondarySaleMailer.with(id:).notify_open_for_offers.deliver_later
   end
-
-  def fix_final_price(price)
-    self.final_price = price
-    save
-    AllocationJob.perform_later(id)
-  end
 end

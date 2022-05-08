@@ -280,19 +280,40 @@ Given('there are approved offers for the sale') do
   end
 end
 
+
+Given('there are offers {string} for the sale') do |args|
+  Holding.all.each do |h|
+    offer = Offer.new(holding: h, entity: h.entity, secondary_sale: @sale, 
+                          user: h.entity.employees.sample, investor: h.investor)
+
+
+    key_values(offer, args)
+    saved = offer.save!    
+    if saved
+      key_values(offer, args)
+      offer.save
+      puts "\n####Offer Created####\n"
+      puts offer.to_json                      
+    end
+  end
+end
+
+
 Given('there are {string} offers for the sale') do |approved_flag|
   steps %(
     Given there are "3" exisiting investments "" from another firm in startups
   )
   approved = approved_flag == "approved"
   Holding.all.each do |h|
-    offer = Offer.create!(holding: h, entity: h.entity, secondary_sale: @sale, 
+    offer = Offer.create(holding: h, entity: h.entity, secondary_sale: @sale, 
                           user: h.entity.employees.sample, investor: h.investor,
                           quantity: h.quantity * @sale.percent_allowed / 100, approved: approved)
 
 
     offer.approved = approved
-    offer.save                          
+    offer.save    
+    puts "\n####Offer Created####\n"
+    puts offer.to_json                      
   end
 end
 
@@ -304,4 +325,78 @@ Then('I should be able to create an interest in the sale') do
   fill_in("interest_price", with: @sale.min_price)
   click_on("Save")
   sleep(1)
+end
+
+
+Given('there are {string} interests {string} for the sale') do |count, args|
+
+  @sale.reload
+
+  (1..count.to_i).each do
+    advisor_entity = FactoryBot.create(:entity, entity_type: "Advisor")
+    user = FactoryBot.create(:user, entity: advisor_entity)
+
+    interest = Interest.new(secondary_sale: @sale, 
+                  user: user, 
+                  quantity: @sale.total_offered_quantity, 
+                  price: @sale.min_price,
+                  short_listed: true)
+
+    key_values(interest, args)
+    interest.save
+    puts "\n####Interest Created####\n"
+    puts interest.to_json
+  end
+
+end
+
+Then('when the allocation is done') do
+  @sale.final_price = (@sale.min_price + @sale.max_price) / 2
+  @sale.save
+
+  AllocationJob.perform_now(@sale.id)
+  @sale.reload
+  puts "\n####Sale Reloaded####\n"
+  puts @sale.to_json
+end
+
+Then('the sale allocation percentage must be {string}') do |arg|
+  @sale.allocation_percentage.should == arg.to_f  
+end
+
+
+Then('the sale must be allocated correctly') do  
+  @sale.total_offered_quantity.should == @sale.offers.approved.sum(:quantity)
+  # @sale.total_offered_amount_cents.should == @sale.offers.approved.sum(:amount_cents)
+  # @sale.total_interest_amount_cents.should == @sale.interests.short_listed.sum(:amount_cents)
+  @sale.total_interest_quantity.should == @sale.interests.short_listed.sum(:quantity)
+  @sale.offer_allocation_quantity.should == @sale.offers.approved.sum(:allocation_quantity)
+  @sale.interest_allocation_quantity.should == @sale.interests.short_listed.sum(:allocation_quantity)
+  @sale.allocation_offer_amount_cents.should == @sale.offers.approved.sum(:allocation_amount_cents)  
+  @sale.allocation_interest_amount_cents.should == @sale.interests.short_listed.sum(:allocation_amount_cents) 
+end
+
+
+Then('the offers must be allocated correctly') do
+  @sale.offers.approved.each do |offer|
+    if @sale.allocation_percentage <= 1
+      offer.allocation_percentage.should == @sale.allocation_percentage * 100
+    else
+      offer.allocation_percentage.should == 100.0
+    end 
+    # puts offer.to_json
+    offer.allocation_quantity.should == (offer.quantity * offer.allocation_percentage / 100).ceil
+  end
+end
+
+Then('the interests must be allocated correctly') do
+  @sale.interests.short_listed.each do |interest|
+    if @sale.allocation_percentage <= 1
+      interest.allocation_percentage.should == 100.0
+    else
+      interest.allocation_percentage.should be_within(0.1).of(100.0 / @sale.allocation_percentage)
+    end 
+    puts interest.to_json
+    interest.allocation_quantity.should  == (interest.quantity * interest.allocation_percentage / 100).ceil
+  end
 end
