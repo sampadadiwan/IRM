@@ -1,36 +1,5 @@
 wb = xlsx_package.workbook
 
-wb.add_worksheet(name: "Offers") do |sheet|
-  # Create the header row
-  sheet.add_row ["User", "Investor", "Quantity", "Percentage", "Approved",
-                 "First Name", "Middle Name", "Last Name", "PAN", "Address",
-                 "Bank Account", "Bank Name",
-                 "Bank Routing", "Final Price", "Amount"]
-
-  # Create entries for each offer
-  @secondary_sale.offers.approved.each do |o|
-    sheet.add_row [o.user&.full_name, o.investor&.investor_name,
-                   custom_format_number(o.quantity, params), o.percentage, o.approved,
-                   o.first_name, o.middle_name, o.last_name, o.PAN, o.address,
-                   o.bank_account_number, o.bank_name, o.bank_routing_info, o.final_price,
-                   money_to_currency(o.amount, params)]
-  end
-end
-
-wb.add_worksheet(name: "Interests") do |sheet|
-  # Create the header row
-  sheet.add_row ["User", "Investor", "Type", "Quantity", "Price", "Short Listed",
-                 "Escrow Deposited", "Final Price", "Amount"]
-
-  # Create entries for each offer
-  @secondary_sale.interests.short_listed.each do |o|
-    sheet.add_row [o.user.full_name, o.interest_entity.name,
-                   custom_format_number(o.quantity, params), custom_format_number(o.price, params),
-                   o.short_listed, o.escrow_deposited, o.final_price,
-                   money_to_currency(o.amount, params)]
-  end
-end
-
 wb.styles do |s|
   wrap_text = s.add_style     sz: 12,
                               border: { style: :thin, color: "00" },
@@ -50,5 +19,40 @@ wb.styles do |s|
     sheet.add_row ["Total Interest Amount", money_to_currency(@secondary_sale.total_interest_amount, params)], style: wrap_text
     sheet.add_row ["Final Price", @secondary_sale.final_price], style: wrap_text
     sheet.add_row ["Allocation %", @secondary_sale.allocation_percentage], style: wrap_text
+  end
+end
+
+wb.add_worksheet(name: "Offers") do |sheet|
+  # Create the header row
+  sheet.add_row ["User", "Investor", "Quantity", "Percentage", "Approved",
+                 "First Name", "Middle Name", "Last Name", "PAN", "Address",
+                 "Bank Account", "Bank Name",
+                 "Bank Routing", "Final Price", "Amount", "Allocation Percentage",
+                 "Allocation Quantity", "Allocation Amount"]
+
+  # Create entries for each offer
+  @secondary_sale.offers.approved.each do |o|
+    sheet.add_row [o.user&.full_name, o.investor&.investor_name,
+                   custom_format_number(o.quantity, params), o.percentage, o.approved,
+                   o.first_name, o.middle_name, o.last_name, o.PAN, o.address,
+                   o.bank_account_number, o.bank_name, o.bank_routing_info, o.final_price,
+                   money_to_currency(o.amount, params), o.allocation_percentage,
+                   o.allocation_quantity, money_to_currency(o.allocation_amount, params)]
+  end
+end
+
+wb.add_worksheet(name: "Interests") do |sheet|
+  # Create the header row
+  sheet.add_row ["User", "Investor", "Quantity", "Price", "Short Listed",
+                 "Escrow Deposited", "Final Price", "Amount", "Allocation Percentage",
+                 "Allocation Quantity", "Allocation Amount"]
+
+  # Create entries for each offer
+  @secondary_sale.interests.short_listed.each do |o|
+    sheet.add_row [o.user.full_name, o.interest_entity.name,
+                   custom_format_number(o.quantity, params), custom_format_number(o.price, params),
+                   o.short_listed, o.escrow_deposited, o.final_price,
+                   money_to_currency(o.amount, params), o.allocation_percentage,
+                   o.allocation_quantity, money_to_currency(o.allocation_amount, params)]
   end
 end

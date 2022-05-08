@@ -44,9 +44,33 @@ class SecondarySale < ApplicationRecord
                   .joins(access_rights: :investor)
               }
 
-  before_save :set_defaults
-  def set_defaults
+  # before_save :set_defaults
+  def update_allocation
     self.allocation_percentage = total_interest_quantity * 1.0 / total_offered_quantity if total_offered_quantity.positive?
+    if allocation_percentage > 100
+      # We have more interests than offers
+      sql = "update interests set allocation_percentage = 100.00,
+             allocation_quantity = quantity, allocation_amount_cents = (quantity * final_price)"
+      ActiveRecord::Base.connection.execute(sql)
+      # We only can allocate a portion of the offers
+      inverse = (1.0 / allocation_percentage).round(2)
+      logger.debug "allocating #{inverse}% of offers"
+      sql = "update offers set allocation_percentage = #{100.00 * inverse},
+             allocation_quantity = floor(quantity * #{inverse}),
+             allocation_amount_cents = (floor(quantity * #{inverse}) * final_price)"
+    else
+      # We have more offers than interests
+      sql = "update offers set allocation_percentage = 100.00,
+             allocation_quantity = quantity, allocation_amount_cents = (quantity * final_price)"
+      ActiveRecord::Base.connection.execute(sql)
+      # We only can allocate a portion of the interests
+      inverse = (1.0 / allocation_percentage).round(2)
+      logger.debug "allocating #{inverse}% of interests"
+      sql = "update interests set allocation_percentage = #{100.00 * inverse},
+             allocation_quantity = floor(quantity * #{inverse}),
+             allocation_amount_cents = (floor(quantity * #{inverse}) * final_price)"
+    end
+    ActiveRecord::Base.connection.execute(sql)
   end
 
   def self.for_investor(user, entity)

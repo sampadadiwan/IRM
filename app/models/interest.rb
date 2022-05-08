@@ -29,7 +29,7 @@ class Interest < ApplicationRecord
   delegate :min_price, to: :secondary_sale
   delegate :max_price, to: :secondary_sale
 
-  monetize :amount_cents, with_currency: ->(i) { i.offer_entity.currency }
+  monetize :amount_cents, :allocation_amount_cents, with_currency: ->(i) { i.offer_entity.currency }
 
   scope :short_listed, -> { where(short_listed: true) }
 
@@ -55,5 +55,6 @@ class Interest < ApplicationRecord
 
   def set_defaults
     self.amount_cents = quantity * final_price if final_price.positive?
+    self.allocation_amount_cents = allocation_quantity * final_price if final_price.positive?
   end
 end

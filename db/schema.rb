@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_07_100436) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_08_025950) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -425,6 +425,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_07_100436) do
     t.boolean "escrow_deposited", default: false
     t.decimal "final_price", precision: 10, scale: 2, default: "0.0"
     t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
+    t.decimal "allocation_quantity", precision: 15, scale: 2, default: "0.0"
+    t.decimal "allocation_amount_cents", precision: 20, scale: 2, default: "0.0"
+    t.decimal "allocation_percentage", precision: 5, scale: 2, default: "0.0"
     t.index ["interest_entity_id"], name: "index_interests_on_interest_entity_id"
     t.index ["offer_entity_id"], name: "index_interests_on_offer_entity_id"
     t.index ["secondary_sale_id"], name: "index_interests_on_secondary_sale_id"
@@ -560,6 +563,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_07_100436) do
     t.bigint "buyer_id"
     t.decimal "final_price", precision: 10, scale: 2, default: "0.0"
     t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
+    t.decimal "allocation_quantity", precision: 15, scale: 2, default: "0.0"
+    t.decimal "allocation_amount_cents", precision: 20, scale: 2, default: "0.0"
+    t.decimal "allocation_percentage", precision: 5, scale: 2, default: "0.0"
     t.index ["buyer_id"], name: "index_offers_on_buyer_id"
     t.index ["entity_id"], name: "index_offers_on_entity_id"
     t.index ["holding_id"], name: "index_offers_on_holding_id"

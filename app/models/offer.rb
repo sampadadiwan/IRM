@@ -47,7 +47,7 @@ class Offer < ApplicationRecord
   validate :check_quantity
   validate :already_offered, :sale_active, on: :create
 
-  monetize :amount_cents, with_currency: ->(o) { o.entity.currency }
+  monetize :amount_cents, :allocation_amount_cents, with_currency: ->(o) { o.entity.currency }
 
   BUYER_STATUS = %w[Confirmed Rejected].freeze
 
@@ -70,6 +70,7 @@ class Offer < ApplicationRecord
     self.approved = false if quantity_changed?
 
     self.amount_cents = quantity * final_price if final_price.positive?
+    self.allocation_amount_cents = allocation_quantity * final_price if final_price.positive?
   end
 
   def check_quantity
