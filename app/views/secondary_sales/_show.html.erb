@@ -76,59 +76,67 @@
       </td>
     </tr>
 
-    <% if current_user.entity_id == secondary_sale.entity_id %>
+    <% if current_user.entity_id == secondary_sale.entity_id && secondary_sale.final_price > 0 %>
 
-    <tr>
-      <td>
-        Final Price
-      </td>
-      <td>
-        <%= custom_format_number secondary_sale.final_price, params %>
-      </td>
-    </tr>
+      <tr>
+        <td colspan="2" class="bg-primary"></td>
+      </tr>
 
-    <tr>
-      <td>
-        Total Offered Quantity
-      </td>
-      <td>
-        <%= custom_format_number secondary_sale.total_offered_quantity, params %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Total Offered Amount
-      </td>
-      <td>
-        <%= money_to_currency secondary_sale.total_offered_amount, params %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Total Interest Quantity
-      </td>
-      <td>
-        <%= custom_format_number secondary_sale.total_interest_quantity, params %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Total Interest Amount
-      </td>
-      <td>
-        <%= money_to_currency secondary_sale.total_interest_amount, params %>
-      </td>
-    </tr>
+      <tr>
+        <td>
+          Final Price
+        </td>
+        <td>
+          <%= custom_format_number secondary_sale.final_price, params %>
+        </td>
+      </tr>
 
-    <tr>
-      <td>
-        Allocation Percentage
-      </td>
-      <td>
-        <%= secondary_sale.allocation_percentage %> %
-      </td>
-    </tr>
+      <tr>
+        <td>
+          Total Offered Quantity
+        </td>
+        <td>
+          <%= custom_format_number secondary_sale.total_offered_quantity, params %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Total Offered Amount
+        </td>
+        <td>
+          <%= money_to_currency secondary_sale.total_offered_amount, params %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Total Interest Quantity
+        </td>
+        <td>
+          <%= custom_format_number secondary_sale.total_interest_quantity, params %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Total Interest Amount
+        </td>
+        <td>
+          <%= money_to_currency secondary_sale.total_interest_amount, params %>
+        </td>
+      </tr>
 
+      <tr>
+        <td>
+          Allocation Percentage
+        </td>
+        <td>
+          <%= secondary_sale.allocation_percentage %> %
+        </td>
+      </tr>
+
+
+      <tr>
+        <td colspan="2" class="bg-primary"></td>
+      </tr>
     <% end %>
 
     <tr id="visible_externally">
