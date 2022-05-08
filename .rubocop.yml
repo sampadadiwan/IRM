@@ -32,9 +32,11 @@ AllCops:
     - 'bin/**/*'
     - 'test/factories.rb'
 
+
 Rails/SkipsModelValidations:
   Exclude:
     - 'app/models/folder.rb'
+    - 'app/jobs/allocation_job.rb'
 Rails/HasAndBelongsToMany:
   Exclude:
     - 'app/models/role.rb'

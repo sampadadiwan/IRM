@@ -45,33 +45,6 @@ class SecondarySale < ApplicationRecord
               }
 
   # before_save :set_defaults
-  def update_allocation
-    self.allocation_percentage = total_interest_quantity * 1.0 / total_offered_quantity if total_offered_quantity.positive?
-    if allocation_percentage > 100
-      # We have more interests than offers
-      sql = "update interests set allocation_percentage = 100.00,
-             allocation_quantity = quantity, allocation_amount_cents = (quantity * final_price)"
-      ActiveRecord::Base.connection.execute(sql)
-      # We only can allocate a portion of the offers
-      inverse = (1.0 / allocation_percentage).round(2)
-      logger.debug "allocating #{inverse}% of offers"
-      sql = "update offers set allocation_percentage = #{100.00 * inverse},
-             allocation_quantity = floor(quantity * #{inverse}),
-             allocation_amount_cents = (floor(quantity * #{inverse}) * final_price)"
-    else
-      # We have more offers than interests
-      sql = "update offers set allocation_percentage = 100.00,
-             allocation_quantity = quantity, allocation_amount_cents = (quantity * final_price)"
-      ActiveRecord::Base.connection.execute(sql)
-      # We only can allocate a portion of the interests
-      inverse = (1.0 / allocation_percentage).round(2)
-      logger.debug "allocating #{inverse}% of interests"
-      sql = "update interests set allocation_percentage = #{100.00 * inverse},
-             allocation_quantity = floor(quantity * #{inverse}),
-             allocation_amount_cents = (floor(quantity * #{inverse}) * final_price)"
-    end
-    ActiveRecord::Base.connection.execute(sql)
-  end
 
   def self.for_investor(user, entity)
     SecondarySale
@@ -103,21 +76,6 @@ class SecondarySale < ApplicationRecord
   def fix_final_price(price)
     self.final_price = price
     save
-    update_offer_price
-    update_interests_price
-  end
-
-  def update_offer_price
-    offers.approved.each do |o|
-      o.final_price = final_price
-      o.save
-    end
-  end
-
-  def update_interests_price
-    interests.short_listed.each do |i|
-      i.final_price = final_price
-      i.save
-    end
+    AllocationJob.perform_later(id)
   end
 end

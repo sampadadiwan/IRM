@@ -425,7 +425,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_08_025950) do
     t.boolean "escrow_deposited", default: false
     t.decimal "final_price", precision: 10, scale: 2, default: "0.0"
     t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
-    t.decimal "allocation_quantity", precision: 15, scale: 2, default: "0.0"
+    t.bigint "allocation_quantity", default: 0
     t.decimal "allocation_amount_cents", precision: 20, scale: 2, default: "0.0"
     t.decimal "allocation_percentage", precision: 5, scale: 2, default: "0.0"
     t.index ["interest_entity_id"], name: "index_interests_on_interest_entity_id"
@@ -563,7 +563,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_08_025950) do
     t.bigint "buyer_id"
     t.decimal "final_price", precision: 10, scale: 2, default: "0.0"
     t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
-    t.decimal "allocation_quantity", precision: 15, scale: 2, default: "0.0"
+    t.bigint "allocation_quantity", default: 0
     t.decimal "allocation_amount_cents", precision: 20, scale: 2, default: "0.0"
     t.decimal "allocation_percentage", precision: 5, scale: 2, default: "0.0"
     t.index ["buyer_id"], name: "index_offers_on_buyer_id"
@@ -631,7 +631,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_08_025950) do
     t.decimal "total_offered_amount_cents", precision: 20, scale: 2, default: "0.0"
     t.decimal "total_interest_amount_cents", precision: 20, scale: 2, default: "0.0"
     t.integer "total_interest_quantity", default: 0
-    t.decimal "allocation_percentage", precision: 5, scale: 2, default: "0.0"
+    t.bigint "offer_allocation_quantity", default: 0
+    t.bigint "interest_allocation_quantity", default: 0
+    t.decimal "allocation_percentage", precision: 7, scale: 4, default: "0.0"
     t.index ["deleted_at"], name: "index_secondary_sales_on_deleted_at"
     t.index ["entity_id"], name: "index_secondary_sales_on_entity_id"
   end
