@@ -86,7 +86,7 @@ class Offer < ApplicationRecord
     total_offered_quantity -= quantity_was unless new_record?
     Rails.logger.debug { "total_offered_quantity: #{total_offered_quantity}" }
 
-    errors.add(:quantity, "Total offered quantity #{total_offered_quantity} is > allowed_quantity #{allowed_quantity}") if total_offered_quantity > allowed_quantity
+    #errors.add(:quantity, "Total offered quantity #{total_offered_quantity} is > allowed_quantity #{allowed_quantity}") if total_offered_quantity > allowed_quantity
     errors.add(:quantity, "Total offered quantity #{total_offered_quantity} is > total holdings #{total_quantity}") if total_offered_quantity > total_quantity
   end
 
