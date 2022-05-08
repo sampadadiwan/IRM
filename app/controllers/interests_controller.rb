@@ -15,7 +15,7 @@ class InterestsController < ApplicationController
     @interest = Interest.new(interest_params)
     @interest.user_id = current_user.id
     @interest.interest_entity_id = current_user.entity_id
-
+    @interest.offer_entity_id = @interest.secondary_sale.entity_id
     authorize @interest
   end
 
