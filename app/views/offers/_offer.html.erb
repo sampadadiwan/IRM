@@ -25,6 +25,18 @@
     <% end %>
   </td>
   <td>
+    <%= custom_format_number offer.allocation_quantity, params %>
+  </td>
+  <td>
+    <%= offer.allocation_percentage %>%
+  </td>
+  <td>
+    <%= custom_format_number offer.final_price, params %>
+  </td>
+  <td>
+    <%= money_to_currency offer.allocation_amount, params %>
+  </td>
+  <td>
     <%= offer.notes %>
   </td>
   <td class="approved">

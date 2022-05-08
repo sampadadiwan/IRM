@@ -49,6 +49,44 @@
         <%= interest.escrow_deposited? ? "Yes" : "No" %>
       </td>
     </tr>
+
+    <% if interest.final_price> 0 %>
+    <tr>
+      <td colspan="2" class="bg-primary"></td>
+    </tr>
+    <tr>
+      <td>
+        Allocated Quantity
+      </td>
+      <td>
+        <%= interest.allocation_quantity %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Final Price
+      </td>
+      <td>
+        <%= interest.final_price %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Allocation Amount
+      </td>
+      <td>
+        <%= money_to_currency interest.allocation_amount, params %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Allocation %
+      </td>
+      <td>
+        <%= interest.allocation_percentage %> %
+      </td>
+    </tr>
+  <% end %>
     
     <% if current_user %>
     

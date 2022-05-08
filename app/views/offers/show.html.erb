@@ -40,14 +40,16 @@
       </td>
       <td>
         <%= @offer.percentage %>%
-        <% if @offer.percentage> @offer.secondary_sale.percent_allowed %>
-          <div>
-            <div class="badge badge-danger">Over Allowed Percentage</div>
-            The current sale allows you to sell only <%= @offer.secondary_sale.percent_allowed %>% of your holdings
-          </div>
-        <% end %>
+          <% if @offer.percentage> @offer.secondary_sale.percent_allowed %>
+            <div>
+              <div class="badge badge-danger">Over Allowed Percentage</div>
+              The current sale allows you to sell only <%= @offer.secondary_sale.percent_allowed %>% of your holdings
+            </div>
+            <% end %>
       </td>
     </tr>
+
+
     <tr>
       <td>
         Notes
@@ -65,95 +67,134 @@
       </td>
 
     </tr>
-    <tr>
-      <td colspan="2" class="bg-primary"></td>
-    </tr>
-    <tr>
-      <td>
-        First Name
-      </td>
-      <td>
-        <%= @offer.first_name %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Middle Name
-      </td>
-      <td>
-        <%= @offer.middle_name %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Last Name
-      </td>
-      <td>
-        <%= @offer.last_name %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Address
-      </td>
-      <td>
-        <%= @offer.address %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        PAN
-      </td>
-      <td>
-        <%= @offer.PAN %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Bank Account Number
-      </td>
-      <td>
-        <%= @offer.bank_account_number %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Bank Name
-      </td>
-      <td>
-        <%= @offer.bank_name %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Bank Routing Info
-      </td>
-      <td>
-        <%= @offer.bank_routing_info %>
-      </td>
-    </tr>
 
-    <tr>
-      <td colspan="2" class="bg-primary"></td>
-    </tr>
-    
-    <tr>
-      <td>
-        Documents
-      </td>
-      <td>
-        <%= render "/layouts/attachments", attachments: @offer.docs %>
-      </td>
-    </tr>
+    <% if @offer.final_price> 0 %>
+      <tr>
+        <td colspan="2" class="bg-primary"></td>
+      </tr>
+      <tr>
+        <td>
+          Allocated Quantity
+        </td>
+        <td>
+          <%= @offer.allocation_quantity %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Final Price
+        </td>
+        <td>
+          <%= @offer.final_price %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Allocation Amount
+        </td>
+        <td>
+          <%= money_to_currency @offer.allocation_amount, params %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Allocation %
+        </td>
+        <td>
+          <%= @offer.allocation_percentage %> %
+        </td>
+      </tr>
+    <% end %>
 
-    <tr>
-      <td>
-        Signature
-      </td>
-      <td>
-        <%= render "/layouts/attachments", attachments: @offer.signature %>
-      </td>
-    </tr>
+      <tr>
+        <td colspan="2" class="bg-primary"></td>
+      </tr>
+      <tr>
+        <td>
+          First Name
+        </td>
+        <td>
+          <%= @offer.first_name %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Middle Name
+        </td>
+        <td>
+          <%= @offer.middle_name %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Last Name
+        </td>
+        <td>
+          <%= @offer.last_name %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Address
+        </td>
+        <td>
+          <%= @offer.address %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          PAN
+        </td>
+        <td>
+          <%= @offer.PAN %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Bank Account Number
+        </td>
+        <td>
+          <%= @offer.bank_account_number %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Bank Name
+        </td>
+        <td>
+          <%= @offer.bank_name %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Bank Routing Info
+        </td>
+        <td>
+          <%= @offer.bank_routing_info %>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2" class="bg-primary"></td>
+      </tr>
+
+      <tr>
+        <td>
+          Documents
+        </td>
+        <td>
+          <%= render "/layouts/attachments" , attachments: @offer.docs %>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Signature
+        </td>
+        <td>
+          <%= render "/layouts/attachments" , attachments: @offer.signature %>
+        </td>
+      </tr>
 
   </table>
 
