@@ -36,7 +36,7 @@ wb.add_worksheet(name: "Offers") do |sheet|
                  "Allocation Quantity", "Allocation Amount"]
 
   # Create entries for each offer
-  @secondary_sale.offers.approved.each do |o|
+  @secondary_sale.offers.approved.includes(:user, investor: :investor_entity).each do |o|
     sheet.add_row [o.user&.full_name, o.investor&.investor_name,
                    custom_format_number(o.quantity, params), o.percentage, o.approved,
                    o.first_name, o.middle_name, o.last_name, o.PAN, o.address,
@@ -53,7 +53,7 @@ wb.add_worksheet(name: "Interests") do |sheet|
                  "Allocation Quantity", "Allocation Amount"]
 
   # Create entries for each offer
-  @secondary_sale.interests.short_listed.each do |o|
+  @secondary_sale.interests.short_listed.includes(:user, :interest_entity).each do |o|
     sheet.add_row [o.user.full_name, o.interest_entity.name,
                    custom_format_number(o.quantity, params), custom_format_number(o.price, params),
                    o.short_listed, o.escrow_deposited, o.final_price,

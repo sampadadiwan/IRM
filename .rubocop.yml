@@ -91,6 +91,7 @@ Metrics/BlockLength:
   Max: 15
   Exclude:
     - 'app/views/secondary_sales/download.xlsx.axlsx'
+    - 'app/jobs/import_upload_job.rb'
   IgnoredMethods:
     - context
     - describe

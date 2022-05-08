@@ -99,12 +99,22 @@
           <%= custom_format_number secondary_sale.total_offered_quantity, params %>
         </td>
       </tr>
+
       <tr>
         <td>
-          Total Offered Amount
+          Allocated Offer Quantity
         </td>
         <td>
-          <%= money_to_currency secondary_sale.total_offered_amount, params %>
+          <%= custom_format_number secondary_sale.offer_allocation_quantity, params %>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Allocated Offer Amount
+        </td>
+        <td>
+          <%= money_to_currency secondary_sale.allocation_offer_amount, params %>
         </td>
       </tr>
       <tr>
@@ -115,21 +125,31 @@
           <%= custom_format_number secondary_sale.total_interest_quantity, params %>
         </td>
       </tr>
+
       <tr>
         <td>
-          Total Interest Amount
+          Allocated Interest Quantity
         </td>
         <td>
-          <%= money_to_currency secondary_sale.total_interest_amount, params %>
+          <%= custom_format_number secondary_sale.interest_allocation_quantity, params %>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          Allocated Interest Amount
+        </td>
+        <td>
+          <%= money_to_currency secondary_sale.allocation_interest_amount, params %>
         </td>
       </tr>
 
       <tr>
         <td>
-          Allocation Percentage
+          Interest Allocation Percentage
         </td>
         <td>
-          <%= secondary_sale.allocation_percentage %> %
+          <%= (secondary_sale.allocation_percentage * 100.00).round(2) %> %
         </td>
       </tr>
 

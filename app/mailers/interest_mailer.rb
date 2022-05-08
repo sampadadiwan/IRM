@@ -1,4 +1,6 @@
 class InterestMailer < ApplicationMailer
+  helper InvestmentsHelper
+
   def notify_interest
     @interest = Interest.find params[:interest_id]
     emails = @interest.offer_entity.employees.collect(&:email)

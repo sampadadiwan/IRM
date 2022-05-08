@@ -2,30 +2,32 @@ class ImportUploadJob < ApplicationJob
   queue_as :default
 
   def perform(import_upload_id)
-    import_upload = ImportUpload.find(import_upload_id)
-    import_upload.status = nil
-    import_upload.error_text = nil
+    Chewy.strategy(:sidekiq) do
+      import_upload = ImportUpload.find(import_upload_id)
+      import_upload.status = nil
+      import_upload.error_text = nil
 
-    processed_record_count = 0
-    file = Tempfile.new(["import_#{import_upload.id}", ".xlsx"], binmode: true)
-    begin
-      # Download the S3 file to tmp
-      file << import_upload.import_file.download
-      file.close
+      processed_record_count = 0
+      file = Tempfile.new(["import_#{import_upload.id}", ".xlsx"], binmode: true)
+      begin
+        # Download the S3 file to tmp
+        file << import_upload.import_file.download
+        file.close
 
-      Rails.logger.debug { "Downloaded file to #{file.path}" }
-      processed_record_count = process_file(file, import_upload)
-    rescue StandardError => e
-      import_upload.status ||= "Error"
-      import_upload.error_text = e.backtrace
-      Rails.logger.error "Could not download file for import upload job #{import_upload_id} : #{e.message}"
-      Rails.logger.error e.backtrace
-    ensure
-      file.delete
+        Rails.logger.debug { "Downloaded file to #{file.path}" }
+        processed_record_count = process_file(file, import_upload)
+      rescue StandardError => e
+        import_upload.status ||= "Error"
+        import_upload.error_text = e.backtrace
+        Rails.logger.error "Could not download file for import upload job #{import_upload_id} : #{e.message}"
+        Rails.logger.error e.backtrace
+      ensure
+        file.delete
+      end
+
+      import_upload.status ||= "Done. Processed #{processed_record_count} records"
+      import_upload.save
     end
-
-    import_upload.status ||= "Done. Processed #{processed_record_count} records"
-    import_upload.save
   end
 
   def process_file(file, import_upload)
