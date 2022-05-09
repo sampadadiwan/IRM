@@ -29,7 +29,7 @@ end
 
 wb.add_worksheet(name: "Offers") do |sheet|
   # Create the header row
-  sheet.add_row ["User", "Investor", "Quantity", "Holdings Percentage", "Final Price", "Allocation Percentage",
+  sheet.add_row ["", "User", "Investor", "Quantity", "Holdings Percentage", "Final Price", "Allocation Percentage",
                  "Allocation Quantity", "Allocation Amount", "Approved",
                  "First Name", "Middle Name", "Last Name", "PAN", "Address",
                  "Bank Account", "Bank Name",
@@ -37,27 +37,31 @@ wb.add_worksheet(name: "Offers") do |sheet|
 
   # Create entries for each offer
   @secondary_sale.offers.approved.includes(:user, investor: :investor_entity).each do |o|
-    sheet.add_row [o.user&.full_name, o.investor&.investor_name,
-                   custom_format_number(o.quantity, params), o.percentage, o.final_price,
-                   o.allocation_percentage,
-                   o.allocation_quantity, money_to_currency(o.allocation_amount, params), o.approved,
-                   o.first_name, o.middle_name, o.last_name, o.PAN, o.address,
-                   o.bank_account_number, o.bank_name, o.bank_routing_info]
+    row = sheet.add_row ["Link", o.user&.full_name, o.investor&.investor_name,
+                         custom_format_number(o.quantity, params), o.percentage, o.final_price,
+                         o.allocation_percentage,
+                         o.allocation_quantity, money_to_currency(o.allocation_amount, params), o.approved,
+                         o.first_name, o.middle_name, o.last_name, o.PAN, o.address,
+                         o.bank_account_number, o.bank_name, o.bank_routing_info]
+
+    sheet.add_hyperlink location: offer_url(o), ref: row.cells.first
   end
 end
 
 wb.add_worksheet(name: "Interests") do |sheet|
   # Create the header row
-  sheet.add_row ["User", "Investor", "Quantity", "Price", "Final Price",
+  sheet.add_row ["", "User", "Investor", "Quantity", "Price", "Final Price",
                  "Allocation Percentage", "Allocation Quantity", "Allocation Amount",
                  "Short Listed", "Escrow Deposited"]
 
   # Create entries for each offer
   @secondary_sale.interests.short_listed.includes(:user, :interest_entity).each do |o|
-    sheet.add_row [o.user.full_name, o.interest_entity.name,
-                   custom_format_number(o.quantity, params), custom_format_number(o.price, params),
-                   o.final_price, o.allocation_percentage,
-                   o.allocation_quantity, money_to_currency(o.allocation_amount, params),
-                   o.short_listed, o.escrow_deposited]
+    row = sheet.add_row ["Link", o.user.full_name, o.interest_entity.name,
+                         custom_format_number(o.quantity, params), custom_format_number(o.price, params),
+                         o.final_price, o.allocation_percentage,
+                         o.allocation_quantity, money_to_currency(o.allocation_amount, params),
+                         o.short_listed, o.escrow_deposited]
+
+    sheet.add_hyperlink location: interest_url(o), ref: row.cells.first
   end
 end
