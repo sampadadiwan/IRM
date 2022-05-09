@@ -1,5 +1,5 @@
 class SecondarySalesController < ApplicationController
-  before_action :set_secondary_sale, only: %i[show edit update destroy make_visible download]
+  before_action :set_secondary_sale, only: %i[show edit update destroy make_visible download allocate]
   after_action :verify_policy_scoped, only: []
 
   # GET /secondary_sales or /secondary_sales.json
@@ -63,6 +63,14 @@ class SecondarySalesController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @secondary_sale.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def allocate
+    AllocationJob.perform_later(@secondary_sale.id)
+    respond_to do |format|
+      format.html { redirect_to secondary_sale_url(@secondary_sale), notice: "Allocation in progress. Please use the Dowload button in a few mins." }
+      format.json { render :show, status: :created, location: @secondary_sale }
     end
   end
 

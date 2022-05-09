@@ -20,7 +20,7 @@
   </td>
   <td>
     <%= offer.percentage %>%
-    <% if offer.percentage > offer.secondary_sale.percent_allowed %>
+    <% if offer.percentage && offer.percentage > offer.secondary_sale.percent_allowed %>
       <span class="badge badge-danger">Over Allowed Percentge</span>
     <% end %>
   </td>

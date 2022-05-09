@@ -76,7 +76,7 @@
       </td>
     </tr>
 
-    <% if current_user.entity_id == secondary_sale.entity_id && secondary_sale.final_price > 0 %>
+    <% if current_user.entity_id == secondary_sale.entity_id && secondary_sale.allocation_status.present? %>
 
       <tr>
         <td colspan="2" class="bg-primary"></td>

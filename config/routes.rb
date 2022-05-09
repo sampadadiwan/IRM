@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     patch 'make_visible', on: :member
     get 'search', on: :collection
     get 'download', on: :member
+    get 'allocate', on: :member
   end
 
   resources :holdings do

@@ -61,6 +61,10 @@ class SecondarySalePolicy < ApplicationPolicy
     update?
   end
 
+  def allocate?
+    update?
+  end
+
   def edit?
     update?
   end

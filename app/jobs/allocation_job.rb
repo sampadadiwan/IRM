@@ -4,17 +4,33 @@ class AllocationJob < ApplicationJob
   def perform(secondary_sale_id)
     Chewy.strategy(:sidekiq) do
       secondary_sale = SecondarySale.find(secondary_sale_id)
-      total_offered_quantity = secondary_sale.offers.approved.sum(:quantity)
-      total_interest_quantity = secondary_sale.interests.short_listed.sum(:quantity)
+      secondary_sale.allocation_status = "InProgress"
+      secondary_sale.save
 
-      secondary_sale.allocation_percentage = total_offered_quantity.positive? ? (total_interest_quantity * 1.0 / total_offered_quantity).round(4) : 0
-      logger.debug "total_offered_quantity = #{total_offered_quantity},
-                    total_interest_quantity = #{total_interest_quantity},
-                    secondary_sale.allocation_percentage: #{secondary_sale.allocation_percentage}"
+      begin
+        init(secondary_sale)
+        update_offers(secondary_sale)
+        update_sale(secondary_sale)
+        secondary_sale.allocation_status = "Completed"
+      rescue StandardError => e
+        ExceptionNotifier.notify_exception(e)
+        logger.error "Error: #{e.message}"
+        logger.error e.backtrace.join("\n")
+        secondary_sale.allocation_status = "Error"
+      end
 
-      update_offers(secondary_sale)
-      update_sale(secondary_sale)
+      secondary_sale.save
     end
+  end
+
+  def init(secondary_sale)
+    total_offered_quantity = secondary_sale.offers.approved.sum(:quantity)
+    total_interest_quantity = secondary_sale.interests.short_listed.sum(:quantity)
+
+    secondary_sale.allocation_percentage = total_offered_quantity.positive? ? (total_interest_quantity * 1.0 / total_offered_quantity).round(4) : 0
+    logger.debug "total_offered_quantity = #{total_offered_quantity},
+                  total_interest_quantity = #{total_interest_quantity},
+                  secondary_sale.allocation_percentage: #{secondary_sale.allocation_percentage}"
   end
 
   def update_offers(secondary_sale)
