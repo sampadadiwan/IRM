@@ -13,7 +13,7 @@
       <input hidden=true value="#access-rights-tab" id="clickOnLoad" />
 
       <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#access-rights-tab">Access Rights</a>
-      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#offerings-tab" data-action="click->tabdetails#loadData">Offers</a>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#offerings-tab" data-action="click->tabdetails#loadData">Pending Offers</a>
       <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#interests-tab" data-action="click->tabdetails#loadData">Interests</a>
     
     <% elsif current_user.has_cached_role?(:holding) %>
@@ -53,7 +53,8 @@
       </div>
       <div id="offerings-tab" class="tab-pane fade">
         <div id="offerings" class="associated_entity">
-          <%= link_to offers_path(secondary_sale_id: secondary_sale.id, show_entity: false, show_secondary_sale: false, approved: false), class: "load_data_link", data: { turbo_frame: 'offers_frame' } do %>
+          <% approved = current_user.has_cached_role?(:holding) ? nil : false %>
+          <%= link_to offers_path(secondary_sale_id: secondary_sale.id, show_entity: false, show_secondary_sale: false, approved: approved), class: "load_data_link", data: { turbo_frame: 'offers_frame' } do %>
             <span>Loading...</span>
           <% end %>
           
