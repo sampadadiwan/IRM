@@ -8,7 +8,9 @@ wb.styles do |s|
                                            wrap_text: true }
 
   wb.add_worksheet(name: "Details") do |sheet|
-    sheet.add_row ["SecondarySale", @secondary_sale.name], style: wrap_text
+    row = sheet.add_row ["SecondarySale", @secondary_sale.name], style: wrap_text
+    sheet.add_hyperlink location: secondary_sale_url(@secondary_sale), ref: row.cells[1]
+
     sheet.add_row ["Start Date", @secondary_sale.start_date], style: wrap_text
     sheet.add_row ["End Date", @secondary_sale.end_date], style: wrap_text
     sheet.add_row ["Min Price",  @secondary_sale.min_price], style: wrap_text
@@ -33,10 +35,10 @@ wb.add_worksheet(name: "Offers") do |sheet|
                  "Allocation Quantity", "Allocation Amount", "Approved",
                  "First Name", "Middle Name", "Last Name", "PAN", "Address",
                  "Bank Account", "Bank Name",
-                 "Bank Routing"]
+                 "Bank Routing", "Verified", "Comments"]
 
   # Create entries for each offer
-  @secondary_sale.offers.approved.includes(:user, investor: :investor_entity).each do |o|
+  @secondary_sale.offers.approved.includes(:user, :entity, investor: :investor_entity).each do |o|
     row = sheet.add_row ["Link", o.user&.full_name, o.investor&.investor_name,
                          custom_format_number(o.quantity, params), o.percentage, o.final_price,
                          o.allocation_percentage,
