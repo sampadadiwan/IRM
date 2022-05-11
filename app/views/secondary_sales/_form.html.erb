@@ -1,4 +1,4 @@
-<%= form_with(model: secondary_sale, validate: true) do |form| %>
+<%= form_with(model: secondary_sale, validate: true, id: "secondary_sale_form") do |form| %>
   <% if secondary_sale.errors.any? %>
     <div class="alert alert-danger">
       <h2><%= pluralize(secondary_sale.errors.count, "error") %> prohibited this secondary_sale from being saved:</h2>
@@ -10,6 +10,8 @@
       </ul>
     </div>
   <% end %>
+
+  <div data-controller="saleprice">
 
   <div class="form-group">
     <%= form.label :name %>
@@ -39,18 +41,25 @@
   </div>
 
   <div class="form-group">
+    <%= form.label :price_type %>
+    <%= form.select :price_type, ["Price Range", "Fixed Price"], {}, class: "form-control", data: {action: "saleprice#onChange"}  %>
+    <small class="text-muted"> Price type for buyers on the secondaries platform. </small>
+  </div>
+
+
+  <div class="form-group price_range_group">
     <%= form.label :min_price %>
     <%= form.number_field :min_price, class: "form-control"  %>
     <small class="text-muted"> Min price for buyers on the secondaries platform. </small>
   </div>
 
-  <div class="form-group">
+  <div class="form-group price_range_group">
     <%= form.label :max_price %>
     <%= form.number_field :max_price, class: "form-control"  %>
     <small class="text-muted"> Max price for buyers on the secondaries platform. </small>
   </div>
 
-  <div class="form-group">
+  <div class="form-group fixed_price_group">
     <%= form.label :final_price %>
     <%= form.number_field :final_price, class: "form-control"  %>
     <small class="text-muted"> The final price once all the offers and interests are in. </small>
@@ -67,6 +76,8 @@
     <%= form.label :private_docs, "Private Documents" %>
     <%= form.file_field :private_docs, class: "form-control", direct_upload: true, multiple:true %>
     <small class="text-muted"> Upload multiple documents that will be visible only to shortlisted buyers. </small>
+
+  </div>
 
   </div>
 

@@ -16,6 +16,7 @@ class InterestsController < ApplicationController
     @interest.user_id = current_user.id
     @interest.interest_entity_id = current_user.entity_id
     @interest.offer_entity_id = @interest.secondary_sale.entity_id
+    @interest.price = @interest.secondary_sale.final_price if @interest.secondary_sale.price_type == "Fixed Price"
     authorize @interest
   end
 

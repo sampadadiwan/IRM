@@ -45,7 +45,13 @@ class SecondarySale < ApplicationRecord
                   .joins(access_rights: :investor)
               }
 
-  # before_save :set_defaults
+  before_save :set_defaults
+  def set_defaults
+    if price_type == "Fixed Price"
+      self.min_price = final_price
+      self.max_price = final_price
+    end
+  end
 
   def self.for_investor(user, entity)
     SecondarySale
