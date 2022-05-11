@@ -41,7 +41,7 @@
 
   <div class="tab-content">
       <div id="access-rights-tab" class="tab-pane fade <%= access_right_active ? 'in show active' : '' %>">
-        <div id="access_rights" class="associated_entity">
+        <div id="access_rights" class="associated_entity" data-controller="datatable">
           <% access_right = AccessRight.new(
               owner_id: secondary_sale.id, 
               access_type: "SecondarySale", 

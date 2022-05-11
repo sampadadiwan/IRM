@@ -20,7 +20,7 @@ class SecondarySalePolicy < ApplicationPolicy
   end
 
   def offer?
-    SecondarySale.for(user).present?
+    SecondarySale.for(user).where(id: record.id).present?
   end
 
   def show_interest?
@@ -36,7 +36,7 @@ class SecondarySalePolicy < ApplicationPolicy
       true
     else
       record.active? &&
-        (SecondarySale.for(user).present? ||
+        (SecondarySale.for(user).where(id: record.id).present? ||
         (user.has_cached_role?(:secondary_buyer) && record.visible_externally))
     end
   end
