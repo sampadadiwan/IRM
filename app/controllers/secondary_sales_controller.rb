@@ -1,5 +1,5 @@
 class SecondarySalesController < ApplicationController
-  before_action :set_secondary_sale, only: %i[show edit update destroy make_visible download allocate]
+  before_action :set_secondary_sale, only: %i[show edit update destroy make_visible download allocate notify_allocation]
   after_action :verify_policy_scoped, only: []
 
   # GET /secondary_sales or /secondary_sales.json
@@ -69,8 +69,16 @@ class SecondarySalesController < ApplicationController
   def allocate
     AllocationJob.perform_later(@secondary_sale.id)
     respond_to do |format|
-      format.html { redirect_to secondary_sale_url(@secondary_sale), notice: "Allocation in progress. Please use the Dowload button in a few mins." }
-      format.json { render :show, status: :created, location: @secondary_sale }
+      format.html { redirect_to secondary_sale_url(@secondary_sale), notice: "Allocation in progress, checkback in a few minutes. Please use the Dowload button once allocation is complete." }
+      format.json { render :show, status: :ok, location: @secondary_sale }
+    end
+  end
+
+  def notify_allocation
+    @secondary_sale.notify_allocation
+    respond_to do |format|
+      format.html { redirect_to secondary_sale_url(@secondary_sale), notice: "Allocation notification sent successfully." }
+      format.json { render :show, status: :ok, location: @secondary_sale }
     end
   end
 

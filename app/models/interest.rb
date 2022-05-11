@@ -28,6 +28,7 @@ class Interest < ApplicationRecord
   delegate :total_offered_quantity, to: :secondary_sale
   delegate :min_price, to: :secondary_sale
   delegate :max_price, to: :secondary_sale
+  delegate :email, to: :user, prefix: true
 
   scope :short_listed, -> { where(short_listed: true) }
   scope :priced_above, ->(price) { where("price >= ?", price) }

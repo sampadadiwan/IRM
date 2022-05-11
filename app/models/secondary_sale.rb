@@ -47,6 +47,7 @@ class SecondarySale < ApplicationRecord
 
   before_save :set_defaults
   def set_defaults
+    self.price_type ||= "Price Range"
     if price_type == "Fixed Price"
       self.min_price = final_price
       self.max_price = final_price
@@ -78,6 +79,10 @@ class SecondarySale < ApplicationRecord
 
   def notify_open_for_offers
     SecondarySaleMailer.with(id:).notify_open_for_offers.deliver_later
+  end
+
+  def notify_allocation
+    SecondarySaleMailer.with(id:).notify_allocation.deliver_later
   end
 
   def clearing_price

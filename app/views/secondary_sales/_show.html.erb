@@ -169,6 +169,16 @@
 
       <tr>
         <td>
+          Interest
+        </td>
+        <td>
+            <%= (secondary_sale.allocation_percentage * 100.00) > 100 ? "Over Sold" : "Under Sold" %> 
+        </td>
+      </tr>
+
+
+      <tr>
+        <td>
           Interest Allocation Percentage
         </td>
         <td>
@@ -176,6 +186,7 @@
         </td>
       </tr>
 
+      
 
       <tr>
         <td colspan="2" class="bg-primary"></td>

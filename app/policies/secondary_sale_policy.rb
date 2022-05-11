@@ -65,6 +65,10 @@ class SecondarySalePolicy < ApplicationPolicy
     update?
   end
 
+  def notify_allocation?
+    update?
+  end
+
   def edit?
     update?
   end
