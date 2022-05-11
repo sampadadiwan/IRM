@@ -20,8 +20,8 @@ Scenario Outline: Create new interest
   
 Examples:
     |user	    |entity               |sale                                                                     |quantity	|
-    |  	        |entity_type=Startup  |visible_externally=true;percent_allowed=100;min_price=120;max_price=180  |100        |
-    |  	        |entity_type=Startup  |visible_externally=true;percent_allowed=100;min_price=130;max_price=200  |200        |
+    |  	        |entity_type=Startup  |visible_externally=true;percent_allowed=100;min_price=120;max_price=180;price_type=Price Range  |100        |
+    |  	        |entity_type=Startup  |visible_externally=true;percent_allowed=100;min_price=130;max_price=200;price_type=Price Range  |200        |
 
 
 Scenario Outline: Create new interest and check obfuscation

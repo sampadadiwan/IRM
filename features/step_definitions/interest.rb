@@ -2,8 +2,12 @@
     expect(page).to have_content(@sale.name)
     expect(page).to have_content(@sale.start_date.strftime("%d/%m/%Y"))
     expect(page).to have_content(@sale.end_date.strftime("%d/%m/%Y"))
-    expect(page).to have_content(@sale.min_price)
-    expect(page).to have_content(@sale.max_price)
+    if @sale.price_type == "Fixed Price"
+      expect(page).to have_content(@sale.final_price)
+    else
+      expect(page).to have_content(@sale.min_price)
+      expect(page).to have_content(@sale.max_price)
+    end
     expect(page).to have_no_selector('tr#percent_allowed')
 
   end

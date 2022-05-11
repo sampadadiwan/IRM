@@ -121,14 +121,19 @@ end
 
 Then('When I approve the offers the offers should be approved') do
 Offer.all.each do |offer|
-    within("tr#offer_#{offer.id}") do
-        click_on("Approve")
-        within("td.approved") do
-          expect(page).to have_content("Yes")
-        end
-        offer.reload
-        offer.approved.should == true
+    visit offer_path(offer)
+    click_on("Approve")
+    sleep(1)
+
+    offer.reload
+    offer.approved.should == true
+
+    within("td.approved") do
+      expect(page).to have_content("Yes")
     end
+
+    visit secondary_sale_path(offer.secondary_sale)
+    click_on("Offers")
   end
 end
 
