@@ -1,9 +1,9 @@
 <%= render "/layouts/alerts" %>
 
 <% if current_user.entity %>
-    <% if current_persona?(:startup) %>
+    <% if current_user.curr_role.to_sym == :startup %>
         <%= render "cxo_dashboard" %>
-    <% elsif current_persona?(:investor) %>
+    <% elsif current_user.curr_role.to_sym == :investor %>
         <%= render "vc_dashboard" %>
     <% elsif current_user.entity.entity_type == "Holding" %>
         <%= render "holding_dashboard" %>

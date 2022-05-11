@@ -36,7 +36,7 @@
 
                 </li>
             
-            <% elsif current_user && current_user.has_cached_role?(:secondary_buyer) %>
+            <% elsif current_user && current_user.curr_role.to_sym == :secondary_buyer %>
                 <li class="nav-item">
                      
                     <a class="nav-link" href="/secondary_sales">
@@ -49,7 +49,7 @@
                 
             <% end %>
 
-            <% if current_user && current_user.has_cached_role?(:investor) && current_persona?(:investor) %>
+            <% if current_user && current_user.curr_role.to_sym == :investor %>
                 <!-- Divider -->
                 <hr class="sidebar-divider">
                 
@@ -70,7 +70,7 @@
 
             <% end %>
 
-            <% if current_user && current_user.has_cached_role?(:startup) && current_persona?(:startup) %>
+            <% if current_user && current_user.curr_role.to_sym == :startup %>
             <!-- Divider -->
             <hr class="sidebar-divider">
 

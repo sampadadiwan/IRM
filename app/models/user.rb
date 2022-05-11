@@ -62,9 +62,6 @@ class User < ApplicationRecord
 
   delegate :name, to: :entity, prefix: :entity
 
-  # Some startups can be investors - so what role are they currently having
-  attr :current_role
-
   def to_s
     full_name
   end
@@ -81,17 +78,17 @@ class User < ApplicationRecord
     if entity
       if entity.entity_type == "Startup"
         add_role :startup
-        self.primary_role = :startup
+        self.curr_role = :startup
       end
 
       if entity.entity_type == "VC" || InvestorAccess.where(user_id: id).first.present?
         add_role :investor
-        self.primary_role ||= :investor
+        self.curr_role ||= :investor
       end
 
-      if ["Advisor", "Family Office", "VC"].include?(entity.entity_type)
+      if ["Advisor", "Family Office"].include?(entity.entity_type)
         add_role :secondary_buyer
-        self.primary_role ||= :investor
+        self.curr_role ||= :secondary_buyer
       end
     end
 

@@ -33,14 +33,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def set_current_role
-    current_user.current_role = if current_persona
-                                  current_persona.to_sym
-                                else
-                                  current_user.primary_role
-                                end
-  end
-
   def prepare_exception_notifier
     request.env["exception_notifier.exception_data"] = {
       current_user:
@@ -48,8 +40,12 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_out_path_for(_resource_or_scope)
-    cookies.delete(:scenario_id, domain: :all) if cookies[:scenario_id]
-    cookies.delete(:persona, domain: :all) if cookies[:persona]
+    cookies.delete(:scenario_id, domain: :all)
     request.referer
+  end
+
+  def after_sign_in_path_for(resource)
+    cookies.delete(:scenario_id, domain: :all)
+    stored_location_for(resource) || root_path
   end
 end

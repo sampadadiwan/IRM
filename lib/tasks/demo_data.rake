@@ -6,7 +6,7 @@ namespace :irm do
 
   desc "generates fake Entity for testing"
   task generateFakeEntities: :environment do
-    startup_names = ["Urban Company"]# , "Demo Startup", "Wakefit", "PayTm", "Apna", "RazorPay", "Delhivery"]
+    startup_names = ["Urban Company", "Demo Startup", "Wakefit"]#, "PayTm", "Apna", "RazorPay", "Delhivery"]
     startup_names.each do |name|
       e = FactoryBot.create(:entity, entity_type: "Startup", name: name)
       puts "Entity #{e.name}"
