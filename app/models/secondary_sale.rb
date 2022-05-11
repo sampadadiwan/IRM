@@ -40,9 +40,14 @@ class SecondarySale < ApplicationRecord
   validates :name, :start_date, :end_date, :min_price, :percent_allowed, presence: true
 
   scope :for, lambda { |user|
-                where("access_rights.access_type='SecondarySale'")
-                  .where("access_rights.access_to_investor_id = investors.id and investors.investor_entity_id=?", user.entity_id)
-                  .joins(access_rights: :investor)
+                joins(:access_rights)
+                  .merge(AccessRight.access_filter)
+                  .joins(entity: :investors)
+                  # Ensure that the user is an investor and tis investor has been given access rights
+                  .where("investors.investor_entity_id=?", user.entity_id)
+                  # Ensure this user has investor access
+                  .joins(entity: :investor_accesses)
+                  .merge(InvestorAccess.approved_for_user(user))
               }
 
   before_save :set_defaults

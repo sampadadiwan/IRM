@@ -3,11 +3,11 @@ class SecondarySalePolicy < ApplicationPolicy
     def resolve
       if user.has_cached_role?(:super)
         scope.all
-      elsif user.has_cached_role?(:startup)
+      elsif user.curr_role.to_sym == :startup
         scope.where(entity_id: user.entity_id)
-      elsif user.has_cached_role?(:holding) || user.has_cached_role?(:investor)
-        scope.for(user)
-      elsif user.has_cached_role?(:secondary_buyer)
+      elsif %i[holding investor].include?(user.curr_role.to_sym)
+        scope.for(user).or(scope.where(visible_externally: true)).distinct
+      elsif user.curr_role.to_sym == :secondary_buyer
         scope.where(visible_externally: true)
       else
         scope.nil
