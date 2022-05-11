@@ -203,5 +203,10 @@
     <% if Pundit.policy(current_user, @offer).update? %>
       <%= link_to "Edit" , edit_offer_path(@offer), {class: "btn btn-primary" } %>
     <% end %>
+
+    <% label = @offer.approved ?  "UnApprove" : "Approve" %>
+    <%= button_to label , approve_offer_path(@offer), method: :patch, class: "btn btn-success" , 
+      form_class: "deleteButton" if Pundit.policy(current_user, @offer).approve? %>
+
     <%= link_to "Secondary Sale" , secondary_sale_path(@offer.secondary_sale), {class: "btn btn-primary" } %>
   </div>

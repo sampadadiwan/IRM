@@ -30,6 +30,8 @@ class Interest < ApplicationRecord
   delegate :max_price, to: :secondary_sale
 
   scope :short_listed, -> { where(short_listed: true) }
+  scope :priced_above, ->(price) { where("price >= ?", price) }
+  scope :eligible, ->(secondary_sale) { short_listed.priced_above(secondary_sale.final_price) }
 
   before_validation :set_defaults
   before_save :notify_shortlist, if: :short_listed

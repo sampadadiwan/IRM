@@ -25,15 +25,11 @@ class OffersController < ApplicationController
 
   def approve
     @offer.approved = !@offer.approved
+    label = @offer.approved ? "approved" : "unapproved"
     @offer.granted_by_user_id = current_user.id
     @offer.save!
     respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.replace(@offer, partial: "/offers/offer", locals: { show_entity: false, show_secondary_sale: false, offer: @offer })
-        ]
-      end
-      format.html { redirect_to offer_url(@offer), notice: "Offer was successfully approved." }
+      format.html { redirect_to offer_url(@offer), notice: "Offer was successfully #{label}." }
       format.json { @offer.to_json }
     end
   end

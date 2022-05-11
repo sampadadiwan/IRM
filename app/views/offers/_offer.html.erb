@@ -46,10 +46,7 @@
   </td>
   <td>
     <%= link_to "Show" , offer , {class: "btn btn-primary" }%>
-    <% label = offer.approved ?  "UnApprove" : "Approve" %>
-    <%= button_to label , approve_offer_path(offer), method: :patch, class: "btn btn-success" , 
-      form_class: "deleteButton" if Pundit.policy(current_user, offer).approve? %>
-
+    
     <%= button_to "Delete", offer, method: :delete, class: "btn btn-danger", form_class: "deleteButton" if Pundit.policy(current_user, offer).destroy? %>    
   </td>
 </tr>

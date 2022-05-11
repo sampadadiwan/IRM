@@ -40,7 +40,7 @@ export default class extends Controller {
     let count = $(".form-row").length;
     console.log(`Length of form-rows = ${count}`)
     $(".investment_row_container").append(
-      `<div class="card investment_row" id="investment_row_${count + 10}">` +
+      `<div class="card investment_row" id="investment_row_${count + 1}">` +
       $("#investment_row").html() +
       '</div>'
     );
