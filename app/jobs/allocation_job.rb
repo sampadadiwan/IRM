@@ -103,5 +103,4 @@ class AllocationJob < ApplicationJob
                           interest_allocation_quantity:,
                           allocation_interest_amount_cents: interest_allocation_quantity * secondary_sale.final_price * 100)
   end
-  
 end

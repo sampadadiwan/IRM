@@ -81,7 +81,7 @@ class SecondarySale < ApplicationRecord
   end
 
   def clearing_price
-    interests = self.interests.eligible(self)
+    interests = self.interests.short_listed
     interest_quantity = interests.sum(:quantity)
     offer_quantity = offers.approved.sum(:quantity)
 
