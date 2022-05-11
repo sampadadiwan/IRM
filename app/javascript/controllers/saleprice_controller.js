@@ -18,7 +18,12 @@ export default class extends Controller {
     let selected = $("#secondary_sale_price_type").val();
     switch (selected) {
       case "Price Range":
-        $(".fixed_price_group").hide();
+        if($('#secondary_sale_id').val()) {
+         // If its a new sale & its price range, then hide fixed price 
+         $(".fixed_price_group").show();
+        } else {
+          $(".fixed_price_group").hide();
+        }
         $(".price_range_group").show();
 
         break;

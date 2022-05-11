@@ -79,4 +79,26 @@ class SecondarySale < ApplicationRecord
   def notify_open_for_offers
     SecondarySaleMailer.with(id:).notify_open_for_offers.deliver_later
   end
+
+  def clearing_price
+    interests = self.interests.eligible(self)
+    interest_quantity = interests.sum(:quantity)
+    offer_quantity = offers.approved.sum(:quantity)
+
+    if interest_quantity.zero?
+      logger.debug "No interests for #{name}, clearing price is 0"
+      0
+    elsif interest_quantity <= offer_quantity
+      cp = interests.minimum(:price)
+      logger.debug "Interests for #{name} are less than or equal to offers, clearing price is #{cp}"
+      cp
+    else
+      qty = 0
+      interests.order(price: :desc).each do |interest|
+        logger.debug "Interest #{interest.id} has quantity #{interest.quantity} & price #{interest.price}"
+        qty += interest.quantity
+        return interest.price if qty >= offer_quantity
+      end
+    end
+  end
 end

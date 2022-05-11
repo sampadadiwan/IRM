@@ -16,6 +16,8 @@
   <div class="form-group">
     <%= form.label :name %>
     <%= form.text_field :name, class: "form-control"  %>
+    <%= form.text_field :id, class: "form-control", hidden: true, name: nil, 
+        value: secondary_sale.id  %>
   </div>
 
   <div class="form-group">
@@ -62,7 +64,7 @@
   <div class="form-group fixed_price_group">
     <%= form.label :final_price %>
     <%= form.number_field :final_price, class: "form-control"  %>
-    <small class="text-muted"> The final price once all the offers and interests are in. </small>
+    <small class="text-muted"> The final price at which the sale will be done. </small>
   </div>
 
   <div class="field" class="form-group" data-controller="directuploads" >
