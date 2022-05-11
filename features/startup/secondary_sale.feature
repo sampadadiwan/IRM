@@ -48,7 +48,7 @@ Examples:
 
 
 
-Scenario Outline: Express Interest
+Scenario Outline: Sale Allocation
   Given there is a user "first_name=Emp1" for an entity "entity_type=Startup"
   Given there is a sale "<sale>"
   Given there are "2" employee investors
@@ -64,7 +64,10 @@ Scenario Outline: Express Interest
 
   Examples:
   	|allocation_percentage |interest_count |interest                       |offer	                      |entity                     |sale                                     |
-  	| .5                   |1              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;final_price=10000;percent_allowed=100  |
-    | 1.0                  |2              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;final_price=10000;percent_allowed=100  |
-    | 1.5                  |3              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;final_price=10000;percent_allowed=100  |
+  	| .5                   |1              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;price_type=Fixed Price;final_price=10000;percent_allowed=100  |
+    | 1.0                  |2              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;price_type=Fixed Price;final_price=10000;percent_allowed=100  |
+    | 1.5                  |3              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;price_type=Fixed Price;final_price=10000;percent_allowed=100  |    
+    | .5                   |1              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;price_type=Price Range;min_price=10000;max_price=11000;final_price=10000;percent_allowed=100  |
+    | 1.0                  |2              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;price_type=Price Range;min_price=10000;max_price=11000;final_price=10000;percent_allowed=100  |
+    | 1.5                  |3              |quantity=50;short_listed=true  |quantity=50;approved=true  	|entity_type=Advisor        |name=Grand Sale;visible_externally=true;price_type=Price Range;min_price=10000;max_price=11000;final_price=10000;percent_allowed=100  |
     

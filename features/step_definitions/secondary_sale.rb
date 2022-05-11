@@ -343,17 +343,19 @@ Given('there are {string} interests {string} for the sale') do |count, args|
                   short_listed: true)
 
     key_values(interest, args)
-    interest.save
-    puts "\n####Interest Created####\n"
-    puts interest.to_json
+    saved = interest.save
+    if saved
+      puts "\n####Interest Created####\n"
+      puts interest.to_json
+    else
+      puts "Interest not saved"
+      puts interest.errors.full_messages
+    end
   end
 
 end
 
 Then('when the allocation is done') do
-  @sale.final_price = (@sale.min_price + @sale.max_price) / 2
-  @sale.save
-
   AllocationJob.perform_now(@sale.id)
   @sale.reload
   puts "\n####Sale Reloaded####\n"
@@ -361,6 +363,10 @@ Then('when the allocation is done') do
 end
 
 Then('the sale allocation percentage must be {string}') do |arg|
+  puts "\n####Eligible Interests####\n"
+  puts @sale.interests.eligible(@sale).to_json
+  puts "\n####All Interests####\n"
+  puts @sale.interests.to_json
   @sale.allocation_percentage.should == arg.to_f  
 end
 

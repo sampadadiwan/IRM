@@ -42,7 +42,8 @@ begin
   UserIndex.reset!
   EntityIndex.reset!
   InvestorIndex.reset!
-rescue NameError
+rescue NameError => e
+  puts e.backtrace
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
 
