@@ -78,7 +78,8 @@ class UsersController < ApplicationController
   end
 
   def set_persona
-    current_user.curr_role = params[:persona]
+    current_user.curr_role = params[:persona] if params[:persona].present? &&
+                                                 current_user.has_cached_role?(params[:persona].to_sym)
     current_user.save
     redirect_to root_path
   end

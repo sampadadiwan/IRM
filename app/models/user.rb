@@ -79,17 +79,18 @@ class User < ApplicationRecord
       if entity.entity_type == "Startup"
         add_role :startup
         self.curr_role = :startup
-      end
-
-      if entity.entity_type == "VC" || InvestorAccess.where(user_id: id).first.present?
+      elsif entity.entity_type == "Holding"
+        add_role :holding
+        self.curr_role = :holding
+      elsif entity.entity_type == "VC" || InvestorAccess.where(user_id: id).first.present?
         add_role :investor
         self.curr_role ||= :investor
-      end
-
-      if ["Advisor", "Family Office"].include?(entity.entity_type)
+      elsif ["Advisor", "Family Office"].include?(entity.entity_type)
         add_role :secondary_buyer
-        self.curr_role ||= :secondary_buyer
+        self.curr_role = :secondary_buyer
       end
+    else
+      self.curr_role ||= :user
     end
 
     self.active = true

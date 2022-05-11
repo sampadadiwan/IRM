@@ -62,7 +62,9 @@ Style/OptionalBooleanParameter:
 Metrics/CyclomaticComplexity:
   Max: 10
   Enabled: true
-
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'app/models/user.rb'
 Metrics/ClassLength:
   Description: 'Avoid classes longer than 100 lines of code.'
   Max: 150
