@@ -54,12 +54,6 @@ FactoryBot.define do
 
   
   # factory :interest do
-  #   offer_entity_id { 1 }
-  #   quantity { 1 }
-  #   price { "9.99" }
-  #   user { nil }
-  #   interest_entity_id { 1 }
-  #   secondary_sale { nil }
   # end
 
   
@@ -69,6 +63,8 @@ FactoryBot.define do
     bank_account_number  {Faker::Bank.account_number}
     bank_name {Faker::Bank.name}
     bank_routing_info {Faker::Bank.routing_number}
+    first_name {Faker::Name.first_name}
+    last_name {Faker::Name.last_name}
   end
 
   factory :secondary_sale do

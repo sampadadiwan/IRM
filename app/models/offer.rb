@@ -47,7 +47,9 @@ class Offer < ApplicationRecord
   scope :approved, -> { where(approved: true) }
   scope :pending_approval, -> { where(approved: false) }
 
-  validates :first_name, :last_name, :address, :PAN, :bank_account_number, :bank_name, :bank_routing_info, :address_proof, :id_proof, :signature, presence: true
+  validates :first_name, :last_name, :address, :PAN, :bank_account_number, :bank_name, :bank_routing_info, presence: true
+
+  validates :address_proof, :id_proof, :signature, presence: true unless Rails.env.test?
 
   validate :check_quantity
   validate :already_offered, :sale_active, on: :create

@@ -45,16 +45,30 @@
 
   end
   
-
+  Then('when I submit the offer') do 
+    fill_in("offer_quantity", with: @offer.quantity)
+    click_on("Next")
+    fill_in("offer_first_name", with: @offer.first_name)
+    fill_in("offer_last_name", with: @offer.last_name)
+    fill_in("offer_PAN", with: @offer.PAN)
+    fill_in("offer_address", with: @offer.address)
+    fill_in("offer_bank_account_number", with: @offer.bank_account_number)
+    fill_in("offer_bank_name", with: @offer.bank_name)
+    fill_in("offer_bank_routing_info", with: @offer.bank_routing_info)
+    click_on("Next")
+    click_on("Save")
+    sleep(1)
+  end
 
   Then('when I place an offer {string}') do |arg|
-    @offer = Offer.new
+    @offer = FactoryBot.build(:offer)
     key_values(@offer, arg)
     within "table#holdings" do
       click_on("Offer")
     end
-    fill_in("offer_quantity", with: @offer.quantity)
-    click_on("Save")
+    steps %(
+      Then when I submit the offer
+    )
   end
   
   Then('I should see the offer details') do
@@ -84,7 +98,7 @@ Given('there is an {string} offer {string} for each employee investor') do | app
 
   approved = approved_arg == "approved"
   Holding.all.each do |h|
-    offer = Offer.new(holding_id: h.id, user_id:h.user_id, entity_id: h.entity_id,
+    offer = FactoryBot.build(:offer, holding_id: h.id, user_id:h.user_id, entity_id: h.entity_id,
                 secondary_sale_id: @sale.id, investor_id: h.investor_id, approved: approved)
     key_values(offer, args)
     offer.save!

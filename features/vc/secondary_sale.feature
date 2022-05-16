@@ -62,6 +62,6 @@ Scenario Outline: View sale - make offer
   
 
   Examples:
-  	|user	    |entity               |sale                                     |msg	|
+  	|user	      |entity               |sale                                     |msg	|
   	|  	        |entity_type=Startup  |name=Grand Sale;visible_externally=true  |Secondary sale was successfully created|
     |  	        |entity_type=Startup  |name=Winter Sale;visible_externally=true |Secondary sale was successfully created|

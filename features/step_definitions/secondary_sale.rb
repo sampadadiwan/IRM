@@ -233,8 +233,15 @@ Given('when I make an offer for my holdings') do
     click_on("Offer")   
   end
   sleep(1)
-  click_on("Save")
-  sleep(1)
+  
+  @new_offer = FactoryBot.build(:offer, holding_id: h.id, user_id:h.user_id, entity_id: h.entity_id,
+    secondary_sale_id: @sale.id, investor_id: h.investor_id)
+  @new_offer.quantity = @new_offer.allowed_quantity
+  @offer = @new_offer
+
+  steps %(
+    Then when I submit the offer
+  )
 end
 
 Then('I should see the offer') do
@@ -282,7 +289,7 @@ Given('there are approved offers for the sale') do
     Given there are "3" exisiting investments "" from another firm in startups
   )
   Holding.all.each do |h|
-    offer = Offer.create!(holding: h, entity: h.entity, secondary_sale: @sale, 
+    offer = FactoryBot.create(:offer, holding: h, entity: h.entity, secondary_sale: @sale, 
                           user: h.entity.employees.sample, investor: h.investor,
                           quantity: h.quantity * @sale.percent_allowed / 100, approved: true)
   end
@@ -291,7 +298,7 @@ end
 
 Given('there are offers {string} for the sale') do |args|
   Holding.all.each do |h|
-    offer = Offer.new(holding: h, entity: h.entity, secondary_sale: @sale, 
+    offer = FactoryBot.build(:offer,holding: h, entity: h.entity, secondary_sale: @sale, 
                           user: h.entity.employees.sample, investor: h.investor)
 
 

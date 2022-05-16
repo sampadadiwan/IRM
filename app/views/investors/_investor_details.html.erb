@@ -27,7 +27,6 @@
               owner_id: investor.investee_entity_id, 
               access_type: "Investment", 
               owner_type: "Entity", 
-              owner_id: current_user.entity_id,
               entity_id: current_user.entity_id) %>
               
           <%= render "/access_rights/index", access_rights: AccessRight.for_investor(investor), access_right: access_right %>

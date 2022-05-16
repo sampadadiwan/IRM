@@ -146,7 +146,7 @@
           Address Proof
         </td>
         <td>
-          <%= render "/layouts/attachments" , attachments: [@offer.address_proof] %>
+          <%= render "/layouts/attachments" , attachments: [@offer.address_proof] if @offer.address_proof.present? %>
         </td>
       </tr>
       <tr>
@@ -162,7 +162,7 @@
           ID Proof
         </td>
         <td>
-          <%= render "/layouts/attachments" , attachments: [@offer.id_proof] %>
+          <%= render "/layouts/attachments" , attachments: [@offer.id_proof] if @offer.id_proof.present? %>
         </td>
       </tr>
       <tr>
