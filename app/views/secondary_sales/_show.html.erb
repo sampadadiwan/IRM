@@ -207,16 +207,7 @@
         Public Files: Viewable by all buyers
       </td>
       <td>
-        <ul>
-          <% secondary_sale.public_docs.each do |file| %>
-            <li>
-              <%= link_to rails_blob_path(file, disposition: :attachment), class: "btn btn-sm btn-primary" do%>
-                <i class="fas fa-download"></i>
-                <%= file.filename.to_s.capitalize %>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
+        <%= render "/layouts/attachments" , attachments: secondary_sale.public_docs if secondary_sale.public_docs.present? %>
       </td>
     </tr>
 
@@ -226,16 +217,7 @@
         Private Files: Viewable only by shortlisted buyers
       </td>
       <td>
-        <ul>
-          <% secondary_sale.private_docs.each do |file| %>
-            <li>
-              <%= link_to rails_blob_path(file, disposition: :attachment), class: "btn btn-sm btn-warning" do%>
-                <i class="fas fa-download"></i>
-                <%= file.filename.to_s.capitalize %>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
+        <%= render "/layouts/attachments" , attachments: secondary_sale.private_docs if secondary_sale.private_docs.present? %>
       </td>
     </tr>
     <% end %>

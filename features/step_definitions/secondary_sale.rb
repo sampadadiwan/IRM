@@ -14,11 +14,13 @@
     fill_in("secondary_sale_name", with: @input_sale.name)
     fill_in("secondary_sale_start_date", with: @input_sale.start_date.strftime("%d/%m/%Y"))
     fill_in("secondary_sale_end_date", with: @input_sale.end_date.strftime("%d/%m/%Y"))
-
     fill_in("secondary_sale_percent_allowed", with: @input_sale.percent_allowed)
+    click_on("Next")    
     fill_in("secondary_sale_min_price", with: @input_sale.min_price)
     fill_in("secondary_sale_max_price", with: @input_sale.max_price)
-    click_on("Save")   
+    click_on("Next")
+    click_on("Save") 
+    sleep(1)  
   end
   
   Then('an sale should be created') do
