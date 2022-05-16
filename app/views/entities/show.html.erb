@@ -80,9 +80,7 @@
       <% if current_user.entity_id == @entity.id %>
       <div>
          <%= link_to "Edit", edit_entity_path(@entity), {class: "btn btn-primary"} %> |
-         <%= link_to "View Payments", payments_path, {class: "btn btn-success"} if @entity.entity_type == "Startup" %> |
-
-         <%= button_to "Delete", @entity, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
+         <%= link_to "View Payments", payments_path, {class: "btn btn-success"} if @entity.entity_type == "Startup" %> 
       </div>
       <% end %>
       <% 

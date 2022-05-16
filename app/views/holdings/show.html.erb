@@ -73,6 +73,6 @@
   <div>
     <% if Pundit.policy(current_user, @holding).update? %>
       <%= link_to "Edit" , edit_holding_path(@holding), {class: "btn btn-primary" } %> |
-      <%= button_to "Delete" , @holding, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" %>
+      <%= button_to "Delete" , @holding, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
     <% end %>
   </div>
