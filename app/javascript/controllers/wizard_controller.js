@@ -2,13 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
     connect() {
-
         this.init();
-        
-        $(document).on('turbo:load', function () {
-            this.init();
-        });
-
     }
 
     init() {

@@ -1,0 +1,158 @@
+<div class="wizard_container" data-controller="wizard">
+    <div class="stepwizard">
+        <div class="stepwizard-row setup-panel">
+            <div class="stepwizard-step">
+                <a href="#step-1" type="button" class="btn btn-primary btn-outline-primary btn-circle">1</a>
+                <p>Step 1</p>
+            </div>
+            <div class="stepwizard-step">
+                <a href="#step-2" type="button" class="btn btn-outline-primary btn-circle" disabled="disabled">2</a>
+                <p>Step 2</p>
+            </div>
+            <div class="stepwizard-step">
+                <a href="#step-3" type="button" class="btn btn-outline-primary btn-circle" disabled="disabled">3</a>
+                <p>Step 3</p>
+            </div>
+        </div>
+    </div>
+
+
+<%= form_with(model: offer, validate: true) do |form| %>
+  <% if offer.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(offer.errors.count, "error") %> prohibited this offer from being saved:</h2>
+
+      <ul>
+        <% offer.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row setup-content" id="step-1">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header"> 1. Offer Quantity </div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <%= form.text_field :user_id, class: "form-control", hidden: true  %>
+                    <%= form.text_field :entity_id, class: "form-control", hidden: true  %>
+                </div>
+
+                <div class="form-group">
+                    <%= form.label :secondary_sale %>
+                    <%= form.text_field :secondary_sale_name, class: "form-control", disabled: true, value: offer.secondary_sale.name  %>
+                    <%= form.text_field :secondary_sale_id, class: "form-control", hidden: true  %>
+                    <%= form.text_field :holding_id, class: "form-control", hidden: true  %>
+                    <%= form.text_field :investor_id, class: "form-control", hidden: true  %>
+                    <small class="text-muted"> Percentage of holdings authorized in this sale is <%= offer.secondary_sale.percent_allowed %>% </small>
+                </div>
+
+
+                <div class="form-group">
+                    <%= form.label :quantity %>
+                    <%= form.number_field :quantity, class: "form-control"  %>
+                    <small class="text-muted"><%= offer.secondary_sale.percent_allowed %>% of your <%=offer.total_holdings_quantity%> holdings is <%= offer.allowed_quantity %> units</small>
+                </div>
+
+                <div class="form-group">
+                    <%= form.label :notes %>
+                    <%= form.text_area :notes, class: "form-control"  %>
+                </div>
+
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="row setup-content" id="step-2">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header"> 2. Personal Details </div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <%= form.label :first_name %>
+                    <%= form.text_field :first_name, class: "form-control"  %>
+                </div>
+                <div class="form-group">
+                    <%= form.label :middle_name %>
+                    <%= form.text_field :middle_name, class: "form-control"  %>
+                </div>
+                <div class="form-group">
+                    <%= form.label :last_name %>
+                    <%= form.text_field :last_name, class: "form-control"  %>
+                </div>
+                <div class="form-group">
+                    <%= form.label :address %>
+                    <%= form.text_area :address, class: "form-control"  %>
+                </div>
+                <div class="field" class="form-group" data-controller="directuploads" >
+                    <%= form.label :address_proof %>
+                    <%= form.file_field :address_proof, class: "form-control", direct_upload: true %>
+                </div>
+
+                <div class="form-group">
+                    <%= form.label :PAN, "PAN" %>
+                    <%= form.text_field :PAN, class: "form-control"  %>
+                </div>
+                <div class="field" class="form-group" data-controller="directuploads" >
+                    <%= form.label :id_proof %>
+                    <%= form.file_field :id_proof, class: "form-control", direct_upload: true %>
+                </div>
+
+
+                <div class="form-group">
+                    <%= form.label :bank_account_number %>
+                    <%= form.text_field :bank_account_number, class: "form-control"  %>
+                </div>
+                <div class="form-group">
+                    <%= form.label :bank_name %>
+                    <%= form.text_field :bank_name, class: "form-control"  %>
+                </div>
+                <div class="form-group">
+                    <%= form.label :bank_routing_info %>
+                    <%= form.text_area :bank_routing_info, class: "form-control"  %>
+                    <small class="text-muted">IFSC code, Branch etc</small>
+                </div>
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row setup-content" id="step-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header"> 3. Additional Documents </div>
+            <div class="card-body">
+
+
+                <div class="field" class="form-group" data-controller="directuploads" >
+                    <%= form.label :docs, "Documents" %>
+                    <%= form.file_field :docs, class: "form-control", direct_upload: true, multiple:true %>
+                    <small class="text-muted"> Upload bank statements, tax documents and shareholding documents. </small>
+                </div>
+
+
+                <div class="field" class="form-group" data-controller="directuploads" >
+                    <%= form.label :signature %>
+                    <%= form.file_field :signature, class: "form-control", direct_upload: true, multiple:true %>
+                    <small class="text-muted"> Upload signature. </small>
+                </div>
+
+                <div class="form-group">
+                    <%= form.submit "Save", {class: "btn btn-primary btn-lg"}%>
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+<% end %>
+
+</div>

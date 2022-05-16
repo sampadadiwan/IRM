@@ -143,10 +143,26 @@
       </tr>
       <tr>
         <td>
+          Address Proof
+        </td>
+        <td>
+          <%= render "/layouts/attachments" , attachments: [@offer.address_proof] %>
+        </td>
+      </tr>
+      <tr>
+        <td>
           PAN
         </td>
         <td>
           <%= @offer.PAN %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          ID Proof
+        </td>
+        <td>
+          <%= render "/layouts/attachments" , attachments: [@offer.id_proof] %>
         </td>
       </tr>
       <tr>
