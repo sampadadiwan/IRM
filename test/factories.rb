@@ -1,4 +1,21 @@
 FactoryBot.define do
+  factory :vesting_schedule do
+    month_from_grant { 1 }
+    vesting_percent { 1 }
+    esop_pool { nil }
+    entity { nil }
+  end
+
+  factory :esop_pool do
+    name { "MyString" }
+    start_date { "2022-05-17" }
+    number_of_options { "" }
+    excersice_price { "9.99" }
+    excercise_period_months { 1 }
+    entity { nil }
+    funding_round { nil }
+  end
+
   factory :aggregate_investment do
     entity { nil }
     funding_round { nil }

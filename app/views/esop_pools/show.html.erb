@@ -1,0 +1,79 @@
+<%= render "/layouts/alerts" %>
+
+  <table class="table table-bordered dataTable">
+
+    <tr>
+      <td>
+        Name
+      </td>
+      <td>
+        <%= @esop_pool.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Start Date
+      </td>
+      <td>
+        <%= l @esop_pool.start_date %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Number Of Options
+      </td>
+      <td>
+        <%= @esop_pool.number_of_options %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Excercise Price
+      </td>
+      <td>
+        <%= money_to_currency @esop_pool.excercise_price, params %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Excercise Period 
+      </td>
+      <td>
+        <%= @esop_pool.excercise_period_months %> Months
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Entity
+      </td>
+      <td>
+        <%= @esop_pool.entity.name %>
+      </td>
+    </tr>
+
+
+  </table>
+
+  <table class="table table-bordered dataTable">
+    <tr>
+      <th>Months From Grant</th>
+      <th>Vesting Percentage</th>
+    </tr>
+    <% @esop_pool.vesting_schedules.each do |vs| %>
+    <tr id="<%= dom_id vs %>">
+      <td>
+        <%= vs.months_from_grant %>
+      </td>
+      <td>
+        <%= vs.vesting_percent %> %
+      </td>
+    </tr>
+    <% end %>
+  </table>
+
+  <div>
+    <%= link_to "Edit" , edit_esop_pool_path(@esop_pool), {class: "btn btn-primary" } %> |
+    <%= link_to "Back" , :back, {class: "btn btn-primary" } %> |
+
+    <%= button_to "Delete" , @esop_pool, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
+  </div>

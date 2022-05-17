@@ -65,6 +65,7 @@ gem 'ajax-datatables-rails', git: "git@github.com:jbox-web/ajax-datatables-rails
 # For custom buckets in S3 per client
 gem "kt-paperclip", git: "https://github.com/thimmaiah/kt-paperclip.git"
 
+gem 'cocoon'
 gem "paranoia", "~> 2.2"
 gem 'public_activity', github: 'chaps-io/public_activity', branch: 'master'
 gem 'sanitize_email'

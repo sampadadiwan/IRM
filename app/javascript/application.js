@@ -6,6 +6,7 @@ import "controllers"
 import "@popperjs/core"
 import "chartkick"
 import '@client-side-validations/client-side-validations/src'
+import "@nathanvda/cocoon"
 
 // import "Chart.bundle"
 import Highcharts from "highcharts"

@@ -1,0 +1,2 @@
+module EsopPoolsHelper
+end

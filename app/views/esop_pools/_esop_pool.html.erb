@@ -1,0 +1,23 @@
+<tr id="<%= dom_id esop_pool %>">
+  <td>
+    <%= esop_pool.name %>
+  </td>
+  <td>
+    <%= esop_pool.start_date %>
+  </td>
+  <td>
+    <%= esop_pool.number_of_options %>
+  </td>
+  <td>
+    <%= money_to_currency esop_pool.excercise_price, params %>
+  </td>
+  <td>
+    <%= esop_pool.excercise_period_months %>
+  </td>
+  <td>
+    <%= esop_pool.entity.name %>
+  </td>
+  <td>
+    <%= link_to "Show" , esop_pool , {class: "btn btn-primary" }%>
+  </td>
+</tr>

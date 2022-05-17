@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :esop_pools
   resources :aggregate_investments do
     get 'investor_investments', on: :collection
   end

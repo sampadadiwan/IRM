@@ -1,0 +1,44 @@
+<%= render "/layouts/alerts" %>
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Esop Pools</h1>
+    <%= link_to "New Esop Pool" , new_esop_pool_path, {class: "btn btn-primary" } %>
+  </div>
+
+  <div class="table-responsive" data-controller="datatable">
+
+    <table id="esop_pools" class="table table-bordered dataTable jqDataTable">
+
+      <thead>
+        <tr>
+          <th>
+            Name
+          </th>
+          <th>
+            Start Date
+          </th>
+          <th>
+            Number Of Options
+          </th>
+          <th>
+            Excercise Price
+          </th>
+          <th>
+            Excercise Period Months
+          </th>
+          <th>
+            Entity
+          </th>
+          <th>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @esop_pools.each do |esop_pool| %>
+          <%= render esop_pool %>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>

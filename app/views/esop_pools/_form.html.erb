@@ -1,0 +1,51 @@
+<%= form_with(model: esop_pool, validate: true) do |form| %>
+  <% if esop_pool.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(esop_pool.errors.count, "error") %> prohibited this esop_pool from being saved:</h2>
+
+      <ul>
+        <% esop_pool.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :start_date %>
+    <%= form.date_field :start_date, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :number_of_options %>
+    <%= form.text_field :number_of_options, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :excercise_price %>
+    <%= form.text_field :excercise_price, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :excercise_period_months %>
+    <%= form.number_field :excercise_period_months, class: "form-control"  %>
+  </div>
+
+  <h1>Vesting Schedule</h1>
+  <div id='vesting_schedules'>
+    <%= form.fields_for :vesting_schedules do |schedule| %>
+      <%= render 'vesting_schedules', :f => schedule %>
+    <% end %>
+  </div>
+
+
+  <div class="form-group">
+    <%= link_to_add_association 'Add Schedule', form, :vesting_schedules , class: "btn btn-success" %>
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>
