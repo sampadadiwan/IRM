@@ -12,6 +12,7 @@ class EsopPoolsController < ApplicationController
   # GET /esop_pools/new
   def new
     @esop_pool = EsopPool.new
+    @esop_pool.start_date = Time.zone.today
     @esop_pool.entity_id = current_user.entity_id
     authorize(@esop_pool)
   end

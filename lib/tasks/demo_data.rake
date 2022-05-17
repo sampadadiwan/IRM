@@ -194,10 +194,12 @@ namespace :irm do
   task generateFakeHoldings: :environment do
 
     Entity.startups.each do |e|
-      pool = FactoryBot.create(:esop_pool, entity: e)
-      (1..3).each do |i|
-        pool.vesting_schedules.create(months_from_grant: i*12, vesting_percent: 20*i, entity_id: e.id)
+      pool = FactoryBot.build(:esop_pool, entity: e)
+      (1..4).each do |i|
+        # 10 + 20 + 30 + 40
+        pool.vesting_schedules << pool.vesting_schedules.build(months_from_grant: i*12, vesting_percent: 10*i, entity_id: e.id)
       end
+      pool.save
     end
 
     Investor.holding.each do |investor|

@@ -44,9 +44,8 @@
   </div>
 
     
-  <div id='vesting_schedules' class="associated_entity"></div>
+  <div id='vesting_schedules' class="associated_entity">
     <h1>Vesting Schedule</h1>
-  
     <%= form.fields_for :vesting_schedules do |schedule| %>
       <%= render 'vesting_schedules', :f => schedule %>
     <% end %>

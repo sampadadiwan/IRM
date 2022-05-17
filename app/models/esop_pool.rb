@@ -8,8 +8,14 @@ class EsopPool < ApplicationRecord
   has_many_attached :attachments, service: :amazon
 
   validates :name, :start_date, :number_of_options, :excercise_price, presence: true
+  validate :check_vesting_schedules
 
   monetize :excercise_price_cents, with_currency: ->(i) { i.entity.currency }
+
+  def check_vesting_schedules
+    total_percent = vesting_schedules.inject(0) { |sum, e| sum + e.vesting_percent }
+    errors.add(:vesting_schedules, "Total percentage should be 100%") if total_percent != 100
+  end
 
   def get_allowed_percentage(grant_date)
     # Find the percentage that can be excercised
@@ -17,7 +23,7 @@ class EsopPool < ApplicationRecord
     allowed_percentage = 0
 
     schedules.each do |sched|
-      allowed_percentage += sched.vesting_percentage if grant_date + sched.months_from_grant.months <= Time.zone.now
+      allowed_percentage += sched.vesting_percent if grant_date + sched.months_from_grant.months <= Time.zone.now
     end
 
     logger.debug "excercisable_quantity allowed_percentage: #{allowed_percentage}"
