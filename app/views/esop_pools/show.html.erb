@@ -44,6 +44,15 @@
     </tr>
     <tr>
       <td>
+        ESOP Scheme Documents
+      </td>
+      <td>
+        <%= render "/layouts/attachments" , attachments: @esop_pool.attachments if @esop_pool.attachments.present? %>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
         Entity
       </td>
       <td>
@@ -54,26 +63,32 @@
 
   </table>
 
-  <table class="table table-bordered dataTable">
-    <tr>
-      <th>Months From Grant</th>
-      <th>Vesting Percentage</th>
-    </tr>
-    <% @esop_pool.vesting_schedules.each do |vs| %>
-    <tr id="<%= dom_id vs %>">
-      <td>
-        <%= vs.months_from_grant %>
-      </td>
-      <td>
-        <%= vs.vesting_percent %> %
-      </td>
-    </tr>
-    <% end %>
-  </table>
+  <div class="card">
+    <div class="card-header">
+      Vesting Schedule
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered dataTable">
+        <tr>
+          <th>Months From Grant</th>
+          <th>Vesting Percentage</th>
+        </tr>
+        <% @esop_pool.vesting_schedules.each do |vs| %>
+        <tr id="<%= dom_id vs %>">
+          <td>
+            <%= vs.months_from_grant %>
+          </td>
+          <td>
+            <%= vs.vesting_percent %> %
+          </td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
 
-  <div>
+
+  <div class="actions">
     <%= link_to "Edit" , edit_esop_pool_path(@esop_pool), {class: "btn btn-primary" } %> |
-    <%= link_to "Back" , :back, {class: "btn btn-primary" } %> |
-
     <%= button_to "Delete" , @esop_pool, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
   </div>

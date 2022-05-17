@@ -6,7 +6,7 @@ namespace :irm do
 
   desc "generates fake Entity for testing"
   task generateFakeEntities: :environment do
-    startup_names = ["Urban Company", "Demo Startup", "Wakefit"]#, "PayTm", "Apna", "RazorPay", "Delhivery"]
+    startup_names = Rails.env == "development" ? ["Urban Company"] : ["Urban Company", "Demo Startup", "Wakefit"]#, "PayTm", "Apna", "RazorPay", "Delhivery"]
     startup_names.each do |name|
       e = FactoryBot.create(:entity, entity_type: "Startup", name: name)
       puts "Entity #{e.name}"
@@ -192,6 +192,14 @@ namespace :irm do
 
   desc "generates fake Holdings for testing"
   task generateFakeHoldings: :environment do
+
+    Entity.startups.each do |e|
+      pool = FactoryBot.create(:esop_pool, entity: e)
+      (1..3).each do |i|
+        pool.vesting_schedules.create(months_from_grant: i*12, vesting_percent: 20*i, entity_id: e.id)
+      end
+    end
+
     Investor.holding.each do |investor|
       puts "Holdings for #{investor.to_json}"
       (1..8).each do |j|
@@ -206,9 +214,19 @@ namespace :irm do
         funding_round = investor.investee_entity.funding_rounds.sample
 
         (1..3).each do |i|
+
+          investment_instrument = ["Equity", "Preferred", "Options"][rand(3)]
+          if investment_instrument == "Options" 
+            pool = investor.investee_entity.esop_pools.sample 
+            grant_date = Date.today - rand(12).months
+          else 
+            pool = nil
+            grant_date = nil
+          end
+
           Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
               quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000,
-              investment_instrument: ["Equity", "Preferred", "Options"][rand(3)], 
+              investment_instrument: investment_instrument, esop_pool: pool, grant_date: grant_date,
               holding_type: investor.category, funding_round: funding_round)
         end
       end

@@ -71,7 +71,7 @@ class EsopPoolsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def esop_pool_params
-    params.require(:esop_pool).permit(:name, :start_date, :number_of_options, :excercise_price, :excercise_period_months, :entity_id, :funding_round_id,
-                                      vesting_schedules_attributes: %i[id months_from_grant vesting_percent _destroy])
+    params.require(:esop_pool).permit(:name, :start_date, :number_of_options, :excercise_price, :excercise_period_months, :entity_id, :funding_round_id, attachments: [],
+                                                                                                                                                         vesting_schedules_attributes: %i[id months_from_grant vesting_percent _destroy])
   end
 end

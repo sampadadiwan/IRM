@@ -34,11 +34,36 @@
     <%= form.text_field :holding_type, class: "form-control", hidden: true  %>
   <% end %>
 
-  <div class="form-group">
-    <%= form.label :funding_round %>
-    <%= form.select :funding_round_id, current_user.entity.funding_rounds.open.collect {|u| [u.name, u.id]}, 
-      {include_blank: true}, {class: "form-control"} %>
-    <small class="text-muted">Create a <%= link_to "New Funding Round", new_funding_round_path %></small> 
+  <div data-controller="esop">
+
+    <div class="form-group">
+      <%= form.label :investment_instrument %>
+      <%= form.select :investment_instrument, Investment.INSTRUMENT_TYPES(current_user&.entity) , 
+        {include_blank: true}, {class: "form-control", data: {action: "change->esop#onChange"} } %>
+    </div>
+
+    <div class="form-group funding_round_group" >
+      <%= form.label :funding_round %>
+      <%= form.select :funding_round_id, current_user.entity.funding_rounds.open.collect {|u| [u.name, u.id]}, 
+        {include_blank: true}, {class: "form-control"} %>
+      <small class="text-muted">Create a <%= link_to "New Funding Round", new_funding_round_path %></small> 
+    </div>
+
+
+    <div class="form-group esop_pool_group">
+      <%= form.label :esop_pool_id, "ESOP Pool" %>
+      <%= form.select :esop_pool_id, current_user.entity.esop_pools.map {|u| [u.name, u.id]},
+        {include_blank: true}, {class: "form-control"} %>
+      <small class="text-muted">Create a <%= link_to "New ESOP Pool", new_esop_pool_path %></small> 
+
+    </div>
+
+
+    <div class="form-group esop_pool_group">
+      <%= form.label :grant_date %>
+      <%= form.date_field :grant_date, class: "form-control"  %>
+    </div>
+
   </div>
 
   <div class="form-group">
@@ -51,11 +76,6 @@
     <%= form.number_field :price, class: "form-control"  %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :investment_instrument %>
-    <%= form.select :investment_instrument, Investment.INSTRUMENT_TYPES(current_user&.entity) , 
-      {include_blank: true}, {class: "form-control"} %>
-  </div>
 
   <div class="form-group">
     <%= form.submit "Save", {class: "btn btn-primary"}%>

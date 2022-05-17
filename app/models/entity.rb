@@ -53,6 +53,7 @@ class Entity < ApplicationRecord
   validates :name, :entity_type, presence: true
 
   has_rich_text :details
+  has_many :esop_pools, dependent: :destroy
   has_many :deals, dependent: :destroy
   has_many :deal_investors, dependent: :destroy
   has_many :documents, dependent: :destroy

@@ -1,0 +1,88 @@
+<%= render "/layouts/alerts" %>
+
+  <table class="table table-bordered dataTable">
+
+    <tr>
+      <td>
+        Entity
+      </td>
+      <td>
+        <%= @excercise.entity.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Holding
+      </td>
+      <td>
+        <%= @excercise.holding_id %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        User
+      </td>
+      <td>
+        <%= @excercise.user.full_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Esop Pool
+      </td>
+      <td>
+        <%= link_to @excercise.esop_pool.name, @excercise.esop_pool %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Quantity
+      </td>
+      <td>
+        <%= @excercise.quantity %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Price
+      </td>
+      <td>
+        <%= money_to_currency @excercise.price, params %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Amount
+      </td>
+      <td>
+        <%= money_to_currency @excercise.amount, params %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Tax
+      </td>
+      <td>
+        <%= money_to_currency @excercise.tax, params %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Approved
+      </td>
+      <td>
+        <%= @excercise.approved ? "Yes" : "No" %>
+      </td>
+    </tr>
+
+
+  </table>
+
+
+  <div>
+    <%= link_to "Edit" , edit_excercise_path(@excercise), {class: "btn btn-primary" } %> |
+    <%= link_to "Back" , :back, {class: "btn btn-primary" } %> |
+
+    <%= button_to "Delete" , @excercise, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" ,
+          data: {action: "click->confirm#delete" , turbo:false} %>
+  </div>

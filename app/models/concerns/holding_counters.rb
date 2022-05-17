@@ -35,11 +35,21 @@ module HoldingCounters
     counter_culture :funding_round,
                     column_name: proc { |h| h.call_counter_cache? ? h.investment_instrument.downcase : nil },
                     delta_column: 'quantity'
+
+    counter_culture :esop_pool,
+                    column_name: proc { |h| h.update_esop_pool? ? 'allocated_quantity' : nil },
+                    delta_column: 'quantity'
   end
 
   def call_counter_cache?
     investment.scenario.actual? &&
       INVESTMENT_FOR.include?(holding_type) &&
       EQUITY_LIKE.include?(investment_instrument)
+  end
+
+  def update_esop_pool?
+    investment.scenario.actual? &&
+      INVESTMENT_FOR.include?(holding_type) &&
+      investment_instrument == "Options"
   end
 end

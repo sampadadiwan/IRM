@@ -1,0 +1,67 @@
+<thead>
+  <tr>
+      <th>
+      Entity
+    </th>
+      <th>
+      Holding
+    </th>
+      <th>
+      User
+    </th>
+      <th>
+      Esop Pool
+    </th>
+      <th>
+      Quantity
+    </th>
+      <th>
+      Price
+    </th>
+      <th>
+      Amount
+    </th>
+      <th>
+      Tax
+    </th>
+      <th>
+      Approved
+    </th>
+  
+    <th>
+    </th>
+  </tr>
+</thead>
+
+<tr id="<%= dom_id excercise %>">
+  <td>
+            <%= excercise.entity_id %>
+      </td>  
+  <td>
+            <%= excercise.holding_id %>
+      </td>  
+  <td>
+            <%= excercise.user_id %>
+      </td>  
+  <td>
+            <%= excercise.esop_pool_id %>
+      </td>  
+  <td>
+            <%= excercise.quantity %>
+      </td>  
+  <td>
+            <%= excercise.price %>
+      </td>  
+  <td>
+            <%= excercise.amount %>
+      </td>  
+  <td>
+            <%= excercise.tax %>
+      </td>  
+  <td>
+            <%= excercise.approved %>
+      </td>  
+  <td>
+    <%= link_to "Show", excercise , {class: "btn btn-primary"}%>
+  </td>
+</tr>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_17_034129) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_17_153720) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -319,6 +319,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_034129) do
     t.bigint "funding_round_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "allocated_quantity", default: 0
+    t.bigint "excercised_quantity", default: 0
     t.index ["entity_id"], name: "index_esop_pools_on_entity_id"
     t.index ["funding_round_id"], name: "index_esop_pools_on_funding_round_id"
   end
@@ -328,6 +330,24 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_034129) do
     t.text "body", size: :medium
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "excercises", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.bigint "holding_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "esop_pool_id", null: false
+    t.integer "quantity", default: 0
+    t.decimal "price_cents", precision: 20, scale: 2, default: "0.0"
+    t.decimal "amount_cents", precision: 20, scale: 2, default: "0.0"
+    t.decimal "tax_cents", precision: 20, scale: 2, default: "0.0"
+    t.boolean "approved", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entity_id"], name: "index_excercises_on_entity_id"
+    t.index ["esop_pool_id"], name: "index_excercises_on_esop_pool_id"
+    t.index ["holding_id"], name: "index_excercises_on_holding_id"
+    t.index ["user_id"], name: "index_excercises_on_user_id"
   end
 
   create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -377,7 +397,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_034129) do
     t.bigint "investment_id", null: false
     t.decimal "price_cents", precision: 20, scale: 2, default: "0.0"
     t.bigint "funding_round_id", null: false
+    t.bigint "esop_pool_id"
+    t.integer "excercised_quantity", default: 0
+    t.date "grant_date"
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
+    t.index ["esop_pool_id"], name: "index_holdings_on_esop_pool_id"
     t.index ["funding_round_id"], name: "index_holdings_on_funding_round_id"
     t.index ["investment_id"], name: "index_holdings_on_investment_id"
     t.index ["investor_id"], name: "index_holdings_on_investor_id"
@@ -771,9 +795,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_034129) do
   add_foreign_key "documents", "folders"
   add_foreign_key "esop_pools", "entities"
   add_foreign_key "esop_pools", "funding_rounds"
+  add_foreign_key "excercises", "entities"
+  add_foreign_key "excercises", "esop_pools"
+  add_foreign_key "excercises", "holdings"
+  add_foreign_key "excercises", "users"
   add_foreign_key "folders", "entities"
   add_foreign_key "funding_rounds", "entities"
   add_foreign_key "holdings", "entities"
+  add_foreign_key "holdings", "esop_pools"
   add_foreign_key "holdings", "investments"
   add_foreign_key "holdings", "investors"
   add_foreign_key "holdings", "users"

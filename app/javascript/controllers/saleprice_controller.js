@@ -3,13 +3,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   connect() {
-
     this.onChange(null);
     console.log("Sale price javascript loaded");
-    $(document).on('turbo:frame-load', function () {
-      this.onChange(null);
-    });
-
   }
 
   onChange(event) {

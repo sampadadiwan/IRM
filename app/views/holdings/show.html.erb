@@ -41,6 +41,24 @@
         <%= @holding.investment_instrument %>
       </td>
     </tr>
+    <% if @holding.investment_instrument == "Options" %>
+    <tr>
+      <td>
+        ESOP Pool
+      </td>
+      <td>
+        <%= link_to  @holding.esop_pool.name, @holding.esop_pool if @holding.esop_pool %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Grant Date
+      </td>
+      <td>
+        <%= l @holding.grant_date if @holding.grant_date %>
+      </td>
+    </tr>
+    <% end %>
     <tr>
       <td>
         Quantity
@@ -72,7 +90,13 @@
 
   <div>
     <% if Pundit.policy(current_user, @holding).update? %>
+
       <%= link_to "Edit" , edit_holding_path(@holding), {class: "btn btn-primary" } %> |
+    
+      <% if @holding.investment_instrument == "Options" %>
+      <%= link_to "Excercise" , new_excercise_path("excercise[holding_id]": @holding.id), {class: "btn btn-primary" } %> |
+      <% end %>
+
       <%= button_to "Delete" , @holding, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
     <% end %>
   </div>

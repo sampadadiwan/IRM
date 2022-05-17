@@ -25,9 +25,12 @@ class Holding < ApplicationRecord
 
   belongs_to :user, optional: true
   belongs_to :entity
-  belongs_to :funding_round
+  belongs_to :funding_round, optional: true
   belongs_to :investor
+  # This is only for options
+  belongs_to :esop_pool, optional: true
   has_many :offers, dependent: :destroy
+  has_many :excercises, dependent: :destroy
 
   # Only update the investment if its coming from an employee of a holding company
   before_validation :setup_investment, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
@@ -79,5 +82,26 @@ class Holding < ApplicationRecord
 
   def holder_name
     user ? user.full_name : investor.investor_name
+  end
+
+  def balance_quantity
+    quantity - excercised_quantity
+  end
+
+  def excercisable_quantity
+    allowed_percentage = esop_pool.get_allowed_percentage(grant_date)
+
+    if allowed_percentage.positive?
+      # Get the already excercised quantity
+
+    else
+      0
+    end
+  end
+
+  def excercisable?
+    investment_instrument == "Option" &&
+      balance_quantitys.positive? &&
+      grant_date + esop_pool.excercise_period.days > Time.zone.today
   end
 end

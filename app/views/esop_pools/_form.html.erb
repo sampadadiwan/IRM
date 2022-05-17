@@ -36,8 +36,17 @@
     <%= form.number_field :excercise_period_months, class: "form-control"  %>
   </div>
 
-  <h1>Vesting Schedule</h1>
-  <div id='vesting_schedules'>
+  <div class="field" class="form-group" data-controller="directuploads" >
+    <%= form.label :attachments, "ESOP Scheme Documents" %>
+    <%= form.file_field :attachments, class: "form-control", direct_upload: true, multiple:true %>
+    <small class="text-muted"> Upload multiple documents. </small>
+
+  </div>
+
+    
+  <div id='vesting_schedules' class="associated_entity"></div>
+    <h1>Vesting Schedule</h1>
+  
     <%= form.fields_for :vesting_schedules do |schedule| %>
       <%= render 'vesting_schedules', :f => schedule %>
     <% end %>
