@@ -58,6 +58,14 @@
         <%= l @holding.grant_date if @holding.grant_date %>
       </td>
     </tr>
+    <tr>
+      <td>
+        Excercised Quantity
+      </td>
+      <td>
+        <%= custom_format_number @holding.excercised_quantity, params %>
+      </td>
+    </tr>
     <% end %>
     <tr>
       <td>
