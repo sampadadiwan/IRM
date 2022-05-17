@@ -2,7 +2,7 @@ class EsopPool < ApplicationRecord
   belongs_to :entity
   belongs_to :funding_round, optional: true
 
-  has_many :holdings, dependent: :destroy
+  has_many :holdings, inverse_of: :esop_pool, dependent: :destroy
   has_many :excercises, dependent: :destroy
 
   has_many :vesting_schedules, inverse_of: :esop_pool, dependent: :destroy

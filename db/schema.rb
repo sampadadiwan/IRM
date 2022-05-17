@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_17_165826) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_17_175703) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -321,6 +321,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_165826) do
     t.datetime "updated_at", null: false
     t.bigint "allocated_quantity", default: 0
     t.bigint "excercised_quantity", default: 0
+    t.bigint "vested_quantity", default: 0
     t.index ["entity_id"], name: "index_esop_pools_on_entity_id"
     t.index ["funding_round_id"], name: "index_esop_pools_on_funding_round_id"
   end
@@ -401,6 +402,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_165826) do
     t.bigint "esop_pool_id"
     t.integer "excercised_quantity", default: 0
     t.date "grant_date"
+    t.integer "vested_quantity", default: 0
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
     t.index ["esop_pool_id"], name: "index_holdings_on_esop_pool_id"
     t.index ["funding_round_id"], name: "index_holdings_on_funding_round_id"

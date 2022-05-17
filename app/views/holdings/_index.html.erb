@@ -19,6 +19,7 @@
         </span>
     </span>
 </div>
+<% only_options ||= nil %>
 
 <div class="table-responsive" data-controller="datatable">
 
@@ -41,6 +42,22 @@
                 <th class="hideMobP">
                     Quantity
                 </th>
+                
+                <% if only_options.present? %>
+                    <th class="hideMobP">
+                        Vested
+                    </th>
+                    <th class="hideMobP">
+                        Excercised
+                    </th>
+                    <th class="hideMobP">
+                        Grant Date
+                    </th>  
+                    <th class="hideMobP">
+                        Months
+                    </th>                                        
+                <% end %>
+
                 <th class="hideMobP">
                     Price
                 </th>
@@ -54,7 +71,7 @@
 
         <tbody>
             <% holdings.each do |holding| %>
-                <%= render "/holdings/holding", holding: holding, secondary_sale: secondary_sale %>
+                <%= render "/holdings/holding", holding: holding, secondary_sale: secondary_sale, only_options: only_options %>
             <% end %>
         </tbody>
     </table>

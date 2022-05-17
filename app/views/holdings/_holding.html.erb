@@ -15,6 +15,22 @@
   <td class="hideMobP">
     <%= custom_format_number holding.quantity, params %>
   </td>
+  
+  <% if only_options.present? %>
+    <td class="hideMobP">
+      <%= custom_format_number holding.vested_quantity, params %>
+    </td>
+    <td class="hideMobP">
+      <%= custom_format_number holding.excercised_quantity, params %>
+    </td>
+    <td class="hideMobP">
+      <%= l holding.grant_date %>
+    </td>
+    <td class="hideMobP">
+      <%=  Time.zone.today.year * 12 + Time.zone.today.month  - holding.grant_date.year * 12 - holding.grant_date.month  %> 
+    </td>
+  <% end %>
+
   <td class="hideMobP">
     <%= custom_format_number holding.price, params %>
   </td>

@@ -28,7 +28,7 @@
     </tr>
     <tr>
       <td>
-        Options Allocated
+        Options Granted
       </td>
       <td>
         <%= @esop_pool.allocated_quantity %>
@@ -36,7 +36,15 @@
     </tr>
     <tr>
       <td>
-        Number Of Options Excercised
+        Options Vested
+      </td>
+      <td>
+        <%= @esop_pool.vested_quantity %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Options Excercised
       </td>
       <td>
         <%= @esop_pool.excercised_quantity %>

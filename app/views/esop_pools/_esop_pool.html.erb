@@ -9,6 +9,15 @@
     <%= esop_pool.number_of_options %>
   </td>
   <td>
+    <%= esop_pool.allocated_quantity %>
+  </td>
+  <td>
+    <%= esop_pool.vested_quantity %>
+  </td>
+  <td>
+    <%= esop_pool.excercised_quantity %>
+  </td>
+  <td>
     <%= money_to_currency esop_pool.excercise_price, params %>
   </td>
   <td>
