@@ -28,6 +28,22 @@
     </tr>
     <tr>
       <td>
+        Options Allocated
+      </td>
+      <td>
+        <%= @esop_pool.allocated_quantity %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Number Of Options Excercised
+      </td>
+      <td>
+        <%= @esop_pool.excercised_quantity %>
+      </td>
+    </tr>
+    <tr>
+      <td>
         Excercise Price
       </td>
       <td>
@@ -92,3 +108,5 @@
     <%= link_to "Edit" , edit_esop_pool_path(@esop_pool), {class: "btn btn-primary" } %> |
     <%= button_to "Delete" , @esop_pool, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
   </div>
+
+  <%= render "/esop_pools/esop_pool_details" %>

@@ -9,7 +9,6 @@ export default class extends Controller {
 
   onChange(event) {
     console.log("onChange");
-    console.log("change");
     let selected = $("#holding_investment_instrument").val();
     switch (selected) {
       case "Options":

@@ -85,15 +85,20 @@ class Holding < ApplicationRecord
   end
 
   def balance_quantity
+    # Note excercised_quantity will be updated via counter cache from excercise entity
     quantity - excercised_quantity
   end
 
+  def allowed_percentage
+    esop_pool.get_allowed_percentage(grant_date)
+  end
+
   def excercisable_quantity
-    allowed_percentage = esop_pool.get_allowed_percentage(grant_date)
+    percentage = allowed_percentage
 
-    if allowed_percentage.positive?
+    if percentage.positive?
       # Get the already excercised quantity
-
+      (percentage * quantity / 100.0) - excercised_quantity
     else
       0
     end

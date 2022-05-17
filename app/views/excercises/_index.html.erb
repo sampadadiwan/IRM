@@ -1,0 +1,48 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Excercises</h1>
+</div>
+
+<div class="table-responsive" data-controller="datatable">
+
+    <table id="excercises" class="table table-bordered dataTable">
+
+        <thead>
+            <tr>
+                <th>
+                    Entity
+                </th>
+                <th>
+                    User
+                </th>
+                <th>
+                    Esop Pool
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Tax
+                </th>
+                <th>
+                    Approved
+                </th>
+
+                <th>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% excercises.each do |excercise| %>
+                <%= render excercise %>
+            <% end %>
+        </tbody>
+    </table>
+
+</div>

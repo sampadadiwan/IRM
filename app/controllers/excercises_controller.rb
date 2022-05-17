@@ -19,6 +19,7 @@ class ExcercisesController < ApplicationController
     Rails.logger.debug @excercise.to_json
 
     @excercise.esop_pool_id = @excercise.holding.esop_pool_id
+    @excercise.quantity = @excercise.holding.excercisable_quantity
     @excercise.price = @excercise.esop_pool.excercise_price
     authorize(@excercise)
   end
@@ -32,6 +33,10 @@ class ExcercisesController < ApplicationController
     @excercise.esop_pool_id = @excercise.holding.esop_pool_id
     @excercise.entity_id = current_user.entity_id
     @excercise.user_id = current_user.id
+    # For some reason the cents are not directly being taken in
+    @excercise.price = excercise_params[:price]
+    @excercise.tax = excercise_params[:tax]
+    @excercise.amount = excercise_params[:amount]
 
     authorize(@excercise)
 
@@ -82,6 +87,6 @@ class ExcercisesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def excercise_params
-    params.require(:excercise).permit(:entity_id, :holding_id, :user_id, :esop_pool_id, :quantity, :price, :amount, :tax, :approved)
+    params.require(:excercise).permit(:entity_id, :holding_id, :user_id, :esop_pool_id, :quantity, :price, :amount, :tax, :tax_rate, :approved)
   end
 end

@@ -220,7 +220,7 @@ namespace :irm do
           investment_instrument = ["Equity", "Preferred", "Options"][rand(3)]
           if investment_instrument == "Options" 
             pool = investor.investee_entity.esop_pools.sample 
-            grant_date = Date.today - rand(12).months
+            grant_date = Date.today - rand(36).months
           else 
             pool = nil
             grant_date = nil

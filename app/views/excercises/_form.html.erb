@@ -11,35 +11,52 @@
     </div>
   <% end %>
 
+  <%= render "/layouts/steps", steps: ["Holding Quantity: #{excercise.holding.quantity}", "Vesting Percent allowed: #{excercise.holding.allowed_percentage} %", "Max Excercisable Quantity: #{excercise.holding.excercisable_quantity}", "Input Your Tax Rate", "Excercise Your ESOP", "Wait For Approval"].freeze %>
+
 
   <%= form.number_field :holding_id, class: "form-control", hidden: true  %>
 
-  <div class="form-group">
-    <%= form.label :quantity %>
-    <%= form.number_field :quantity, class: "form-control"  %>
+  <div data-controller="excercise">
+
+    <div class="form-group">
+      <%= form.label :quantity %>
+      <%= form.number_field :quantity, class: "form-control", data: {action: "change->excercise#onChange"}  %>
+      <small class="text-muted">Quantity defaults to the maximum <%= excercise.holding.excercisable_quantity %> that can be excercised per the <%= link_to "Vesting Schedule", excercise.esop_pool %></small> 
+    </div>
+
+    <div class="form-group">
+      <%= form.label :price %>
+      <%= form.text_field :price, class: "form-control", disabled: true  %>
+      <%= form.text_field :price, class: "form-control", hidden: true  %>
+      <small class="text-muted">The price specifid in the <%= link_to "ESOP Pool", excercise.esop_pool %></small> 
+    </div>
+
+    <div class="form-group">
+      <%= form.label :amount %>
+      <%= form.text_field :amount, class: "form-control"  %>
+    </div>
+
+
+    <div class="form-group">
+      <%= form.label :tax_rate %>
+      <%= form.text_field :tax_rate, class: "form-control", data: {action: "change->excercise#onChange"}  %>
+      <small class="text-muted">Enter your current tax rate</small> 
+    </div>
+
+    <div class="form-group">
+      <%= form.label :tax %>
+      <%= form.text_field :tax, class: "form-control"  %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :approved %>
+      <%= form.check_box :approved, class: "form-control form-checkbox"  %>
+    </div>
+
+    <div class="form-group">
+      <%= form.submit "Save", {class: "btn btn-primary"}%>
+    </div>
+
   </div>
 
-  <div class="form-group">
-    <%= form.label :price %>
-    <%= form.text_field :price, class: "form-control"  %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :amount %>
-    <%= form.text_field :amount, class: "form-control"  %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :tax %>
-    <%= form.text_field :tax, class: "form-control"  %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :approved %>
-    <%= form.check_box :approved, class: "form-control form-checkbox"  %>
-  </div>
-
-  <div class="form-group">
-    <%= form.submit "Save", {class: "btn btn-primary"}%>
-  </div>
 <% end %>

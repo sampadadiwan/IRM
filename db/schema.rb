@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_17_153720) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_17_165826) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -344,6 +344,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_153720) do
     t.boolean "approved", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "tax_rate", precision: 5, scale: 2, default: "0.0"
     t.index ["entity_id"], name: "index_excercises_on_entity_id"
     t.index ["esop_pool_id"], name: "index_excercises_on_esop_pool_id"
     t.index ["holding_id"], name: "index_excercises_on_holding_id"

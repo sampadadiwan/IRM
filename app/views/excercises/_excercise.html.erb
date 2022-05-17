@@ -1,67 +1,29 @@
-<thead>
-  <tr>
-      <th>
-      Entity
-    </th>
-      <th>
-      Holding
-    </th>
-      <th>
-      User
-    </th>
-      <th>
-      Esop Pool
-    </th>
-      <th>
-      Quantity
-    </th>
-      <th>
-      Price
-    </th>
-      <th>
-      Amount
-    </th>
-      <th>
-      Tax
-    </th>
-      <th>
-      Approved
-    </th>
-  
-    <th>
-    </th>
-  </tr>
-</thead>
-
 <tr id="<%= dom_id excercise %>">
   <td>
-            <%= excercise.entity_id %>
-      </td>  
+    <%= excercise.entity.name %>
+  </td>
   <td>
-            <%= excercise.holding_id %>
-      </td>  
+    <%= excercise.user.full_name %>
+  </td>
   <td>
-            <%= excercise.user_id %>
-      </td>  
+    <%= excercise.esop_pool.name %>
+  </td>
   <td>
-            <%= excercise.esop_pool_id %>
-      </td>  
+    <%= excercise.quantity %>
+  </td>
   <td>
-            <%= excercise.quantity %>
-      </td>  
+    <%= excercise.price %>
+  </td>
   <td>
-            <%= excercise.price %>
-      </td>  
+    <%= excercise.amount %>
+  </td>
   <td>
-            <%= excercise.amount %>
-      </td>  
+    <%= excercise.tax %>
+  </td>
   <td>
-            <%= excercise.tax %>
-      </td>  
+    <%= excercise.approved ? "Yes" : "No" %>
+  </td>
   <td>
-            <%= excercise.approved %>
-      </td>  
-  <td>
-    <%= link_to "Show", excercise , {class: "btn btn-primary"}%>
+    <%= link_to "Show" , excercise , {class: "btn btn-primary" }%>
   </td>
 </tr>

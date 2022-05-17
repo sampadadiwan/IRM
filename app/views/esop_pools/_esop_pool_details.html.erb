@@ -1,0 +1,28 @@
+<div class="associated_entity" data-controller="tabs tabdetails">
+  
+    <nav class="nav nav-tabs nav-fill nav-justified"  role="tablist">
+      <a class="nav-link active" data-bs-toggle="pill" data-toggle="tab" href="#holdings-tab">
+            Holdings
+      </a>
+      <a class="nav-link" data-bs-toggle="pill" data-toggle="tab" href="#excercised-tab">
+        Excercised
+      </a>
+    </nav>
+  
+    <div class="tab-content" data-controller="datatable">
+
+        <div id="holdings-tab" class="tab-pane fade in show active">   
+            <div id="holdings" class="associated_entity">             
+                <%= render "/holdings/index" , holdings: @esop_pool.holdings, secondary_sale: nil %>
+            </div>
+        </div>
+        <div id="excercised-tab" class="tab-pane fade">
+            <div id="excercises" class="associated_entity">
+                <%= render "/excercises/index" , excercises: @esop_pool.excercises, secondary_sale: nil %>
+            </div>
+        </div>
+  
+    </div>
+  
+  </div>
+  
