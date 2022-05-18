@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   resources :valuations
-  resources :excercises
+  resources :excercises do
+    patch 'approve', on: :member
+  end
+
   resources :vestings
   resources :esop_pools
   resources :aggregate_investments do

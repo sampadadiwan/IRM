@@ -14,7 +14,7 @@ class EsopPoolPolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+    user.has_cached_role?(:super) || (user.entity_id == record.entity_id) || user.holdings.where(entity_id: record.entity_id).present?
   end
 
   def create?

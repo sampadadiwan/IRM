@@ -216,7 +216,7 @@
 
 
   <div>
-    <% if Pundit.policy(current_user, @offer).update? %>
+    <% if policy(@offer).update? %>
       <%= link_to "Edit" , edit_offer_path(@offer), {class: "btn btn-primary" } %>
     <% end %>
 

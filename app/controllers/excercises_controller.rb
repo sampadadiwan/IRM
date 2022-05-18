@@ -1,5 +1,5 @@
 class ExcercisesController < ApplicationController
-  before_action :set_excercise, only: %i[show edit update destroy]
+  before_action :set_excercise, only: %i[show edit update destroy approve]
 
   # GET /excercises or /excercises.json
   def index
@@ -13,14 +13,12 @@ class ExcercisesController < ApplicationController
   # GET /excercises/new
   def new
     @excercise = Excercise.new(excercise_params)
-    @excercise.entity_id = current_user.entity_id
     @excercise.user_id = current_user.id
-
-    Rails.logger.debug @excercise.to_json
-
     @excercise.esop_pool_id = @excercise.holding.esop_pool_id
+    @excercise.entity_id = @excercise.holding.entity_id
     @excercise.quantity = @excercise.holding.excercisable_quantity
     @excercise.price = @excercise.esop_pool.excercise_price
+
     authorize(@excercise)
   end
 
@@ -31,12 +29,11 @@ class ExcercisesController < ApplicationController
   def create
     @excercise = Excercise.new(excercise_params)
     @excercise.esop_pool_id = @excercise.holding.esop_pool_id
-    @excercise.entity_id = current_user.entity_id
+    @excercise.entity_id = @excercise.holding.entity_id
     @excercise.user_id = current_user.id
     # For some reason the cents are not directly being taken in
-    @excercise.price = excercise_params[:price]
-    @excercise.tax = excercise_params[:tax]
-    @excercise.amount = excercise_params[:amount]
+    @excercise.price_cents = excercise_params[:price].to_f * 100
+    @excercise.amount_cents = excercise_params[:amount].to_f * 100
 
     authorize(@excercise)
 
@@ -53,7 +50,7 @@ class ExcercisesController < ApplicationController
 
   # PATCH/PUT /excercises/1 or /excercises/1.json
   def update
-    @excercise.entity_id = current_user.entity_id
+    @excercise.entity_id = @excercise.holding.entity_id
     @excercise.user_id = current_user.id
 
     respond_to do |format|
@@ -77,6 +74,20 @@ class ExcercisesController < ApplicationController
     end
   end
 
+  def approve
+    @excercise.approved = !@excercise.approved
+    @excercise.save
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace(@excercise)
+        ]
+      end
+      format.html { redirect_to excercise_path(@excercise), notice: "Excercise was successfully approved." }
+      format.json { @excercise.to_json }
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -87,6 +98,6 @@ class ExcercisesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def excercise_params
-    params.require(:excercise).permit(:entity_id, :holding_id, :user_id, :esop_pool_id, :quantity, :price, :amount, :tax, :tax_rate, :approved, :payment_proof)
+    params.require(:excercise).permit(:entity_id, :holding_id, :user_id, :esop_pool_id, :quantity, :price, :amount, :tax, :tax_rate, :payment_proof)
   end
 end

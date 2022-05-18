@@ -6,7 +6,7 @@ class Excercise < ApplicationRecord
 
   has_one_attached :payment_proof, service: :amazon
 
-  monetize :price_cents, :amount_cents, :tax_cents, with_currency: ->(i) { i.entity.currency }
+  monetize :price_cents, :amount_cents, with_currency: ->(e) { e.entity.currency }
 
   counter_culture :esop_pool,
                   column_name: proc { |e| e.approved && e.holding.update_esop_pool? ? 'excercised_quantity' : nil }, delta_column: 'quantity'
@@ -16,7 +16,7 @@ class Excercise < ApplicationRecord
                   delta_column: 'quantity'
 
   validates :quantity, :price, :amount, presence: true
-  validates :quantity, :amount, numericality: { greater_than: 0 }
+  validates :quantity, :price, :amount, numericality: { greater_than: 0 }
   validates :payment_proof, presence: true, on: :create
   validate :lapsed_holding, on: :create
   validate :validate_quantity, on: :update

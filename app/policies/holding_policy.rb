@@ -48,4 +48,8 @@ class HoldingPolicy < ApplicationPolicy
   def destroy?
     create?
   end
+
+  def excercise?
+    record.user_id == user.id
+  end
 end

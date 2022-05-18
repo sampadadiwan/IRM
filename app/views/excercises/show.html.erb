@@ -58,14 +58,7 @@
         <%= money_to_currency @excercise.amount, params %>
       </td>
     </tr>
-    <tr>
-      <td>
-        Tax
-      </td>
-      <td>
-        <%= money_to_currency @excercise.tax, params %>
-      </td>
-    </tr>
+    
     <tr>
       <td>
         Payment Proof
@@ -89,9 +82,12 @@
 
 
   <div>
-    <%= link_to "Edit" , edit_excercise_path(@excercise), {class: "btn btn-primary" } %> |
-    <%= link_to "Back" , :back, {class: "btn btn-primary" } %> |
+    <% if policy(@excercise).update? %>
+      <%= link_to "Edit" , edit_excercise_path(@excercise), {class: "btn btn-primary" } %> |
+      <%= button_to "Delete" , @excercise, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" ,
+            data: {action: "click->confirm#delete" , turbo:false} %>
+    <% end %>
 
-    <%= button_to "Delete" , @excercise, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" ,
-          data: {action: "click->confirm#delete" , turbo:false} %>
+    <% label = @excercise.approved ?  "UnApprove" : "Approve" %>
+    <%= button_to label , approve_excercise_path(@excercise), method: :patch, data: {turbo: false}, class: "btn btn-success" , form_class: "deleteButton" if policy(@excercise).approve? %>
   </div>

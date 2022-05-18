@@ -17,13 +17,13 @@
   <td>
     <%= excercise.amount %>
   </td>
-  <td>
-    <%= excercise.tax %>
-  </td>
+  
   <td>
     <%= excercise.approved ? "Yes" : "No" %>
   </td>
   <td>
     <%= link_to "Show" , excercise , {class: "btn btn-primary" }%>
+    <% label = excercise.approved ?  "UnApprove" : "Approve" %>
+    <%= button_to label , approve_excercise_path(excercise), method: :patch, class: "btn btn-success" , form_class: "deleteButton" if policy(excercise).approve? %>
   </td>
 </tr>

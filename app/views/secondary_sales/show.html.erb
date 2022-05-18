@@ -4,7 +4,7 @@
 
 
   <div>
-    <% if Pundit.policy(current_user, @secondary_sale).update? %>
+    <% if policy(@secondary_sale).update? %>
       <%= link_to "Edit" , edit_secondary_sale_path(@secondary_sale), {class: "btn btn-primary" } %> 
 
       <% download_disabled =  @secondary_sale.allocation_status == 'Completed' ? nil : 'disabled' %>

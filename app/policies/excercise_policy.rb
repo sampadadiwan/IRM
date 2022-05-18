@@ -3,8 +3,10 @@ class ExcercisePolicy < ApplicationPolicy
     def resolve
       if user.has_cached_role?(:super)
         scope.all
-      else
+      elsif user.has_cached_role?(:startup)
         scope.where(entity_id: user.entity_id)
+      else
+        scope.where(user_id: user.id)
       end
     end
   end
@@ -14,11 +16,11 @@ class ExcercisePolicy < ApplicationPolicy
   end
 
   def show?
-    user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+    user.has_cached_role?(:super) || (user.entity_id == record.entity_id) || user.id == record.user_id
   end
 
   def create?
-    user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+    (user.id == record.user_id && user.id == record.holding.user_id)
   end
 
   def new?
@@ -35,5 +37,9 @@ class ExcercisePolicy < ApplicationPolicy
 
   def destroy?
     create?
+  end
+
+  def approve?
+    user.entity_id == record.entity_id
   end
 end

@@ -167,18 +167,16 @@
 
 
   <div>
-    <% if Pundit.policy(current_user, @holding).update? %>
-
+    <% if policy(@holding).update? %>
       <%= link_to "Edit" , edit_holding_path(@holding), {class: "btn btn-primary" } %> |
-    
-      <% if @holding.excercisable? %>
-      <%= link_to "Excercise" , new_excercise_path("excercise[holding_id]": @holding.id), {class: "btn btn-primary" } %> |
-      <% end %>
-
       <%= button_to "Delete" , @holding, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
+    <% end %>
+
+    <% if policy(@holding).excercise? && @holding.excercisable? %>
+      <%= link_to "Excercise" , new_excercise_path("excercise[holding_id]": @holding.id, "excercise[entity_id]": @holding.entity_id), {class: "btn btn-primary" } %> 
     <% end %>
   </div>
 
   <div class="associated_entity">
-    <%= render "/excercises/index", excercises: @holding.excercises %>
+    <%= render "/excercises/index", excercises: @holding.excercises if @holding.investment_instrument == "Options" %>
   </div>

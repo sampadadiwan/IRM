@@ -1,7 +1,15 @@
 <%= render "/layouts/alerts" %>
 
   <table class="table table-bordered dataTable">
-
+    <tr>
+      <td>
+        Entity
+      </td>
+      <td>
+        <%= @esop_pool.entity.name %>
+      </td>
+    </tr>
+    
     <tr>
       <td>
         Pool Name
@@ -10,14 +18,7 @@
         <%= @esop_pool.name %>
       </td>
     </tr>
-    <tr>
-      <td>
-        Funding Round
-      </td>
-      <td>
-        <%= link_to @esop_pool.funding_round.name, @esop_pool.funding_round %>
-      </td>
-    </tr>
+    
     <tr>
       <td>
         Start Date
@@ -26,77 +27,6 @@
         <%= l @esop_pool.start_date %>
       </td>
     </tr>
-    <tr>
-      <td>
-        Number Of Options
-      </td>
-      <td>
-        <%= @esop_pool.number_of_options %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Options Granted
-      </td>
-      <td>
-        <%= @esop_pool.allocated_quantity %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Options Vested
-      </td>
-      <td>
-        <%= @esop_pool.vested_quantity %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Options Excercised
-      </td>
-      <td>
-        <%= @esop_pool.excercised_quantity %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Options UnExcercised
-        </br>
-        (Vested - Excercised)
-      </td>
-      <td>
-        <%= @esop_pool.unexcercised_quantity %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Options Lapsed
-      </td>
-      <td>
-        <%= @esop_pool.lapsed_quantity %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Balance
-        </br>
-        (UnExcercised - Lapsed)
-      </td>
-      <td>
-        <%= @esop_pool.balance_quantity %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Options Available for Grants
-        </br>
-        (Number of Options - Granted + Lapsed)
-      </td>
-      <td>
-        <%= @esop_pool.available_quantity %>
-      </td>
-    </tr>
-    
     <tr>
       <td>
         Excercise Price
@@ -131,14 +61,80 @@
       </td>
     </tr>
 
-    <tr>
-      <td>
-        Entity
-      </td>
-      <td>
-        <%= @esop_pool.entity.name %>
-      </td>
-    </tr>
+    <% if policy(@esop_pool).update? %>
+
+      <tr>
+        <td>
+          Number Of Options
+        </td>
+        <td>
+          <%= @esop_pool.number_of_options %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Options Granted
+        </td>
+        <td>
+          <%= @esop_pool.allocated_quantity %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Options Vested
+        </td>
+        <td>
+          <%= @esop_pool.vested_quantity %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Options Excercised
+        </td>
+        <td>
+          <%= @esop_pool.excercised_quantity %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Options UnExcercised
+          </br>
+          (Vested - Excercised)
+        </td>
+        <td>
+          <%= @esop_pool.unexcercised_quantity %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Options Lapsed
+        </td>
+        <td>
+          <%= @esop_pool.lapsed_quantity %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Balance
+          </br>
+          (UnExcercised - Lapsed)
+        </td>
+        <td>
+          <%= @esop_pool.balance_quantity %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Options Available for Grants
+          </br>
+          (Number of Options - Granted + Lapsed)
+        </td>
+        <td>
+          <%= @esop_pool.available_quantity %>
+        </td>
+      </tr>
+      
+    <% end %>
 
 
   </table>
@@ -167,10 +163,11 @@
     </div>
   </div>
 
+  <% if policy(@esop_pool).update? %>
+    <div class="actions">
+      <%= link_to "Edit" , edit_esop_pool_path(@esop_pool), {class: "btn btn-primary" } %> |
+      <%= button_to "Delete" , @esop_pool, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
+    </div>
 
-  <div class="actions">
-    <%= link_to "Edit" , edit_esop_pool_path(@esop_pool), {class: "btn btn-primary" } %> |
-    <%= button_to "Delete" , @esop_pool, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
-  </div>
-
-  <%= render "/esop_pools/esop_pool_details" %>
+    <%= render "/esop_pools/esop_pool_details" %>
+  <% end %>
