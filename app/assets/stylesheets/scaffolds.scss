@@ -398,3 +398,12 @@ form {
     }
   }
 }
+
+ul.vesting_schedule {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+  li {
+    margin: 5px;
+  }
+}

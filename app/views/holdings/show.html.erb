@@ -127,11 +127,11 @@
         Schedule
       </td>
       <td>
-        <ul>
+        <ul class="vesting_schedule">
           <% @holding.vesting_schedule.each do |schedule| %>
             <li>
               On <%= l schedule[0] %>, 
-              <%= schedule[1] %> % of your ESOPs,
+              <%= schedule[1] %>% of your Options,
               which is <%= schedule[2] %> Options, can be vested.
             </li>
           <% end %>
