@@ -15,13 +15,19 @@ class Excercise < ApplicationRecord
                   column_name: proc { |e| e.approved ? 'excercised_quantity' : nil },
                   delta_column: 'quantity'
 
-  validates :quantity, :price, :amount, :tax, :tax_rate, presence: true
-  validates :quantity, :amount, :tax_rate, numericality: { greater_than: 0 }
+  validates :quantity, :price, :amount, presence: true
+  validates :quantity, :amount, numericality: { greater_than: 0 }
   validates :payment_proof, presence: true, on: :create
-  validate :lapsed_holding
+  validate :lapsed_holding, on: :create
+  validate :validate_quantity, on: :update
 
   def lapsed_holding
     errors.add(:holding, "can't be lapsed") if holding.lapsed
     errors.add(:quantity, "can't be greater than #{holding.excercisable_quantity}") if quantity > holding.excercisable_quantity
+  end
+
+  def validate_quantity
+    allowed = holding.excercisable_quantity + quantity_was
+    errors.add(:quantity, "can't be greater than #{allowed}") if quantity > allowed
   end
 end

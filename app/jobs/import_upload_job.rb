@@ -89,7 +89,7 @@ class ImportUploadJob < ApplicationJob
 
     holding = Holding.new(user:, investor:, holding_type: user_data["Founder or Employee"],
                           entity_id: import_upload.owner_id, quantity: user_data["Quantity"],
-                          price_cents: price_cents, employee_id: user_data["Employee ID"],
+                          price_cents:, employee_id: user_data["Employee ID"],
                           investment_instrument: user_data["Instrument"],
                           funding_round: fr, esop_pool: ep,
                           import_upload_id: import_upload.id, grant_date:)
