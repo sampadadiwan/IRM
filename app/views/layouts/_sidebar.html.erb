@@ -13,9 +13,11 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="/entities/dashboard">
+                <a class="nav-link" href="/entities/dashboard" >
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
+
+                
             </li>
 
             <% if current_user && current_user.has_cached_role?(:super) %>
@@ -81,41 +83,59 @@
 
            
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                
-                <a class="nav-link" href="/investors">
+            <li class="nav-item">                
+                <a class="nav-link" href="/investors" data-toggle="collapse" data-target="#investorMenus">
                     <i class="fas fa-fw fa-user-tie"></i>
                     <span>Investors</span>
                 </a>
 
+                <div id="investorMenus" class="collapse subMenus" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/investors">Investors</a>
+                        <a class="collapse-item" href="/notes">Notes</a>
+                        <a class="collapse-item" href="/investor_accesses?approved=false">Pending Approvals</a>
+                    </div>
+                </div>
+
+            </li>
+            <li class="nav-item"> 
                 <a class="nav-link collapsed" href="/documents">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Documents</span>
                 </a>
-
-                <a class="nav-link" href="/aggregate_investments">
+            </li>
+            <li class="nav-item"> 
+                <a class="nav-link" href="/aggregate_investments" data-toggle="collapse" data-target="#investmentMenus">
                     <i class="fas fa-fw fa-money-bill"></i>
                     <span>Cap Table</span>
                 </a>
+
+                <div id="investmentMenus" class="collapse subMenus" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/aggregate_investments">Investments</a>
+                        <a class="collapse-item" href="/investments">Details View</a>
+                        <a class="collapse-item" href="/funding_rounds">Funding Rounds</a>
+                        <a class="collapse-item" href="/scenarios">Scenarios</a>
+                    </div>
+                </div>
+
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
             
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                
+            <li class="nav-item">                
                 <a class="nav-link" href="/deals">
                     <i class="fas fa-fw fa-briefcase"></i>
                     <span>Deals</span>
                 </a>
-
+            </li>
+            <li class="nav-item">                
                 <a class="nav-link" href="/deal_messages?tasks=true">
                     <i class="fas fa-fw fa-check"></i>
                     <span>Tasks</span>
-                </a>
-
-               
+                </a>               
             </li>
 
             <!-- Divider -->
@@ -123,20 +143,26 @@
             
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-
-                <a class="nav-link" href="/holdings">
+                <a class="nav-link" href="/holdings"  data-toggle="collapse" data-target="#holdingsMenus">
                     <i class="fas fa-fw fa-money-bill"></i>
                     <span>Holdings</span>
                 </a>
-
+                <div id="holdingsMenus" class="collapse subMenus" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="/holdings">Holdings</a>
+                        <a class="collapse-item" href="/esop_pools">Esop Pools</a>
+                        <a class="collapse-item" href="/excercises">Excercises</a>
+                    </div>
+                </div>
+                
+            </li>
+            <li class="nav-item">                
                 <a class="nav-link" href="/secondary_sales">
                     <i class="fas fa-fw fa-bolt"></i>
                     <span>Secondary Sales</span>
                 </a>
 
                 <hr class="sidebar-divider my-0">
-
-           
             </li>
 
             <% end %>
