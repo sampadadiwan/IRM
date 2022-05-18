@@ -110,6 +110,15 @@
 
     <tr>
       <td>
+        Excercise Instructions
+      </td>
+      <td>
+        <%= render "/layouts/attachments" , attachments: @esop_pool.excercise_instructions if @esop_pool.excercise_instructions.present? %>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
         Entity
       </td>
       <td>

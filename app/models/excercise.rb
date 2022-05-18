@@ -4,6 +4,8 @@ class Excercise < ApplicationRecord
   belongs_to :user
   belongs_to :esop_pool
 
+  has_one_attached :payment_proof, service: :amazon
+
   monetize :price_cents, :amount_cents, :tax_cents, with_currency: ->(i) { i.entity.currency }
 
   counter_culture :esop_pool,
@@ -14,6 +16,8 @@ class Excercise < ApplicationRecord
                   delta_column: 'quantity'
 
   validates :quantity, :price, :amount, :tax, :tax_rate, presence: true
+  validates :quantity, :amount, :tax_rate, numericality: { greater_than: 0 }
+  validates :payment_proof, presence: true, on: :create
   validate :lapsed_holding
 
   def lapsed_holding

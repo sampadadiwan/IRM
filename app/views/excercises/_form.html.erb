@@ -1,3 +1,21 @@
+<div class="wizard_container" data-controller="wizard">
+  <div class="stepwizard">
+      <div class="stepwizard-row setup-panel">
+          <div class="stepwizard-step">
+              <a href="#step-1" type="button" class="btn btn-primary btn-outline-primary btn-circle">1</a>
+              <p>Step 1</p>
+          </div>
+          <div class="stepwizard-step">
+              <a href="#step-2" type="button" class="btn btn-outline-primary btn-circle" disabled="disabled">2</a>
+              <p>Step 2</p>
+          </div>
+          <div class="stepwizard-step">
+            <a href="#step-3" type="button" class="btn btn-outline-primary btn-circle" disabled="disabled">3</a>
+            <p>Step 3</p>
+        </div>
+      </div>
+  </div>
+
 <%= form_with(model: excercise) do |form| %>
   <% if excercise.errors.any? %>
     <div class="alert alert-danger">
@@ -18,45 +36,92 @@
 
   <div data-controller="excercise">
 
-    <div class="form-group">
-      <%= form.label :quantity %>
-      <%= form.number_field :quantity, class: "form-control", data: {action: "change->excercise#onChange"}  %>
-      <small class="text-muted">Quantity defaults to the maximum <%= excercise.holding.excercisable_quantity %> that can be excercised per the <%= link_to "Vesting Schedule", excercise.esop_pool %></small> 
-    </div>
+    <div class="row setup-content" id="step-1">
+      <div class="col-md-12">
+          <div class="card">
+              <div class="card-header"> 1. Read Instructions </div>
+              <div class="card-body">
+  
+                <h1>Please read the Excercise Instructions before you proceed.</h1>
+                <%= render "/layouts/attachments" , attachments: excercise.esop_pool.excercise_instructions, allow_delete: "No" if excercise.esop_pool.excercise_instructions.present? %>
 
-    <div class="form-group">
-      <%= form.label :price %>
-      <%= form.text_field :price, class: "form-control", disabled: true  %>
-      <%= form.text_field :price, class: "form-control", hidden: true  %>
-      <small class="text-muted">The price specifid in the <%= link_to "ESOP Pool", excercise.esop_pool %></small> 
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
+            </div>
+        </div>
     </div>
+  </div>
 
-    <div class="form-group">
-      <%= form.label :amount %>
-      <%= form.text_field :amount, class: "form-control"  %>
+  <div class="row setup-content" id="step-2">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header"> 2. Excercise Quantity </div>
+            <div class="card-body">
+
+              <div class="form-group">
+                <%= form.label :quantity %>
+                <%= form.number_field :quantity, class: "form-control", data: {action: "change->excercise#onChange"}  %>
+                <small class="text-muted">Quantity defaults to the maximum <%= excercise.holding.excercisable_quantity %> that can be excercised per the <%= link_to "Vesting Schedule", excercise.esop_pool %></small> 
+              </div>
+
+              <div class="form-group">
+                <%= form.label :price %>
+                <%= form.text_field :price, class: "form-control", disabled: true  %>
+                <%= form.text_field :price, class: "form-control", hidden: true  %>
+                <small class="text-muted">The price specifid in the <%= link_to "ESOP Pool", excercise.esop_pool %></small> 
+              </div>
+
+              <div class="form-group">
+                <%= form.label :amount %>
+                <%= form.text_field :amount, class: "form-control", disabled: true  %>
+                <%= form.text_field :amount, id: "excercise_amount_hidden", class: "form-control", hidden: true  %>
+              </div>
+
+              <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+  <div class="row setup-content" id="step-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header"> 3. Taxes & Payment </div>
+            <div class="card-body">
+
+              <div class="field" class="form-group" data-controller="directuploads" >
+                <%= form.label :payment_proof %>
+                <%= form.file_field :payment_proof, class: "form-control", direct_upload: true, multiple:false %>
+                <small class="text-muted"> Upload proof of payment as per the instructions. </small>
+              </div>
+
+              <div class="form-group">
+                <%= form.label :tax_rate %>
+                <%= form.text_field :tax_rate, class: "form-control", data: {action: "change->excercise#onChange"}  %>
+                <small class="text-muted">Enter your current tax rate</small> 
+              </div>
+
+              <div class="form-group">
+                <%= form.label :tax %>
+                <%= form.text_field :tax, class: "form-control"  %>
+              </div>
+
+              <div class="form-group">
+                <%= form.label :approved %>
+                <%= form.check_box :approved, class: "form-control form-checkbox"  %>
+              </div>
+
+              <div class="form-group">
+                <%= form.submit "Save", {class: "btn btn-primary btn-lg"}%>
+              </div>
+
+            </div>
+        </div>
     </div>
+  </div>
 
-
-    <div class="form-group">
-      <%= form.label :tax_rate %>
-      <%= form.text_field :tax_rate, class: "form-control", data: {action: "change->excercise#onChange"}  %>
-      <small class="text-muted">Enter your current tax rate</small> 
-    </div>
-
-    <div class="form-group">
-      <%= form.label :tax %>
-      <%= form.text_field :tax, class: "form-control"  %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :approved %>
-      <%= form.check_box :approved, class: "form-control form-checkbox"  %>
-    </div>
-
-    <div class="form-group">
-      <%= form.submit "Save", {class: "btn btn-primary"}%>
-    </div>
 
   </div>
 
 <% end %>
+
+</div>

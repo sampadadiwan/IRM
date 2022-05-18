@@ -1,3 +1,22 @@
+<div class="wizard_container" data-controller="wizard">
+  <div class="stepwizard">
+      <div class="stepwizard-row setup-panel">
+          <div class="stepwizard-step">
+              <a href="#step-1" type="button" class="btn btn-primary btn-outline-primary btn-circle">1</a>
+              <p>Step 1</p>
+          </div>
+          <div class="stepwizard-step">
+              <a href="#step-2" type="button" class="btn btn-outline-primary btn-circle" disabled="disabled">2</a>
+              <p>Step 2</p>
+          </div>
+          <div class="stepwizard-step">
+            <a href="#step-3" type="button" class="btn btn-outline-primary btn-circle" disabled="disabled">3</a>
+            <p>Step 3</p>
+        </div>
+      </div>
+  </div>
+
+
 <%= form_with(model: esop_pool, validate: true) do |form| %>
   <% if esop_pool.errors.any? %>
     <div class="alert alert-danger">
@@ -11,49 +30,89 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: "form-control"  %>
+  <div class="row setup-content" id="step-1">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header"> 1. ESOP Pool Details </div>
+            <div class="card-body">
+
+              <div class="form-group">
+                <%= form.label :name %>
+                <%= form.text_field :name, class: "form-control", required: true  %>
+              </div>
+
+              <div class="form-group">
+                <%= form.label :start_date %>
+                <%= form.date_field :start_date, class: "form-control", required: true  %>
+              </div>
+
+              <div class="form-group">
+                <%= form.label :number_of_options %>
+                <%= form.text_field :number_of_options, class: "form-control", required: true  %>
+              </div>
+
+              <div class="form-group">
+                <%= form.label :excercise_price %>
+                <%= form.text_field :excercise_price, class: "form-control", required: true  %>
+              </div>
+
+              <div class="form-group">
+                <%= form.label :excercise_period_months %>
+                <%= form.number_field :excercise_period_months, class: "form-control", required: true  %>
+              </div>
+
+              <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
+            </div>
+        </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :start_date %>
-    <%= form.date_field :start_date, class: "form-control"  %>
+  <div class="row setup-content" id="step-2">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header"> 2. Upload Documents </div>
+            <div class="card-body">
+
+              <div class="field" class="form-group" data-controller="directuploads" >
+                <%= form.label :attachments, "ESOP Scheme Documents" %>
+                <%= form.file_field :attachments, class: "form-control", direct_upload: true, multiple:true %>
+                <small class="text-muted"> Upload multiple documents. </small>
+              </div>
+
+              <div class="field" class="form-group" data-controller="directuploads" >
+                <%= form.label :excercise_instructions %>
+                <%= form.file_field :excercise_instructions, class: "form-control", direct_upload: true, multiple:true %>
+                <small class="text-muted"> Documents describing the complete process to your employees. </small>
+              </div>
+
+              <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
+            </div>
+        </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :number_of_options %>
-    <%= form.text_field :number_of_options, class: "form-control"  %>
+  <div class="row setup-content" id="step-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header"> 3. Vesting Schedule </div>
+            <div class="card-body">
+
+            <div id='vesting_schedules' class="">              
+              <%= form.fields_for :vesting_schedules do |schedule| %>
+                <%= render 'vesting_schedules', :f => schedule %>
+              <% end %>
+            </div>
+
+
+            <div class="form-group">
+              <%= link_to_add_association 'Add Schedule', form, :vesting_schedules , class: "btn btn-success btn-lg" %>
+              <%= form.submit "Save", {class: "btn btn-primary btn-lg"}%>
+            </div>
+          </div>
+        </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :excercise_price %>
-    <%= form.text_field :excercise_price, class: "form-control"  %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :excercise_period_months %>
-    <%= form.number_field :excercise_period_months, class: "form-control"  %>
-  </div>
-
-  <div class="field" class="form-group" data-controller="directuploads" >
-    <%= form.label :attachments, "ESOP Scheme Documents" %>
-    <%= form.file_field :attachments, class: "form-control", direct_upload: true, multiple:true %>
-    <small class="text-muted"> Upload multiple documents. </small>
-
-  </div>
-
-    
-  <div id='vesting_schedules' class="associated_entity">
-    <h1>Vesting Schedule</h1>
-    <%= form.fields_for :vesting_schedules do |schedule| %>
-      <%= render 'vesting_schedules', :f => schedule %>
-    <% end %>
-  </div>
-
-
-  <div class="form-group">
-    <%= link_to_add_association 'Add Schedule', form, :vesting_schedules , class: "btn btn-success" %>
-    <%= form.submit "Save", {class: "btn btn-primary"}%>
-  </div>
 <% end %>
+
+</div>

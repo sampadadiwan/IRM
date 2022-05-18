@@ -9,8 +9,11 @@ class EsopPool < ApplicationRecord
   accepts_nested_attributes_for :vesting_schedules, reject_if: :all_blank, allow_destroy: true
 
   has_many_attached :attachments, service: :amazon
+  has_many_attached :excercise_instructions, service: :amazon
 
   validates :name, :start_date, :number_of_options, :excercise_price, presence: true
+  validates :number_of_options, :excercise_price, numericality: { greater_than: 0 }
+  validates :excercise_instructions, presence: true, on: :create
   validate :check_vesting_schedules
 
   before_create :setup_funding_round

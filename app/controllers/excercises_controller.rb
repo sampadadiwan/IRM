@@ -87,6 +87,6 @@ class ExcercisesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def excercise_params
-    params.require(:excercise).permit(:entity_id, :holding_id, :user_id, :esop_pool_id, :quantity, :price, :amount, :tax, :tax_rate, :approved)
+    params.require(:excercise).permit(:entity_id, :holding_id, :user_id, :esop_pool_id, :quantity, :price, :amount, :tax, :tax_rate, :approved, :payment_proof)
   end
 end
