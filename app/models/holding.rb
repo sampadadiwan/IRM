@@ -120,4 +120,12 @@ class Holding < ApplicationRecord
       vested_quantity.positive? &&
       !lapsed
   end
+
+  def vesting_schedule
+    schedule = []
+    esop_pool.vesting_schedules.each do |pvs|
+      schedule << [grant_date + pvs.months_from_grant.month, pvs.vesting_percent, (quantity * pvs.vesting_percent / 100.0).round(0)]
+    end
+    schedule
+  end
 end

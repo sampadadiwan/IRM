@@ -1,77 +1,77 @@
 <%= render "/layouts/alerts" %>
 
-<table class="table table-bordered dataTable">
+  <table class="table table-bordered dataTable">
 
-          <tr>
-        <td>
-          Name
-        </td>
-        <td>
-          <%= link_to @import_upload.name, rails_blob_path(@import_upload.import_file, disposition: "attachment")  %>                     
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Entity
-        </td>
-        <td>
-          <%= @import_upload.entity.name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Owner
-        </td>
-        <td>
-          <%= link_to @import_upload.owner_type, @import_upload.owner %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          User
-        </td>
-        <td>
-          <%= @import_upload.user.full_name %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Import Type
-        </td>
-        <td>
-          <%= @import_upload.import_type %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Status
-        </td>
-        <td>
-          <%= @import_upload.status %>
-        </td>    
-      </tr>
-          <tr>
-        <td>
-          Error Text
-        </td>
-        <td>
-          <%= @import_upload.error_text %>
-        </td>    
-      </tr>
-    
-  
-</table>
+    <tr>
+      <td>
+        Name
+      </td>
+      <td>
+        <%= link_to @import_upload.name, rails_blob_path(@import_upload.import_file, disposition: "attachment" ) %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Entity
+      </td>
+      <td>
+        <%= @import_upload.entity.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Owner
+      </td>
+      <td>
+        <%= link_to @import_upload.owner_type, @import_upload.owner %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        User
+      </td>
+      <td>
+        <%= @import_upload.user.full_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Import Type
+      </td>
+      <td>
+        <%= @import_upload.import_type %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Status
+      </td>
+      <td>
+        <%= @import_upload.status %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Error Text
+      </td>
+      <td>
+        <%= @import_upload.error_text %>
+      </td>
+    </tr>
 
 
-<div>
-  <%= link_to "Edit", edit_import_upload_path(@import_upload), {class: "btn btn-primary"} %> |
-  <%= link_to "Back", :back, {class: "btn btn-primary"} %> |
+  </table>
 
-  <%= button_to "Delete", @import_upload, method: :delete, class: "btn btn-danger", form_class: "deleteButton" %>
-</div>
 
-<% if @import_upload.import_type == "Holding" %>
-  <div class="associated_entity">
-    <%= render "/holdings/index", holdings: Holding.where(import_upload_id: @import_upload.id), secondary_sale: nil %>
+  <div>
+    <%= link_to "Edit" , edit_import_upload_path(@import_upload), {class: "btn btn-primary" } %> |
+    <%= link_to "Back" , :back, {class: "btn btn-primary" } %> |
+
+    <%= button_to "Delete" , @import_upload, method: :delete, class: "btn btn-danger" , form_class: "deleteButton" %>
   </div>
-<% end %>
+
+  <% if @import_upload.import_type=="Holding" %>
+    <div class="associated_entity">
+      <%= render "/holdings/index" , holdings: Holding.where(import_upload_id: @import_upload.id), secondary_sale: nil %>
+    </div>
+  <% end %>
