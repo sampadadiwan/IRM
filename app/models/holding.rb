@@ -48,8 +48,11 @@ class Holding < ApplicationRecord
              if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
 
   def update_value
+    if esop_pool
+      self.funding_round_id = esop_pool.funding_round_id if esop_pool
+      self.price_cents = esop_pool.excercise_price_cents
+    end
     self.value_cents = quantity * price_cents
-    self.funding_round_id = esop_pool.funding_round_id if esop_pool
   end
 
   def allocation_allowed
@@ -127,5 +130,14 @@ class Holding < ApplicationRecord
       schedule << [grant_date + pvs.months_from_grant.month, pvs.vesting_percent, (quantity * pvs.vesting_percent / 100.0).round(0)]
     end
     schedule
+  end
+
+  def self.estimated_profits(price_growth, user)
+    profits = 0
+    user.holdings.options.includes(esop_pool: :entity, entity: :valuations).find_each do |holding|
+      per_share_value = holding.entity.valuations.last.per_share_value
+      profits += ((per_share_value * price_growth) - holding.esop_pool.excercise_price) * holding.quantity
+    end
+    profits
   end
 end

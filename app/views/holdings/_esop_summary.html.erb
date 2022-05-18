@@ -1,0 +1,46 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">ESOPs</h1>
+</div>
+
+<div class="table-responsive">
+
+    <table id="esops" class="table table-bordered dataTable jqDataTable">
+
+        <thead>
+            <tr>
+                <th>
+                    Pool
+                </th>
+                <th>
+                    Granted Options
+                </th>
+                <th>
+                    Eligible for Excercise
+                </th>
+                <th>
+                    Excercise Price
+                </th>
+                
+                <th>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% holdings.each do |holding| %>
+                <tr>
+                    <td><%= holding.esop_pool.name %></td>
+                    <td><%= holding.quantity %></td>
+                    <td><%= holding.vested_quantity %></td>
+                    <td><%= holding.esop_pool.excercise_price %></td>
+                    <td>
+                        <%= link_to "Details" , holding , {class: "btn btn-primary" }%>
+                        <%= link_to "Excercise" , new_excercise_path("excercise[holding_id]": holding.id, "excercise[entity_id]": holding.entity_id), {class: "btn btn-success" } if holding.vested_quantity > 0 %> 
+
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+
+</div>

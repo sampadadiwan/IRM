@@ -1,0 +1,37 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Summary</h5>
+    </div>
+    <div class="card-body">      
+      <p class="card-text">This is a simulator to calculate your gains and taxes.</p>
+    </div>
+    <ul class="list-group list-group-flush">
+
+      <li class="list-group-item">Total Value Of Excercising: 
+          <% total_value = current_user.holdings.options.inject(0){|sum,o| sum + o.value } %>
+          <%= money_to_currency total_value, params %>
+      </li>
+      <li class="list-group-item form-group">
+          Growth in share price from the last price: 
+          <input type="text" id="price_growth" name="price_growth" value="3" class="form-control" />
+      </li>
+      <li class="list-group-item">Estimated pre-Tax Profits: </li>
+      <li class="list-group-item">Your Tax Slab Rates: 30%</li>
+      <li class="list-group-item">Estimated taxes for exercising asper last Valuation: </li>
+      <li class="list-group-item">Number of share to be sold be cash neutral: </li>
+    </ul>
+    <div class="card-body">
+      <a href="#" class="card-link btn btn-primary">Card link</a>
+      <a href="#" class="card-link btn btn-primary">Another link</a>
+    </div>
+  </div>
+
+<div data-controller="datatable">
+
+    <div class="associated_entity">
+        <%= render "/holdings/esop_summary", holdings: current_user.holdings.options %>
+    </div>
+    <div class="associated_entity">
+        <%= render "/excercises/index", excercises: current_user.excercises %>
+    </div>
+</div>

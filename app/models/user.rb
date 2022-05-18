@@ -40,6 +40,7 @@ class User < ApplicationRecord
   has_many :holdings, dependent: :destroy
   has_many :offers, dependent: :destroy
   has_many :interests, dependent: :destroy
+  has_many :excercises, dependent: :destroy
 
   # Make all models searchable
   update_index('user') { self }
