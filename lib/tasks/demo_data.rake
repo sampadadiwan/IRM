@@ -232,7 +232,8 @@ namespace :irm do
           end
 
           Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
-              quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000,
+              quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000, 
+              employee_id: SecureRandom.alphanumeric,
               investment_instrument: investment_instrument, esop_pool: pool, grant_date: grant_date,
               holding_type: investor.category, funding_round: funding_round)
         end

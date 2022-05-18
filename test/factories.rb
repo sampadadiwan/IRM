@@ -101,6 +101,7 @@ FactoryBot.define do
 
   factory :holding do
     user { User.all.sample }
+    employee_id {SecureRandom.alphanumeric}
     entity { Entity.all.sample }
     quantity { rand(10) * 10000 }
     price_cents { rand(3..10) * 10000 }
@@ -235,3 +236,4 @@ FactoryBot.define do
 
   end
 end
+

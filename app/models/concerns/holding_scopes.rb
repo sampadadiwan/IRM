@@ -6,8 +6,15 @@ module HoldingScopes
     scope :preferred, -> { where(investment_instrument: "Preferred") }
     scope :options, -> { where(investment_instrument: "Options") }
 
-    scope :investor, -> { where(holding_type: "Investor") }
-    scope :employee, -> { where(holding_type: "Employee") }
-    scope :founder, -> { where(holding_type: "Founder") }
+    # scope :investor, -> { where(holding_type: "Investor") }
+    # scope :employee, -> { where(holding_type: "Employee") }
+    # scope :founder, -> { where(holding_type: "Founder") }
+
+    scope :investors, -> { where(holding_type: "Investor") }
+    scope :employees, -> { where(holding_type: "Employee") }
+    scope :founders, -> { where(holding_type: "Founder") }
+    scope :lapsed, -> { where(lapsed: true) }
+
+    scope :eq_and_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
   end
 end

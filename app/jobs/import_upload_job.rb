@@ -17,7 +17,7 @@ class ImportUploadJob < ApplicationJob
         Rails.logger.debug { "Downloaded file to #{file.path}" }
         processed_record_count = process_file(file, import_upload)
       rescue StandardError => e
-        import_upload.status ||= "Error"
+        import_upload.status ||= e.message
         import_upload.error_text = e.backtrace
         Rails.logger.error "Could not download file for import upload job #{import_upload_id} : #{e.message}"
         Rails.logger.error e.backtrace
@@ -78,32 +78,59 @@ class ImportUploadJob < ApplicationJob
 
     # create the Investor Access
     if InvestorAccess.where(email: user_data['Email'], investor_id: investor.id).first.blank?
-      ia = InvestorAccess.create(email: user_data["Email"], approved: true,
-                                 entity_id: import_upload.owner_id, investor_id: investor.id,
-                                 granted_by: import_upload.user_id)
+      InvestorAccess.create(email: user_data["Email"], approved: true,
+                            entity_id: import_upload.owner_id, investor_id: investor.id,
+                            granted_by: import_upload.user_id)
 
-      Rails.logger.debug ia.errors.full_messsages if ia.errors.present?
     end
 
-    fr = funding_round(user_data, import_upload)
+    fr, ep, grant_date = get_fr_ep(user_data, import_upload)
+
     holding = Holding.new(user:, investor:, holding_type: user_data["Founder or Employee"],
                           entity_id: import_upload.owner_id, quantity: user_data["Quantity"],
-                          price_cents: user_data["Price"].to_f * 100,
+                          price_cents: user_data["Price"].to_f * 100, employee_id: user_data["Employee ID"],
                           investment_instrument: user_data["Instrument"],
-                          funding_round: fr)
+                          funding_round: fr, esop_pool: ep,
+                          import_upload_id: import_upload.id, grant_date:)
 
-    holding.save
+    holding.save!
+  end
+
+  def get_fr_ep(user_data, import_upload)
+    if user_data["Instrument"] == "Options"
+      ep = esop_pool(user_data, import_upload)
+      fr = ep.funding_round
+      date_val = user_data["Grant Date (mm/dd/yyyy)"]
+      begin
+        grant_date = Date.strptime(date_val.to_s, "%m/%d/%Y")
+      rescue StandardError
+        grant_date = DateTime.parse(date_val.to_s)
+      end
+    else
+      fr = funding_round(user_data, import_upload)
+      ep = nil
+      grant_date = nil
+    end
+
+    [fr, ep, grant_date]
   end
 
   def funding_round(user_data, import_upload)
     # Create the Holding
-    fr = FundingRound.where(entity_id: import_upload.owner_id, name: user_data["Funding Round"]).first
-    fr ||= FundingRound.create(name: user_data["Funding Round"].strip,
+    col = "Funding Round or ESOP Pool"
+    fr = FundingRound.where(entity_id: import_upload.owner_id, name: user_data[col].strip).first
+    fr ||= FundingRound.create(name: user_data[col].strip,
                                entity_id: import_upload.owner_id,
                                currency: import_upload.owner.currency,
                                status: "Open")
 
     fr
+  end
+
+  def esop_pool(user_data, import_upload)
+    # Create the Holding
+    col = "Funding Round or ESOP Pool"
+    EsopPool.where(entity_id: import_upload.owner_id, name: user_data[col].strip).first
   end
 
   def save_investor_access(user_data, import_upload)

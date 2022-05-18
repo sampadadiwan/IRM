@@ -44,13 +44,6 @@ class Holding < ApplicationRecord
   validates :quantity, :holding_type, presence: true
   validate :allocation_allowed, if: -> { investment_instrument == 'Options' }
 
-  scope :investors, -> { where(holding_type: "Investor") }
-  scope :employees, -> { where(holding_type: "Employee") }
-  scope :founders, -> { where(holding_type: "Founder") }
-  scope :lapsed, -> { where(lapsed: true) }
-
-  scope :eq_and_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
-
   after_save ->(_holding) { HoldingUpdateJob.perform_later(id) },
              if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
 
@@ -69,13 +62,13 @@ class Holding < ApplicationRecord
     if investment.nil?
       # Rails.logger.debug { "Updating investment for #{to_json}" }
       employee_investor = Investor.for(user, entity).first
-      self.investment = Investment.create(investment_type: "#{holding_type} Holdings",
-                                          investment_instrument:,
-                                          category: holding_type, investee_entity_id: entity.id,
-                                          investor_id: employee_investor.id, employee_holdings: true,
-                                          quantity: 0, price_cents:,
-                                          currency: entity.currency, funding_round:,
-                                          scenario: entity.actual_scenario, notes: "Holdings Investment")
+      self.investment = Investment.create!(investment_type: "#{holding_type} Holdings",
+                                           investment_instrument:,
+                                           category: holding_type, investee_entity_id: entity.id,
+                                           investor_id: employee_investor.id, employee_holdings: true,
+                                           quantity: 0, price_cents:,
+                                           currency: entity.currency, funding_round:,
+                                           scenario: entity.actual_scenario, notes: "Holdings Investment")
 
     end
 
