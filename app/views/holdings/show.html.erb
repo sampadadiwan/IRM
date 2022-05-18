@@ -77,10 +77,10 @@
     </tr>
     <tr>
       <td>
-        Unvested Quantity
+        UnExcercised Quantity
       </td>
       <td>
-        <%= custom_format_number @holding.unvested_quantity, params %>
+        <%= custom_format_number @holding.unexcercised_quantity, params %>
       </td>
     </tr>
     
@@ -140,4 +140,8 @@
 
       <%= button_to "Delete" , @holding, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
     <% end %>
+  </div>
+
+  <div class="associated_entity">
+    <%= render "/excercises/index", excercises: @holding.excercises %>
   </div>

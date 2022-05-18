@@ -55,6 +55,7 @@ class Holding < ApplicationRecord
 
   def update_value
     self.value_cents = quantity * price_cents
+    self.funding_round_id = esop_pool.funding_round_id if esop_pool
   end
 
   def setup_investment
@@ -85,20 +86,20 @@ class Holding < ApplicationRecord
     user ? user.full_name : investor.investor_name
   end
 
-  def unvested_quantity
+  def unexcercised_quantity
     vested_quantity - excercised_quantity
   end
 
   def balance_quantity
-    unvested_quantity - lapsed_quantity
+    unexcercised_quantity - lapsed_quantity
   end
 
   def lapsed?
-    grant_date + esop_pool.excercise_period_months.months < Time.zone.today
+    (grant_date + esop_pool.excercise_period_months.months) < Time.zone.today
   end
 
   def lapsed_quantity
-    lapsed ? unvested_quantity : 0
+    lapsed ? unexcercised_quantity : 0
   end
 
   def allowed_percentage

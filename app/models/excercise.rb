@@ -18,5 +18,6 @@ class Excercise < ApplicationRecord
 
   def lapsed_holding
     errors.add(:holding, "can't be lapsed") if holding.lapsed
+    errors.add(:quantity, "can't be greater than #{holding.excercisable_quantity}") if quantity > holding.excercisable_quantity
   end
 end

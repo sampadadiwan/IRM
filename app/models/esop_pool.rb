@@ -13,7 +13,13 @@ class EsopPool < ApplicationRecord
   validates :name, :start_date, :number_of_options, :excercise_price, presence: true
   validate :check_vesting_schedules
 
+  before_create :setup_funding_round
+
   monetize :excercise_price_cents, with_currency: ->(i) { i.entity.currency }
+
+  def setup_funding_round
+    self.funding_round = FundingRound.create(name:, currency: entity.currency, entity_id:, status: "Open")
+  end
 
   def check_vesting_schedules
     total_percent = vesting_schedules.inject(0) { |sum, e| sum + e.vesting_percent }
@@ -33,11 +39,11 @@ class EsopPool < ApplicationRecord
     allowed_percentage
   end
 
-  def unvested_quantity
+  def unexcercised_quantity
     vested_quantity - excercised_quantity
   end
 
   def balance_quantity
-    unvested_quantity - lapsed_quantity
+    unexcercised_quantity - lapsed_quantity
   end
 end

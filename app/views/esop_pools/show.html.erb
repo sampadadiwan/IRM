@@ -4,10 +4,18 @@
 
     <tr>
       <td>
-        Name
+        Pool Name
       </td>
       <td>
         <%= @esop_pool.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Funding Round
+      </td>
+      <td>
+        <%= link_to @esop_pool.funding_round.name, @esop_pool.funding_round %>
       </td>
     </tr>
     <tr>
@@ -52,10 +60,10 @@
     </tr>
     <tr>
       <td>
-        Options Unvested
+        Options UnExcercised
       </td>
       <td>
-        <%= @esop_pool.unvested_quantity %>
+        <%= @esop_pool.unexcercised_quantity %>
       </td>
     </tr>
     <tr>
