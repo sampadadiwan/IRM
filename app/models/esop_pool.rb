@@ -49,4 +49,8 @@ class EsopPool < ApplicationRecord
   def balance_quantity
     unexcercised_quantity - lapsed_quantity
   end
+
+  def available_quantity
+    number_of_options - allocated_quantity + lapsed_quantity
+  end
 end

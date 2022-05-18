@@ -61,6 +61,8 @@
     <tr>
       <td>
         Options UnExcercised
+        </br>
+        (Vested - Excercised)
       </td>
       <td>
         <%= @esop_pool.unexcercised_quantity %>
@@ -77,9 +79,21 @@
     <tr>
       <td>
         Balance
+        </br>
+        (UnExcercised - Lapsed)
       </td>
       <td>
         <%= @esop_pool.balance_quantity %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Options Available for Grants
+        </br>
+        (Number of Options - Granted + Lapsed)
+      </td>
+      <td>
+        <%= @esop_pool.available_quantity %>
       </td>
     </tr>
     

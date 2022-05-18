@@ -42,6 +42,7 @@ class Holding < ApplicationRecord
   monetize :price_cents, :value_cents, with_currency: ->(i) { i.entity.currency }
 
   validates :quantity, :holding_type, presence: true
+  validate :allocation_allowed, if: -> { investment_instrument == 'Options' }
 
   scope :investors, -> { where(holding_type: "Investor") }
   scope :employees, -> { where(holding_type: "Employee") }
@@ -56,6 +57,10 @@ class Holding < ApplicationRecord
   def update_value
     self.value_cents = quantity * price_cents
     self.funding_round_id = esop_pool.funding_round_id if esop_pool
+  end
+
+  def allocation_allowed
+    errors.add(:esop_pool, "Insufficiant available quantity in ESOP pool #{esop_pool.name}") if esop_pool && esop_pool.available_quantity < quantity
   end
 
   def setup_investment
