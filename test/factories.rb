@@ -17,7 +17,7 @@ FactoryBot.define do
     start_date { Date.today - rand(2).years - rand(12).months }
     number_of_options { 10000 * rand(1..5) }
     excercise_price_cents { 1000 * rand(1..10) }
-    excercise_period_months { 12 * 10 }
+    excercise_period_months { 12 * rand(2..4) }
   end
 
   factory :aggregate_investment do

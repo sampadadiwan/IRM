@@ -322,6 +322,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_175703) do
     t.bigint "allocated_quantity", default: 0
     t.bigint "excercised_quantity", default: 0
     t.bigint "vested_quantity", default: 0
+    t.bigint "lapsed_quantity", default: 0
     t.index ["entity_id"], name: "index_esop_pools_on_entity_id"
     t.index ["funding_round_id"], name: "index_esop_pools_on_funding_round_id"
   end
@@ -403,6 +404,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_17_175703) do
     t.integer "excercised_quantity", default: 0
     t.date "grant_date"
     t.integer "vested_quantity", default: 0
+    t.boolean "lapsed", default: false
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
     t.index ["esop_pool_id"], name: "index_holdings_on_esop_pool_id"
     t.index ["funding_round_id"], name: "index_holdings_on_funding_round_id"

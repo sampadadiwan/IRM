@@ -32,4 +32,12 @@ class EsopPool < ApplicationRecord
     logger.debug "excercisable_quantity allowed_percentage: #{allowed_percentage}"
     allowed_percentage
   end
+
+  def unvested_quantity
+    vested_quantity - excercised_quantity
+  end
+
+  def balance_quantity
+    unvested_quantity - lapsed_quantity
+  end
 end

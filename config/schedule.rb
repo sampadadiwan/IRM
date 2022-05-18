@@ -25,6 +25,7 @@ job_type :bundle, 'cd :path && :environment_variable=:environment bundle exec :t
 every 1.day, at: '00:01 am' do
   command "logrotate /home/ubuntu/IRM/shared/log/logrotate.conf --state /home/ubuntu/IRM/shared/log/logrotate.state --verbose"
   runner "ElasticImporterJob.new.perform"
+  runner "VestedJob.new.perform"
   runner "ClearMessagesCountJob.new.perform"
 end
 

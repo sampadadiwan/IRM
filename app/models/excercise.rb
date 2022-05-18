@@ -12,4 +12,11 @@ class Excercise < ApplicationRecord
   counter_culture :holding,
                   column_name: proc { |e| e.approved ? 'excercised_quantity' : nil },
                   delta_column: 'quantity'
+
+  validates :quantity, :price, :amount, :tax, :tax_rate, presence: true
+  validate :lapsed_holding
+
+  def lapsed_holding
+    errors.add(:holding, "can't be lapsed") if holding.lapsed
+  end
 end

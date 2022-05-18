@@ -41,6 +41,15 @@
         <%= @holding.investment_instrument %>
       </td>
     </tr>
+    <tr>
+      <td>
+        Quantity
+      </td>
+      <td>
+        <%= custom_format_number @holding.quantity, params %>
+      </td>
+    </tr>
+    
     <% if @holding.investment_instrument == "Options" %>
     <tr>
       <td>
@@ -66,15 +75,39 @@
         <%= custom_format_number @holding.excercised_quantity, params %>
       </td>
     </tr>
-    <% end %>
     <tr>
       <td>
-        Quantity
+        Unvested Quantity
       </td>
       <td>
-        <%= custom_format_number @holding.quantity, params %>
+        <%= custom_format_number @holding.unvested_quantity, params %>
       </td>
     </tr>
+    
+    <% if @holding.lapsed %>
+      
+      <tr>
+        <td>
+          Lapsed Quantity
+        </td>
+        <td>
+          <%= custom_format_number @holding.lapsed_quantity, params %>
+        </td>
+      </tr>
+    <% end %>
+
+    <tr>
+      <td>
+        Balance Quantity
+      </td>
+      <td>
+        <%= custom_format_number @holding.balance_quantity, params %>
+      </td>
+    </tr>
+
+    
+    <% end %>
+    
     <tr>
       <td>
         Price
@@ -101,7 +134,7 @@
 
       <%= link_to "Edit" , edit_holding_path(@holding), {class: "btn btn-primary" } %> |
     
-      <% if @holding.investment_instrument == "Options" %>
+      <% if @holding.excercisable? %>
       <%= link_to "Excercise" , new_excercise_path("excercise[holding_id]": @holding.id), {class: "btn btn-primary" } %> |
       <% end %>
 

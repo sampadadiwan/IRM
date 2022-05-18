@@ -46,6 +46,7 @@ class Holding < ApplicationRecord
   scope :investors, -> { where(holding_type: "Investor") }
   scope :employees, -> { where(holding_type: "Employee") }
   scope :founders, -> { where(holding_type: "Founder") }
+  scope :lapsed, -> { where(lapsed: true) }
 
   scope :eq_and_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
 
@@ -84,9 +85,20 @@ class Holding < ApplicationRecord
     user ? user.full_name : investor.investor_name
   end
 
+  def unvested_quantity
+    vested_quantity - excercised_quantity
+  end
+
   def balance_quantity
-    # Note excercised_quantity will be updated via counter cache from excercise entity
-    quantity - excercised_quantity
+    unvested_quantity - lapsed_quantity
+  end
+
+  def lapsed?
+    grant_date + esop_pool.excercise_period_months.months < Time.zone.today
+  end
+
+  def lapsed_quantity
+    lapsed ? unvested_quantity : 0
   end
 
   def allowed_percentage
@@ -105,8 +117,8 @@ class Holding < ApplicationRecord
   end
 
   def excercisable?
-    investment_instrument == "Option" &&
-      balance_quantitys.positive? &&
-      grant_date + esop_pool.excercise_period.days > Time.zone.today
+    investment_instrument == "Options" &&
+      vested_quantity.positive? &&
+      !lapsed
   end
 end

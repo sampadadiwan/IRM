@@ -194,12 +194,14 @@ namespace :irm do
   task generateFakeHoldings: :environment do
 
     Entity.startups.each do |e|
-      pool = FactoryBot.build(:esop_pool, entity: e)
-      (1..4).each do |i|
-        # 10 + 20 + 30 + 40
-        pool.vesting_schedules << pool.vesting_schedules.build(months_from_grant: i*12, vesting_percent: 10*i, entity_id: e.id)
+      (1..4).each do
+        pool = FactoryBot.build(:esop_pool, entity: e)
+        (1..4).each do |i|
+          # 10 + 20 + 30 + 40
+          pool.vesting_schedules << pool.vesting_schedules.build(months_from_grant: i*12, vesting_percent: 10*i, entity_id: e.id)
+        end
+        pool.save
       end
-      pool.save
     end
 
     Investor.holding.each do |investor|
@@ -234,6 +236,8 @@ namespace :irm do
       end
     end
 
+    VestedJob.new.perform
+    
   rescue Exception => e
     puts e.backtrace.join("\n")
     raise e
