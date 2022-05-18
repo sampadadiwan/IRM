@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_18_074116) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_18_104616) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -760,6 +760,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_18_074116) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  create_table "valuations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.date "valuation_date"
+    t.decimal "pre_money_valuation_cents", precision: 20, scale: 2, default: "0.0"
+    t.decimal "per_share_value_cents", precision: 15, scale: 2, default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entity_id"], name: "index_valuations_on_entity_id"
+  end
+
   create_table "versions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "item_type"
     t.string "{:null=>false, :limit=>191}"
@@ -831,6 +841,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_18_074116) do
   add_foreign_key "scenarios", "entities"
   add_foreign_key "secondary_sales", "entities"
   add_foreign_key "taggings", "tags"
+  add_foreign_key "valuations", "entities"
   add_foreign_key "vesting_schedules", "entities"
   add_foreign_key "vesting_schedules", "esop_pools"
 end

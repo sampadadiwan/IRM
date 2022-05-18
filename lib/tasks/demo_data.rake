@@ -258,6 +258,20 @@ namespace :irm do
   end
 
 
+  desc "generates fake Valuations for testing"
+  task generateFakeValuations: :environment do
+    Entity.startups.each do |e|
+      (1..5).each do |j|
+        d = Date.today - (5-j).years
+        v = FactoryBot.create(:valuation, entity: e, valuation_date: d)
+        puts v.to_json
+      end
+    end
+  rescue Exception => e
+    puts e.backtrace.join("\n")
+    raise e
+  end
+
   desc "generates fake Deals for testing"
   task generateFakeDeals: :environment do
     Entity.startups.each do |e|
@@ -357,9 +371,7 @@ namespace :irm do
   end
 
 
-  task :generateAll => [:generateFakeEntities, :generateFakeInvestors, :generateFakeInvestments, :generateFakeDeals, 
-                        :generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes, :generateFakeSales,
-                        :generateFakeOffers, :generateFakeBlankEntities] do
+  task :generateAll => [:generateFakeEntities, :generateFakeInvestors, :generateFakeInvestments, :generateFakeDeals, :generateFakeValuations,:generateFakeHoldings, :generateFakeDocuments, :generateFakeNotes, :generateFakeSales, :generateFakeOffers, :generateFakeBlankEntities] do
     puts "Generating all Fake Data"
     Sidekiq.redis(&:flushdb)
   end

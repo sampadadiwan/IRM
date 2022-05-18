@@ -1,0 +1,37 @@
+<%= render "/layouts/alerts" %>
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Valuations</h1>
+  <%= link_to "New Valuation", new_valuation_path, {class: "btn btn-primary"}  %>
+</div>
+
+<div class="table-responsive" data-controller="datatable">
+
+  <table id="valuations" class="table table-bordered dataTable jqDataTable">
+    <thead>
+      <tr>
+        <th>
+          Entity
+        </th>
+        <th>
+          Valuation Date
+        </th>
+        <th>
+          Pre Money Valuation
+        </th>
+        <th>
+          Per Share Value
+        </th>
+    
+        <th>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @valuations.each do |valuation| %>
+      <%= render valuation %>
+    <% end %>
+    </tbody>
+  </table>
+
+</div>

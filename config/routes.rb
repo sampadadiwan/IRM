@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :valuations
   resources :excercises
   resources :vestings
   resources :esop_pools

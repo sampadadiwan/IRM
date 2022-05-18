@@ -1,0 +1,39 @@
+<%= form_with(model: valuation) do |form| %>
+  <% if valuation.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(valuation.errors.count, "error") %> prohibited this valuation from being saved:</h2>
+
+      <ul>
+        <% valuation.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :valuation_date %>
+    <%= form.date_field :valuation_date, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :pre_money_valuation %>
+    <%= form.text_field :pre_money_valuation, class: "form-control"  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :per_share_value %>
+    <%= form.text_field :per_share_value, class: "form-control"  %>
+  </div>
+
+  <div class="field" class="form-group" data-controller="directuploads" >
+    <%= form.label :reports, "Valuation Reports" %>
+    <%= form.file_field :reports, class: "form-control", direct_upload: true, multiple:true %>
+    <small class="text-muted"> Upload the valuation reports. </small>
+
+</div>
+
+  <div class="form-group">
+    <%= form.submit "Save", {class: "btn btn-primary"}%>
+  </div>
+<% end %>

@@ -1,0 +1,19 @@
+
+
+<tr id="<%= dom_id valuation %>">
+  <td>
+    <%= valuation.entity.name %>
+  </td>
+  <td>
+    <%= l valuation.valuation_date %>
+  </td>
+  <td>
+    <%= valuation.pre_money_valuation %>
+  </td>
+  <td>
+    <%= valuation.per_share_value %>
+  </td>
+  <td>
+    <%= link_to "Show" , valuation , {class: "btn btn-primary" }%>
+  </td>
+</tr>
