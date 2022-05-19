@@ -7,8 +7,8 @@ module HoldingsHelper
                                     plotOptions: {
                                       line: {
                                         dataLabels: {
-                                          enabled: true,
-                                          format: "{point.y:,.2f}"
+                                          # enabled: true,
+                                          # format: "{point.y:,.2f}"
                                         }
                                       }
                                     }
