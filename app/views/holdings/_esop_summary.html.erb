@@ -20,6 +20,9 @@
                 <th>
                     Excercise Price
                 </th>
+                <th>
+                    Value
+                </th>
                 
                 <th>
                 </th>
@@ -33,6 +36,7 @@
                     <td><%= holding.quantity %></td>
                     <td><%= holding.vested_quantity %></td>
                     <td><%= holding.esop_pool.excercise_price %></td>
+                    <td><%= money_to_currency holding.value, params %></td>
                     <td>
                         <%= link_to "Details" , holding , {class: "btn btn-primary" }%>
                         <%= link_to "Excercise" , new_excercise_path("excercise[holding_id]": holding.id, "excercise[entity_id]": holding.entity_id), {class: "btn btn-success" } if holding.vested_quantity > 0 %> 

@@ -1,43 +1,69 @@
 <%= turbo_frame_tag "employee_calc" do %>
-<% price_growth, tax_rate, estimated_taxes, estimated_profit, cost_neutral_sale = employee_summary() %>
-<form id="employee_calc_form" action="/holdings/employee_calc" method="post">
+  <% price_growth, tax_rate, estimated_taxes, estimated_profit, cost_neutral_sale=employee_summary() %>
+    <form id="employee_calc_form" action="/holdings/employee_calc" method="post">
 
-  <div class="card">
-      <div class="card-header">
+      <div class="card">
+        <div class="card-header">
           <h5 class="card-title">Summary</h5>
-      </div>
-      <div class="card-body">      
-        <p class="card-text">This is a simulator to calculate your gains and taxes.</p>
-      </div>
-      <ul class="list-group list-group-flush">
+        </div>
+        <div class="card-body">
+          <p class="card-text">This is a simulator to calculate your gains and taxes.</p>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered dataTable">
 
-        <li class="list-group-item">Total Value Of Excercising: 
-            <% total_value = current_user.holdings.options.inject(0){|sum,o| sum + o.value } %>
-            <%= money_to_currency total_value, params %>
-        </li>
-        <li class="list-group-item form-group">
-            Growth in share price from the last price: 
-            <input type="text" id="price_growth" name="price_growth"  value="<%= price_growth %>" class="form-control" />
-        </li>
-        <li class="list-group-item">Estimated pre-Tax Profits: <%= estimated_profit %> </li>
-        <li class="list-group-item">
-          Your Tax Slab Rates:
-          <input type="text" id="price_growth" name="tax_rate" value="<%= tax_rate %>" class="form-control" />
-        </li>
-        <li class="list-group-item">
-          Estimated taxes for exercising asper last Valuation: 
-          <%= money_to_currency estimated_taxes, params %> 
-        </li>
-        <li class="list-group-item">
-          Number of share to be sold be cash neutral: 
-          <%= cost_neutral_sale.round(2) %>
-        </li>
-      </ul>
-      <div class="card-body">
-        <input type="submit" name="commit" value="Calculate" class="btn btn-primary btn-lg" data-disable-with="Calculate">
+            <tr>
+              <td>Total Value Of Excercising</td>
+              <% total_value=current_user.holdings.options.inject(0){|sum,o| sum + o.value } %>
+                <td>
+                  <%= money_to_currency total_value, params %>
+                </td>
+            </tr>
+            <tr>
+              <td>Growth in share price from the last price</td>
+              <td>
+                <input type="text" id="price_growth" name="price_growth" value="<%= price_growth %>"
+                  class="form-control small_text" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Estimated pre-Tax Profits.
+                <span class="desc text-info">(Per share value * Price Growth - Excercise Price) * Quantity</span>
+              </td>
+              <td>
+                <%= money_to_currency estimated_profit, params %>
+              </td>
+            </tr>
+            <tr>
+              <td>Your Tax Slab Rates</td>
+              <td>
+                <input type="text" id="price_growth" name="tax_rate" value="<%= tax_rate %>" class="form-control small_text" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Estimated taxes for exercising as per last Valuation.
+                <span class="desc text-info">Estimated Profit * Tax Rate</span>
+              </td>
+              <td>
+                <%= money_to_currency estimated_taxes, params %>
+              </td>
+            </tr>
+            <tr>
+              <td>Number of share to be sold be cash neutral</td>
+              <td>
+                <%= cost_neutral_sale.round(0 ) %>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="card-body">
+          <input type="submit" name="commit" value="Calculate" class="btn btn-primary btn-lg"
+            data-disable-with="Calculate">
+        </div>
       </div>
-  </div>
 
-</form>
+    </form>
 
-<% end %>
+    <% end %>

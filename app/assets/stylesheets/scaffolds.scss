@@ -413,8 +413,12 @@ ul.vesting_schedule {
 }
 
 #employee_calc_form {
-  input {
+  .small_text {
     display: inline;
     width: auto;
+    max-width: 100px;
+  }
+  .desc {
+    display: block;
   }
 }
