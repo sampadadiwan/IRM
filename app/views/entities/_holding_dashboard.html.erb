@@ -1,11 +1,51 @@
-<%= render "/holdings/employee_calc" %>
-
 <div data-controller="datatable">
+<div class="row associated_entity">
 
-    <div class="associated_entity">
-        <%= render "/holdings/esop_summary", holdings: current_user.holdings.options %>
+    <div class="col-lg-6 mb-4">
+        <%= render "/holdings/employee_calc" %>
     </div>
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">ESOPs</h6>
+            </div>
+            <div class="card-body">
+                <%= render "/holdings/esop_summary", holdings: current_user.holdings.options %>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row associated_entity">
+
+    <% 
+        entity_id = params[:entity_id].presence || current_user.holdings.first.entity_id
+        entity = Entity.find(entity_id)
+    %>
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Per Share Valuation</h6>
+            </div>
+            <div class="card-body">
+                <%= valuations_chart(entity)  %>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Projected Profits</h6>
+            </div>
+            <div class="card-body">
+                <%= projected_profits_chart(params, current_user, entity)  %>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div>
     <div class="associated_entity">
         <%= render "/excercises/index", excercises: current_user.excercises %>
     </div>
+</div>
 </div>

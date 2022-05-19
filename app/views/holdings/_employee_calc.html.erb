@@ -1,13 +1,13 @@
 <%= turbo_frame_tag "employee_calc" do %>
-  <% price_growth, tax_rate, estimated_taxes, estimated_profit, cost_neutral_sale=employee_summary() %>
+  <%  price_growth, tax_rate, estimated_taxes, estimated_profit, 
+      cost_neutral_sale, last_valuation = 
+      HoldingSummary.new(params, current_user).employee_summary %>
+
     <form id="employee_calc_form" action="/holdings/employee_calc" method="post">
 
       <div class="card">
-        <div class="card-header">
-          <h5 class="card-title">Summary</h5>
-        </div>
-        <div class="card-body">
-          <p class="card-text">This is a simulator to calculate your gains and taxes.</p>
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Calculator</h6>
         </div>
         <div class="card-body">
           <table class="table table-bordered dataTable">
@@ -20,7 +20,10 @@
                 </td>
             </tr>
             <tr>
-              <td>Growth in share price from the last price</td>
+              <td>
+                Growth in share price from the last price 
+                <span class="desc text-info">Last Valuation <%= money_to_currency last_valuation, params %></span>
+              </td>
               <td>
                 <input type="text" id="price_growth" name="price_growth" value="<%= price_growth %>"
                   class="form-control small_text" />
@@ -57,9 +60,7 @@
               </td>
             </tr>
           </table>
-        </div>
-        <div class="card-body">
-          <input type="submit" name="commit" value="Calculate" class="btn btn-primary btn-lg"
+          <input type="submit" name="commit" value="Calculate" class="btn btn-primary float-right"
             data-disable-with="Calculate">
         </div>
       </div>
