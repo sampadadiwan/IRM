@@ -132,9 +132,9 @@ class Holding < ApplicationRecord
     schedule
   end
 
-  def self.estimated_profits(price_growth, user)
+  def self.estimated_profits(price_growth, user, entity)
     profits = 0
-    user.holdings.options.includes(esop_pool: :entity, entity: :valuations).find_each do |holding|
+    user.holdings.options.where(entity_id: entity.id).includes(esop_pool: :entity, entity: :valuations).find_each do |holding|
       per_share_value = holding.entity.valuations.last.per_share_value
       profits += ((per_share_value * price_growth) - holding.esop_pool.excercise_price) * holding.quantity
     end

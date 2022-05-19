@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   resources :holdings do
     get 'search', on: :collection
+    post 'employee_calc', on: :collection
   end
 
   resources :folders
