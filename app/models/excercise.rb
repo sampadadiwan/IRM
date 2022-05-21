@@ -21,6 +21,9 @@ class Excercise < ApplicationRecord
   validate :lapsed_holding, on: :create
   validate :validate_quantity, on: :update
 
+  after_create :notify_excercise
+  after_update :notify_approval
+
   def lapsed_holding
     errors.add(:holding, "can't be lapsed") if holding.lapsed
     errors.add(:quantity, "can't be greater than #{holding.excercisable_quantity}") if quantity > holding.excercisable_quantity
@@ -29,5 +32,13 @@ class Excercise < ApplicationRecord
   def validate_quantity
     allowed = holding.excercisable_quantity + quantity_was
     errors.add(:quantity, "can't be greater than #{allowed}") if quantity > allowed
+  end
+
+  def notify_excercise
+    ExcerciseMailer.with(excercise_id: id).notify_excercise.deliver_later
+  end
+
+  def notify_approval
+    ExcerciseMailer.with(excercise_id: id).notify_approval.deliver_later if saved_change_to_approved? && approved
   end
 end

@@ -1,0 +1,81 @@
+<table class="table table-bordered dataTable">
+
+    <tr>
+      <td>
+        Entity
+      </td>
+      <td>
+        <%= excercise.entity.name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Holding
+      </td>
+      <td>
+        <%= link_to excercise.holding_id, excercise.holding %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        User
+      </td>
+      <td>
+        <%= excercise.user.full_name %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Esop Pool
+      </td>
+      <td>
+        <%= link_to excercise.esop_pool.name, excercise.esop_pool %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Quantity
+      </td>
+      <td>
+        <%= excercise.quantity %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Price
+      </td>
+      <td>
+        <%= money_to_currency excercise.price, params %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Amount
+      </td>
+      <td>
+        <%= money_to_currency excercise.amount, params %>
+      </td>
+    </tr>
+    
+    <% if current_user %>
+        <tr>
+            <td>
+                Payment Proof
+            </td>
+            <td>
+                <%= render "/layouts/attachments" , attachments: [excercise.payment_proof] if excercise.payment_proof.present? %>
+            </td>
+        </tr>
+    <% end %>
+
+    <tr>
+      <td>
+        Approved
+      </td>
+      <td>
+        <%= excercise.approved ? "Yes" : "No" %>
+      </td>
+    </tr>
+
+
+  </table>

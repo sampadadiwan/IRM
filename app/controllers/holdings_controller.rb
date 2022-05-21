@@ -1,6 +1,6 @@
 class HoldingsController < ApplicationController
   before_action :set_holding, only: %i[show edit update destroy]
-  after_action :verify_authorized, except: %i[employee_calc]
+  after_action :verify_authorized, except: %i[employee_calc index]
 
   # GET /holdings or /holdings.json
   def index

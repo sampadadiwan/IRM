@@ -49,7 +49,7 @@ class Offer < ApplicationRecord
 
   validates :first_name, :last_name, :address, :PAN, :bank_account_number, :bank_name, :bank_routing_info, presence: true
 
-  validates :address_proof, :id_proof, :signature, presence: true unless Rails.env.test?
+  validates :address_proof, :id_proof, :signature, presence: true if Rails.env.production?
 
   validate :check_quantity
   validate :already_offered, :sale_active, on: :create

@@ -21,7 +21,7 @@ export default class extends Controller {
     console.log("tax: " + tax);
 
     $("#excercise_amount").val(amount.toFixed(2));
-    $("#excercise_amount_hidden").val(amount.toFixed(2));
+    $("#excercise_amount_disabled").val(amount.toFixed(2));
     $("#excercise_tax").val(tax.toFixed(2));
   }
 
