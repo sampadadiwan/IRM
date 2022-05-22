@@ -27,6 +27,7 @@ class EsopPool < ApplicationRecord
 
   def check_vesting_schedules
     total_percent = vesting_schedules.inject(0) { |sum, e| sum + e.vesting_percent }
+    logger.debug vesting_schedules.to_json
     errors.add(:vesting_schedules, "Total percentage should be 100%") if total_percent != 100
   end
 

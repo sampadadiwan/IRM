@@ -14,3 +14,27 @@ Examples:
     |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |
     |entity_type=Startup  |name=Pool 567;number_of_options=80000;excercise_price_cents=3000  |
 
+
+
+Scenario Outline: Create ESOP pool
+  Given there is a user "" for an entity "<entity>"
+  Given a esop pool "<esop_pool>" is created with vesting schedule "<schedule>"
+  Then an esop pool should be created
+  And the corresponding funding round is created for the pool
+  And the vesting schedule must also be created
+Examples:
+    |entity               |esop_pool                                                         |schedule      |
+    |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |12:100        |
+    |entity_type=Startup  |name=Pool 567;number_of_options=80000;excercise_price_cents=3000  |12:50,24:50   |
+    |entity_type=Startup  |name=Pool 567;number_of_options=80000;excercise_price_cents=3000  |12:20,24:30,36:50   |
+
+
+Scenario Outline: Create ESOP pool fails
+  Given there is a user "" for an entity "<entity>"
+  Given a esop pool "<esop_pool>" is created with vesting schedule "<schedule>"
+  Then an esop pool should not be created
+Examples:
+    |entity               |esop_pool                                                         |schedule      |
+    |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |12:80         |
+    |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |12:20,24:20   |
+    |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |12:180        |
