@@ -13,7 +13,8 @@ class EsopPool < ApplicationRecord
 
   validates :name, :start_date, :number_of_options, :excercise_price, presence: true
   validates :number_of_options, :excercise_price, numericality: { greater_than: 0 }
-  validates :excercise_instructions, presence: true, on: :create
+
+  validates :excercise_instructions, presence: true, on: :create unless Rails.env.test?
   validate :check_vesting_schedules
 
   before_create :setup_funding_round

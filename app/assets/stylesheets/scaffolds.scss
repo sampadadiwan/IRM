@@ -392,9 +392,12 @@ form {
 
   .nested-fields {
     margin-left: 0px !important;
-    label {
-      width: 100%;
-      text-align: center;
+    .form-group {
+      margin-right: 10px;
+      label {
+        width: 100%;
+        text-align: center;
+      }
     }
   }
 }

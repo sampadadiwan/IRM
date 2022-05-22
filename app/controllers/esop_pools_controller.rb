@@ -24,6 +24,8 @@ class EsopPoolsController < ApplicationController
   def create
     @esop_pool = EsopPool.new(esop_pool_params)
     @esop_pool.entity_id = current_user.entity_id
+    @esop_pool.excercise_price_cents = esop_pool_params[:excercise_price].to_f * 100
+
     authorize(@esop_pool)
 
     respond_to do |format|

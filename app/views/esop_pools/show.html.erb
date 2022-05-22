@@ -67,16 +67,17 @@
       </td>
     </tr>
 
+    <tr class="">
+      <td>
+        Number Of Options
+      </td>
+      <td>
+        <%= @esop_pool.number_of_options %>
+      </td>
+    </tr>
+    
     <% if policy(@esop_pool).update? %>
 
-      <tr class="collapse multi-collapse">
-        <td>
-          Number Of Options
-        </td>
-        <td>
-          <%= @esop_pool.number_of_options %>
-        </td>
-      </tr>
       <tr class="collapse multi-collapse">
         <td>
           Options Granted
