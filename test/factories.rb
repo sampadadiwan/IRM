@@ -107,7 +107,7 @@ FactoryBot.define do
 
   factory :holding do
     user { User.all.sample }
-    employee_id {SecureRandom.alphanumeric}
+    employee_id {(0...8).map { (65 + rand(26)).chr }.join}
     entity { Entity.all.sample }
     quantity { rand(10) * 10000 }
     price_cents { rand(3..10) * 10000 }

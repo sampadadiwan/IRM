@@ -32,25 +32,33 @@ class Holding < ApplicationRecord
   has_many :offers, dependent: :destroy
   has_many :excercises, dependent: :destroy
 
-  # Only update the investment if its coming from an employee of a holding company
-  before_validation :setup_investment, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
-  before_save :update_value
-
+  # The Investment to which this is linked
   belongs_to :investment
+  # If this holding was crated by excercising an option
+  belongs_to :created_from_excercise, class_name: "Excercise", optional: true
   has_one :aggregated_investment, through: :investment
 
   monetize :price_cents, :value_cents, with_currency: ->(i) { i.entity.currency }
 
+  # Only update the investment if its coming from an employee of a holding company
+  before_validation :setup_investment, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
   validates :quantity, :holding_type, presence: true
   validate :allocation_allowed, if: -> { investment_instrument == 'Options' }
 
+  before_create :update_value
+  before_update :update_quantity, if: -> { investment_instrument == 'Options' }
   after_save ->(_holding) { HoldingUpdateJob.perform_later(id) },
              if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
+
+  def update_quantity
+    self.quantity = orig_grant_quantity - vested_quantity
+  end
 
   def update_value
     if esop_pool
       self.funding_round_id = esop_pool.funding_round_id if esop_pool
       self.price_cents = esop_pool.excercise_price_cents
+      self.orig_grant_quantity = quantity
     end
     self.value_cents = quantity * price_cents
   end

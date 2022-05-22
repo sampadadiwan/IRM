@@ -22,7 +22,7 @@ class Excercise < ApplicationRecord
   validate :validate_quantity, on: :update
 
   after_create :notify_excercise
-  after_update :notify_approval
+  after_update :post_approval
 
   def lapsed_holding
     errors.add(:holding, "can't be lapsed") if holding.lapsed
@@ -38,7 +38,13 @@ class Excercise < ApplicationRecord
     ExcerciseMailer.with(excercise_id: id).notify_excercise.deliver_later
   end
 
-  def notify_approval
-    ExcerciseMailer.with(excercise_id: id).notify_approval.deliver_later if saved_change_to_approved? && approved
+  def post_approval
+    if saved_change_to_approved? && approved
+      ExcerciseMailer.with(excercise_id: id).notify_approval.deliver_later
+      # Updates the existing Holding quantity
+      holding.save
+      # Generate the equity holding to update the cap table
+      Holding.create(user_id:, entity_id:, quantity:, price_cents:, investment_instrument: "Equity", investor_id: holding.investor_id, holding_type: holding.holding_type, funding_round_id: esop_pool.funding_round_id, employee_id: holding.employee_id, created_from_excercise_id: id)
+    end
   end
 end

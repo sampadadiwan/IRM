@@ -408,6 +408,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_070444) do
     t.string "employee_id", limit: 20
     t.bigint "import_upload_id"
     t.boolean "fully_vested", default: false
+    t.integer "orig_grant_quantity", default: 0
+    t.bigint "created_from_excercise_id"
+    t.index ["created_from_excercise_id"], name: "index_holdings_on_created_from_excercise_id"
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
     t.index ["esop_pool_id"], name: "index_holdings_on_esop_pool_id"
     t.index ["funding_round_id"], name: "index_holdings_on_funding_round_id"
@@ -821,6 +824,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_070444) do
   add_foreign_key "funding_rounds", "entities"
   add_foreign_key "holdings", "entities"
   add_foreign_key "holdings", "esop_pools"
+  add_foreign_key "holdings", "excercises", column: "created_from_excercise_id"
   add_foreign_key "holdings", "investments"
   add_foreign_key "holdings", "investors"
   add_foreign_key "holdings", "users"
