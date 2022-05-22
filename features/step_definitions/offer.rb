@@ -22,6 +22,16 @@
 
   end
   
+
+  Given('there is an option holding {string} for each employee investor') do |args|
+    @investor_entity.employees.each do |emp|
+        holding = FactoryBot.build(:holding, user: emp, entity: @entity, esop_pool: @esop_pool, 
+                                    funding_round: @esop_pool.funding_round, investor_id: @entity.investors.first.id)
+        key_values(holding, args)
+        holding.save!
+    end
+
+  end
   Then('I should see only my holdings') do
     @employee_investor.holdings.all.each do |h|
         within("tr#holding_#{h.id}") do

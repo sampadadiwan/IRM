@@ -91,4 +91,36 @@
     EsopPool.count.should == 0
   end
   
+  Then('the pool granted amount should be {string}') do |arg|
+    @esop_pool.reload
+    puts @esop_pool.to_json
+    @esop_pool.allocated_quantity.should == arg.to_f
+  end
+  
+  Given('the option grant date is {string} ago') do |months|
+    @holding = Holding.last
+    @holding.grant_date = Date.today - months.to_i.months - 1.day
+    @holding.save
+  end
+  
+  Then('the vested amount should be {string}') do |qty|
+    VestedJob.new.perform
+    @holding.reload
+    @esop_pool.reload
+    puts "@esop_pool.lapsed_quantity: #{@esop_pool.lapsed_quantity}"
+    @holding.vested_quantity.should == qty.to_f
+    @esop_pool.vested_quantity.should == qty.to_f
+  end
+
+
+Then('the lapsed amount should be {string}') do |qty|
+  VestedJob.new.perform
+  @esop_pool.reload
+  puts "@esop_pool.lapsed_quantity: #{@esop_pool.lapsed_quantity}"
+  @esop_pool.lapsed_quantity.should == qty.to_f
+  @holding.reload
+  @holding.lapsed_quantity.should == qty.to_f
+end
+
+  
   

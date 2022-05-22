@@ -68,11 +68,12 @@ Scenario Outline: Create new holding
 
 Scenario Outline: Import holding
   Given Im logged in as a user "first_name=Test" for an entity "name=Urban;entity_type=Startup"
+  Given a esop pool "name=Pool 1" is created with vesting schedule "12:20,24:30,36:50"
   And Given I upload a holdings file
   Then I should see the "Import upload was successfully created"
-  Then There should be "4" holdings created
-  And There should be "4" users created for the holdings  
-  And There should be "4" Investments created for the holdings
+  Then There should be "6" holdings created
+  And There should be "6" users created for the holdings  
+  And There should be "6" Investments created for the holdings
   And Investments is updated with the holdings 
   And the funding round must be updated with the investment
   And the entity must be updated with the investment  

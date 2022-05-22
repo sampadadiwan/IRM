@@ -38,3 +38,39 @@ Examples:
     |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |12:80         |
     |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |12:20,24:20   |
     |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |12:180        |
+
+
+Scenario Outline: Allocate holdings from pool
+  Given Im logged in as a user "first_name=Test" for an entity "name=Urban;entity_type=Startup"
+  Given a esop pool "name=Pool 1" is created with vesting schedule "12:20,24:30,36:50"
+  And Given I upload a holdings file
+  Then I should see the "Import upload was successfully created"
+  And the pool granted amount should be "700"
+
+
+Scenario Outline:  ESOPs vested
+  Given there is a user "" for an entity "<entity>"
+  Given a esop pool "<esop_pool>" is created with vesting schedule "<schedule>"
+  Given there are "1" employee investors
+  And there is an option holding "quantity=1000;investment_instrument=Options" for each employee investor
+  And the option grant date is "<months>" ago
+  Then the vested amount should be "<vested_amount>"
+Examples:
+    |entity               |esop_pool                            |schedule           | months  | vested_amount |
+    |entity_type=Startup  |name=Pool 123;number_of_options=10000|12:20,24:30,36:50  | 12      | 200           | 
+    |entity_type=Startup  |name=Pool 567;number_of_options=80000|12:20,24:30,36:50  | 24      | 500           |
+    |entity_type=Startup  |name=Pool 567;number_of_options=80000|12:20,24:30,36:50  | 36      | 1000          |
+
+
+Scenario Outline:  ESOPs lapsed
+  Given there is a user "" for an entity "<entity>"
+  Given a esop pool "<esop_pool>" is created with vesting schedule "<schedule>"
+  Given there are "1" employee investors
+  And there is an option holding "quantity=1000;investment_instrument=Options" for each employee investor
+  And the option grant date is "<months>" ago
+  Then the lapsed amount should be "<lapsed_amount>"
+Examples:
+    |entity               |esop_pool                 |schedule           | months  | lapsed_amount |
+    |entity_type=Startup  |excercise_period_months=12|12:20,24:30,36:50  | 12      | 200           | 
+    |entity_type=Startup  |excercise_period_months=24|12:20,24:30,36:50  | 24      | 500           |
+    |entity_type=Startup  |excercise_period_months=36|12:20,24:30,36:50  | 36      | 1000           |
