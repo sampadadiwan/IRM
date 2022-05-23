@@ -26,14 +26,18 @@ class OptionPoolPolicy < ApplicationPolicy
   end
 
   def update?
-    create?
+    create? && !record.approved
   end
 
   def edit?
-    create?
+    update?
   end
 
   def destroy?
-    create?
+    update?
+  end
+
+  def approve?
+    update?
   end
 end

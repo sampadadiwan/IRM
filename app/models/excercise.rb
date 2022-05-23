@@ -52,7 +52,7 @@ class Excercise < ApplicationRecord
       # Updates the existing Holding quantity
       holding.reload.save
       # Generate the equity holding to update the cap table
-      Holding.create(user_id:, entity_id:, quantity:, price_cents:, investment_instrument: "Equity", investor_id: holding.investor_id, holding_type: holding.holding_type, funding_round_id: option_pool.funding_round_id, employee_id: holding.employee_id, created_from_excercise_id: id)
+      Holding.create(user_id:, entity_id:, orig_grant_quantity: quantity, price_cents:, investment_instrument: "Equity", investor_id: holding.investor_id, holding_type: holding.holding_type, funding_round_id: option_pool.funding_round_id, employee_id: holding.employee_id, created_from_excercise_id: id)
     end
   end
 end

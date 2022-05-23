@@ -38,7 +38,8 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def update?
-    create? && record.holding_type != "Investor" # Only employee holdings can be updated
+    # Only employee holdings can be and only if its not excercised
+    create? && record.holding_type != "Investor" && record.excercised_quantity.zero?
   end
 
   def edit?

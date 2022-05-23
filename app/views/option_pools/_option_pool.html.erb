@@ -9,6 +9,11 @@
     <%= option_pool.number_of_options %>
   </td>
   <td>
+    <span class="badge <%= option_pool.approved ? 'bg-success' : 'bg-warning' %>">
+      <%= option_pool.approved ? "Yes" : "No" %>
+    </span>
+  </td>
+  <td>
     <%= option_pool.allocated_quantity %>
   </td>
   <td>

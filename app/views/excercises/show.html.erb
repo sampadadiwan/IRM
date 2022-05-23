@@ -13,5 +13,5 @@
     <% end %>
 
     <% label = @excercise.approved ?  "UnApprove" : "Approve" %>
-    <%= button_to label , approve_excercise_path(@excercise), method: :patch, data: {turbo: false}, class: "btn btn-success" , form_class: "deleteButton" if policy(@excercise).approve? %>
+    <%= button_to label , approve_excercise_path(@excercise), method: :patch, data: {turbo: false}, class: "btn btn-success" , form_class: "deleteButton" if policy(@excercise).approve? && label == "Approve" %>
   </div>

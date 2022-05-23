@@ -27,6 +27,15 @@
     
     <tr>
       <td>
+        Approved
+      </td>
+      <td>
+        <%= @option_pool.approved ? "Yes" : "No" %>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
         Start Date
       </td>
       <td>
@@ -174,11 +183,16 @@
 
   <% if policy(@option_pool).update? %>
     <div class="actions">
-      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse"    aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Details</button> 
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse"    aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Details</button> |
 
       <%= link_to "Edit" , edit_option_pool_path(@option_pool), {class: "btn btn-primary" } %> |
-      <%= button_to "Delete" , @option_pool, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
-    </div>
+      <%= button_to "Delete" , @option_pool, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %> |
 
+      <%= button_to "Approve" , approve_option_pool_path(@option_pool), method: :patch, class: "btn btn-success" , form_class: "deleteButton", data: {turbo:false}  %> 
+
+    </div>
+  <% end %>
+
+  <% if @option_pool.entity_id == current_user.entity_id %>
     <%= render "/option_pools/option_pool_details" %>
   <% end %>

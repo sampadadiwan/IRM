@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_21_070444) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_23_135200) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -309,24 +309,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_070444) do
     t.index ["parent_entity_id"], name: "index_entities_on_parent_entity_id"
   end
 
-  create_table "option_pools", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.date "start_date"
-    t.bigint "number_of_options", default: 0
-    t.decimal "excercise_price_cents", precision: 20, scale: 2, default: "0.0"
-    t.integer "excercise_period_months", default: 0
-    t.bigint "entity_id", null: false
-    t.bigint "funding_round_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "allocated_quantity", default: 0
-    t.bigint "excercised_quantity", default: 0
-    t.bigint "vested_quantity", default: 0
-    t.bigint "lapsed_quantity", default: 0
-    t.index ["entity_id"], name: "index_option_pools_on_entity_id"
-    t.index ["funding_round_id"], name: "index_option_pools_on_funding_round_id"
-  end
-
   create_table "exception_tracks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "body", size: :medium
@@ -348,8 +330,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_070444) do
     t.datetime "updated_at", null: false
     t.decimal "tax_rate", precision: 5, scale: 2, default: "0.0"
     t.index ["entity_id"], name: "index_excercises_on_entity_id"
-    t.index ["option_pool_id"], name: "index_excercises_on_option_pool_id"
     t.index ["holding_id"], name: "index_excercises_on_holding_id"
+    t.index ["option_pool_id"], name: "index_excercises_on_option_pool_id"
     t.index ["user_id"], name: "index_excercises_on_user_id"
   end
 
@@ -414,10 +396,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_070444) do
     t.bigint "created_from_excercise_id"
     t.index ["created_from_excercise_id"], name: "index_holdings_on_created_from_excercise_id"
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
-    t.index ["option_pool_id"], name: "index_holdings_on_option_pool_id"
     t.index ["funding_round_id"], name: "index_holdings_on_funding_round_id"
     t.index ["investment_id"], name: "index_holdings_on_investment_id"
     t.index ["investor_id"], name: "index_holdings_on_investor_id"
+    t.index ["option_pool_id"], name: "index_holdings_on_option_pool_id"
     t.index ["user_id"], name: "index_holdings_on_user_id"
   end
 
@@ -625,6 +607,25 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_070444) do
     t.index ["user_id"], name: "index_offers_on_user_id"
   end
 
+  create_table "option_pools", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.date "start_date"
+    t.bigint "number_of_options", default: 0
+    t.decimal "excercise_price_cents", precision: 20, scale: 2, default: "0.0"
+    t.integer "excercise_period_months", default: 0
+    t.bigint "entity_id", null: false
+    t.bigint "funding_round_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "allocated_quantity", default: 0
+    t.bigint "excercised_quantity", default: 0
+    t.bigint "vested_quantity", default: 0
+    t.bigint "lapsed_quantity", default: 0
+    t.boolean "approved", default: false
+    t.index ["entity_id"], name: "index_option_pools_on_entity_id"
+    t.index ["funding_round_id"], name: "index_option_pools_on_funding_round_id"
+  end
+
   create_table "payments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "entity_id", null: false
     t.decimal "amount", precision: 10, scale: 2, default: "0.0", null: false
@@ -816,19 +817,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_070444) do
   add_foreign_key "deal_messages", "users"
   add_foreign_key "deals", "entities"
   add_foreign_key "documents", "folders"
-  add_foreign_key "option_pools", "entities"
-  add_foreign_key "option_pools", "funding_rounds"
   add_foreign_key "excercises", "entities"
-  add_foreign_key "excercises", "option_pools"
   add_foreign_key "excercises", "holdings"
+  add_foreign_key "excercises", "option_pools"
   add_foreign_key "excercises", "users"
   add_foreign_key "folders", "entities"
   add_foreign_key "funding_rounds", "entities"
   add_foreign_key "holdings", "entities"
-  add_foreign_key "holdings", "option_pools"
   add_foreign_key "holdings", "excercises", column: "created_from_excercise_id"
   add_foreign_key "holdings", "investments"
   add_foreign_key "holdings", "investors"
+  add_foreign_key "holdings", "option_pools"
   add_foreign_key "holdings", "users"
   add_foreign_key "import_uploads", "entities"
   add_foreign_key "import_uploads", "users"
@@ -843,6 +842,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_070444) do
   add_foreign_key "offers", "holdings"
   add_foreign_key "offers", "secondary_sales"
   add_foreign_key "offers", "users"
+  add_foreign_key "option_pools", "entities"
+  add_foreign_key "option_pools", "funding_rounds"
   add_foreign_key "payments", "entities"
   add_foreign_key "payments", "users"
   add_foreign_key "scenarios", "entities"

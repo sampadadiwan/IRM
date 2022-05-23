@@ -5,7 +5,10 @@ Rails.application.routes.draw do
   end
 
   resources :vestings
-  resources :option_pools
+  resources :option_pools do
+    patch 'approve', on: :member
+  end
+
   resources :aggregate_investments do
     get 'investor_investments', on: :collection
   end

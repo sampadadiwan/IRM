@@ -212,4 +212,27 @@ end
 
 
   
+Then('the investment total quantity must be {string}') do |args|
+  Investment.all.sum(:quantity).should == args.to_i
+end
+
+Then('the new investment and holding must be created with excercised quantity') do
+  
+  @new_holding = Holding.last
+  puts "\n####New Holding####\n"
+  puts @new_holding.to_json
+  @new_holding.quantity.should == @excercise.quantity
+  @new_holding.entity_id.should == @excercise.entity_id
+  @new_holding.user_id.should == @excercise.user_id
+  @new_holding.investment_instrument.should == "Equity"
+  
+  @new_investment = Investment.last
+  puts "\n####New Investment####\n"
+  puts @new_investment.to_json
+
+  @new_investment.quantity.should == @excercise.quantity
+  @new_investment.investee_entity_id.should == @excercise.entity_id
+  @new_investment.investment_instrument.should == "Equity"
+  
+end
   

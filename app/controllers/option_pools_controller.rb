@@ -1,5 +1,5 @@
 class OptionPoolsController < ApplicationController
-  before_action :set_option_pool, only: %i[show edit update destroy]
+  before_action :set_option_pool, only: %i[show edit update destroy approve]
 
   # GET /option_pools or /option_pools.json
   def index
@@ -61,6 +61,22 @@ class OptionPoolsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to option_pools_url, notice: "Option pool was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def approve
+    @option_pool.approved = true
+    respond_to do |format|
+      if @option_pool.save
+        format.html do
+          redirect_to option_pool_path(@option_pool),
+                      notice: "Option pool was successfully approved."
+        end
+        format.json { render :show, status: :created, location: @option_pool }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @option_pool.errors, status: :unprocessable_entity }
+      end
     end
   end
 

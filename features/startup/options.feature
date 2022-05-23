@@ -94,10 +94,13 @@ Scenario Outline:  Options Excercised
   Given there are "1" employee investors
   And there is an option holding "orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
   And the option grant date is "<months>" ago
+  Then the investment total quantity must be "1000"
   Then when the option is excercised "approved=false"
   And the excercise is approved
   Then the option pool must have "<option_pool_quantites>"
   Then the holding must have "<holding_quantites>"
+  And the new investment and holding must be created with excercised quantity
+  And the investment total quantity must be "1000"
 
 Examples:
     |entity               |option_pool                                      |schedule            | months  | option_pool_quantites | holding_quantites |
