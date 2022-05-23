@@ -94,6 +94,17 @@
           <%= @option_pool.vested_quantity %>
         </td>
       </tr>
+
+      <tr class="collapse multi-collapse">
+        <td>
+          Options Unvested 
+          </br> 
+          (Total - Vested)
+        </td>
+        <td>
+          <%= @option_pool.unvested_quantity %>
+        </td>
+      </tr>
       <tr class="collapse multi-collapse">
         <td>
           Options Excercised
@@ -120,16 +131,7 @@
           <%= @option_pool.lapsed_quantity %>
         </td>
       </tr>
-      <tr class="collapse multi-collapse">
-        <td>
-          Balance
-          </br>
-          (UnExcercised - Lapsed)
-        </td>
-        <td>
-          <%= @option_pool.balance_quantity %>
-        </td>
-      </tr>
+
       <tr class="collapse multi-collapse">
         <td>
           Options Available for Grants

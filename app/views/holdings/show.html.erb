@@ -52,7 +52,15 @@
     </tr>
     <tr>
       <td>
-        Quantity
+        Grant Quantity
+      </td>
+      <td>
+        <%= custom_format_number @holding.orig_grant_quantity, params %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Current Quantity
       </td>
       <td>
         <%= custom_format_number @holding.quantity, params %>
@@ -86,6 +94,17 @@
     </tr>
     <tr>
       <td>
+        Unvested Quantity
+        </br> 
+        (Granted - Vested)
+      </td>
+      <td>
+        <%= custom_format_number @holding.unvested_quantity, params %>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
         Excercised Quantity
       </td>
       <td>
@@ -95,6 +114,8 @@
     <tr>
       <td>
         UnExcercised Quantity
+        </br>
+        (Vested - Excercised)
       </td>
       <td>
         <%= custom_format_number @holding.unexcercised_quantity, params %>
@@ -112,15 +133,6 @@
         </td>
       </tr>
     <% end %>
-
-    <tr>
-      <td>
-        Balance Quantity
-      </td>
-      <td>
-        <%= custom_format_number @holding.balance_quantity, params %>
-      </td>
-    </tr>
 
     <tr>
       <td>

@@ -50,6 +50,10 @@ class OptionPool < ApplicationRecord
     vested_quantity - excercised_quantity
   end
 
+  def unvested_quantity
+    number_of_options - vested_quantity
+  end
+
   def balance_quantity
     unexcercised_quantity - lapsed_quantity
   end

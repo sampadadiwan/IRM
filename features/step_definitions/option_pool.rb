@@ -148,6 +148,28 @@ Then('the excercise is approved') do
   @excercise.reload
 end
 
+Then('the unvested amount should be {string}') do |arg|
+  @option_pool.unvested_quantity.should == arg.to_f
+end
+
+Then('the option pool must have {string}') do |args|
+  pool = Hash.new
+  key_values(pool, args)
+  
+  @option_pool.reload
+  puts "@option_pool.unexcercised_quantity #{@option_pool.unexcercised_quantity}"
+  puts "@option_pool.lapsed_quantity #{@option_pool.lapsed_quantity}"
+  puts "@option_pool.excercised_quantity #{@option_pool.excercised_quantity}"
+  
+
+  @option_pool.vested_quantity.should == pool["vested_quantity"].to_i
+  @option_pool.lapsed_quantity.should == pool["lapsed_quantity"].to_i
+  @option_pool.excercised_quantity.should == pool["excercised_quantity"].to_i
+  @option_pool.unexcercised_quantity.should == pool["unexcercised_quantity"].to_i
+  @option_pool.unvested_quantity.should == pool["unvested_quantity"].to_i
+
+end
+
 
 Then('the excercise must be created') do
   

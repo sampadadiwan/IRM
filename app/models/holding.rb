@@ -110,6 +110,10 @@ class Holding < ApplicationRecord
     vested_quantity - excercised_quantity
   end
 
+  def unvested_quantity
+    orig_grant_quantity - vested_quantity
+  end
+
   def balance_quantity
     unexcercised_quantity - lapsed_quantity
   end
@@ -145,7 +149,7 @@ class Holding < ApplicationRecord
   def vesting_schedule
     schedule = []
     option_pool.vesting_schedules.each do |pvs|
-      schedule << [grant_date + pvs.months_from_grant.month, pvs.vesting_percent, (quantity * pvs.vesting_percent / 100.0).round(0)]
+      schedule << [grant_date + pvs.months_from_grant.month, pvs.vesting_percent, (orig_grant_quantity * pvs.vesting_percent / 100.0).round(0)]
     end
     schedule
   end
