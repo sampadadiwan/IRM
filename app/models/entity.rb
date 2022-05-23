@@ -139,7 +139,7 @@ class Entity < ApplicationRecord
     Rails.logger.debug { "Created Trust Holding entity #{e.name} #{e.id} for #{name}" }
 
     i = Investor.create(investor_name: "#{name} - ESOP Trust", investor_entity_id: e.id,
-                        investee_entity_id: id, category: "Trust", is_holdings_entity: true)
+                        investee_entity_id: id, category: "Trust", is_holdings_entity: false, is_trust: true)
     Rails.logger.debug { "Created Investor for Trust Holding entity #{i.investor_name} #{i.id} for #{name}" }
   end
 

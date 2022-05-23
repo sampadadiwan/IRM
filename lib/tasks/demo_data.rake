@@ -195,8 +195,8 @@ namespace :irm do
   task generateFakeHoldings: :environment do
 
     Entity.startups.each do |e|
-      (1..4).each do
-        pool = FactoryBot.build(:option_pool, entity: e)
+      (1..4).each do |p|
+        pool = FactoryBot.build(:option_pool, entity: e, approved: false, name: "Pool #{p}")
         pool.excercise_instructions.attach(io: File.open("#{Rails.root}/public/sample_uploads/Instructions.txt"), filename: 'Instructions.txt', content_type: 'application/txt')
 
         (1..4).each do |i|
@@ -204,6 +204,8 @@ namespace :irm do
           pool.vesting_schedules << pool.vesting_schedules.build(months_from_grant: i*12, vesting_percent: 10*i, entity_id: e.id)
         end
         pool.save!  
+        pool.approved = true
+        pool.save
       end
     end
 
@@ -280,7 +282,7 @@ namespace :irm do
       3.times do
         deal = FactoryBot.create(:deal, entity: e)
         puts "Deal #{deal.id}"
-        deal.entity.investors.not_holding.each do |inv|
+        deal.entity.investors.not_holding.not_trust.each do |inv|
           di = FactoryBot.create(:deal_investor, investor: inv, entity: e, deal: deal)
           puts "DealInvestor #{di.id} for investor #{inv.id}"
           (1..rand(10)).each do

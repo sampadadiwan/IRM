@@ -17,6 +17,7 @@ class OptionPool < ApplicationRecord
   validates :excercise_instructions, presence: true, on: :create unless Rails.env.test?
   validate :check_vesting_schedules
 
+  before_save :setup_trust_holdings, if: :approved
   before_create :setup_funding_round
 
   monetize :excercise_price_cents, with_currency: ->(i) { i.entity.currency }
@@ -25,6 +26,19 @@ class OptionPool < ApplicationRecord
 
   def setup_funding_round
     self.funding_round = FundingRound.create(name:, currency: entity.currency, entity_id:, status: "Open")
+  end
+
+  # The unallocated options sit in the trust account
+  def setup_trust_holdings
+    logger.debug "Option pool has been approved. Setting up trust holdings"
+    trust_investor = entity.investors.where(is_trust: true).first
+    existing = Investment.where(funding_round_id:, investor_id: trust_investor.id, investment_instrument: "Options").first
+    if existing.present?
+      existing.quantity = number_of_options
+      existing.save
+    else
+      Investment.create!(investee_entity_id: entity_id, quantity: number_of_options, price_cents: excercise_price_cents, investment_instrument: "Options", investor_id: trust_investor.id, funding_round_id:, scenario: entity.actual_scenario)
+    end
   end
 
   def check_vesting_schedules
