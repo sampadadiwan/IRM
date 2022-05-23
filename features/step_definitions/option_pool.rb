@@ -167,6 +167,7 @@ Then('the option pool must have {string}') do |args|
   @option_pool.excercised_quantity.should == pool["excercised_quantity"].to_i
   @option_pool.unexcercised_quantity.should == pool["unexcercised_quantity"].to_i
   @option_pool.unvested_quantity.should == pool["unvested_quantity"].to_i
+  @option_pool.allocated_quantity.should == pool["allocated_quantity"].to_i
 
 end
 
