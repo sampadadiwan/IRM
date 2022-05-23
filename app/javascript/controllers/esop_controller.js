@@ -13,11 +13,11 @@ export default class extends Controller {
     switch (selected) {
       case "Options":
         $(".funding_round_group").hide();
-        $(".esop_pool_group").show();
+        $(".option_pool_group").show();
         break;
       default:
         $(".funding_round_group").show();
-        $(".esop_pool_group").hide();
+        $(".option_pool_group").hide();
         break;
     }
   }

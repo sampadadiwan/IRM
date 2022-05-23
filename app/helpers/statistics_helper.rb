@@ -14,7 +14,7 @@ module StatisticsHelper
   def investment_diluted(entity)
     scenario_id = current_scenario(entity)
     investments = Investment.where(investee_entity_id: entity.id, scenario_id:,
-                                   investment_instrument: %w[Equity Preferred Options ESOP])
+                                   investment_instrument: %w[Equity Preferred Options])
                             .joins(:investor).includes(:investor)
     diluted = investments.group_by { |i| i.investor.investor_name }
                          .map { |k, v| [k, v.inject(0) { |sum, e| sum + e.percentage_holding }] }
@@ -25,7 +25,7 @@ module StatisticsHelper
   def investment_undiluted(entity)
     scenario_id = current_scenario(entity)
     investments = Investment.where(investee_entity_id: entity.id, scenario_id:,
-                                   investment_instrument: %w[Equity Preferred Options ESOP])
+                                   investment_instrument: %w[Equity Preferred Options])
                             .joins(:investor).includes(:investor)
 
     undiluted = investments.group_by { |i| i.investor.investor_name }

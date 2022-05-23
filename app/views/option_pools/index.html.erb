@@ -1,13 +1,13 @@
 <%= render "/layouts/alerts" %>
 
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Esop Pools</h1>
-    <%= link_to "New Esop Pool" , new_esop_pool_path, {class: "btn btn-primary" } %>
+    <h1 class="h3 mb-0 text-gray-800">Option Pools</h1>
+    <%= link_to "New Option Pool" , new_option_pool_path, {class: "btn btn-primary" } %>
   </div>
 
   <div class="table-responsive" data-controller="datatable">
 
-    <table id="esop_pools" class="table table-bordered dataTable jqDataTable">
+    <table id="option_pools" class="table table-bordered dataTable jqDataTable">
 
       <thead>
         <tr>
@@ -54,8 +54,8 @@
       </thead>
 
       <tbody>
-        <% @esop_pools.each do |esop_pool| %>
-          <%= render esop_pool %>
+        <% @option_pools.each do |option_pool| %>
+          <%= render option_pool %>
         <% end %>
       </tbody>
     </table>

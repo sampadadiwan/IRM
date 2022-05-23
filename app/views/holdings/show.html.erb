@@ -62,10 +62,10 @@
     <% if @holding.investment_instrument == "Options" %>
     <tr>
       <td>
-        ESOP Pool
+        Option Pool
       </td>
       <td>
-        <%= link_to  @holding.esop_pool.name, @holding.esop_pool if @holding.esop_pool %>
+        <%= link_to  @holding.option_pool.name, @holding.option_pool if @holding.option_pool %>
       </td>
     </tr>
     <tr>

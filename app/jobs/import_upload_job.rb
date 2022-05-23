@@ -91,7 +91,7 @@ class ImportUploadJob < ApplicationJob
                           entity_id: import_upload.owner_id, orig_grant_quantity: user_data["Quantity"],
                           price_cents:, employee_id: user_data["Employee ID"],
                           investment_instrument: user_data["Instrument"],
-                          funding_round: fr, esop_pool: ep,
+                          funding_round: fr, option_pool: ep,
                           import_upload_id: import_upload.id, grant_date:)
 
     holding.save!
@@ -99,7 +99,7 @@ class ImportUploadJob < ApplicationJob
 
   def get_fr_ep(user_data, import_upload)
     if user_data["Instrument"] == "Options"
-      ep = esop_pool(user_data, import_upload)
+      ep = option_pool(user_data, import_upload)
       fr = ep.funding_round
       date_val = user_data["Grant Date (mm/dd/yyyy)"]
       begin
@@ -118,7 +118,7 @@ class ImportUploadJob < ApplicationJob
 
   def funding_round(user_data, import_upload)
     # Create the Holding
-    col = "Funding Round or ESOP Pool"
+    col = "Funding Round or Option Pool"
     fr = FundingRound.where(entity_id: import_upload.owner_id, name: user_data[col].strip).first
     fr ||= FundingRound.create(name: user_data[col].strip,
                                entity_id: import_upload.owner_id,
@@ -128,10 +128,10 @@ class ImportUploadJob < ApplicationJob
     fr
   end
 
-  def esop_pool(user_data, import_upload)
+  def option_pool(user_data, import_upload)
     # Create the Holding
-    col = "Funding Round or ESOP Pool"
-    EsopPool.where(entity_id: import_upload.owner_id, name: user_data[col].strip).first
+    col = "Funding Round or Option Pool"
+    OptionPool.where(entity_id: import_upload.owner_id, name: user_data[col].strip).first
   end
 
   def save_investor_access(user_data, import_upload)

@@ -1,0 +1,41 @@
+<tr id="<%= dom_id option_pool %>">
+  <td>
+    <%= option_pool.name %>
+  </td>
+  <td>
+    <%= l option_pool.start_date %>
+  </td>
+  <td>
+    <%= option_pool.number_of_options %>
+  </td>
+  <td>
+    <%= option_pool.allocated_quantity %>
+  </td>
+  <td>
+    <%= option_pool.vested_quantity %>
+  </td>
+  <td>
+    <%= option_pool.excercised_quantity %>
+  </td>
+  <td>
+    <%= option_pool.unexcercised_quantity %>
+  </td>
+  <td>
+    <%= option_pool.lapsed_quantity %>
+  </td>
+  <td>
+    <%= option_pool.balance_quantity %>
+  </td>
+  <td>
+    <%= money_to_currency option_pool.excercise_price, params %>
+  </td>
+  <td>
+    <%= option_pool.excercise_period_months %>
+  </td>
+  <td>
+    <%= option_pool.entity.name %>
+  </td>
+  <td>
+    <%= link_to "Show" , option_pool , {class: "btn btn-primary" }%>
+  </td>
+</tr>

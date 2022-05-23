@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   end
 
   resources :vestings
-  resources :esop_pools
+  resources :option_pools
   resources :aggregate_investments do
     get 'investor_investments', on: :collection
   end

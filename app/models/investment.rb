@@ -38,7 +38,7 @@ class Investment < ApplicationRecord
   update_index('investment') { self }
 
   validates :quantity, :price, presence: true
-  # "Equity,Preferred,Debt,ESOPs"
+  # "Equity,Preferred,Debt,Options"
   INSTRUMENT_TYPES = ENV["INSTRUMENT_TYPES"].split(",")
 
   # "Lead Investor,Co-Investor,Founder,Individual,Employee"

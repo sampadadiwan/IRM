@@ -1,0 +1,79 @@
+class OptionPoolsController < ApplicationController
+  before_action :set_option_pool, only: %i[show edit update destroy]
+
+  # GET /option_pools or /option_pools.json
+  def index
+    @option_pools = policy_scope(OptionPool).includes(:entity, :funding_round)
+  end
+
+  # GET /option_pools/1 or /option_pools/1.json
+  def show; end
+
+  # GET /option_pools/new
+  def new
+    @option_pool = OptionPool.new
+    @option_pool.start_date = Time.zone.today
+    @option_pool.entity_id = current_user.entity_id
+    authorize(@option_pool)
+  end
+
+  # GET /option_pools/1/edit
+  def edit; end
+
+  # POST /option_pools or /option_pools.json
+  def create
+    @option_pool = OptionPool.new(option_pool_params)
+    @option_pool.entity_id = current_user.entity_id
+    @option_pool.excercise_price_cents = option_pool_params[:excercise_price].to_f * 100
+
+    authorize(@option_pool)
+
+    respond_to do |format|
+      if @option_pool.save
+        format.html { redirect_to option_pool_url(@option_pool), notice: "Option pool was successfully created." }
+        format.json { render :show, status: :created, location: @option_pool }
+      else
+        Rails.logger.debug @option_pool.to_json(include: :vesting_schedules)
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @option_pool.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /option_pools/1 or /option_pools/1.json
+  def update
+    respond_to do |format|
+      if @option_pool.update(option_pool_params)
+        format.html { redirect_to option_pool_url(@option_pool), notice: "Option pool was successfully updated." }
+        format.json { render :show, status: :ok, location: @option_pool }
+      else
+        Rails.logger.debug @option_pool.to_json(include: :vesting_schedules)
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @option_pool.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /option_pools/1 or /option_pools/1.json
+  def destroy
+    @option_pool.destroy
+
+    respond_to do |format|
+      format.html { redirect_to option_pools_url, notice: "Option pool was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_option_pool
+    @option_pool = OptionPool.find(params[:id])
+    authorize(@option_pool)
+  end
+
+  # Only allow a list of trusted parameters through.
+  def option_pool_params
+    params.require(:option_pool).permit(:name, :start_date, :number_of_options, :excercise_price, :excercise_period_months, :entity_id, :funding_round_id, attachments: [], excercise_instructions: [], vesting_schedules_attributes: %i[id months_from_grant vesting_percent _destroy])
+  end
+end

@@ -28,7 +28,7 @@ class Holding < ApplicationRecord
   belongs_to :funding_round, optional: true
   belongs_to :investor
   # This is only for options
-  belongs_to :esop_pool, optional: true
+  belongs_to :option_pool, optional: true
   has_many :offers, dependent: :destroy
   has_many :excercises, dependent: :destroy
 
@@ -61,9 +61,9 @@ class Holding < ApplicationRecord
   end
 
   def update_value
-    if esop_pool
-      self.funding_round_id = esop_pool.funding_round_id
-      self.price_cents = esop_pool.excercise_price_cents
+    if option_pool
+      self.funding_round_id = option_pool.funding_round_id
+      self.price_cents = option_pool.excercise_price_cents
     end
     self.quantity = orig_grant_quantity
     self.value_cents = quantity * price_cents
@@ -71,15 +71,15 @@ class Holding < ApplicationRecord
 
   def allocation_allowed
     if new_record?
-      errors.add(:esop_pool, "Insufficiant available quantity in ESOP pool #{esop_pool.name}. #{esop_pool.available_quantity} < #{quantity}") if esop_pool && esop_pool.available_quantity < quantity
-    elsif esop_pool && esop_pool.available_quantity < (quantity - quantity_was)
-      errors.add(:esop_pool, "Insufficiant available quantity in ESOP pool #{esop_pool.name}. #{esop_pool.available_quantity} < #{quantity}")
+      errors.add(:option_pool, "Insufficiant available quantity in Option pool #{option_pool.name}. #{option_pool.available_quantity} < #{quantity}") if option_pool && option_pool.available_quantity < quantity
+    elsif option_pool && option_pool.available_quantity < (quantity - quantity_was)
+      errors.add(:option_pool, "Insufficiant available quantity in Option pool #{option_pool.name}. #{option_pool.available_quantity} < #{quantity}")
     end
   end
 
   def setup_investment
     self.investment = Investment.for(self).first
-    self.funding_round_id = esop_pool.funding_round_id if esop_pool
+    self.funding_round_id = option_pool.funding_round_id if option_pool
 
     if investment.nil?
       # Rails.logger.debug { "Updating investment for #{to_json}" }
@@ -115,7 +115,7 @@ class Holding < ApplicationRecord
   end
 
   def lapsed?
-    (grant_date + esop_pool.excercise_period_months.months) < Time.zone.today
+    (grant_date + option_pool.excercise_period_months.months) < Time.zone.today
   end
 
   def compute_lapsed_quantity
@@ -123,7 +123,7 @@ class Holding < ApplicationRecord
   end
 
   def allowed_percentage
-    esop_pool.get_allowed_percentage(grant_date)
+    option_pool.get_allowed_percentage(grant_date)
   end
 
   def excercisable_quantity
@@ -144,7 +144,7 @@ class Holding < ApplicationRecord
 
   def vesting_schedule
     schedule = []
-    esop_pool.vesting_schedules.each do |pvs|
+    option_pool.vesting_schedules.each do |pvs|
       schedule << [grant_date + pvs.months_from_grant.month, pvs.vesting_percent, (quantity * pvs.vesting_percent / 100.0).round(0)]
     end
     schedule

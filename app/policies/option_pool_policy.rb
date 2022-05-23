@@ -1,4 +1,4 @@
-class EsopPoolPolicy < ApplicationPolicy
+class OptionPoolPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.has_cached_role?(:super)

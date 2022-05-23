@@ -196,7 +196,7 @@ namespace :irm do
 
     Entity.startups.each do |e|
       (1..4).each do
-        pool = FactoryBot.build(:esop_pool, entity: e)
+        pool = FactoryBot.build(:option_pool, entity: e)
         pool.excercise_instructions.attach(io: File.open("#{Rails.root}/public/sample_uploads/Instructions.txt"), filename: 'Instructions.txt', content_type: 'application/txt')
 
         (1..4).each do |i|
@@ -224,7 +224,7 @@ namespace :irm do
 
           investment_instrument = ["Equity", "Preferred", "Options"][rand(3)]
           if investment_instrument == "Options" 
-            pool = investor.investee_entity.esop_pools.sample 
+            pool = investor.investee_entity.option_pools.sample 
             funding_round = pool.funding_round
             grant_date = Date.today - rand(36).months
           else 
@@ -235,7 +235,7 @@ namespace :irm do
           Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
               orig_grant_quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000, 
               employee_id: SecureRandom.alphanumeric,
-              investment_instrument: investment_instrument, esop_pool: pool, grant_date: grant_date,
+              investment_instrument: investment_instrument, option_pool: pool, grant_date: grant_date,
               holding_type: investor.category, funding_round: funding_round)
         end
       end

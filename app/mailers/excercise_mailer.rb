@@ -6,7 +6,7 @@ class ExcerciseMailer < ApplicationMailer
     emails = @excercise.user.email
     mail(to: emails,
          cc: ENV['SUPPORT_EMAIL'],
-         subject: "New Excercise of ESOP by #{@excercise.user.full_name} ")
+         subject: "New Excercise of Option by #{@excercise.user.full_name} ")
   end
 
   def notify_approval
@@ -14,6 +14,6 @@ class ExcerciseMailer < ApplicationMailer
     emails = @excercise.user.email
     mail(to: emails,
          cc: ENV['SUPPORT_EMAIL'],
-         subject: "Approved Excercise of ESOP by #{@excercise.user.full_name} ")
+         subject: "Approved Excercise of Option by #{@excercise.user.full_name} ")
   end
 end

@@ -11,11 +11,11 @@ class HoldingSummary
   def estimated_profits(price_growth)
     profits = Money.new(0, @entity.currency)
 
-    @holdings ||= @user.holdings.options.where(entity_id: @entity.id).includes(esop_pool: :entity, entity: :valuations)
+    @holdings ||= @user.holdings.options.where(entity_id: @entity.id).includes(option_pool: :entity, entity: :valuations)
 
     @holdings.each do |holding|
       per_share_value = holding.entity.valuations.last.per_share_value
-      profits += ((per_share_value * price_growth) - holding.esop_pool.excercise_price) * holding.quantity
+      profits += ((per_share_value * price_growth) - holding.option_pool.excercise_price) * holding.quantity
     end
 
     profits

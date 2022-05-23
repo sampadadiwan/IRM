@@ -1,11 +1,11 @@
-class EsopPool < ApplicationRecord
+class OptionPool < ApplicationRecord
   belongs_to :entity
   belongs_to :funding_round, optional: true
 
-  has_many :holdings, inverse_of: :esop_pool, dependent: :destroy
+  has_many :holdings, inverse_of: :option_pool, dependent: :destroy
   has_many :excercises, dependent: :destroy
 
-  has_many :vesting_schedules, inverse_of: :esop_pool, dependent: :destroy
+  has_many :vesting_schedules, inverse_of: :option_pool, dependent: :destroy
   accepts_nested_attributes_for :vesting_schedules, reject_if: :all_blank, allow_destroy: true
 
   has_many_attached :attachments, service: :amazon

@@ -36,8 +36,8 @@ module HoldingCounters
                     column_name: proc { |h| h.call_counter_cache? ? h.investment_instrument.downcase : nil },
                     delta_column: 'quantity'
 
-    counter_culture :esop_pool,
-                    column_name: proc { |h| h.update_esop_pool? ? 'allocated_quantity' : nil },
+    counter_culture :option_pool,
+                    column_name: proc { |h| h.update_option_pool? ? 'allocated_quantity' : nil },
                     delta_column: 'orig_grant_quantity' # quantity keeps getting smaller as excercises happen, but the original grant quantity is what we want to count as allocated
   end
 
@@ -47,7 +47,7 @@ module HoldingCounters
       EQUITY_LIKE.include?(investment_instrument)
   end
 
-  def update_esop_pool?
+  def update_option_pool?
     investment.scenario.actual? &&
       INVESTMENT_FOR.include?(holding_type) &&
       investment_instrument == "Options"

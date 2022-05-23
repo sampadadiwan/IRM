@@ -3,8 +3,8 @@ class ExcercisesController < ApplicationController
 
   # GET /excercises or /excercises.json
   def index
-    @excercises = policy_scope(Excercise).includes(:holding, :user, :esop_pool)
-    @excercises = @excercises.where(esop_pool_id: params[:esop_pool_id]) if params[:esop_pool_id].present?
+    @excercises = policy_scope(Excercise).includes(:holding, :user, :option_pool)
+    @excercises = @excercises.where(option_pool_id: params[:option_pool_id]) if params[:option_pool_id].present?
   end
 
   # GET /excercises/1 or /excercises/1.json
@@ -14,10 +14,10 @@ class ExcercisesController < ApplicationController
   def new
     @excercise = Excercise.new(excercise_params)
     @excercise.user_id = current_user.id
-    @excercise.esop_pool_id = @excercise.holding.esop_pool_id
+    @excercise.option_pool_id = @excercise.holding.option_pool_id
     @excercise.entity_id = @excercise.holding.entity_id
     @excercise.quantity = @excercise.holding.excercisable_quantity
-    @excercise.price = @excercise.esop_pool.excercise_price
+    @excercise.price = @excercise.option_pool.excercise_price
 
     authorize(@excercise)
   end
@@ -28,7 +28,7 @@ class ExcercisesController < ApplicationController
   # POST /excercises or /excercises.json
   def create
     @excercise = Excercise.new(excercise_params)
-    @excercise.esop_pool_id = @excercise.holding.esop_pool_id
+    @excercise.option_pool_id = @excercise.holding.option_pool_id
     @excercise.entity_id = @excercise.holding.entity_id
     @excercise.user_id = current_user.id
     # For some reason the cents are not directly being taken in
@@ -98,6 +98,6 @@ class ExcercisesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def excercise_params
-    params.require(:excercise).permit(:entity_id, :holding_id, :user_id, :esop_pool_id, :quantity, :price, :amount, :tax, :tax_rate, :payment_proof)
+    params.require(:excercise).permit(:entity_id, :holding_id, :user_id, :option_pool_id, :quantity, :price, :amount, :tax, :tax_rate, :payment_proof)
   end
 end

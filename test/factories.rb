@@ -9,7 +9,7 @@ FactoryBot.define do
     entity { nil }
     holding { nil }
     user { nil }
-    esop_pool { nil }
+    option_pool { nil }
     quantity { 1 }
     price { "9.99" }
     amount { "9.99" }
@@ -18,7 +18,7 @@ FactoryBot.define do
   end
 
 
-  factory :esop_pool do
+  factory :option_pool do
     name { "Pool #{rand(10)}" }
     start_date { Date.today - rand(2).years - rand(12).months }
     number_of_options { 100000 * rand(1..5) }

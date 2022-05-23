@@ -2,7 +2,7 @@
 
 <div class="card">
   <div class="card-header">
-    <%= @esop_pool.name %>
+    <%= @option_pool.name %>
   </div>
   <div class="card-body">
 
@@ -12,7 +12,7 @@
         Entity
       </td>
       <td>
-        <%= @esop_pool.entity.name %>
+        <%= @option_pool.entity.name %>
       </td>
     </tr>
     
@@ -21,7 +21,7 @@
         Pool Name
       </td>
       <td>
-        <%= @esop_pool.name %>
+        <%= @option_pool.name %>
       </td>
     </tr>
     
@@ -30,7 +30,7 @@
         Start Date
       </td>
       <td>
-        <%= l @esop_pool.start_date %>
+        <%= l @option_pool.start_date %>
       </td>
     </tr>
     <tr>
@@ -38,7 +38,7 @@
         Excercise Price
       </td>
       <td>
-        <%= money_to_currency @esop_pool.excercise_price, params %>
+        <%= money_to_currency @option_pool.excercise_price, params %>
       </td>
     </tr>
     <tr>
@@ -46,15 +46,15 @@
         Excercise Period 
       </td>
       <td>
-        <%= @esop_pool.excercise_period_months %> Months
+        <%= @option_pool.excercise_period_months %> Months
       </td>
     </tr>
     <tr>
       <td>
-        ESOP Scheme Documents
+        Option Scheme Documents
       </td>
       <td>
-        <%= render "/layouts/attachments" , attachments: @esop_pool.attachments if @esop_pool.attachments.present? %>
+        <%= render "/layouts/attachments" , attachments: @option_pool.attachments if @option_pool.attachments.present? %>
       </td>
     </tr>
 
@@ -63,7 +63,7 @@
         Excercise Instructions
       </td>
       <td>
-        <%= render "/layouts/attachments" , attachments: @esop_pool.excercise_instructions if @esop_pool.excercise_instructions.present? %>
+        <%= render "/layouts/attachments" , attachments: @option_pool.excercise_instructions if @option_pool.excercise_instructions.present? %>
       </td>
     </tr>
 
@@ -72,18 +72,18 @@
         Number Of Options
       </td>
       <td>
-        <%= @esop_pool.number_of_options %>
+        <%= @option_pool.number_of_options %>
       </td>
     </tr>
     
-    <% if policy(@esop_pool).update? %>
+    <% if policy(@option_pool).update? %>
 
       <tr class="collapse multi-collapse">
         <td>
           Options Granted
         </td>
         <td>
-          <%= @esop_pool.allocated_quantity %>
+          <%= @option_pool.allocated_quantity %>
         </td>
       </tr>
       <tr class="collapse multi-collapse">
@@ -91,7 +91,7 @@
           Options Vested
         </td>
         <td>
-          <%= @esop_pool.vested_quantity %>
+          <%= @option_pool.vested_quantity %>
         </td>
       </tr>
       <tr class="collapse multi-collapse">
@@ -99,7 +99,7 @@
           Options Excercised
         </td>
         <td>
-          <%= @esop_pool.excercised_quantity %>
+          <%= @option_pool.excercised_quantity %>
         </td>
       </tr>
       <tr class="collapse multi-collapse">
@@ -109,7 +109,7 @@
           (Vested - Excercised)
         </td>
         <td>
-          <%= @esop_pool.unexcercised_quantity %>
+          <%= @option_pool.unexcercised_quantity %>
         </td>
       </tr>
       <tr class="collapse multi-collapse">
@@ -117,7 +117,7 @@
           Options Lapsed
         </td>
         <td>
-          <%= @esop_pool.lapsed_quantity %>
+          <%= @option_pool.lapsed_quantity %>
         </td>
       </tr>
       <tr class="collapse multi-collapse">
@@ -127,7 +127,7 @@
           (UnExcercised - Lapsed)
         </td>
         <td>
-          <%= @esop_pool.balance_quantity %>
+          <%= @option_pool.balance_quantity %>
         </td>
       </tr>
       <tr class="collapse multi-collapse">
@@ -137,7 +137,7 @@
           (Number of Options - Granted + Lapsed)
         </td>
         <td>
-          <%= @esop_pool.available_quantity %>
+          <%= @option_pool.available_quantity %>
         </td>
       </tr>
       
@@ -156,7 +156,7 @@
           <th>Months From Grant</th>
           <th>Vesting Percentage</th>
         </tr>
-        <% @esop_pool.vesting_schedules.each do |vs| %>
+        <% @option_pool.vesting_schedules.each do |vs| %>
         <tr id="<%= dom_id vs %>">
           <td>
             <%= vs.months_from_grant %>
@@ -170,13 +170,13 @@
     </div>
   </div>
 
-  <% if policy(@esop_pool).update? %>
+  <% if policy(@option_pool).update? %>
     <div class="actions">
       <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse"    aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Details</button> 
 
-      <%= link_to "Edit" , edit_esop_pool_path(@esop_pool), {class: "btn btn-primary" } %> |
-      <%= button_to "Delete" , @esop_pool, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
+      <%= link_to "Edit" , edit_option_pool_path(@option_pool), {class: "btn btn-primary" } %> |
+      <%= button_to "Delete" , @option_pool, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
     </div>
 
-    <%= render "/esop_pools/esop_pool_details" %>
+    <%= render "/option_pools/option_pool_details" %>
   <% end %>

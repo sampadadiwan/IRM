@@ -28,10 +28,10 @@
         <tbody>
             <% holdings.each do |holding| %>
                 <tr>
-                    <td><%= holding.esop_pool.name %></td>
+                    <td><%= holding.option_pool.name %></td>
                     <td><%= holding.quantity %></td>
                     <td><%= holding.vested_quantity %></td>
-                    <td><%= holding.esop_pool.excercise_price %></td>
+                    <td><%= holding.option_pool.excercise_price %></td>
                     <td><%= money_to_currency holding.value, params %></td>
                     <td>
                         <%= link_to "Details" , holding , {class: "btn btn-primary" }%>

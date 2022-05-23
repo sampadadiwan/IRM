@@ -10,7 +10,7 @@ module InvestmentScopes
     scope :preferred, -> { where(investment_instrument: "Preferred") }
     scope :options, -> { where(investment_instrument: "Options") }
     scope :equity_or_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
-    scope :options_or_esop, -> { where(investment_instrument: %w[ESOP Options]) }
+    scope :options_or_esop, -> { where(investment_instrument: %w[Options]) }
     scope :debt, -> { where(investment_instrument: "Debt") }
 
     scope :for, lambda { |holding|

@@ -29,7 +29,7 @@
     </div>
   <% end %>
 
-  <%= render "/layouts/steps", steps: ["Holding Quantity: #{excercise.holding.quantity}", "Vesting Percent allowed: #{excercise.holding.allowed_percentage} %", "Max Excercisable Quantity: #{excercise.holding.excercisable_quantity}", "Input Your Tax Rate", "Excercise Your ESOP", "Wait For Approval"].freeze %>
+  <%= render "/layouts/steps", steps: ["Holding Quantity: #{excercise.holding.quantity}", "Vesting Percent allowed: #{excercise.holding.allowed_percentage} %", "Max Excercisable Quantity: #{excercise.holding.excercisable_quantity}", "Input Your Tax Rate", "Excercise Your Option", "Wait For Approval"].freeze %>
 
 
   <%= form.number_field :holding_id, class: "form-control", hidden: true  %>
@@ -43,7 +43,7 @@
               <div class="card-body">
   
                 <h1>Please read the Excercise Instructions before you proceed.</h1>
-                <%= render "/layouts/attachments" , attachments: excercise.esop_pool.excercise_instructions, allow_delete: "No" if excercise.esop_pool.excercise_instructions.present? %>
+                <%= render "/layouts/attachments" , attachments: excercise.option_pool.excercise_instructions, allow_delete: "No" if excercise.option_pool.excercise_instructions.present? %>
 
                 <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
             </div>
@@ -60,14 +60,14 @@
               <div class="form-group">
                 <%= form.label :quantity %>
                 <%= form.number_field :quantity, class: "form-control", data: {action: "change->excercise#onChange"}  %>
-                <small class="text-muted">Quantity defaults to the maximum <%= excercise.holding.excercisable_quantity %> that can be excercised per the <%= link_to "Vesting Schedule", excercise.esop_pool %></small> 
+                <small class="text-muted">Quantity defaults to the maximum <%= excercise.holding.excercisable_quantity %> that can be excercised per the <%= link_to "Vesting Schedule", excercise.option_pool %></small> 
               </div>
 
               <div class="form-group">
                 <%= form.label :price %>
                 <%= form.text_field :price, id: "price_disabled", class: "form-control", disabled: true  %>
                 <%= form.text_field :price, class: "form-control", hidden: true  %>
-                <small class="text-muted">The price specified in the <%= link_to "ESOP Pool", excercise.esop_pool %></small> 
+                <small class="text-muted">The price specified in the <%= link_to "Option Pool", excercise.option_pool %></small> 
               </div>
 
               <div class="form-group">
