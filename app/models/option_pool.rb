@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: option_pools
+#
+#  id                      :integer          not null, primary key
+#  name                    :string(255)
+#  start_date              :date
+#  number_of_options       :integer          default("0")
+#  excercise_price_cents   :decimal(20, 2)   default("0.00")
+#  excercise_period_months :integer          default("0")
+#  entity_id               :integer          not null
+#  funding_round_id        :integer
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  allocated_quantity      :integer          default("0")
+#  excercised_quantity     :integer          default("0")
+#  vested_quantity         :integer          default("0")
+#  lapsed_quantity         :integer          default("0")
+#  approved                :boolean          default("0")
+#
+
 class OptionPool < ApplicationRecord
   belongs_to :entity
   belongs_to :funding_round, optional: true

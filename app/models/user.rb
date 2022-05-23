@@ -28,6 +28,7 @@
 #  accept_terms           :boolean          default("0")
 #  whatsapp_enabled       :boolean          default("0")
 #  sale_notification      :boolean          default("0")
+#  curr_role              :string(20)
 #
 
 class User < ApplicationRecord
