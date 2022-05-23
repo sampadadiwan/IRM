@@ -46,29 +46,40 @@ class Holding < ApplicationRecord
   validate :allocation_allowed, if: -> { investment_instrument == 'Options' }
 
   before_create :update_value
-  before_update :update_quantity, if: -> { investment_instrument == 'Options' }
+  before_update :update_quantity
+
   after_save ->(_holding) { HoldingUpdateJob.perform_later(id) },
              if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
 
   def update_quantity
-    self.quantity = orig_grant_quantity - vested_quantity
+    self.quantity = if investment_instrument == 'Options'
+                      orig_grant_quantity - excercised_quantity
+                    else
+                      orig_grant_quantity - sold_quantity
+                    end
+    self.value_cents = quantity * price_cents
   end
 
   def update_value
-    if esop_pool
-      self.funding_round_id = esop_pool.funding_round_id if esop_pool
+    if investment_instrument == 'Options'
+      self.funding_round_id = esop_pool.funding_round_id
       self.price_cents = esop_pool.excercise_price_cents
-      self.orig_grant_quantity = quantity
     end
+    self.quantity = orig_grant_quantity
     self.value_cents = quantity * price_cents
   end
 
   def allocation_allowed
-    errors.add(:esop_pool, "Insufficiant available quantity in ESOP pool #{esop_pool.name}") if esop_pool && esop_pool.available_quantity < quantity
+    if new_record?
+      errors.add(:esop_pool, "Insufficiant available quantity in ESOP pool #{esop_pool.name}. #{esop_pool.available_quantity} < #{quantity}") if esop_pool && esop_pool.available_quantity < quantity
+    elsif esop_pool && esop_pool.available_quantity < (quantity - quantity_was)
+      errors.add(:esop_pool, "Insufficiant available quantity in ESOP pool #{esop_pool.name}. #{esop_pool.available_quantity} < #{quantity}")
+    end
   end
 
   def setup_investment
     self.investment = Investment.for(self).first
+    self.funding_round_id = esop_pool.funding_round_id if esop_pool
 
     if investment.nil?
       # Rails.logger.debug { "Updating investment for #{to_json}" }
@@ -107,8 +118,8 @@ class Holding < ApplicationRecord
     (grant_date + esop_pool.excercise_period_months.months) < Time.zone.today
   end
 
-  def lapsed_quantity
-    lapsed ? unexcercised_quantity : 0
+  def compute_lapsed_quantity
+    lapsed ? quantity : 0
   end
 
   def allowed_percentage
@@ -119,8 +130,7 @@ class Holding < ApplicationRecord
     percentage = allowed_percentage
 
     if percentage.positive?
-      # Get the already excercised quantity
-      (percentage * quantity / 100.0) - excercised_quantity
+      (percentage * orig_grant_quantity / 100.0)
     else
       0
     end

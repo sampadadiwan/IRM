@@ -21,7 +21,7 @@ FactoryBot.define do
   factory :esop_pool do
     name { "Pool #{rand(10)}" }
     start_date { Date.today - rand(2).years - rand(12).months }
-    number_of_options { 10000 * rand(1..5) }
+    number_of_options { 100000 * rand(1..5) }
     excercise_price_cents { 1000 * rand(1..10) }
     excercise_period_months { 12 * rand(2..4) }
   end
@@ -109,7 +109,7 @@ FactoryBot.define do
     user { User.all.sample }
     employee_id {(0...8).map { (65 + rand(26)).chr }.join}
     entity { Entity.all.sample }
-    quantity { rand(10) * 10000 }
+    orig_grant_quantity { rand(10) * 10000 }
     price_cents { rand(3..10) * 10000 }
     holding_type { "Employee" }
     value_cents { quantity * price_cents }

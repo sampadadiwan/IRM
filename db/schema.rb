@@ -408,7 +408,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_070444) do
     t.string "employee_id", limit: 20
     t.bigint "import_upload_id"
     t.boolean "fully_vested", default: false
+    t.integer "lapsed_quantity", default: 0
     t.integer "orig_grant_quantity", default: 0
+    t.integer "sold_quantity", default: 0
     t.bigint "created_from_excercise_id"
     t.index ["created_from_excercise_id"], name: "index_holdings_on_created_from_excercise_id"
     t.index ["entity_id"], name: "index_holdings_on_entity_id"

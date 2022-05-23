@@ -67,7 +67,7 @@
 
     @esop_pool.save
     puts "\n####Created Esop Pool####\n"
-    puts @esop_pool.to_json
+    puts @esop_pool.to_json(include: :vesting_schedules)
 
   end
   
@@ -100,14 +100,14 @@
   Given('the option grant date is {string} ago') do |months|
     @holding = Holding.last
     @holding.grant_date = Date.today - months.to_i.months - 1.day
-    @holding.save
+    @holding.save!
+    VestedJob.new.perform
   end
   
   Then('the vested amount should be {string}') do |qty|
-    VestedJob.new.perform
     @holding.reload
     @esop_pool.reload
-    puts "@esop_pool.lapsed_quantity: #{@esop_pool.lapsed_quantity}"
+    puts "@esop_pool.vested_quantity: #{@esop_pool.vested_quantity}, @holding.vested_quantity: #{@holding.vested_quantity}"
     @holding.vested_quantity.should == qty.to_f
     @esop_pool.vested_quantity.should == qty.to_f
   end
@@ -121,6 +121,51 @@ Then('the lapsed amount should be {string}') do |qty|
   @holding.reload
   @holding.lapsed_quantity.should == qty.to_f
 end
+
+Then('the unexcercised amount should be {string}') do |qty|
+  puts "@esop_pool.unexcercised_quantity: #{@esop_pool.unexcercised_quantity}"
+  @holding.unexcercised_quantity.should == qty.to_f
+  @esop_pool.unexcercised_quantity.should == qty.to_f
+end
+
+Then('when the option is excercised {string}') do |args|
+  @holding.reload
+  puts @holding.to_json
+
+  @excercise = Excercise.new(entity_id: @holding.entity_id, holding_id: @holding.id, quantity: @holding.vested_quantity, esop_pool_id: @esop_pool.id, user_id: @holding.user.id, price_cents: @esop_pool.excercise_price_cents, amount: @esop_pool.excercise_price_cents * @holding.vested_quantity)
+
+  key_values(@excercise, args)
+  @excercise.save!
+
+  puts "\n####Excercise####\n"
+  puts @excercise.to_json
+
+end
+
+Then('the excercise is approved') do
+  @excercise.approved = true
+  @excercise.save
+  @excercise.reload
+end
+
+
+Then('the excercise must be created') do
+  
+end
+
+Then('the esop pool must be updated with the excercised amount') do
+  puts @holding.reload.to_json
+  puts @esop_pool.reload.to_json
+  @esop_pool.excercised_quantity.should == @excercise.quantity
+end
+
+Then('the option holding must be updated with the excercised amount') do
+  @holding.reload
+  @holding.excercised_quantity.should == @excercise.quantity
+  @holding.quantity.should == @holding.orig_grant_quantity - @excercise.quantity 
+end
+
+
 
   
   

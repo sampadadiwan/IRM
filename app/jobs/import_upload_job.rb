@@ -88,7 +88,7 @@ class ImportUploadJob < ApplicationJob
     price_cents = ep ? ep.excercise_price_cents : user_data["Price"].to_f * 100
 
     holding = Holding.new(user:, investor:, holding_type: user_data["Founder or Employee"],
-                          entity_id: import_upload.owner_id, quantity: user_data["Quantity"],
+                          entity_id: import_upload.owner_id, orig_grant_quantity: user_data["Quantity"],
                           price_cents:, employee_id: user_data["Employee ID"],
                           investment_instrument: user_data["Instrument"],
                           funding_round: fr, esop_pool: ep,

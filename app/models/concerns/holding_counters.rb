@@ -38,7 +38,7 @@ module HoldingCounters
 
     counter_culture :esop_pool,
                     column_name: proc { |h| h.update_esop_pool? ? 'allocated_quantity' : nil },
-                    delta_column: 'quantity'
+                    delta_column: 'orig_grant_quantity' # quantity keeps getting smaller as excercises happen, but the original grant quantity is what we want to count as allocated
   end
 
   def call_counter_cache?

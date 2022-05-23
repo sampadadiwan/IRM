@@ -168,7 +168,8 @@ namespace :irm do
         inv = e.investors.not_holding.sample
         (1..3).each do
           round = FactoryBot.create(:funding_round, entity: e) if rand(10) < 2 
-          i = FactoryBot.create(:investment, investee_entity: e, investor: inv, 
+          instrument = ["Equity", "Preferred"][rand(2)]
+          i = FactoryBot.create(:investment, investee_entity: e, investor: inv, investment_instrument: instrument,
               funding_round: round, scenario: scenario, notes: "generateFakeInvestments")
           puts "Investment #{i.to_json}"
         end
@@ -202,7 +203,7 @@ namespace :irm do
           # 10 + 20 + 30 + 40
           pool.vesting_schedules << pool.vesting_schedules.build(months_from_grant: i*12, vesting_percent: 10*i, entity_id: e.id)
         end
-        pool.save
+        pool.save!  
       end
     end
 
@@ -232,7 +233,7 @@ namespace :irm do
           end
 
           Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
-              quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000, 
+              orig_grant_quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000, 
               employee_id: SecureRandom.alphanumeric,
               investment_instrument: investment_instrument, esop_pool: pool, grant_date: grant_date,
               holding_type: investor.category, funding_round: funding_round)

@@ -32,11 +32,13 @@ class EsopPool < ApplicationRecord
   end
 
   def get_allowed_percentage(grant_date)
+    Rails.logger.debug "called get_allowed_percentage"
     # Find the percentage that can be excercised
     schedules = vesting_schedules.order(months_from_grant: :asc)
     allowed_percentage = 0
 
     schedules.each do |sched|
+      Rails.logger.debug { "Grant date: #{grant_date}, Schedule months_from_grant: #{sched.months_from_grant}" }
       allowed_percentage += sched.vesting_percent if grant_date + sched.months_from_grant.months <= Time.zone.now
     end
 
