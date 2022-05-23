@@ -18,7 +18,7 @@ module InvestmentConcern
 
       @investment.investment_instrument = instrument
       @investment.quantity = quantity
-      @investment.price = price
+      @investment.price_cents = price.to_f * 100
       @investment.liquidation_preference = liquidation_preference
 
       authorize @investment

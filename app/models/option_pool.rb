@@ -21,6 +21,8 @@ class OptionPool < ApplicationRecord
 
   monetize :excercise_price_cents, with_currency: ->(i) { i.entity.currency }
 
+  scope :approved, -> { where(approved: true) }
+
   def setup_funding_round
     self.funding_round = FundingRound.create(name:, currency: entity.currency, entity_id:, status: "Open")
   end

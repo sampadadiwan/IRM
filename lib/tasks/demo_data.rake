@@ -217,8 +217,7 @@ namespace :irm do
         InvestorAccess.create!(investor:investor, user: user, email: user.email, 
           approved: false, entity_id: investor.investee_entity_id)
 
-
-        funding_round = investor.investee_entity.funding_rounds.where("funding_rounds.name not like 'Pool%'").sample
+      
 
         (1..3).each do |i|
 
@@ -229,14 +228,16 @@ namespace :irm do
             grant_date = Date.today - rand(36).months
           else 
             pool = nil
+            funding_round = investor.investee_entity.funding_rounds.where("funding_rounds.name not like 'Pool%'").sample
             grant_date = nil
           end
-
-          Holding.create!(user: user, entity: investor.investee_entity, investor_id: investor.id, 
+    
+          Holding.create(user: user, entity: investor.investee_entity, investor_id: investor.id, 
               orig_grant_quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000, 
-              employee_id: SecureRandom.alphanumeric,
+              employee_id: (0...8).map { (65 + rand(26)).chr }.join,
               investment_instrument: investment_instrument, option_pool: pool, grant_date: grant_date,
               holding_type: investor.category, funding_round: funding_round)
+      
         end
       end
     end
@@ -279,7 +280,7 @@ namespace :irm do
       3.times do
         deal = FactoryBot.create(:deal, entity: e)
         puts "Deal #{deal.id}"
-        deal.entity.investors.where("category <> 'Employee'").each do |inv|
+        deal.entity.investors.not_holding.each do |inv|
           di = FactoryBot.create(:deal_investor, investor: inv, entity: e, deal: deal)
           puts "DealInvestor #{di.id} for investor #{inv.id}"
           (1..rand(10)).each do

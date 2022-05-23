@@ -37,7 +37,7 @@ ActionController::Base.allow_rescue = false
 
 begin
   DatabaseCleaner.strategy = :truncation
-  Chewy.strategy :atomic
+  Chewy.strategy :bypass
 
   UserIndex.reset!
   EntityIndex.reset!

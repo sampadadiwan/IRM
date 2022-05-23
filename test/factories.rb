@@ -24,6 +24,7 @@ FactoryBot.define do
     number_of_options { 100000 * rand(1..5) }
     excercise_price_cents { 1000 * rand(1..10) }
     excercise_period_months { 12 * rand(5..10) }
+    approved {true}
   end
 
   factory :aggregate_investment do

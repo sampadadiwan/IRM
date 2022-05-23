@@ -800,8 +800,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_23_135200) do
     t.index ["option_pool_id"], name: "index_vesting_schedules_on_option_pool_id"
   end
 
-  add_foreign_key "access_rights", "entities"
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aggregate_investments", "entities"
   add_foreign_key "aggregate_investments", "investors"

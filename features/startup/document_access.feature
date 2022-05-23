@@ -51,11 +51,11 @@ Scenario Outline: Access Document as Investor with access
 
   Examples:
   	|should	    |entity               |document   | access_right                                                         | investor_access |
-  	|true  	    |entity_type=Startup  |name=Test | access_type=Document;access_to_investor_id=3;metadata=All          | approved=1 |
+  	|true  	    |entity_type=Startup  |name=Test | access_type=Document;access_to_investor_id=4;metadata=All          | approved=1 |
     |true  	    |entity_type=Startup  |name=Test | access_type=Document;access_to_category=Lead Investor;metadata=All | approved=1 |
 	  |false      |entity_type=Startup  |name=Test | access_type=Document;access_to_investor_id=1;metadata=All          | approved=1 |
     |false      |entity_type=Startup  |name=Test | access_type=Document;access_to_category=Co-Investor;metadata=All   | approved=1 |
-	  |false      |entity_type=Startup  |name=Test | access_type=Document;access_to_investor_id=3;metadata=All          | approved=0 |
+	  |false      |entity_type=Startup  |name=Test | access_type=Document;access_to_investor_id=4;metadata=All          | approved=0 |
     |false      |entity_type=Startup  |name=Test | access_type=Document;access_to_category=Lead Investor;metadata=All | approved=0 |
 
 

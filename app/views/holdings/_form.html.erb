@@ -57,7 +57,7 @@
 
     <div class="form-group option_pool_group">
       <%= form.label :option_pool_id, "Option Pool" %>
-      <%= form.select :option_pool_id, current_user.entity.option_pools.map {|u| [u.name, u.id]},
+      <%= form.select :option_pool_id, current_user.entity.option_pools.approved.map {|u| [u.name, u.id]},
         {include_blank: true}, {class: "form-control"} %>
       <small class="text-muted">Create a <%= link_to "New Option Pool", new_option_pool_path %></small> 
 

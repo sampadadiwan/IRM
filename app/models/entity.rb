@@ -133,6 +133,14 @@ class Entity < ApplicationRecord
     i = Investor.create(investor_name: "#{name} - Founders", investor_entity_id: id,
                         investee_entity_id: id, category: "Founder", is_holdings_entity: true)
     Rails.logger.debug { "Created Investor for Founder Holding entity #{i.investor_name} #{i.id} for #{name}" }
+
+    e = Entity.create(name: "#{name} - Trust", entity_type: "Holding",
+                      is_holdings_entity: true, active: true, parent_entity_id: id)
+    Rails.logger.debug { "Created Trust Holding entity #{e.name} #{e.id} for #{name}" }
+
+    i = Investor.create(investor_name: "#{name} - ESOP Trust", investor_entity_id: e.id,
+                        investee_entity_id: id, category: "Trust", is_holdings_entity: true)
+    Rails.logger.debug { "Created Investor for Trust Holding entity #{i.investor_name} #{i.id} for #{name}" }
   end
 
   # Setup the person who created this entity as belonging to this entity

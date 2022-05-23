@@ -17,9 +17,9 @@ Scenario Outline: Create new investment
 
   Examples:
   	|user	      |entity               |investor     |investment                                                                                                             |msg	|
-  	|  	        |entity_type=Startup  |name=Sequoia |category=Lead Investor;investment_instrument=Equity;quantity=100;price_cents=1000;investor_id=3     |Investment was successfully created|
-    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Preferred;quantity=80;price_cents=2000;investor_id=3     |Investment was successfully created|
-    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Options;quantity=80;price_cents=2000;investor_id=3     |Investment was successfully created|
+  	|  	        |entity_type=Startup  |name=Sequoia |category=Lead Investor;investment_instrument=Equity;quantity=100;price_cents=1000;investor_id=4     |Investment was successfully created|
+    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Preferred;quantity=80;price_cents=2000;investor_id=4     |Investment was successfully created|
+    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Options;quantity=80;price_cents=2000;investor_id=4     |Investment was successfully created|
 
 
 Scenario Outline: Create new investment
@@ -50,8 +50,8 @@ Scenario Outline: Edit investment
 
   Examples:
   	|user	      |entity               |investor     |investment                                                                                                             |msg	|
-  	|  	        |entity_type=Startup  |name=Sequoia |category=Lead Investor;investment_instrument=Equity;quantity=100;price_cents=1000;investor_id=3     |Investment was successfully created|
-    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Preferred;quantity=80;price_cents=2000;investor_id=3     |Investment was successfully created|
+  	|  	        |entity_type=Startup  |name=Sequoia |category=Lead Investor;investment_instrument=Equity;quantity=100;price_cents=1000;investor_id=4     |Investment was successfully created|
+    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Preferred;quantity=80;price_cents=2000;investor_id=4     |Investment was successfully created|
 
 
 Scenario Outline: Create new holding
