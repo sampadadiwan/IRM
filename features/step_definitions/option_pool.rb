@@ -171,6 +171,27 @@ Then('the option pool must have {string}') do |args|
 
 end
 
+Then('the holding must have {string}') do |args|
+  holding = Hash.new
+  key_values(holding, args)
+  
+  @holding.reload
+  puts "@holding.unexcercised_quantity #{@holding.unexcercised_quantity}"
+  puts "@holding.lapsed_quantity #{@holding.lapsed_quantity}"
+  puts "@holding.excercised_quantity #{@holding.excercised_quantity}"
+  
+
+  @holding.vested_quantity.should == holding["vested_quantity"].to_i
+  @holding.lapsed_quantity.should == holding["lapsed_quantity"].to_i
+  @holding.excercised_quantity.should == holding["excercised_quantity"].to_i
+  @holding.unexcercised_quantity.should == holding["unexcercised_quantity"].to_i
+  @holding.unvested_quantity.should == holding["unvested_quantity"].to_i
+  @holding.quantity.should == holding["quantity"].to_i
+
+end
+
+
+
 
 Then('the excercise must be created') do
   

@@ -55,12 +55,17 @@ Scenario Outline:  Options vested
   And there is an option holding "orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
   And the option grant date is "<months>" ago
   Then the option pool must have "<option_pool_quantites>"
+  Then the holding must have "<holding_quantites>"
 Examples:
-    |entity               |option_pool                            |schedule           | months  | option_pool_quantites | 
-    |entity_type=Startup  |name=Pool 123;number_of_options=10000  |12:20,24:30,36:50  | 10      | allocated_quantity=1000;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0         |
-    |entity_type=Startup  |name=Pool 123;number_of_options=10000  |12:20,24:30,36:50  | 12      | allocated_quantity=1000;vested_quantity=200;unvested_quantity=9800;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=200         |
-    |entity_type=Startup  |name=Pool 567;number_of_options=80000  |12:20,24:30,36:50  | 24      | allocated_quantity=1000;vested_quantity=500;unvested_quantity=79500;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=500         |
-    |entity_type=Startup  |name=Pool 567;number_of_options=80000  |12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;unvested_quantity=79000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=1000         |
+    |entity               |option_pool                            |schedule           | months | option_pool_quantites | holding_quantites |
+    
+    |entity_type=Startup  |name=Pool 123;number_of_options=10000  |12:20,24:30,36:50  | 10     | allocated_quantity=1000;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0    | quantity=1000;vested_quantity=0;unvested_quantity=1000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0     |
+    
+    |entity_type=Startup  |name=Pool 123;number_of_options=10000  |12:20,24:30,36:50  | 12     | allocated_quantity=1000;vested_quantity=200;unvested_quantity=9800;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=200   | quantity=1000;vested_quantity=200;unvested_quantity=800;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=200    |
+    
+    |entity_type=Startup  |name=Pool 567;number_of_options=80000  |12:20,24:30,36:50  | 24     | allocated_quantity=1000;vested_quantity=500;unvested_quantity=79500;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=500  | quantity=1000;vested_quantity=500;unvested_quantity=500;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=500    |
+    
+    |entity_type=Startup  |name=Pool 567;number_of_options=80000  |12:20,24:30,36:50  | 36     | allocated_quantity=1000;vested_quantity=1000;unvested_quantity=79000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=1000 | quantity=1000;vested_quantity=1000;unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=1000     |
 
 
 Scenario Outline:  Options lapsed
@@ -70,12 +75,17 @@ Scenario Outline:  Options lapsed
   And there is an option holding "orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
   And the option grant date is "<months>" ago
   Then the option pool must have "<option_pool_quantites>"
+  Then the holding must have "<holding_quantites>"
 Examples:
-    |entity               |option_pool                 |schedule           | months  | option_pool_quantites |
-    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 10      | allocated_quantity=1000;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0             | 
-    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 12      | allocated_quantity=1000;vested_quantity=200;unvested_quantity=9800;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=200           | 
-    |entity_type=Startup  |excercise_period_months=24;number_of_options=10000|12:20,24:30,36:50  | 24      | allocated_quantity=1000;vested_quantity=500;unvested_quantity=9500;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=500           |
-    |entity_type=Startup  |excercise_period_months=36;number_of_options=10000|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;unvested_quantity=9000;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=1000           |
+    |entity               |option_pool                    |schedule           | months  | option_pool_quantites | holding_quantites | 
+    
+    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 10      | allocated_quantity=1000;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0  | quantity=1000;vested_quantity=0;unvested_quantity=1000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0   | 
+    
+    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 12      | allocated_quantity=1000;vested_quantity=200;unvested_quantity=9800;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=200  | quantity=1000;vested_quantity=200;unvested_quantity=800;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=200   |
+    
+    |entity_type=Startup  |excercise_period_months=24;number_of_options=10000|12:20,24:30,36:50  | 24      | allocated_quantity=1000;vested_quantity=500;unvested_quantity=9500;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=500 | quantity=1000;vested_quantity=500;unvested_quantity=500;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=500 |
+    
+    |entity_type=Startup  |excercise_period_months=36;number_of_options=10000|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;unvested_quantity=9000;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=1000 | quantity=1000;vested_quantity=1000;unvested_quantity=0;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=1000 |
 
 
 Scenario Outline:  Options Excercised
@@ -87,10 +97,13 @@ Scenario Outline:  Options Excercised
   Then when the option is excercised "approved=false"
   And the excercise is approved
   Then the option pool must have "<option_pool_quantites>"
-
+  Then the holding must have "<holding_quantites>"
 
 Examples:
-    |entity               |option_pool                                      |schedule            | months  | option_pool_quantites |
-    |entity_type=Startup  |number_of_options=10000;excercise_period_months=98|12:20,24:30,36:50  | 12      | allocated_quantity=1000;vested_quantity=200;unvested_quantity=9800;lapsed_quantity=0;excercised_quantity=200;unexcercised_quantity=0     |
-    |entity_type=Startup  |number_of_options=10000;excercise_period_months=90|12:20,24:30,36:50  | 24      | allocated_quantity=1000;vested_quantity=500;unvested_quantity=9500;lapsed_quantity=0;excercised_quantity=500;unexcercised_quantity=0     |
-    |entity_type=Startup  |number_of_options=10000;excercise_period_months=98|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;unvested_quantity=9000;lapsed_quantity=0;excercised_quantity=1000;unexcercised_quantity=0    |
+    |entity               |option_pool                                      |schedule            | months  | option_pool_quantites | holding_quantites |
+    
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=98|12:20,24:30,36:50  | 12      | allocated_quantity=1000;vested_quantity=200;unvested_quantity=9800;lapsed_quantity=0;excercised_quantity=200;unexcercised_quantity=0     | quantity=800;vested_quantity=200;unvested_quantity=800;lapsed_quantity=0;excercised_quantity=200;unexcercised_quantity=0 |
+
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=90|12:20,24:30,36:50  | 24      | allocated_quantity=1000;vested_quantity=500;unvested_quantity=9500;lapsed_quantity=0;excercised_quantity=500;unexcercised_quantity=0     | quantity=500;vested_quantity=500;unvested_quantity=500;lapsed_quantity=0;excercised_quantity=500;unexcercised_quantity=0 |
+    
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=98|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;unvested_quantity=9000;lapsed_quantity=0;excercised_quantity=1000;unexcercised_quantity=0    | quantity=0;vested_quantity=1000;unvested_quantity=0;lapsed_quantity=0;excercised_quantity=1000;unexcercised_quantity=0  |
