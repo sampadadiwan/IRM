@@ -1,3 +1,5 @@
+<% if current_user.holdings.count > 0 %>
+
 <%= turbo_frame_tag "employee_calc" do %>
   <%  price_growth, tax_rate, estimated_taxes, estimated_profit, 
       cost_neutral_sale, last_valuation = 
@@ -67,4 +69,6 @@
 
     </form>
 
-    <% end %>
+<% end %>
+
+<% end %>

@@ -159,12 +159,12 @@ Given('there are {string} employee investors') do |arg|
 end
 
 Given('Given I create a holding for each employee with quantity {string}') do |arg|
-  @holding_quantity = arg.to_i
+  @holding_orig_grant_quantity = arg.to_i
   @entity.investor_accesses.each do |emp|
     visit(investor_url(@holdings_investor))
     click_on("Employee Investors")
     find("#investor_access_#{emp.id}").click_link("Add Holding")
-    fill_in('holding_quantity', with: @holding_quantity)
+    fill_in('holding_orig_grant_quantity', with: @holding_orig_grant_quantity)
     fill_in('holding_price', with: 1000*emp.user_id)
     select("Equity", from: "holding_investment_instrument")
     select(@funding_round.name, from: "holding_funding_round_id")
@@ -182,9 +182,10 @@ Then('There should be a corresponding holdings created for each employee') do
   @investor_entity.employees.each do |emp|
     emp.holdings.count.should == 1
     holding = emp.holdings.first
-    holding.quantity.should == @holding_quantity
+    holding.orig_grant_quantity.should == @holding_orig_grant_quantity
+    holding.quantity.should == @holding_orig_grant_quantity
     holding.price_cents.should == 1000 * 100 * emp.id    
-    holding.value_cents.should == @holding_quantity * 1000 * 100 * emp.id
+    holding.value_cents.should == @holding_orig_grant_quantity * 1000 * 100 * emp.id
     holding.holding_type.should == "Employee"
     holding.entity_id.should == @entity.id
     holding.investment_instrument.should == "Equity"
@@ -449,7 +450,7 @@ end
 
 Then('There should be {string} holdings created') do |count|
   Holding.count.should == count.to_i
-  Holding.all.sum(:quantity).should == 1000
+  Holding.all.sum(:quantity).should == 1700
   Holding.all.each do |h|
     h.investor.category.should == h.holding_type
     h.user.entity_id.should == h.investor.investor_entity_id

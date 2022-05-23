@@ -2,12 +2,14 @@ class HoldingSummary
   def initialize(params, user)
     @params = params
     @user = user
-    entity_id = params[:entity_id].presence || user.holdings.first.entity_id
+    # This is an employee - so find his parent company
+
+    entity_id = params[:entity_id].presence || user.employee_parent_entity&.id
     @entity = Entity.find(entity_id)
   end
 
   def estimated_profits(price_growth)
-    profits = 0
+    profits = Money.new(0, @entity.currency)
 
     @holdings ||= @user.holdings.options.where(entity_id: @entity.id).includes(esop_pool: :entity, entity: :valuations)
 
@@ -15,6 +17,7 @@ class HoldingSummary
       per_share_value = holding.entity.valuations.last.per_share_value
       profits += ((per_share_value * price_growth) - holding.esop_pool.excercise_price) * holding.quantity
     end
+
     profits
   end
 

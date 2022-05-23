@@ -132,4 +132,8 @@ class User < ApplicationRecord
   def reset_password?
     sign_in_count == 1 && system_created
   end
+
+  def employee_parent_entity
+    entity.investees.first&.investor_entity
+  end
 end

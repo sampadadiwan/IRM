@@ -16,7 +16,7 @@
         </div>
 
         <% 
-            entity_id = params[:entity_id].presence || current_user.holdings.first.entity_id
+            entity_id = params[:entity_id].presence || current_user.employee_parent_entity&.id
             entity = Entity.find(entity_id)
         %>
 
