@@ -34,7 +34,7 @@ class OptionPoolPolicy < ApplicationPolicy
   end
 
   def destroy?
-    update?
+    false
   end
 
   def approve?

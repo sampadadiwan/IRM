@@ -50,6 +50,7 @@ module HoldingCounters
   def update_option_pool?
     investment.scenario.actual? &&
       INVESTMENT_FOR.include?(holding_type) &&
-      investment_instrument == "Options"
+      investment_instrument == "Options" &&
+      !cancelled
   end
 end

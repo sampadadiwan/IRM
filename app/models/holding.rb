@@ -143,6 +143,7 @@ class Holding < ApplicationRecord
   def excercisable?
     investment_instrument == "Options" &&
       vested_quantity.positive? &&
+      !cancelled &&
       !lapsed
   end
 

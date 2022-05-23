@@ -1,5 +1,5 @@
 class HoldingsController < ApplicationController
-  before_action :set_holding, only: %i[show edit update destroy]
+  before_action :set_holding, only: %i[show edit update destroy cancel]
   after_action :verify_authorized, except: %i[employee_calc index]
 
   # GET /holdings or /holdings.json
@@ -91,6 +91,19 @@ class HoldingsController < ApplicationController
   end
 
   def employee_calc; end
+
+  def cancel
+    @holding.cancelled = true
+    respond_to do |format|
+      if @holding.save
+        format.html { redirect_to holding_url(@holding), notice: "Holding was successfully cancelled." }
+        format.json { render :show, status: :created, location: @holding }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @holding.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   private
 

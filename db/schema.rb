@@ -394,6 +394,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_23_135200) do
     t.integer "orig_grant_quantity", default: 0
     t.integer "sold_quantity", default: 0
     t.bigint "created_from_excercise_id"
+    t.boolean "cancelled", default: false
     t.index ["created_from_excercise_id"], name: "index_holdings_on_created_from_excercise_id"
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
     t.index ["funding_round_id"], name: "index_holdings_on_funding_round_id"

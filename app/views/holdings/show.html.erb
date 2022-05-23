@@ -64,6 +64,11 @@
       </td>
       <td>
         <%= custom_format_number @holding.quantity, params %>
+        <% if @holding.cancelled %>
+          <span class="badge bg-danger">
+            Cancelled
+          </span>
+        <% end %>
       </td>
     </tr>
     
@@ -182,7 +187,7 @@
   <div>
     <% if policy(@holding).update? %>
       <%= link_to "Edit" , edit_holding_path(@holding), {class: "btn btn-primary" } %> |
-      <%= button_to "Delete" , @holding, method: :delete, class: "btn btn-danger" , form_class: "deleteButton", data: {action: "click->confirm#delete", turbo:false}  %>
+      <%= button_to "Cancel" , cancel_holding_path(@holding), method: :patch, class: "btn btn-danger" , form_class: "deleteButton", data: {turbo:false}  %>
     <% end %>
 
     <% if policy(@holding).excercise? && @holding.excercisable? %>

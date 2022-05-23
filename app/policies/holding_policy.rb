@@ -39,18 +39,25 @@ class HoldingPolicy < ApplicationPolicy
 
   def update?
     # Only employee holdings can be and only if its not excercised
-    create? && record.holding_type != "Investor" && record.excercised_quantity.zero?
+    create? &&
+      record.holding_type != "Investor" &&
+      record.excercised_quantity.zero? &&
+      !record.cancelled
   end
 
   def edit?
-    create?
+    update?
   end
 
   def destroy?
-    create?
+    false
   end
 
   def excercise?
     record.user_id == user.id
+  end
+
+  def cancel?
+    create?
   end
 end
