@@ -120,14 +120,14 @@ class Investment < ApplicationRecord
       if holding
         # Since there is only 1 holding per Investor Investment
         # Just assign the quantityand price
-        holding.quantity = quantity
+        holding.orig_grant_quantity = quantity
         holding.price = price
       else
         holding = holdings.build(entity_id: investee_entity_id, investor_id:,
                                  funding_round_id:,
                                  holding_type: "Investor",
                                  investment_instrument:,
-                                 quantity:, price:, value: amount)
+                                 orig_grant_quantity: quantity, price:, value: amount)
       end
 
       holding.save!

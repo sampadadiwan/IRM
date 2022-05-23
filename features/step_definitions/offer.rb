@@ -56,6 +56,10 @@
   end
   
   Then('when I submit the offer') do 
+
+    puts "\n####Offer####\n"
+    puts @offer.to_json
+
     fill_in("offer_quantity", with: @offer.quantity)
     click_on("Next")
     fill_in("offer_first_name", with: @offer.first_name)
@@ -67,7 +71,8 @@
     fill_in("offer_bank_routing_info", with: @offer.bank_routing_info)
     click_on("Next")
     click_on("Save")
-    sleep(1)
+    sleep(5)
+
   end
 
   Then('when I place an offer {string}') do |arg|

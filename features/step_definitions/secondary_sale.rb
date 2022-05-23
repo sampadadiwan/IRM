@@ -49,6 +49,8 @@
       expect(page).to have_content(@input_sale.min_price)
       expect(page).to have_content(@input_sale.max_price)
     end
+    puts "\n####Sale####\n"
+    puts @sale.to_json
   end
   
   Then('I should see the sale in all sales page') do

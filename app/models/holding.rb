@@ -61,7 +61,7 @@ class Holding < ApplicationRecord
   end
 
   def update_value
-    if investment_instrument == 'Options'
+    if esop_pool
       self.funding_round_id = esop_pool.funding_round_id
       self.price_cents = esop_pool.excercise_price_cents
     end
