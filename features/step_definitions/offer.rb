@@ -71,7 +71,7 @@
     fill_in("offer_bank_routing_info", with: @offer.bank_routing_info)
     click_on("Next")
     click_on("Save")
-    sleep(5)
+    sleep(1)
 
   end
 

@@ -445,7 +445,7 @@ Given('Given I upload a holdings file') do
   fill_in('import_upload_name', with: "Test Upload")
   attach_file('import_upload_import_file', File.absolute_path('./public/sample_uploads/holdings.xlsx'))
   click_on("Save")
-  sleep(5)
+  sleep(10)
 end
 
 Then('There should be {string} holdings created') do |count|
@@ -462,5 +462,5 @@ Then('There should be {string} users created for the holdings') do |count|
 end
 
 Then('There should be {string} Investments created for the holdings') do |count|
-  Investment.count.should == count.to_i
+  Investment.count.should == count.to_i  
 end

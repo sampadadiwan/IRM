@@ -73,7 +73,7 @@ Scenario Outline: Import holding
   Then I should see the "Import upload was successfully created"
   Then There should be "6" holdings created
   And There should be "6" users created for the holdings  
-  And There should be "6" Investments created for the holdings
+  And There should be "5" Investments created for the holdings
   And Investments is updated with the holdings 
   And the funding round must be updated with the investment
   And the entity must be updated with the investment  
