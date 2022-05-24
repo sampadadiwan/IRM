@@ -94,7 +94,10 @@ class InvestmentsController < ApplicationController
 
     saved_count = 0
     Investment.transaction do
-      investments.each { |i| inv = SaveInvestment.call(i).result; saved_count += 1 unless inv.errors.any? }
+      investments.each do |i|
+        inv = SaveInvestment.call(i).result
+        saved_count += 1 unless inv.errors.any?
+      end
     end
 
     respond_to do |format|
