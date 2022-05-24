@@ -42,10 +42,10 @@
     </td>
     
     <td class="hideMobP">
-      <%= l holding.grant_date %>
+      <%= l holding.grant_date if holding.grant_date %>
     </td>
     <td class="hideMobP">
-      <%=  Time.zone.today.year * 12 + Time.zone.today.month  - holding.grant_date.year * 12 - holding.grant_date.month  %> 
+      <%=  Time.zone.today.year * 12 + Time.zone.today.month  - holding.grant_date.year * 12 - holding.grant_date.month  if holding.grant_date %> 
     </td>
   <% end %>
 

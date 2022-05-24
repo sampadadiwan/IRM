@@ -1,7 +1,7 @@
 Feature: Investment
   Can create and view an investment as a startup
 
-Scenario Outline: Create new investment
+Scenario Outline: Create new investment Equity & Preferred
   Given Im logged in as a user "<user>" for an entity "<entity>"
   Given there is an existing investor "<investor>"
   And I am at the investments page
@@ -16,9 +16,38 @@ Scenario Outline: Create new investment
   And the aggregate investments must be created
 
   Examples:
-  	|user	      |entity               |investor     |investment                                                                                                             |msg	|
+  	|user	      |entity               |investor     |investment                                   |msg	|
   	|  	        |entity_type=Startup  |name=Sequoia |category=Lead Investor;investment_instrument=Equity;quantity=100;price_cents=1000;investor_id=4     |Investment was successfully created|
     |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Preferred;quantity=80;price_cents=2000;investor_id=4     |Investment was successfully created|
+
+Scenario Outline: Create new investment Option Fails
+  Given Im logged in as a user "<user>" for an entity "<entity>"
+  Given there is an existing investor "<investor>"
+  And I am at the investments page
+  And I create an investment "<investment>"
+  Then I should see the "<msg>"
+
+  Examples:
+  	|user	      |entity               |investor     |investment                                    |msg	|
+    |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Options;quantity=80;price_cents=2000;investor_id=4     |not associated with Option Pool|
+
+
+Scenario Outline: Create new investment Options
+  Given Im logged in as a user "<user>" for an entity "<entity>"
+  Given a esop pool "name=Pool 1;approved=true" is created with vesting schedule "12:20,24:30,36:50"
+  Given there is an existing investor "<investor>"
+  And I am at the investments page
+  And I create an investment "<investment>"
+  Then I should see the "<msg>"
+  And an investment should be created
+  And I should see the investment details on the details page
+  And I should see the investment in all investments page
+  And a holding should be created for the investor  
+  And the funding round must be updated with the investment
+  And the entity must be updated with the investment  
+  And the aggregate investments must be created
+Examples:
+  	|user	      |entity               |investor     |investment                                    |msg	|
     |  	        |entity_type=Startup  |name=Bearing |category=Co-Investor;investment_instrument=Options;quantity=80;price_cents=2000;investor_id=4     |Investment was successfully created|
 
 

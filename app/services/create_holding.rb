@@ -8,7 +8,7 @@ class CreateHolding < Patterns::Service
       update_value
       setup_investment
       update_trust_holdings
-      holding.save!
+      holding.save
     end
     holding
   end
@@ -27,8 +27,12 @@ class CreateHolding < Patterns::Service
   end
 
   def update_trust_holdings
-    if holding.investment_instrument == 'Options'
-      trust_investor = holding.entity.trust_company
+    trust_investor = holding.entity.trust_investor
+    if  holding.investment_instrument == 'Options' &&
+        # This is a hack, when we update the trust investment -> Which updates the holdings -> We dont want it reducing the quantity here. I know I will forget this at sometime in the future.
+        holding.investor_id != trust_investor.id &&
+        holding.option_pool
+
       pool_investment = trust_investor.investments.first
       pool_investment.quantity -= holding.quantity
       pool_investment.save!

@@ -39,17 +39,17 @@
 
 Then('the trust company must have the investment') do
   puts "\n####Trust Company####\n"
-  puts @created.entity.trust_company.to_json
+  puts @created.entity.trust_investor.to_json
   puts "\n####Trust Company Investments####\n"
-  puts @created.entity.trust_company.investments.to_json
+  puts @created.entity.trust_investor.investments.to_json
 
-  @trust_investment = @created.entity.trust_company.investments.first
+  @trust_investment = @created.entity.trust_investor.investments.first
   @trust_investment.should_not be_nil
   @trust_investment.quantity.should == @created.trust_quantity
 end
 
 Then('the trust company must have no investment') do
-  @trust_investment = @created.entity.trust_company.investments.first
+  @trust_investment = @created.entity.trust_investor.investments.first
   @trust_investment.should be_nil
 end
 

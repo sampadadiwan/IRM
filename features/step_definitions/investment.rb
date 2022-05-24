@@ -5,7 +5,7 @@ Given('I am at the investments page') do
 end
 
 Given('I create an investment {string}') do |arg1|
-  @funding_round ||= FactoryBot.create(:funding_round, entity: @entity)
+  @funding_round ||= FundingRound.last.presence || FactoryBot.create(:funding_round, entity: @entity)
   @investment = FactoryBot.build(:investment, investee_entity: @entity, 
                       investment_type: @funding_round.name, funding_round: @funding_round)
   @investment.currency = @entity.currency
@@ -95,7 +95,8 @@ Given('given there is a investment {string} for the entity') do |arg1|
   @investment.currency = @entity.currency
   @investment.scenario = @investment.actual_scenario
   key_values(@investment, arg1)
-  @investment.save!
+  @investment = SaveInvestment.call(@investment).result
+
   puts "\n####Investment####\n"
   puts @investment.to_json
 end
@@ -131,9 +132,9 @@ end
 
 Then('a holding should be created for the investor') do
   sleep(1)
-  @holding = Holding.last
+  @holding = @investment.investor.holdings.last
   puts "\n####Holding####\n"
-  puts @holding.to_json
+  puts Holding.last.to_json
 
   @holding.quantity.should == @investment.quantity
   @holding.investment_instrument.should == @investment.investment_instrument
@@ -262,7 +263,8 @@ Given('there are {string} investments {string}') do |count, args|
     i = FactoryBot.build(:investment, investee_entity: @entity, investor: Investor.not_holding.sample, 
       funding_round: @funding_round, scenario: @entity.actual_scenario)
     key_values(i, args)
-    i.save!
+    
+    i = SaveInvestment.call(i).result
     puts "\n####Investment Created####\n"
     puts i.to_json
   end
@@ -344,7 +346,7 @@ Given('there are {string} exisiting investments {string} from my firm in startup
       @investment = FactoryBot.build(:investment, investee_entity: 
           @startup_entity, investor: @investor, funding_round: @funding_round)
       @investment.scenario = @investment.actual_scenario
-      @investment.save!
+      @investment = SaveInvestment.call(@investment).result
     end
   end
 end
@@ -362,7 +364,7 @@ Given('there are {string} exisiting investments {string} from another firm in st
       @investment = FactoryBot.build(:investment, investee_entity: startup, 
                         investor: @investor, funding_round: @funding_round)
       @investment.scenario = @investment.actual_scenario
-      @investment.save!
+      @investment = SaveInvestment.call(@investment).result
     end
   end
 end

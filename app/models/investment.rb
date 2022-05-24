@@ -65,6 +65,7 @@ class Investment < ApplicationRecord
   delegate :name, to: :investee_entity, prefix: :investee
 
   has_many :holdings, dependent: :destroy
+  validate :validate_option_pool, if: -> { investment_instrument == 'Options' }
 
   # Handled by money-rails gem
   monetize :amount_cents, :price_cents, with_model_currency: :currency
@@ -77,13 +78,15 @@ class Investment < ApplicationRecord
     entity && entity.instrument_types.present? ? entity.instrument_types.split(",").map(&:strip) : INSTRUMENT_TYPES
   end
 
+  def validate_option_pool
+    errors.add(:funding_round, "Funding round #{funding_round.name} not associated with Option Pool") if funding_round.option_pool.nil?
+  end
+
   def to_s
     investor.investor_name
   end
 
   before_save :update_defaults
-  before_save :update_aggregate_investment,
-              if: proc { |i| EQUITY_LIKE.include? i.investment_instrument }
 
   def update_defaults
     if investor.is_holdings_entity
@@ -99,42 +102,6 @@ class Investment < ApplicationRecord
     self.investment_type = funding_round.name
     self.investment_instrument = investment_instrument.strip
     self.employee_holdings = true if investment_type == "Employee Holdings"
-  end
-
-  def update_aggregate_investment
-    ai = AggregateInvestment.where(investor_id:,
-                                   entity_id: investee_entity_id,
-                                   scenario_id:).first
-    self.aggregate_investment = ai.presence || AggregateInvestment.create(investor_id:,
-                                                                          entity_id: investee_entity_id,
-                                                                          scenario_id:)
-  end
-
-  after_save :update_investor_holdings, if: proc { |i| i.scenario.actual? }
-  # For Actual Scenario, for Investors (Not Employees or Founders), we want to create a holding
-  # corresponding to this investment.
-  # There will be only one such Holding per investment
-  def update_investor_holdings
-    if EQUITY_LIKE.include?(investment_instrument) && !investor.is_holdings_entity
-      holding = holdings.first
-      if holding
-        # Since there is only 1 holding per Investor Investment
-        # Just assign the quantityand price
-        holding.orig_grant_quantity = quantity
-        holding.price = price
-      else
-        holding = holdings.build(entity_id: investee_entity_id, investor_id:,
-                                 funding_round_id:,
-                                 holding_type: "Investor",
-                                 investment_instrument:,
-                                 orig_grant_quantity: quantity, price:, value: amount)
-      end
-
-      holding.save!
-    else
-      # For Debt and other Non Equity - we dont need a holding
-      Rails.logger.debug { "Not creating holdings for #{to_json}" }
-    end
   end
 
   def self.for_investor(current_user, entity)

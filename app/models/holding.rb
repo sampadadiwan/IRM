@@ -71,6 +71,8 @@ class Holding < ApplicationRecord
   end
 
   def allocation_allowed
+    errors.add(:option_pool, "Option pool required") if option_pool.nil?
+
     if new_record?
       errors.add(:option_pool, "Insufficiant available quantity in Option pool #{option_pool.name}. #{option_pool.available_quantity} < #{quantity}") if option_pool && option_pool.available_quantity < quantity
     elsif option_pool && option_pool.available_quantity < (quantity - quantity_was)

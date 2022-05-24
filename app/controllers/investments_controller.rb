@@ -93,7 +93,7 @@ class InvestmentsController < ApplicationController
     investments = new_multi_investments(params, investment_params)
 
     Investment.transaction do
-      investments.each(&:save!)
+      investments.each { |i| SaveInvestment.call(i) }
     end
 
     respond_to do |format|
