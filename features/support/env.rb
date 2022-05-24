@@ -39,20 +39,20 @@ begin
   DatabaseCleaner.strategy = :truncation
   Chewy.strategy :bypass
 
-  UserIndex.reset!
-  EntityIndex.reset!
-  InvestorIndex.reset!
+  # UserIndex.reset!
+  # EntityIndex.reset!
+  # InvestorIndex.reset!
 rescue NameError => e
   puts e.backtrace
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
 
 After do
-  DatabaseCleaner.clean
+  # DatabaseCleaner.clean
   Sidekiq.redis(&:flushdb)
-  UserIndex.reset!
-  EntityIndex.reset!
-  InvestorIndex.reset!
+  # UserIndex.reset!
+  # EntityIndex.reset!
+  # InvestorIndex.reset!
 end
 
 Cucumber::Rails::Database.javascript_strategy = :truncation

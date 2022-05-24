@@ -28,14 +28,16 @@ class OptionPoolsController < ApplicationController
 
     authorize(@option_pool)
 
+    @option_pool = CreateOptionPool.call(@option_pool).result
+
     respond_to do |format|
-      if @option_pool.save
-        format.html { redirect_to option_pool_url(@option_pool), notice: "Option pool was successfully created." }
-        format.json { render :show, status: :created, location: @option_pool }
-      else
+      if @option_pool.new_record?
         Rails.logger.debug @option_pool.to_json(include: :vesting_schedules)
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @option_pool.errors, status: :unprocessable_entity }
+      else
+        format.html { redirect_to option_pool_url(@option_pool), notice: "Option pool was successfully created." }
+        format.json { render :show, status: :created, location: @option_pool }
       end
     end
   end
@@ -65,7 +67,7 @@ class OptionPoolsController < ApplicationController
   end
 
   def approve
-    @option_pool.approved = true
+    @option_pool = ApproveOptionPool.call(@option_pool).result
     respond_to do |format|
       if @option_pool.save
         format.html do

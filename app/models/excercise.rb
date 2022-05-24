@@ -20,6 +20,7 @@
 class Excercise < ApplicationRecord
   belongs_to :entity
   belongs_to :holding
+  has_one :created_holding, foreign_key: :created_from_excercise_id, class_name: "Holding", dependent: :destroy
   belongs_to :user
   belongs_to :option_pool
 

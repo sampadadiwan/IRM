@@ -107,7 +107,7 @@ Given('Given I upload an investor access file for employees') do
   fill_in('import_upload_name', with: "Test Upload")
   attach_file('import_upload_import_file', File.absolute_path('./public/sample_uploads/investor_access.xlsx'))
   click_on("Save")
-  sleep(4)
+  sleep(5)
 end
 
 Then('There should be {string} investor access created') do |count|

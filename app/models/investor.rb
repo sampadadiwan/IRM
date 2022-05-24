@@ -30,6 +30,7 @@ class Investor < ApplicationRecord
   counter_culture :investee_entity
 
   has_many :investor_accesses, dependent: :destroy
+  has_many :investments, dependent: :destroy
 
   has_many :access_rights, foreign_key: :access_to_investor_id, dependent: :destroy
   has_many :deal_investors, dependent: :destroy
@@ -52,6 +53,7 @@ class Investor < ApplicationRecord
   scope :for_vc, ->(vc_user) { where(investor_entity_id: vc_user.entity_id) }
   scope :not_holding, -> { where(is_holdings_entity: false) }
   scope :not_trust, -> { where(is_trust: false) }
+  scope :is_trust, -> { where(is_trust: true) }
   scope :holding, -> { where(is_holdings_entity: true) }
   scope :not_interacted, ->(no_of_days) { where(is_holdings_entity: false).where("last_interaction_date < ? ", Time.zone.today - no_of_days.days) }
 

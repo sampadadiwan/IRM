@@ -36,6 +36,31 @@
     @created.start_date.should == @option_pool.start_date    
   end
   
+
+Then('the trust company must have the investment') do
+  puts "\n####Trust Company####\n"
+  puts @created.entity.trust_company.to_json
+  puts "\n####Trust Company Investments####\n"
+  puts @created.entity.trust_company.investments.to_json
+
+  @trust_investment = @created.entity.trust_company.investments.first
+  @trust_investment.should_not be_nil
+  @trust_investment.quantity.should == @created.trust_quantity
+end
+
+Then('the trust company must have no investment') do
+  @trust_investment = @created.entity.trust_company.investments.first
+  @trust_investment.should be_nil
+end
+
+Then('when I approve the esop pool in the UI') do
+  visit(option_pool_path(@created))
+  click_on("Approve")
+  sleep(1)
+end
+
+
+
   Then('I should see the esop pool details on the details page') do
     # click_on("Details")
     expect(page).to have_content(@option_pool.name)
@@ -65,7 +90,11 @@
       @option_pool.vesting_schedules << v
     end
 
-    @option_pool.save
+    @option_pool = CreateOptionPool.call(@option_pool).result
+    if @option_pool.approved 
+      @option_pool = ApproveOptionPool.call(@option_pool).result
+    end
+
     puts "\n####Created Option Pool####\n"
     puts @option_pool.to_json(include: :vesting_schedules)
 
@@ -143,8 +172,7 @@ Then('when the option is excercised {string}') do |args|
 end
 
 Then('the excercise is approved') do
-  @excercise.approved = true
-  @excercise.save
+  @excercise = ApproveExcercise.call(@excercise).result
   @excercise.reload
 end
 
@@ -208,8 +236,6 @@ Then('the option holding must be updated with the excercised amount') do
   @holding.excercised_quantity.should == @excercise.quantity
   @holding.quantity.should == @holding.orig_grant_quantity - @excercise.quantity 
 end
-
-
 
   
 Then('the investment total quantity must be {string}') do |args|

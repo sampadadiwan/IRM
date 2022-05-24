@@ -124,4 +124,8 @@ class Entity < ApplicationRecord
   def actual_scenario
     scenarios.where(name: "Actual").first
   end
+
+  def trust_company
+    investors.is_trust.first
+  end
 end

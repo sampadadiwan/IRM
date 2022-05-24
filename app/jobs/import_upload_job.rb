@@ -94,7 +94,7 @@ class ImportUploadJob < ApplicationJob
                           funding_round: fr, option_pool: ep,
                           import_upload_id: import_upload.id, grant_date:)
 
-    holding.save!
+    CreateHolding.call(holding).result
   end
 
   def get_fr_ep(user_data, import_upload)

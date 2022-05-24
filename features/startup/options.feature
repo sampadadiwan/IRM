@@ -9,6 +9,9 @@ Scenario Outline: Create Options pool
   And an esop pool should be created
   And I should see the esop pool details on the details page
   And I should see the esop pool in all esop pools page
+  And the trust company must have no investment
+  And when I approve the esop pool in the UI
+  Then the trust company must have the investment
 Examples:
     |entity               |option_pool                                                         |
     |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |
@@ -94,13 +97,13 @@ Scenario Outline:  Options Excercised
   Given there are "1" employee investors
   And there is an option holding "orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
   And the option grant date is "<months>" ago
-  Then the investment total quantity must be "1000"
+  Then the investment total quantity must be "10000"
   Then when the option is excercised "approved=false"
   And the excercise is approved
   Then the option pool must have "<option_pool_quantites>"
   Then the holding must have "<holding_quantites>"
   And the new investment and holding must be created with excercised quantity
-  And the investment total quantity must be "1000"
+  And the investment total quantity must be "10000"
 
 Examples:
     |entity               |option_pool                                      |schedule            | months  | option_pool_quantites | holding_quantites |
