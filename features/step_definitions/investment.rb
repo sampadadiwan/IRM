@@ -302,6 +302,7 @@ Then('when I see the aggregated investments') do
 end
 
 Then('I must see one {string} aggregated investment') do |string|
+  sleep(10)
   AggregateInvestment.count.should == 1
 end
 

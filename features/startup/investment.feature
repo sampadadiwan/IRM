@@ -26,9 +26,9 @@ Scenario Outline: Create new investment
   Given Im logged in as a user "last_name=Tester" for an entity "entity_type=Startup"
   Given there is an existing investor "name=Sequoia"
   And I am at the investments page
-  And I create an investment "investment_instrument=Equity;quantity=100"
-  And I create an investment "investment_instrument=Preferred;quantity=200"
-  And I create an investment "investment_instrument=Options;quantity=300"
+  And I create an investment "investment_instrument=Equity;quantity=100;investor_id=4"
+  And I create an investment "investment_instrument=Preferred;quantity=200;investor_id=4"
+  And I create an investment "investment_instrument=Options;quantity=300;investor_id=4"
   Then when I see the aggregated investments
   Then I must see one "1" aggregated investment
   And I must see the aggregated investment with "Equity=100;Preferred=200;Options=300"
