@@ -7,7 +7,7 @@ class SaveInvestment < Patterns::Service
     Investment.transaction do
       # First create the AggregateInvestment, otherwise the counter caches will not update it
       create_aggregate_investment
-      investment.save!
+      investment.save
       update_investor_holdings
       # end
     end
@@ -35,15 +35,16 @@ class SaveInvestment < Patterns::Service
         holding.price = investment.price
         holding.save!
       else
-        holding = investment.holdings.build(entity: investment.investee_entity,
-                                            investor_id: investment.investor_id,
-                                            funding_round_id: investment.funding_round_id,
-                                            option_pool: investment.funding_round.option_pool,
-                                            grant_date: Time.zone.today,
-                                            holding_type: "Investor",
-                                            investment_instrument: investment.investment_instrument,
-                                            orig_grant_quantity: investment.quantity,
-                                            price: investment.price, value: investment.amount)
+        holding = Holding.new(entity: investment.investee_entity,
+                              investment_id: investment.id,
+                              investor_id: investment.investor_id,
+                              funding_round_id: investment.funding_round_id,
+                              option_pool: investment.funding_round.option_pool,
+                              grant_date: Time.zone.today,
+                              holding_type: "Investor",
+                              investment_instrument: investment.investment_instrument,
+                              orig_grant_quantity: investment.quantity,
+                              price_cents: investment.price_cents, value_cents: investment.amount_cents)
 
         CreateHolding.call(holding)
       end
@@ -63,8 +64,8 @@ class SaveInvestment < Patterns::Service
 
       investment.aggregate_investment = ai.presence ||
                                         AggregateInvestment.create!(investor_id: investment.investor_id,
-                                                                   entity_id: investment.investee_entity_id,
-                                                                   scenario_id: investment.scenario_id)
+                                                                    entity_id: investment.investee_entity_id,
+                                                                    scenario_id: investment.scenario_id)
 
     end
   end

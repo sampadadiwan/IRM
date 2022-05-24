@@ -107,7 +107,7 @@ class DealsController < ApplicationController
 
     @deal = CreateDeal.call(@deal).result
     respond_to do |format|
-      if @deal.new_record?
+      if @deal.errors.any?
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @deal.errors, status: :unprocessable_entity }
       else

@@ -92,17 +92,18 @@ class InvestmentsController < ApplicationController
   def create
     investments = new_multi_investments(params, investment_params)
 
+    saved_count = 0
     Investment.transaction do
-      investments.each { |i| SaveInvestment.call(i) }
+      investments.each { |i| inv = SaveInvestment.call(i).result; saved_count += 1 unless inv.errors.any? }
     end
 
     respond_to do |format|
-      if investments.length.positive? && @investment.id
+      if investments.length.positive? && saved_count == investments.length
         InvestmentPercentageHoldingJob.perform_later(@investment.id)
         format.html { redirect_to investments_path, notice: "Investment was successfully created." }
         format.json { render :show, status: :created, location: @investment }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_entity, notice: "Some investments were not created. Please try again." }
         format.json { render json: @investment.errors, status: :unprocessable_entity }
       end
     end
@@ -115,13 +116,13 @@ class InvestmentsController < ApplicationController
     @investment = SaveInvestment.call(@investment).result
 
     respond_to do |format|
-      unless @investment.errors.any? 
+      if @investment.errors.any?
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @investment.errors, status: :unprocessable_entity }
+      else
         InvestmentPercentageHoldingJob.perform_later(@investment.id)
         format.html { redirect_to investment_url(@investment), notice: "Investment was successfully updated." }
         format.json { render :show, status: :ok, location: @investment }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @investment.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -58,7 +58,7 @@ class HoldingsController < ApplicationController
 
     @holding = CreateHolding.call(@holding).result
     respond_to do |format|
-      if @holding.new_record?
+      if @holding.errors.any?
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @holding.errors, status: :unprocessable_entity }
       else

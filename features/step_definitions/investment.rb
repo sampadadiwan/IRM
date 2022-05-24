@@ -205,7 +205,7 @@ Then('There should be a corresponding investment created') do
 end
 
 Then('Investments is updated with the holdings') do
-  Holding.all.each do |h|
+  Holding.not_investors.each do |h|
     h.investment.quantity.should ==  h.investment.holdings.sum(:quantity)
     h.investment.amount_cents.should ==  h.investment.holdings.sum(:value_cents)
     h.investment.price_cents.should == h.investment.holdings.sum(:value_cents) / h.investment.holdings.sum(:quantity)
@@ -223,10 +223,10 @@ Then('the funding round must be updated with the investment') do
   sleep(2) #Allow job to run
   @funding_round ||= FundingRound.last
   puts @funding_round.reload.to_json
-  @funding_round.amount_raised_cents.should == Investment.all.sum(:amount_cents)
-  @funding_round.equity.should == Investment.equity.sum(:quantity)
-  @funding_round.preferred.should == Investment.preferred.sum(:quantity)
-  @funding_round.options.should == Investment.options.sum(:quantity)
+  @funding_round.amount_raised_cents.should == @funding_round.investments.all.sum(:amount_cents)
+  @funding_round.equity.should == @funding_round.investments.equity.sum(:quantity)
+  @funding_round.preferred.should == @funding_round.investments.preferred.sum(:quantity)
+  @funding_round.options.should == @funding_round.investments.options.sum(:quantity)
 end
 
 
@@ -295,10 +295,10 @@ end
 
 Given('the percentage must be computed correctly') do
   InvestmentPercentageHoldingJob.new.perform(Investment.first.id)
-  Investment.sum(:percentage_holding).should == 100
-  Investment.sum(:diluted_percentage).should == 100
-  AggregateInvestment.sum(:percentage).should == 100
-  AggregateInvestment.sum(:full_diluted_percentage).should == 100
+  Investment.sum(:percentage_holding).should be_within(0.1).of(100)
+  Investment.sum(:diluted_percentage).should be_within(0.1).of(100)
+  AggregateInvestment.sum(:percentage).should be_within(0.1).of(100)
+  AggregateInvestment.sum(:full_diluted_percentage).should be_within(0.1).of(100)
 end
 
 
@@ -456,12 +456,16 @@ Given('Given I upload a holdings file') do
 end
 
 Then('There should be {string} holdings created') do |count|
-  Holding.count.should == count.to_i
-  Holding.all.sum(:quantity).should == 1700
-  Holding.all.each do |h|
+  (Holding.not_investors.count).should == count.to_i
+  
+  Holding.employees.all.sum(:quantity).should == 1400
+  Holding.founders.all.sum(:quantity).should == 300
+
+  Holding.not_investors.all.each do |h|
     h.investor.category.should == h.holding_type
     h.user.entity_id.should == h.investor.investor_entity_id
-  end 
+  end
+  
 end
 
 Then('There should be {string} users created for the holdings') do |count|

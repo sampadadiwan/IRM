@@ -11,6 +11,7 @@ module HoldingScopes
     # scope :founder, -> { where(holding_type: "Founder") }
 
     scope :investors, -> { where(holding_type: "Investor") }
+    scope :not_investors, -> { where("holding_type  <> 'Investor'") }
     scope :employees, -> { where(holding_type: "Employee") }
     scope :founders, -> { where(holding_type: "Founder") }
     scope :lapsed, -> { where(lapsed: true) }

@@ -31,7 +31,7 @@ class OptionPoolsController < ApplicationController
     @option_pool = CreateOptionPool.call(@option_pool).result
 
     respond_to do |format|
-      if @option_pool.new_record?
+      if @option_pool.errors.any?
         Rails.logger.debug @option_pool.to_json(include: :vesting_schedules)
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @option_pool.errors, status: :unprocessable_entity }

@@ -101,9 +101,9 @@ Scenario Outline: Import holding
   Given a esop pool "name=Pool 1" is created with vesting schedule "12:20,24:30,36:50"
   And Given I upload a holdings file
   Then I should see the "Import upload was successfully created"
-  Then There should be "7" holdings created
+  Then There should be "6" holdings created
   And There should be "6" users created for the holdings  
-  And There should be "5" Investments created for the holdings
+  And There should be "6" Investments created for the holdings
   And Investments is updated with the holdings 
   And the funding round must be updated with the investment
   And the entity must be updated with the investment  
@@ -112,6 +112,7 @@ Scenario Outline: Import holding
 
 Scenario Outline: Investments updates funding round and entity
   Given there is a user "first_name=Test" for an entity "entity_type=Startup"
+  Given a esop pool "name=Pool 1" is created with vesting schedule "12:20,24:30,36:50"
   Given there is are "3" investors
   Given there is a FundingRound "name=Series A"
   Given there are "4" investments "<investment>"
@@ -130,6 +131,7 @@ Scenario Outline: Investments updates funding round and entity
 
 Scenario Outline: Investments updates funding round and entity
   Given there is a user "first_name=Test" for an entity "entity_type=Startup"
+  Given a esop pool "name=Pool 1" is created with vesting schedule "12:20,24:30,36:50"
   Given there is are "1" investors
   Given there is a FundingRound "name=Series A"
   Given there are "2" investments "<investment>"
