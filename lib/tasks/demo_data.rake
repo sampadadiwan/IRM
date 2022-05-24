@@ -280,7 +280,8 @@ namespace :irm do
   task generateFakeDeals: :environment do
     Entity.startups.each do |e|
       3.times do
-        deal = FactoryBot.create(:deal, entity: e)
+        deal = FactoryBot.build(:deal, entity: e)
+        deal = CreateDeal.call(deal)
         puts "Deal #{deal.id}"
         deal.entity.investors.not_holding.not_trust.each do |inv|
           di = FactoryBot.create(:deal_investor, investor: inv, entity: e, deal: deal)

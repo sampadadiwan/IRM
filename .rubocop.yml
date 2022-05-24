@@ -51,6 +51,9 @@ Naming/AccessorMethodName:
 Lint/DuplicateBranch:
   Exclude:
     - 'app/helpers/investments_helper.rb'
+Lint/MissingSuper:
+  Exclude:
+    - 'app/services/*'
 
 Rails/OutputSafety:
   Exclude:

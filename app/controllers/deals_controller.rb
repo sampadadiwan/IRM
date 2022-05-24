@@ -105,13 +105,14 @@ class DealsController < ApplicationController
     @deal.entity_id = current_user.entity_id
     authorize @deal
 
+    @deal = CreateDeal.call(@deal).result
     respond_to do |format|
-      if @deal.save
-        format.html { redirect_to deal_url(@deal), notice: "Deal was successfully created." }
-        format.json { render :show, status: :created, location: @deal }
-      else
+      if @deal.new_record?
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @deal.errors, status: :unprocessable_entity }
+      else
+        format.html { redirect_to deal_url(@deal), notice: "Deal was successfully created." }
+        format.json { render :show, status: :created, location: @deal }
       end
     end
   end

@@ -47,28 +47,8 @@ class Deal < ApplicationRecord
   STATUS = %w[Open Closed].freeze
   ACTIVITIES = Rack::Utils.parse_nested_query(ENV["DEAL_ACTIVITIES"].tr(":", "=").tr(",", "&"))
 
-  before_create :set_defaults
-  def set_defaults; end
-
   def create_activities
     deal_investors.each(&:create_activities)
-  end
-
-  after_create :set_active_deal
-  def set_active_deal
-    entity.active_deal_id = id
-    entity.save
-  end
-
-  after_create :create_activity_template
-  def create_activity_template
-    seq = 1
-    Deal::ACTIVITIES.each do |title, days|
-      # Note that if deal_investor_id = nil then this is a template
-      DealActivity.create!(deal_id: id, deal_investor_id: nil, status: "Template",
-                           entity_id:, title:, sequence: seq, days: days.to_i)
-      seq += 1
-    end
   end
 
   def start_deal

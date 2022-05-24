@@ -91,6 +91,7 @@ class Entity < ApplicationRecord
 
   FUNDING_UNITS = %w[Lakhs Crores].freeze
   PLANS = ENV['PLANS'].split(",")
+
   scope :holdings, -> { where(entity_type: "Holding") }
   scope :vcs, -> { where(entity_type: "VC") }
   scope :startups, -> { where(entity_type: "Startup") }
@@ -99,9 +100,13 @@ class Entity < ApplicationRecord
 
   before_save :check_url, :scrub_defaults
   def check_url
-    self.url = "http://#{url}" if url.present? && !(url.starts_with?("http") || url.starts_with?("https"))
-    self.logo_url = "http://#{logo_url}" if logo_url.present? && !(logo_url.starts_with?("http") || logo_url.starts_with?("https"))
+    self.url = "http://#{url}" if url.present? &&
+                                  !(url.starts_with?("http") || url.starts_with?("https"))
+    self.logo_url = "http://#{logo_url}" if logo_url.present? &&
+                                            !(logo_url.starts_with?("http") || logo_url.starts_with?("https"))
   end
+
+  after_create ->(entity) { CreateEntity.call(entity) }
 
   def to_s
     name
@@ -110,50 +115,6 @@ class Entity < ApplicationRecord
   def scrub_defaults
     self.investor_categories = investor_categories.split(",").map(&:strip).join(",") if investor_categories
     self.instrument_types = instrument_types.split(",").map(&:strip).join(",") if instrument_types
-  end
-
-  after_create :setup_root_folder
-  def setup_root_folder
-    if entity_type == "Startup"
-      Folder.create(name: "/", entity_id: id, level: 0)
-      Scenario.create(name: "Actual", entity_id: id)
-    end
-  end
-
-  after_create :setup_holding_entity, if: proc { |model| model.entity_type == "Startup" }
-  def setup_holding_entity
-    e = Entity.create(name: "#{name} - Employees", entity_type: "Holding",
-                      is_holdings_entity: true, active: true, parent_entity_id: id)
-    Rails.logger.debug { "Created Employee Holding entity #{e.name} #{e.id} for #{name}" }
-
-    i = Investor.create(investor_name: e.name, investor_entity_id: e.id,
-                        investee_entity_id: id, category: "Employee", is_holdings_entity: true)
-    Rails.logger.debug { "Created Investor for Employee Holding entity #{i.investor_name} #{i.id} for #{name}" }
-
-    i = Investor.create(investor_name: "#{name} - Founders", investor_entity_id: id,
-                        investee_entity_id: id, category: "Founder", is_holdings_entity: true)
-    Rails.logger.debug { "Created Investor for Founder Holding entity #{i.investor_name} #{i.id} for #{name}" }
-
-    e = Entity.create(name: "#{name} - Trust", entity_type: "Holding",
-                      is_holdings_entity: true, active: true, parent_entity_id: id)
-    Rails.logger.debug { "Created Trust Holding entity #{e.name} #{e.id} for #{name}" }
-
-    i = Investor.create(investor_name: "#{name} - ESOP Trust", investor_entity_id: e.id,
-                        investee_entity_id: id, category: "Trust", is_holdings_entity: false, is_trust: true)
-    Rails.logger.debug { "Created Investor for Trust Holding entity #{i.investor_name} #{i.id} for #{name}" }
-  end
-
-  # Setup the person who created this entity as belonging to this entity
-  # after_create :setup_owner
-  def setup_owner
-    if created_by.present?
-      owner = User.find(created_by)
-      unless owner.has_role?(:super)
-        # Set the user belongs to entity, only for non super users
-        owner.entity_id = id
-        owner.save
-      end
-    end
   end
 
   def self.for_investor(user)
