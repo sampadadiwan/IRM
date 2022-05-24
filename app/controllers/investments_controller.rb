@@ -111,8 +111,11 @@ class InvestmentsController < ApplicationController
   # PATCH/PUT /investments/1 or /investments/1.json
   def update
     authorize @investment
+    @investment.assign_attributes(investment_params)
+    @investment = SaveInvestment.call(@investment).result
+
     respond_to do |format|
-      if @investment.update(investment_params)
+      unless @investment.errors.any? 
         InvestmentPercentageHoldingJob.perform_later(@investment.id)
         format.html { redirect_to investment_url(@investment), notice: "Investment was successfully updated." }
         format.json { render :show, status: :ok, location: @investment }

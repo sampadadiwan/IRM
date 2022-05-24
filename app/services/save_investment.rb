@@ -5,9 +5,11 @@ class SaveInvestment < Patterns::Service
 
   def call
     Investment.transaction do
-      investment.save
+      # First create the AggregateInvestment, otherwise the counter caches will not update it
       create_aggregate_investment
+      investment.save!
       update_investor_holdings
+      # end
     end
     investment
   end
@@ -28,9 +30,9 @@ class SaveInvestment < Patterns::Service
       if holding
         # Since there is only 1 holding per Investor Investment
         # Just assign the quantityand price
-        holding.orig_grant_quantity = quantity
-        holding.investment_instrument = investment_instrument
-        holding.price = price
+        holding.orig_grant_quantity = investment.quantity
+        holding.investment_instrument = investment.investment_instrument
+        holding.price = investment.price
         holding.save!
       else
         holding = investment.holdings.build(entity: investment.investee_entity,
@@ -53,14 +55,14 @@ class SaveInvestment < Patterns::Service
   end
 
   def create_aggregate_investment
-    if Investment::EQUITY_LIKE.include? investment.investment_instrument
+    if Investment::EQUITY_LIKE.include?(investment.investment_instrument)
 
       ai = AggregateInvestment.where(investor_id: investment.investor_id,
                                      entity_id: investment.investee_entity_id,
                                      scenario_id: investment.scenario_id).first
 
       investment.aggregate_investment = ai.presence ||
-                                        AggregateInvestment.create(investor_id: investment.investor_id,
+                                        AggregateInvestment.create!(investor_id: investment.investor_id,
                                                                    entity_id: investment.investee_entity_id,
                                                                    scenario_id: investment.scenario_id)
 

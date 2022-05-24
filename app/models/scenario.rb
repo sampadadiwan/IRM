@@ -29,7 +29,7 @@ class Scenario < ApplicationRecord
       new_inv = inv.dup
       new_inv.scenario = self
       new_inv.aggregate_investment = nil
-      new_inv.save!
+      SaveInvestment.call(new_inv) 
     end
   end
 

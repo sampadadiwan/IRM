@@ -29,17 +29,15 @@ class ApproveOptionPool < Patterns::Service
     else
 
       investment = Investment.new(investee_entity_id: option_pool.entity_id,
+                                  category: "Trust",
                                   quantity: option_pool.number_of_options,
                                   price_cents: option_pool.excercise_price_cents,
                                   investment_instrument: "Options", investor_id: trust_investor.id,
                                   funding_round_id: option_pool.funding_round_id,
                                   scenario: option_pool.entity.actual_scenario)
 
-      Rails.logger.debug "######Creating Investment for Trust Pool######"
-      Rails.logger.debug investment.to_json
-
+      Rails.logger.debug "Creating Investment for Trust for Option Pool"
       SaveInvestment.call(investment)
-      Rails.logger.debug investment.to_json
 
     end
   end

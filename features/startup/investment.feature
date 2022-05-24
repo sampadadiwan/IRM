@@ -53,13 +53,14 @@ Examples:
 
 Scenario Outline: Create new investment
   Given Im logged in as a user "last_name=Tester" for an entity "entity_type=Startup"
+  Given a esop pool "name=Pool 1;approved=true" is created with vesting schedule "12:20,24:30,36:50"
   Given there is an existing investor "name=Sequoia"
   And I am at the investments page
   And I create an investment "investment_instrument=Equity;quantity=100;investor_id=4"
   And I create an investment "investment_instrument=Preferred;quantity=200;investor_id=4"
   And I create an investment "investment_instrument=Options;quantity=300;investor_id=4"
   Then when I see the aggregated investments
-  Then I must see one "1" aggregated investment
+  Then I must see one "1" aggregated investment for the investor
   And I must see the aggregated investment with "Equity=100;Preferred=200;Options=300"
 
 Scenario Outline: Edit investment
@@ -100,7 +101,7 @@ Scenario Outline: Import holding
   Given a esop pool "name=Pool 1" is created with vesting schedule "12:20,24:30,36:50"
   And Given I upload a holdings file
   Then I should see the "Import upload was successfully created"
-  Then There should be "6" holdings created
+  Then There should be "7" holdings created
   And There should be "6" users created for the holdings  
   And There should be "5" Investments created for the holdings
   And Investments is updated with the holdings 

@@ -169,8 +169,8 @@ namespace :irm do
         (1..3).each do
           round = FactoryBot.create(:funding_round, entity: e) if rand(10) < 2 
           instrument = ["Equity", "Preferred"][rand(2)]
-          i = FactoryBot.create(:investment, investee_entity: e, investor: inv, investment_instrument: instrument,
-              funding_round: round, scenario: scenario, notes: "generateFakeInvestments")
+          i = FactoryBot.build(:investment, investee_entity: e, investor: inv, investment_instrument: instrument, funding_round: round, scenario: scenario, notes: "generateFakeInvestments")
+          i = SaveInvestment.call(i).result
           puts "Investment #{i.to_json}"
         end
       end
@@ -203,9 +203,8 @@ namespace :irm do
           # 10 + 20 + 30 + 40
           pool.vesting_schedules << pool.vesting_schedules.build(months_from_grant: i*12, vesting_percent: 10*i, entity_id: e.id)
         end
-        pool.save!  
-        pool.approved = true
-        pool.save
+        pool = CreateOptionPool.call(pool).result
+        ApproveOptionPool.call(pool)
       end
     end
 
@@ -281,7 +280,7 @@ namespace :irm do
     Entity.startups.each do |e|
       3.times do
         deal = FactoryBot.build(:deal, entity: e)
-        deal = CreateDeal.call(deal)
+        deal = CreateDeal.call(deal).result
         puts "Deal #{deal.id}"
         deal.entity.investors.not_holding.not_trust.each do |inv|
           di = FactoryBot.create(:deal_investor, investor: inv, entity: e, deal: deal)

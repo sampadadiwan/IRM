@@ -3,6 +3,7 @@ Feature: Scenarios
 
 Scenario Outline: Investments update funding round and entity
   Given there is a user "first_name=Test" for an entity "entity_type=Startup"
+  Given a esop pool "name=Pool 1;approved=true" is created with vesting schedule "12:20,24:30,36:50"
   Given there is are "3" investors
   Given there is a FundingRound "name=Series A"
   Given there are "4" investments "<investment>"

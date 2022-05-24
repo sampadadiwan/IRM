@@ -27,6 +27,13 @@
   end
   
   Then('the aggregate investments must be cloned for the new scenario') do
+
+    @entity.reload
+    @scenario.reload
+    
+    puts "actual_scenario.aggregate_investments.count: #{@entity.actual_scenario.aggregate_investments.count}"
+    puts "scenario.aggregate_investments.count: #{@scenario.aggregate_investments.count}"
+    
     @entity.actual_scenario.aggregate_investments.count.should == @scenario.aggregate_investments.count
     
     count = @entity.actual_scenario.aggregate_investments.count

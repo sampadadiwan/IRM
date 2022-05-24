@@ -263,6 +263,11 @@ Given('there are {string} investments {string}') do |count, args|
     i = FactoryBot.build(:investment, investee_entity: @entity, investor: Investor.not_holding.sample, 
       funding_round: @funding_round, scenario: @entity.actual_scenario)
     key_values(i, args)
+
+    # Hack to get the right funding round for Options
+    if i.investment_instrument == "Options"
+      i.funding_round = @option_pool.funding_round
+    end
     
     i = SaveInvestment.call(i).result
     puts "\n####Investment Created####\n"
@@ -303,9 +308,8 @@ Then('when I see the aggregated investments') do
   visit(aggregate_investments_path)
 end
 
-Then('I must see one {string} aggregated investment') do |string|
-  sleep(10)
-  AggregateInvestment.count.should == 1
+Then('I must see one {string} aggregated investment for the investor') do |args|
+  AggregateInvestment.where(investor_id: @investor.id).count.should == args.to_i
 end
 
 Then('I must see the aggregated investment with {string}') do |args|
