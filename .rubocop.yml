@@ -37,6 +37,7 @@ Rails/SkipsModelValidations:
   Exclude:
     - 'app/models/folder.rb'
     - 'app/jobs/allocation_job.rb'
+    - 'app/jobs/investment_percentage_holding_job.rb'
 Rails/HasAndBelongsToMany:
   Exclude:
     - 'app/models/role.rb'

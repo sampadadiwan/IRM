@@ -48,14 +48,25 @@ class ImportUploadJob < ApplicationJob
       when "Holding"
         processed_record_count += save_holding(user_data, import_upload) ? 1 : 0
       else
-        Rails.logger.error e.backtrace
         err_msg = "Bad import_type #{import_upload.import_type} for import_upload #{import_upload.id}"
         Rails.logger.error err_msg
         raise err_msg
       end
     end
+    post_processing(import_upload)
     # return how many we processed
     processed_record_count
+  end
+
+  def post_processing(import_upload)
+    case import_upload.import_type
+    when "InvestorAccess"
+
+    when "Holding"
+      # We need to adjust the percentage holdings
+      investment = import_upload.entity.actual_scenario.investments.first
+      InvestmentPercentageHoldingJob.perform_now(investment.id)
+    end
   end
 
   def save_holding(user_data, import_upload)

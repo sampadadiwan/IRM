@@ -3,6 +3,7 @@ class InvestmentPercentageHoldingJob < ApplicationJob
 
   def perform(investment_id)
     Chewy.strategy(:sidekiq) do
+      Rails.logger.debug { "InvestmentPercentageHoldingJob: Started #{investment_id}" }
       investment = Investment.find(investment_id)
       # Ensure that all investments of the investee entity are adjusted for percentage
       update_investment_percentage(investment)
@@ -10,6 +11,8 @@ class InvestmentPercentageHoldingJob < ApplicationJob
       update_aggregate_percentage(investment.aggregate_investment) if investment.aggregate_investment
       # We also update the funding round to reflect the amount_raised
       investment.funding_round&.save
+
+      Rails.logger.debug { "InvestmentPercentageHoldingJob: Completed #{investment_id}" }
     end
   end
 
@@ -21,17 +24,15 @@ class InvestmentPercentageHoldingJob < ApplicationJob
     equity_quantity = equity_investments.sum(:quantity)
     esop_quantity = esop_investments.sum(:quantity)
 
-    equity_investments.each do |inv|
-      inv.percentage_holding = (inv.quantity * 100.0) / equity_quantity
-      inv.diluted_percentage = (inv.quantity * 100.0) / (equity_quantity + esop_quantity)
-      inv.save
-    end
+    equity_investments.update_all(
+      "percentage_holding = quantity * 100.0 / #{equity_quantity},
+         diluted_percentage = quantity * 100.0 / (#{equity_quantity + esop_quantity})"
+    )
 
-    esop_investments.each do |inv|
-      inv.percentage_holding = 0
-      inv.diluted_percentage = (inv.quantity * 100.0) / (equity_quantity + esop_quantity)
-      inv.save
-    end
+    esop_investments.update_all(
+      "percentage_holding = 0,
+       diluted_percentage = quantity * 100.0 / (#{equity_quantity + esop_quantity})"
+    )
   end
 
   def update_aggregate_percentage(aggregate_investment)
@@ -40,14 +41,10 @@ class InvestmentPercentageHoldingJob < ApplicationJob
     preferred = all.sum(:preferred)
     options = all.sum(:options)
 
-    all.each do |ai|
-      eq = (equity + preferred)
-      ai.percentage = 100.0 * (ai.equity + ai.preferred) / eq if eq.positive?
+    eq = (equity + preferred).positive? ? (equity + preferred) : 1
+    eq_op = (equity + preferred + options).positive? ? (equity + preferred + options) : 1
 
-      eq_op = (equity + preferred + options)
-      ai.full_diluted_percentage = 100.0 * (ai.equity + ai.preferred + ai.options) / eq_op if eq_op.positive?
-
-      ai.save
-    end
+    all.update_all("percentage = 100*(equity+preferred)/#{eq},
+                    full_diluted_percentage = 100*(equity+preferred+options)/#{eq_op}")
   end
 end
