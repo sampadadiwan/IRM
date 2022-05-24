@@ -53,12 +53,9 @@ class Holding < ApplicationRecord
 
   monetize :price_cents, :value_cents, with_currency: ->(i) { i.entity.currency }
 
-  # Only update the investment if its coming from an employee of a holding company
-  before_validation :setup_investment, if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
   validates :quantity, :holding_type, presence: true
   validate :allocation_allowed, if: -> { investment_instrument == 'Options' }
 
-  before_create :update_value
   before_update :update_quantity
 
   after_save ->(_holding) { HoldingUpdateJob.perform_later(id) },
@@ -73,41 +70,12 @@ class Holding < ApplicationRecord
     self.value_cents = quantity * price_cents
   end
 
-  def update_value
-    if option_pool
-      self.funding_round_id = option_pool.funding_round_id
-      self.price_cents = option_pool.excercise_price_cents
-    end
-    self.quantity = orig_grant_quantity
-    self.value_cents = quantity * price_cents
-  end
-
   def allocation_allowed
     if new_record?
       errors.add(:option_pool, "Insufficiant available quantity in Option pool #{option_pool.name}. #{option_pool.available_quantity} < #{quantity}") if option_pool && option_pool.available_quantity < quantity
     elsif option_pool && option_pool.available_quantity < (quantity - quantity_was)
       errors.add(:option_pool, "Insufficiant available quantity in Option pool #{option_pool.name}. #{option_pool.available_quantity} < #{quantity}")
     end
-  end
-
-  def setup_investment
-    self.investment = Investment.for(self).first
-    self.funding_round_id = option_pool.funding_round_id if option_pool
-
-    if investment.nil?
-      # Rails.logger.debug { "Updating investment for #{to_json}" }
-      employee_investor = Investor.for(user, entity).first
-      self.investment = Investment.create!(investment_type: "#{holding_type} Holdings",
-                                           investment_instrument:,
-                                           category: holding_type, investee_entity_id: entity.id,
-                                           investor_id: employee_investor.id, employee_holdings: true,
-                                           quantity: 0, price_cents:,
-                                           currency: entity.currency, funding_round:,
-                                           scenario: entity.actual_scenario, notes: "Holdings Investment")
-
-    end
-
-    investment
   end
 
   def active_secondary_sale

@@ -135,6 +135,6 @@ class User < ApplicationRecord
   end
 
   def employee_parent_entity
-    entity.investees.first&.investor_entity
+    entity.investees.first&.investee_entity
   end
 end

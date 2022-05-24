@@ -56,13 +56,14 @@ class HoldingsController < ApplicationController
     @holding = Holding.new(holding_params)
     authorize @holding
 
+    @holding = CreateHolding.call(@holding).result
     respond_to do |format|
-      if @holding.save
-        format.html { redirect_to holding_url(@holding), notice: "Holding was successfully created." }
-        format.json { render :show, status: :created, location: @holding }
-      else
+      if @holding.new_record?
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @holding.errors, status: :unprocessable_entity }
+      else
+        format.html { redirect_to holding_url(@holding), notice: "Holding was successfully created." }
+        format.json { render :show, status: :created, location: @holding }
       end
     end
   end

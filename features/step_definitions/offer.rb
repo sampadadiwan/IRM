@@ -17,7 +17,7 @@
         holding = FactoryBot.build(:holding, user: emp, entity: @entity, 
                                     funding_round: @funding_round, investor_id: @entity.investors.first.id)
         key_values(holding, args)
-        holding.save!
+        holding = CreateHolding.call(holding).result
     end
 
   end
@@ -28,7 +28,7 @@
         holding = FactoryBot.build(:holding, user: emp, entity: @entity, option_pool: @option_pool, 
                                     funding_round: @option_pool.funding_round, investor_id: @entity.investors.first.id)
         key_values(holding, args)
-        holding.save!
+        holding = CreateHolding.call(holding).result
     end
 
   end
