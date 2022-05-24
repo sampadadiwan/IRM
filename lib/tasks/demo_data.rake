@@ -165,7 +165,7 @@ namespace :irm do
       round = FactoryBot.create(:funding_round, entity: e)
       scenario = Scenario.where(entity_id: e.id).first
       Entity.vcs.each do |vc|
-        inv = e.investors.not_holding.sample
+        inv = e.investors.not_holding.not_trust.sample
         (1..3).each do
           round = FactoryBot.create(:funding_round, entity: e) if rand(10) < 2 
           instrument = ["Equity", "Preferred"][rand(2)]
@@ -233,12 +233,13 @@ namespace :irm do
             grant_date = nil
           end
     
-          Holding.create(user: user, entity: investor.investee_entity, investor_id: investor.id, 
+          holding = Holding.new(user: user, entity: investor.investee_entity, investor_id: investor.id, 
               orig_grant_quantity: (1 + rand(10))*100, price_cents: rand(3..10) * 100000, 
               employee_id: (0...8).map { (65 + rand(26)).chr }.join,
               investment_instrument: investment_instrument, option_pool: pool, grant_date: grant_date,
               holding_type: investor.category, funding_round: funding_round)
       
+          holding = CreateHolding.call(holding).result
         end
       end
     end

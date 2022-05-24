@@ -33,7 +33,7 @@ class CreateHolding < Patterns::Service
         holding.investor_id != trust_investor.id &&
         holding.option_pool
 
-      pool_investment = trust_investor.investments.first
+      pool_investment = trust_investor.investments.where(funding_round_id: holding.option_pool.funding_round_id).first
       pool_investment.quantity -= holding.quantity
       pool_investment.save!
     end
@@ -48,14 +48,15 @@ class CreateHolding < Patterns::Service
       if holding.investment.nil?
         # Rails.logger.debug { "Updating investment for #{to_json}" }
         employee_investor = Investor.for(holding.user, holding.entity).first
-        holding.investment = Investment.create!(investment_type: "#{holding.holding_type} Holdings",
-                                                investment_instrument: holding.investment_instrument,
-                                                category: holding.holding_type, investee_entity_id: holding.entity.id,
-                                                investor_id: employee_investor.id, employee_holdings: true,
-                                                quantity: 0, price_cents: holding.price_cents,
-                                                currency: holding.entity.currency, funding_round: holding.funding_round,
-                                                scenario: holding.entity.actual_scenario, notes: "Holdings Investment")
+        investment = Investment.new(investment_type: "#{holding.holding_type} Holdings",
+                                    investment_instrument: holding.investment_instrument,
+                                    category: holding.holding_type, investee_entity_id: holding.entity.id,
+                                    investor_id: employee_investor.id, employee_holdings: true,
+                                    quantity: 0, price_cents: holding.price_cents,
+                                    currency: holding.entity.currency, funding_round: holding.funding_round,
+                                    scenario: holding.entity.actual_scenario, notes: "Holdings Investment")
 
+        holding.investment = SaveInvestment.call(investment).result
       end
 
     end
