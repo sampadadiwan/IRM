@@ -23,6 +23,7 @@ class CreateAggregateInvestment
                                                                     entity_id: investment.investee_entity_id,
                                                                     scenario_id: investment.scenario_id)
 
+      create_audit_trail(investment)
     end
   end
 
@@ -30,9 +31,5 @@ class CreateAggregateInvestment
     context.audit_trail ||= []
     context.parent_id ||= SecureRandom.uuid
     context.audit_trail << HoldingAuditTrail.new(action: :create_aggregate_investment, owner: "Investment", quantity: investment.quantity, operation: :modify, ref: investment.aggregate_investment, entity_id: investment.investee_entity_id, completed: true, parent_id: context.parent_id)
-  end
-
-  after do
-    create_audit_trail(context.investment)
   end
 end
