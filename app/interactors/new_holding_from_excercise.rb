@@ -23,4 +23,12 @@ class NewHoldingFromExcercise
 
     CreateHolding.call(holding:)
   end
+
+  def create_audit_trail(_excercise)
+    context.audit_trail ||= []
+  end
+
+  after do
+    create_audit_trail(context.excercise)
+  end
 end

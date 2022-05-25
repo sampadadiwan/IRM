@@ -13,4 +13,13 @@ class ApprovePool
       context.fail!(message: "No OptionPool specified")
     end
   end
+
+  def create_audit_trail(option_pool)
+    context.audit_trail ||= []
+    context.audit_trail << HoldingAuditTrail.new(action: :approve_option_pool, owner: "OptionPool", quantity: option_pool.number_of_options, operation: :modify, ref: option_pool, entity_id: option_pool.entity_id, completed: true)
+  end
+
+  after do
+    create_audit_trail(context.option_pool)
+  end
 end

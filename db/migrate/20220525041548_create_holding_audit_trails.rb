@@ -1,7 +1,7 @@
 class CreateHoldingAuditTrails < ActiveRecord::Migration[7.0]
   def change
     create_table :holding_audit_trails do |t|
-      t.integer :action
+      t.string :action, limit: 100
       t.bigint :parent_id
       t.string :owner, limit: 30
       t.bigint :quantity

@@ -11,4 +11,13 @@ class NewHolding
       context.fail!(message: "No Holding specified")
     end
   end
+
+  def create_audit_trail(holding)
+    context.audit_trail ||= []
+    context.audit_trail << HoldingAuditTrail.new(action: :create_holding, owner: "Holding", quantity: holding.quantity, operation: :create_record, ref: holding, entity_id: holding.entity_id, completed: true)
+  end
+
+  after do
+    create_audit_trail(context.holding)
+  end
 end

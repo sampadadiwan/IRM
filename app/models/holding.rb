@@ -58,9 +58,6 @@ class Holding < ApplicationRecord
 
   before_update :update_quantity
 
-  # after_save ->(_holding) { HoldingUpdateJob.perform_later(id) },
-  #            if: proc { |h| INVESTMENT_FOR.include?(h.holding_type) }
-
   def update_quantity
     self.quantity = if investment_instrument == 'Options'
                       orig_grant_quantity - excercised_quantity

@@ -13,4 +13,13 @@ class ExcerciseApproved
       context.fail!(message: "No Excercise specified")
     end
   end
+
+  def create_audit_trail(excercise)
+    context.audit_trail ||= []
+    context.audit_trail << HoldingAuditTrail.new(action: :approve_excercise, owner: "Excercise", quantity: excercise.quantity, operation: :modify, ref: excercise, entity_id: excercise.entity_id, completed: true)
+  end
+
+  after do
+    create_audit_trail(context.excercise)
+  end
 end

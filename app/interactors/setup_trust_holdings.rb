@@ -15,7 +15,7 @@ class SetupTrustHoldings
   # The unallocated options sit in the trust account
   def setup_trust_holdings(option_pool)
     Rails.logger.debug "Option pool has been approved. Setting up trust holdings"
-    trust_investor = option_pool.entity.investors.where(is_trust: true).first
+    trust_investor = option_pool.entity.trust_investor
 
     investment = Investment.where(funding_round_id: option_pool.funding_round_id, investor_id: trust_investor.id, investment_instrument: "Options").first
 
@@ -36,5 +36,13 @@ class SetupTrustHoldings
     end
 
     SaveInvestment.call(investment:)
+  end
+
+  def create_audit_trail(_option_pool)
+    context.audit_trail ||= []
+  end
+
+  after do
+    create_audit_trail(context.option_pool)
   end
 end
