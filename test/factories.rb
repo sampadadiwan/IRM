@@ -1,4 +1,15 @@
 FactoryBot.define do
+  factory :holding_audit_trail do
+    action { "MyString" }
+    action_id { "" }
+    owner { "MyString" }
+    quantity { "" }
+    operation { "MyString" }
+    ref { nil }
+    comments { "MyText" }
+    entity { nil }
+  end
+
   factory :valuation do
     valuation_date { Date.today - rand(24).months }
     pre_money_valuation_cents { rand(1..10) * 100000000 }

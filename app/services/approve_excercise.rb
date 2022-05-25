@@ -6,6 +6,8 @@ class ApproveExcercise < Patterns::Service
   def call
     Excercise.transaction do
       excercise.approved = true
+      excercise.save
+      HoldingAuditTrail.create(action: :approve_excercise, owner: "Excercise", quantity: excercise.quantity, operation: :na, ref: excercise, entity: excercise.entity)
 
       # Generate the equity holding to update the cap table
       holding = Holding.new(user_id: excercise.user_id, entity_id: excercise.entity_id,
@@ -15,8 +17,7 @@ class ApproveExcercise < Patterns::Service
                             funding_round_id: excercise.option_pool.funding_round_id,
                             employee_id: excercise.holding.employee_id, created_from_excercise_id: excercise.id)
 
-      CreateHolding.new(holding).call
-      excercise.save!
+      CreateHolding.call(holding:)
 
       # Updates the existing Holding quantity
       excercise.holding.reload.save
@@ -28,5 +29,5 @@ class ApproveExcercise < Patterns::Service
 
   private
 
-  attr_reader :excercise
+  attr_reader :excercise, :audit_trail
 end

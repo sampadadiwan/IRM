@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_23_164540) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_25_041548) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -367,6 +367,23 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_23_164540) do
     t.integer "options", default: 0
     t.index ["deleted_at"], name: "index_funding_rounds_on_deleted_at"
     t.index ["entity_id"], name: "index_funding_rounds_on_entity_id"
+  end
+
+  create_table "holding_audit_trails", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "action"
+    t.bigint "parent_id"
+    t.string "owner", limit: 30
+    t.bigint "quantity"
+    t.integer "operation"
+    t.boolean "completed", default: false
+    t.string "ref_type", null: false
+    t.bigint "ref_id", null: false
+    t.text "comments"
+    t.bigint "entity_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entity_id"], name: "index_holding_audit_trails_on_entity_id"
+    t.index ["ref_type", "ref_id"], name: "index_holding_audit_trails_on_ref"
   end
 
   create_table "holdings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -823,6 +840,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_23_164540) do
   add_foreign_key "excercises", "users"
   add_foreign_key "folders", "entities"
   add_foreign_key "funding_rounds", "entities"
+  add_foreign_key "holding_audit_trails", "entities"
   add_foreign_key "holdings", "entities"
   add_foreign_key "holdings", "excercises", column: "created_from_excercise_id"
   add_foreign_key "holdings", "investments"

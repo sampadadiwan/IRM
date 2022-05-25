@@ -1,9 +1,12 @@
 class SaveInvestment < Patterns::Service
-  def initialize(investment)
+  def initialize(investment, parent_audit_trail = nil)
     @investment = investment
+    @parent_audit_trail = parent_audit_trail
   end
 
   def call
+    Rails.logger.debug "Service: SaveInvestment called"
+
     Investment.transaction do
       # First create the AggregateInvestment, otherwise the counter caches will not update it
       create_aggregate_investment
@@ -16,7 +19,9 @@ class SaveInvestment < Patterns::Service
 
   private
 
-  attr_reader :investment
+  attr_reader :investment, :parent_audit_trail, :audit_trail
+
+  def save_investment; end
 
   # For Actual Scenario, for Investors (Not Employees or Founders), we want to create a holding
   # corresponding to this investment.
@@ -46,7 +51,7 @@ class SaveInvestment < Patterns::Service
                               orig_grant_quantity: investment.quantity,
                               price_cents: investment.price_cents, value_cents: investment.amount_cents)
 
-        CreateHolding.call(holding)
+        CreateHolding.call(holding:)
       end
 
     else

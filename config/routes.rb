@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :holding_audit_trails
   resources :valuations
   resources :excercises do
     patch 'approve', on: :member

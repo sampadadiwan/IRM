@@ -1,0 +1,33 @@
+
+<tr id="<%= dom_id holding_audit_trail %>">
+  <td>
+    <%= holding_audit_trail.id %>
+  </td>
+  <td>
+    <%= holding_audit_trail.action %>
+  </td>
+  <td>
+    <%= holding_audit_trail.parent_id %>
+  </td>
+  <td>
+    <%= holding_audit_trail.owner %>
+  </td>
+  <td>
+    <%= holding_audit_trail.quantity %>
+  </td>
+  <td>
+    <%= holding_audit_trail.operation %>
+  </td>
+  <td>
+    <%= link_to holding_audit_trail.ref_type, holding_audit_trail.ref %>
+  </td>
+  <td>
+    <%= holding_audit_trail.comments %>
+  </td>
+  <td>
+    <%= holding_audit_trail.entity.name %>
+  </td>
+  <td>
+    <%= link_to "Show" , holding_audit_trail , {class: "btn btn-primary" }%>
+  </td>
+</tr>

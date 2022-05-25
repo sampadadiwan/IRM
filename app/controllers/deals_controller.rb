@@ -105,7 +105,7 @@ class DealsController < ApplicationController
     @deal.entity_id = current_user.entity_id
     authorize @deal
 
-    @deal = CreateDeal.call(@deal).result
+    @deal = CreateDeal.call(deal: @deal).deal
     respond_to do |format|
       if @deal.errors.any?
         format.html { render :new, status: :unprocessable_entity }

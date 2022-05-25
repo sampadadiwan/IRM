@@ -59,7 +59,7 @@ end
 Given('there exists a deal {string} for my startup') do |arg1|
   @deal = FactoryBot.build(:deal)
   key_values(@deal, arg1)
-  @deal = CreateDeal.call(@deal).result
+  @deal = CreateDeal.call(deal: @deal).deal
   puts "\n####Deal####\n"
   puts @deal.to_json
 end
@@ -80,7 +80,7 @@ end
 Given('given there is a deal {string} for the entity') do |arg1|
   @deal = FactoryBot.build(:deal, entity_id: @entity.id)
   key_values(@deal, arg1)
-  @deal = CreateDeal.call(@deal).result
+  @deal = CreateDeal.call(deal: @deal).deal
   puts "\n####Deal####\n"
   puts @deal.to_json
 
@@ -154,7 +154,7 @@ Given('there are {string} exisiting deals {string} with another firm in the star
     @investor = FactoryBot.create(:investor, investor_entity: @another_entity, investee_entity: startup)
     (1..count.to_i).each do 
       deal = FactoryBot.build(:deal, entity: startup)
-      deal = CreateDeal.call(deal).result
+      deal = CreateDeal.call(deal: deal).deal
       di = FactoryBot.create(:deal_investor, investor: @investor, entity: startup, deal: deal)
     end
   end

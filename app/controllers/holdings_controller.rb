@@ -56,7 +56,7 @@ class HoldingsController < ApplicationController
     @holding = Holding.new(holding_params)
     authorize @holding
 
-    @holding = CreateHolding.call(@holding).result
+    @holding = CreateHolding.call(holding: @holding).holding
     respond_to do |format|
       if @holding.errors.any?
         format.html { render :new, status: :unprocessable_entity }

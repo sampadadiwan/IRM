@@ -106,7 +106,7 @@ class Entity < ApplicationRecord
                                             !(logo_url.starts_with?("http") || logo_url.starts_with?("https"))
   end
 
-  after_create ->(entity) { CreateEntity.call(entity) }
+  after_create ->(entity) { SetupStartup.call(entity:) if entity.entity_type == "Startup" }
 
   def to_s
     name

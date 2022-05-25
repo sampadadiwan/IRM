@@ -1,29 +1,17 @@
-class CreateEntity < Patterns::Service
-  def initialize(entity)
-    @entity = entity
-  end
+class SetupHoldingEntity
+  include Interactor
 
   def call
-    Entity.transaction do
-      entity.save
-      if entity.entity_type == "Startup"
-        setup_holding_entity
-        setup_root_folder
-      end
+    Rails.logger.debug "Interactor: SetupHoldingEntity called"
+    if context.entity.present?
+      setup_holding_entity(context.entity)
+    else
+      Rails.logger.error "No Entity specified"
+      context.fail!(message: "No Entity specified")
     end
-    entity
   end
 
-  private
-
-  attr_reader :entity
-
-  def setup_root_folder
-    Folder.create(name: "/", entity_id: entity.id, level: 0)
-    Scenario.create(name: "Actual", entity_id: entity.id)
-  end
-
-  def setup_holding_entity
+  def setup_holding_entity(entity)
     e = Entity.create(name: "#{entity.name} - Employees", entity_type: "Holding",
                       is_holdings_entity: true, active: true, parent_entity_id: entity.id)
     Rails.logger.debug { "Created Employee Holding entity #{e.name} #{e.id} for #{entity.name}" }

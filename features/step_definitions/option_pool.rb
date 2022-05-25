@@ -90,9 +90,9 @@ end
       @option_pool.vesting_schedules << v
     end
 
-    @option_pool = CreateOptionPool.call(@option_pool).result
+    @option_pool = CreateOptionPool.call(option_pool: @option_pool).option_pool
     if @option_pool.approved 
-      @option_pool = ApproveOptionPool.call(@option_pool).result
+      @option_pool = ApproveOptionPool.call(option_pool: @option_pool).option_pool
     end
 
     puts "\n####Created Option Pool####\n"

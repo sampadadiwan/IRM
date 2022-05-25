@@ -28,7 +28,7 @@ class OptionPoolsController < ApplicationController
 
     authorize(@option_pool)
 
-    @option_pool = CreateOptionPool.call(@option_pool).result
+    @option_pool = CreateOptionPool.call(option_pool: @option_pool).option_pool
 
     respond_to do |format|
       if @option_pool.errors.any?
@@ -67,7 +67,7 @@ class OptionPoolsController < ApplicationController
   end
 
   def approve
-    @option_pool = ApproveOptionPool.call(@option_pool).result
+    @option_pool = ApproveOptionPool.call(option_pool: @option_pool).option_pool
     respond_to do |format|
       if @option_pool.save
         format.html do
