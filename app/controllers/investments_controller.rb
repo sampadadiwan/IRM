@@ -95,7 +95,7 @@ class InvestmentsController < ApplicationController
     saved_count = 0
     Investment.transaction do
       investments.each do |i|
-        inv = SaveInvestment.call(i).result
+        inv = SaveInvestment.call(investment: i).investment
         saved_count += 1 unless inv.errors.any?
       end
     end
@@ -116,7 +116,7 @@ class InvestmentsController < ApplicationController
   def update
     authorize @investment
     @investment.assign_attributes(investment_params)
-    @investment = SaveInvestment.call(@investment).result
+    @investment = SaveInvestment.call(investment: @investment).investment
 
     respond_to do |format|
       if @investment.errors.any?

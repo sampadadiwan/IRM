@@ -17,13 +17,14 @@ class SetupTrustHoldings
     Rails.logger.debug "Option pool has been approved. Setting up trust holdings"
     trust_investor = option_pool.entity.investors.where(is_trust: true).first
 
-    existing = Investment.where(funding_round_id: option_pool.funding_round_id, investor_id: trust_investor.id, investment_instrument: "Options").first
+    investment = Investment.where(funding_round_id: option_pool.funding_round_id, investor_id: trust_investor.id, investment_instrument: "Options").first
 
-    if existing.present?
-      existing.quantity = option_pool.number_of_options
-      existing.save
+    if investment.present?
+      Rails.logger.debug "Updating Investment for Trust for Option Pool"
+      investment.quantity = option_pool.number_of_options
+
     else
-
+      Rails.logger.debug "Creating Investment for Trust for Option Pool"
       investment = Investment.new(investee_entity_id: option_pool.entity_id,
                                   category: "Trust",
                                   quantity: option_pool.number_of_options,
@@ -32,9 +33,8 @@ class SetupTrustHoldings
                                   funding_round_id: option_pool.funding_round_id,
                                   scenario: option_pool.entity.actual_scenario)
 
-      Rails.logger.debug "Creating Investment for Trust for Option Pool"
-      SaveInvestment.call(investment)
-
     end
+
+    SaveInvestment.call(investment:)
   end
 end

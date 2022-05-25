@@ -205,7 +205,7 @@ Given('there are {string} investments {string} in the startup') do |count, args|
     i = FactoryBot.build(:investment, investee_entity: @startup, investor: @investor, 
       funding_round: @funding_round, scenario: @startup.actual_scenario)
     key_values(i, args)
-    i = SaveInvestment.call(i).result
+    i = SaveInvestment.call(investment: i).investment
     puts "\n####Investment Created####\n"
     puts i.to_json
   end

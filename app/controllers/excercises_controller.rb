@@ -75,7 +75,7 @@ class ExcercisesController < ApplicationController
   end
 
   def approve
-    @excercise = ApproveExcercise.call(@excercise).result
+    @excercise = ApproveExcercise.call(excercise: @excercise).excercise
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [

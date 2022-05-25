@@ -33,11 +33,9 @@ class SetupHoldingForInvestment
                                     currency: holding.entity.currency, funding_round: holding.funding_round,
                                     scenario: holding.entity.actual_scenario, notes: "Holdings Investment")
 
-        holding.investment = SaveInvestment.call(investment).result
+        holding.investment = SaveInvestment.call(investment:).investment
       end
 
     end
-
-    holding.investment
   end
 end

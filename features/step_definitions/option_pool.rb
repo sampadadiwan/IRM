@@ -172,7 +172,7 @@ Then('when the option is excercised {string}') do |args|
 end
 
 Then('the excercise is approved') do
-  @excercise = ApproveExcercise.call(@excercise).result
+  @excercise = ApproveExcercise.call(excercise: @excercise).excercise
   @excercise.reload
 end
 
