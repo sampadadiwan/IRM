@@ -1,4 +1,4 @@
 class CreateOptionPool
   include Interactor::Organizer
-  organize SetupFundingRoundForPool, CreatePool
+  organize SetupFundingRoundForPool, CreatePool, CreateAuditTrail
 end

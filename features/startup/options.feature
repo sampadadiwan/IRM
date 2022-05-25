@@ -27,9 +27,9 @@ Scenario Outline: Create Options pool
   And the vesting schedule must also be created
 Examples:
     |entity               |option_pool                                                         |schedule      |
-    |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |12:100        |
-    |entity_type=Startup  |name=Pool 567;number_of_options=80000;excercise_price_cents=3000  |12:50,24:50   |
-    |entity_type=Startup  |name=Pool 567;number_of_options=80000;excercise_price_cents=3000  |12:20,24:30,36:50   |
+    |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000;approved=false  |12:100        |
+    |entity_type=Startup  |name=Pool 567;number_of_options=80000;excercise_price_cents=3000;approved=false  |12:50,24:50   |
+    |entity_type=Startup  |name=Pool 567;number_of_options=80000;excercise_price_cents=3000;approved=false  |12:20,24:30,36:50   |
 
 
 Scenario Outline: Create Options pool fails

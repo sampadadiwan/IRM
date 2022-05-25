@@ -14,7 +14,8 @@ class NewHolding
 
   def create_audit_trail(holding)
     context.audit_trail ||= []
-    context.audit_trail << HoldingAuditTrail.new(action: :create_holding, owner: "Holding", quantity: holding.quantity, operation: :create_record, ref: holding, entity_id: holding.entity_id, completed: true)
+    context.parent_id ||= SecureRandom.uuid
+    context.audit_trail << HoldingAuditTrail.new(action: :create_holding, owner: "Holding", quantity: holding.quantity, operation: :create_record, ref: holding, entity_id: holding.entity_id, completed: true, parent_id: context.parent_id)
   end
 
   after do

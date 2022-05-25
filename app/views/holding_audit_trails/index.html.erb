@@ -5,7 +5,7 @@
   <%= link_to "New Holding Audit Trail", new_holding_audit_trail_path, {class: "btn btn-primary"}  %>
 </div>
 
-<div class="table-responsive" data-controller="datatable">
+<div class="table-responsive">
 
   <table id="holding_audit_trails" class="table table-bordered dataTable">
     <thead>
@@ -17,7 +17,7 @@
           Action
         </th>
         <th>
-          Parent ID
+          Corr ID
         </th>
         <th>
           Owner
@@ -49,5 +49,7 @@
       <% end %>
     </tbody>
   </table>
+
+  <%= paginate @holding_audit_trails %>
 
 </div>

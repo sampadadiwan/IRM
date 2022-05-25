@@ -370,8 +370,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_25_041548) do
   end
 
   create_table "holding_audit_trails", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "action"
-    t.bigint "parent_id"
+    t.string "action", limit: 100
+    t.string "parent_id", limit: 50
     t.string "owner", limit: 30
     t.bigint "quantity"
     t.integer "operation"

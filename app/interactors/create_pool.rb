@@ -15,7 +15,8 @@ class CreatePool
 
   def create_audit_trail(option_pool)
     context.audit_trail ||= []
-    context.audit_trail << HoldingAuditTrail.new(action: :create_option_pool, owner: "OptionPool", quantity: option_pool.number_of_options, operation: :create_record, ref: option_pool, entity_id: option_pool.entity_id, completed: true)
+    context.parent_id ||= SecureRandom.uuid
+    context.audit_trail << HoldingAuditTrail.new(action: :create_option_pool, owner: "OptionPool", quantity: option_pool.number_of_options, operation: :create_record, ref: option_pool, entity_id: option_pool.entity_id, completed: true, parent_id: context.parent_id)
   end
 
   after do

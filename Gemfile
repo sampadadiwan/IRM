@@ -110,6 +110,7 @@ group :development, :test do
   gem "debug", platforms: %i[mri mingw x64_mingw]
 end
 
+gem 'awesome_print'
 gem 'factory_bot_rails'
 gem "faker"
 
@@ -130,7 +131,6 @@ group :development do
   gem 'brakeman'
   gem "bundle-audit", "~> 0.1.0"
 
-  gem 'awesome_print'
   gem 'rails-erd'
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"

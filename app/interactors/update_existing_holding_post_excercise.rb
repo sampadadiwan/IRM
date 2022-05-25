@@ -15,7 +15,8 @@ class UpdateExistingHoldingPostExcercise
 
   def create_audit_trail(excercise)
     context.audit_trail ||= []
-    context.audit_trail << HoldingAuditTrail.new(action: :update_post_excercise, owner: "Holding", quantity: excercise.holding.quantity, operation: :modify, ref: excercise.holding, entity_id: excercise.entity_id, completed: true)
+    context.parent_id ||= SecureRandom.uuid
+    context.audit_trail << HoldingAuditTrail.new(action: :update_post_excercise, owner: "Holding", quantity: excercise.holding.quantity, operation: :modify, ref: excercise.holding, entity_id: excercise.entity_id, completed: true, parent_id: context.parent_id)
   end
 
   after do

@@ -1,9 +1,29 @@
 class HoldingAuditTrailsController < ApplicationController
   before_action :set_holding_audit_trail, only: %i[show edit update destroy]
+  after_action :verify_authorized, except: %i[index search]
 
   # GET /holding_audit_trails or /holding_audit_trails.json
   def index
-    @holding_audit_trails = policy_scope(HoldingAuditTrail)
+    @holding_audit_trails = policy_scope(HoldingAuditTrail).order("id desc").page params[:page]
+  end
+
+  def search
+    @entity = current_user.entity
+    query = params[:query]
+    if query.present?
+      @holding_audit_trails = if current_user.has_role?(:super)
+
+                                HoldingAuditTrailIndex.query(query_string: { fields: HoldingAuditTrailIndex::SEARCH_FIELDS,
+                                                                             query:, default_operator: 'and' }).objects
+
+                              else
+                                HoldingAuditTrailIndex.filter(term: { entity_id: @entity.id })
+                                                      .query(query_string: { fields: HoldingAuditTrailIndex::SEARCH_FIELDS,
+                                                                             query:, default_operator: 'and' }).objects
+                              end
+
+    end
+    render "index"
   end
 
   # GET /holding_audit_trails/1 or /holding_audit_trails/1.json

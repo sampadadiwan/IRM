@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :holding_audit_trails
+  resources :holding_audit_trails do
+    get 'search', on: :collection
+  end
   resources :valuations
   resources :excercises do
     patch 'approve', on: :member
