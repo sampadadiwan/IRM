@@ -58,10 +58,13 @@ wb.add_worksheet(name: "Interests") do |sheet|
 
   # Create entries for each offer
   @secondary_sale.interests.short_listed.includes(:user, :interest_entity).each do |o|
-    user_name, entity_name = o.escrow_deposited ? 
-        [o.user.full_name, o.interest_entity.name] : [ENV['OBFUSCATION'], ENV['OBFUSCATION']]  
-        
-    row = sheet.add_row ["Link", user_name, entity_name, 
+    user_name, entity_name = if o.escrow_deposited
+                               [o.user.full_name, o.interest_entity.name]
+                             else
+                               [ENV['OBFUSCATION'], ENV['OBFUSCATION']]
+                             end
+
+    row = sheet.add_row ["Link", user_name, entity_name,
                          custom_format_number(o.quantity, params), custom_format_number(o.price, params),
                          o.final_price, o.allocation_percentage,
                          o.allocation_quantity, money_to_currency(o.allocation_amount, params),
