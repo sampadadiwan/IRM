@@ -71,27 +71,15 @@ end
 Capybara.server_host = "localhost"
 Capybara.app_host = 'http://localhost:3000'
 
-Capybara.register_driver :headless_chrome do |app|
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: {
-      args: %w[headless enable-features=NetworkService,NetworkServiceInProcess]
-    }
-  )
-
-  Capybara::Selenium::Driver.new app,
-    browser: :chrome,
-    desired_capabilities: capabilities
-end
-
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
 
-Capybara.javascript_driver = :chrome
+Capybara.javascript_driver = :selenium_chrome_headless #:chrome
 
 Capybara.configure do |config|
   config.default_max_wait_time = 10 # seconds
-  config.default_driver        = :selenium
+  config.default_driver        = :selenium_chrome_headless #:selenium
 end
 
 module IRMUtils
