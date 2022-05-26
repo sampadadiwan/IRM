@@ -11,6 +11,16 @@
       <table class="table table-bordered dataTable ">
          <tr>
             <td>
+               Logo
+            </td>
+            <td>
+               <% if @entity.logo.present? %>
+                  <img class="entity_logo" src="<%= rails_blob_path(@entity.logo) %>">
+               <% end %>
+            </td>
+         </tr>
+         <tr>
+            <td>
                Type
             </td>
             <td>

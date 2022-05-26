@@ -24,11 +24,13 @@ class NewHoldingFromExcercise
     CreateHolding.call(holding:)
   end
 
-  def create_audit_trail(_excercise)
+  def create_audit_trail(holding)
     context.audit_trail ||= []
+    context.parent_id ||= SecureRandom.uuid
+    context.audit_trail << HoldingAuditTrail.new(action: :create_holding, owner: "Holding", quantity: holding.quantity, operation: :create_record, ref: holding, entity_id: holding.entity_id, completed: true, parent_id: context.parent_id)
   end
 
   after do
-    create_audit_trail(context.excercise)
+    create_audit_trail(context.excercise.created_holding)
   end
 end

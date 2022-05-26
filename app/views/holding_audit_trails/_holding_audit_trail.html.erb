@@ -7,7 +7,7 @@
     <%= holding_audit_trail.action %>
   </td>
   <td>
-    <%= holding_audit_trail.parent_id %>
+    <%= link_to holding_audit_trail.parent_id, search_holding_audit_trails_path(query: holding_audit_trail.parent_id) %>
   </td>
   <td>
     <%= holding_audit_trail.owner %>

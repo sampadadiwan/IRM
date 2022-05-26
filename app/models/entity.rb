@@ -84,6 +84,8 @@ class Entity < ApplicationRecord
   has_many :investments, foreign_key: "investee_entity_id", dependent: :destroy
   has_many :aggregate_investments, dependent: :destroy
 
+  has_one_attached :logo, service: :amazon
+
   monetize :total_investments, as: "total", with_model_currency: :currency
 
   TYPES = ["VC", "Startup", "Holding", "Advisor", "Family Office"].freeze

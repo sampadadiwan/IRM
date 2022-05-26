@@ -70,6 +70,7 @@ Scenario Outline: Edit investment
   And I create an investment "<investment>"
   Then I should see the "<msg>"
   And an investment should be created
+  And a holding should be created for the investor
   And I should see the investment details on the details page
   And when I edit the investment "quantity=200;price_cents=3000"
   And I should see the investment details on the details page

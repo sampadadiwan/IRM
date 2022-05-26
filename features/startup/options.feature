@@ -58,7 +58,7 @@ Scenario Outline:  Options vested
   And there is an option holding "orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
   And the option grant date is "<months>" ago
   Then the option pool must have "<option_pool_quantites>"
-  Then the holding must have "<holding_quantites>"
+  Then the option holding must have "<holding_quantites>"
 Examples:
     |entity               |option_pool                            |schedule           | months | option_pool_quantites | holding_quantites |
     
@@ -78,7 +78,7 @@ Scenario Outline:  Options lapsed
   And there is an option holding "orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
   And the option grant date is "<months>" ago
   Then the option pool must have "<option_pool_quantites>"
-  Then the holding must have "<holding_quantites>"
+  Then the option holding must have "<holding_quantites>"
 Examples:
     |entity               |option_pool                    |schedule           | months  | option_pool_quantites | holding_quantites | 
     
@@ -101,9 +101,10 @@ Scenario Outline:  Options Excercised
   Then when the option is excercised "approved=false"
   And the excercise is approved
   Then the option pool must have "<option_pool_quantites>"
-  Then the holding must have "<holding_quantites>"
+  Then the option holding must have "<holding_quantites>"
   And the new investment and holding must be created with excercised quantity
   And the investment total quantity must be "10000"
+  And the trust esop holdings must be reduced by "1000"
 
 Examples:
     |entity               |option_pool                                      |schedule            | months  | option_pool_quantites | holding_quantites |

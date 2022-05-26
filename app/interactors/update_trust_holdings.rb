@@ -20,10 +20,12 @@ class UpdateTrustHoldings
         holding.option_pool
 
       pool_investment = trust_investor.investments.where(
-        funding_round_id: holding.option_pool.funding_round_id
+        funding_round_id: holding.option_pool.funding_round_id,
+        investment_instrument: 'Options'
       ).first
       pool_investment.quantity -= holding.quantity
-      create_audit_trail(holding, pool_investment) if pool_investment.save
+      result = SaveInvestment.call(investment: pool_investment)
+      create_audit_trail(holding, pool_investment) if result.success?
     end
   end
 

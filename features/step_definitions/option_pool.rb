@@ -199,7 +199,7 @@ Then('the option pool must have {string}') do |args|
 
 end
 
-Then('the holding must have {string}') do |args|
+Then('the option holding must have {string}') do |args|
   holding = Hash.new
   key_values(holding, args)
   
@@ -218,6 +218,13 @@ Then('the holding must have {string}') do |args|
 
 end
 
+Then('the trust esop holdings must be reduced by {string}') do |arg|
+  trust_investor = @holding.entity.trust_investor
+  @trust_holding = trust_investor.holdings.where(option_pool_id: @option_pool.id, 
+                                  investment_instrument: "Options").first
+
+  @trust_holding.quantity.should == @option_pool.number_of_options - arg.to_i
+end
 
 
 

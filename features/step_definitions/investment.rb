@@ -132,9 +132,9 @@ end
 
 Then('a holding should be created for the investor') do
   sleep(1)
-  @holding = @investment.investor.holdings.last
+  @holding = @investment.holdings.last
   puts "\n####Holding####\n"
-  puts Holding.last.to_json
+  puts @holding.to_json
 
   @holding.quantity.should == @investment.quantity
   @holding.investment_instrument.should == @investment.investment_instrument
@@ -142,6 +142,8 @@ Then('a holding should be created for the investor') do
   @holding.investor_id.should == @investment.investor_id
   @holding.user_id.should == nil
   @holding.holding_type.should == "Investor"
+
+  @investment.holdings.count.should == 1
 end
 
 

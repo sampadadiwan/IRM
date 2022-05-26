@@ -4,7 +4,11 @@ class HoldingAuditTrailsController < ApplicationController
 
   # GET /holding_audit_trails or /holding_audit_trails.json
   def index
-    @holding_audit_trails = policy_scope(HoldingAuditTrail).order("id desc").page params[:page]
+    @holding_audit_trails = policy_scope(HoldingAuditTrail)
+    @holding_audit_trails = @holding_audit_trails.where(ref_id: params[:ref_id]) if params[:ref_id].present?
+    @holding_audit_trails = @holding_audit_trails.where(ref_type: params[:ref_type]) if params[:ref_type].present?
+
+    @holding_audit_trails = @holding_audit_trails.order("id desc").page params[:page]
   end
 
   def search
