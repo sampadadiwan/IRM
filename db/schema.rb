@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_25_041548) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_26_153908) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -549,6 +549,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_25_041548) do
     t.integer "unapproved_investor_access_count", default: 0
     t.boolean "is_holdings_entity", default: false
     t.boolean "is_trust", default: false
+    t.string "city", limit: 50
     t.index ["deleted_at"], name: "index_investors_on_deleted_at"
     t.index ["investee_entity_id"], name: "index_investors_on_investee_entity_id"
     t.index ["investor_entity_id", "investee_entity_id"], name: "index_investors_on_investor_entity_id_and_investee_entity_id", unique: true
@@ -818,6 +819,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_25_041548) do
     t.index ["option_pool_id"], name: "index_vesting_schedules_on_option_pool_id"
   end
 
+  add_foreign_key "access_rights", "entities"
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aggregate_investments", "entities"
   add_foreign_key "aggregate_investments", "investors"
