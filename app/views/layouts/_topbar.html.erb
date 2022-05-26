@@ -61,7 +61,11 @@
 
                         <% end %>
 
-                        <% if current_user && current_user.has_cached_role?(:startup) && current_user.has_cached_role?(:investor) %>
+                        <% if current_user && current_user.has_cached_role?(:startup) && 
+                            (   
+                                current_user.has_cached_role?(:investor) || 
+                                current_user.has_cached_role?(:holding) 
+                            ) %>
                             <div class="topbar-divider "></div>
                             <%= render "/layouts/persona" %>
                         <% end %>

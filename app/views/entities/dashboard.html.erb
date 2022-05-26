@@ -5,7 +5,7 @@
         <%= render "cxo_dashboard" %>
     <% elsif current_user.curr_role.to_sym == :investor %>
         <%= render "vc_dashboard" %>
-    <% elsif current_user.entity.entity_type == "Holding" %>
+    <% elsif current_user.curr_role == "holding" %>
         <%= render "holding_dashboard" %>
     <% elsif current_user.entity.entity_type == "Holding" %>
         <%= render "advisor_dashboard" %>

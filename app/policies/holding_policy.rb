@@ -1,11 +1,11 @@
 class HoldingPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.has_cached_role?(:startup)
+      if user.curr_role == "startup"
         scope.where("entity_id=?", user.entity_id)
-      elsif user.has_cached_role?(:holding)
+      elsif user.curr_role == "holding"
         scope.where("user_id=?", user.id)
-      elsif user.has_cached_role?(:investor)
+      elsif user.curr_role == "investor"
         scope.joins(:investor).where("investors.investor_entity_id=?", user.entity_id)
       end
     end

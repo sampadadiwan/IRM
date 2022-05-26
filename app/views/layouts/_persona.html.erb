@@ -1,8 +1,14 @@
 <%= form_with(model: nil, method: :get, url: set_persona_users_path, id: "persona_form") do |form| %>
-
+  <% 
+    if current_user.has_cached_role?(:investor) 
+      personas = [ ["My Company", :startup], ["My Investments",:investor] ]
+    elsif current_user.has_cached_role?(:holding) 
+      personas = [ ["My Company", :startup], ["My Holdings",:holding] ]
+    end
+  %>
   <div class="form-group" data-controller="persona">
     <% selected = params[:persona].present? ? params[:persona] : current_user.curr_role.to_sym %>
-    <%= form.select :persona, [ ["My Company", :startup], ["My Investments",:investor] ], {selected: selected}, 
+    <%= form.select :persona, personas, {selected: selected}, 
         { id: "persona", class: "form-control", 
         data: { action: "change->persona#setPersona", toggle: "tooltip", title: "Choose Persona" } } %>
   </div>

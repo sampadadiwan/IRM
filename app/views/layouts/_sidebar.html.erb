@@ -28,7 +28,7 @@
                 </li>                
             <% end %>
 
-            <% if current_user && current_user.has_cached_role?(:holding) %>
+            <% if current_user && current_user.curr_role == "holding" %>
                 <li class="nav-item">
                         
                     <a class="nav-link" href="/holdings">
