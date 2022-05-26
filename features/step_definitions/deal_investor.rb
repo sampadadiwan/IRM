@@ -44,7 +44,7 @@ include InvestmentsHelper
     expect(page).to have_content(money_to_currency @deal_investor.primary_amount)
     expect(page).to have_content(money_to_currency @deal_investor.secondary_investment)
     expect(page).to have_content(money_to_currency @deal_investor.pre_money_valuation)
-    expect(page).to have_content(@deal_investor.entity_name)
+    # expect(page).to have_content(@deal_investor.entity_name)
   end
 
 

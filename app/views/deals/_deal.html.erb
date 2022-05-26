@@ -1,30 +1,28 @@
 
 <tr id="<%= dom_id deal %>">
-<td class="hideMobP">
-    <%= deal.entity.name %>
-</td>  
-<td>
-    <% if current_user.entity_id == deal.entity_id %>    
-        <%= link_to deal.name, deal_path(deal, grid_view: true) %>
-    <% else %>
-        <%= link_to deal.name, deal_path(deal) %>
-    <% end %>
-    <div>
-        <% if deal.start_date %>
-            <span class="badge bg-success">Start Date: <%= l deal.start_date %></span>
+
+    <td>
+        <% if current_user.entity_id == deal.entity_id %>    
+            <%= link_to deal.name, deal_path(deal, grid_view: true) %>
         <% else %>
-            <span class="badge bg-warning">Not Started</span>
+            <%= link_to deal.name, deal_path(deal) %>
         <% end %>
-    </div>
-</td>  
-<td>
-    <%= money_to_currency deal.amount, params %>
-</td>  
-<td class="hideMobP">    
-    <span class="badge bg-info"><%= deal.status %></span>
-    <% if deal.archived %>
-        <span class="badge bg-danger">Archived</span>
-    <% end %>
-</td>  
+        <div>
+            <% if deal.start_date %>
+                <span class="badge bg-success">Start Date: <%= l deal.start_date %></span>
+            <% else %>
+                <span class="badge bg-warning">Not Started</span>
+            <% end %>
+        </div>
+    </td>  
+    <td>
+        <%= money_to_currency deal.amount, params %>
+    </td>  
+    <td class="hideMobP">    
+        <span class="badge bg-info"><%= deal.status %></span>
+        <% if deal.archived %>
+            <span class="badge bg-danger">Archived</span>
+        <% end %>
+    </td>  
 
 </tr>

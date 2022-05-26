@@ -69,12 +69,3 @@
 
 
   </table>
-
-
-  <div>
-    <%= link_to "Edit" , edit_holding_audit_trail_path(@holding_audit_trail), {class: "btn btn-primary" } %> |
-      <%= link_to "Back" , :back, {class: "btn btn-primary" } %> |
-
-        <%= button_to "Delete" , @holding_audit_trail, method: :delete, class: "btn btn-danger" ,
-          form_class: "deleteButton" , data: {action: "click->confirm#delete" , turbo:false} %>
-  </div>
