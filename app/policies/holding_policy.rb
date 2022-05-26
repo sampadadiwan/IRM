@@ -60,4 +60,8 @@ class HoldingPolicy < ApplicationPolicy
   def cancel?
     create?
   end
+
+  def esop_grant_letter?
+    show? && record.investment_instrument == "Options"
+  end
 end

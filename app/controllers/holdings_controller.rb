@@ -1,5 +1,5 @@
 class HoldingsController < ApplicationController
-  before_action :set_holding, only: %i[show edit update destroy cancel]
+  before_action :set_holding, only: %i[show edit update destroy cancel esop_grant_letter]
   after_action :verify_authorized, except: %i[employee_calc index search]
 
   # GET /holdings or /holdings.json
@@ -39,6 +39,15 @@ class HoldingsController < ApplicationController
 
   # GET /holdings/1 or /holdings/1.json
   def show; end
+
+  def esop_grant_letter
+    respond_to do |format|
+      format.html { render :esop_grant_letter }
+      format.pdf do
+        render template: "holdings/esop_grant_letter", formats: [:html], pdf: "ESOP Grant Letter"
+      end
+    end
+  end
 
   # GET /holdings/new
   def new
