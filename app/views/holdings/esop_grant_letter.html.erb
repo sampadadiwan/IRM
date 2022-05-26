@@ -16,7 +16,7 @@
     <p class="line">Thank you for being an invaluable part of <%= @holding.entity.name %>.</p>
     
     
-    <p class="line">We are delighted to confirm the grant of <%= @holding.quantity %> as part of <%= @holding.entity.name %>’s <%= @holding.option_pool.name %> .</p>
+    <p class="line">We are delighted to confirm the grant of <%= @holding.orig_grant_quantity %> as part of <%= @holding.entity.name %>’s <%= @holding.option_pool.name %> .</p>
     
     <p class="line">The options granted to you will be exercisable as per the below schedule at a price of <%= money_to_currency @holding.price %>.</p>
     
@@ -33,7 +33,7 @@
     </p>
 
     <p class="line">
-    Shares once vested will have an period of <%= @holding.option_pool.excercise_period_months %> months to be exercised. 
+    Shares once vested will have a period of <%= @holding.option_pool.excercise_period_months %> months to be exercised. 
     </p>
     
     <p class="line">
