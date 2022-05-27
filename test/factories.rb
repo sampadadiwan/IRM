@@ -61,6 +61,7 @@ FactoryBot.define do
     pre_money_valuation_cents { rand(5..10) * 1000000 }
     entity { Entity.all.sample }
     currency { entity.currency }
+    closed_on {Date.today - rand(12).months}
   end
 
   factory :payment do
@@ -215,6 +216,7 @@ FactoryBot.define do
     investor_entity_id { Entity.vcs.sample.id }
     investee_entity_id { Entity.startups.sample.id }
     category { ["Lead Investor", "Co-Investor"][rand(2)] }
+    city {Faker::Address.city}
   end
 
   factory :investment do
