@@ -73,15 +73,15 @@
             <div class="card-header"> 2. Upload Documents </div>
             <div class="card-body">
 
-              <div class="field" class="form-group" data-controller="directuploads" >
+              <div class="form-group" data-controller="directuploads" >
                 <%= form.label :attachments, "Option Scheme Documents" %>
                 <%= form.file_field :attachments, class: "form-control", direct_upload: true, multiple:true %>
                 <small class="text-muted"> Upload multiple documents. </small>
               </div>
 
-              <div class="field" class="form-group" data-controller="directuploads" >
+              <div class="form-group" data-controller="directuploads" >
                 <%= form.label :excercise_instructions %>
-                <%= form.file_field :excercise_instructions, class: "form-control", direct_upload: true, multiple:true %>
+                <%= form.file_field :excercise_instructions, class: "form-control", direct_upload: true, multiple:true, required: option_pool.new_record? %>
                 <small class="text-muted"> Documents describing the complete process to your employees. </small>
               </div>
 

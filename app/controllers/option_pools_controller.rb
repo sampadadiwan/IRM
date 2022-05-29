@@ -14,6 +14,9 @@ class OptionPoolsController < ApplicationController
     @option_pool = OptionPool.new
     @option_pool.start_date = Time.zone.today
     @option_pool.entity_id = current_user.entity_id
+    (1..4).each do |i|
+      @option_pool.vesting_schedules.build(months_from_grant: i * 12, vesting_percent: 25)
+    end
     authorize(@option_pool)
   end
 
