@@ -38,4 +38,10 @@ class ImportUpload < ApplicationRecord
   def run_import_job
     ImportUploadJob.set(wait_until: 2.seconds).perform_later(id)
   end
+
+  def percent_completed
+    return 0 if total_rows_count.zero?
+
+    (processed_row_count.to_f / total_rows_count * 100).round(2)
+  end
 end

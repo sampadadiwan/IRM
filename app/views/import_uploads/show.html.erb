@@ -44,6 +44,34 @@
     </tr>
     <tr>
       <td>
+        Total Rows
+      </td>
+      <td>
+        <%= @import_upload.total_rows_count %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Successfully Imported
+      </td>
+      <td>
+        <%= @import_upload.processed_row_count %>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: <%=@import_upload.percent_completed%>%" aria-valuenow="<%=@import_upload.percent_completed%>" aria-valuemin="0" aria-valuemax="100"><%=@import_upload.percent_completed%>%</div>
+        </div>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Failed Rows
+      </td>
+      <td>
+        <%= @import_upload.failed_row_count %>
+      </td>
+    </tr>
+    <tr>
+      <td>
         Status
       </td>
       <td>

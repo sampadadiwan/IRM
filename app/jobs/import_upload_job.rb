@@ -36,6 +36,9 @@ class ImportUploadJob < ApplicationJob
     # Parse the XL rows
     data = Roo::Spreadsheet.open(file.path) # open spreadsheet
     headers = data.row(1) # get header row
+    import_upload.total_rows_count = data.last_row - 1
+    import_upload.save
+
     data.each_with_index do |row, idx|
       next if idx.zero? # skip header row
 
@@ -44,14 +47,27 @@ class ImportUploadJob < ApplicationJob
 
       case import_upload.import_type
       when "InvestorAccess"
-        processed_record_count += save_investor_access(user_data, import_upload) ? 1 : 0
+        if save_investor_access(user_data, import_upload)
+          processed_record_count += 1
+          import_upload.processed_row_count += 1
+        else
+          import_upload.failed_row_count += 1
+        end
       when "Holding"
-        processed_record_count += save_holding(user_data, import_upload) ? 1 : 0
+        if save_holding(user_data, import_upload)
+          processed_record_count += 1
+          import_upload.processed_row_count += 1
+        else
+          import_upload.failed_row_count += 1
+        end
       else
         err_msg = "Bad import_type #{import_upload.import_type} for import_upload #{import_upload.id}"
         Rails.logger.error err_msg
         raise err_msg
       end
+
+      # To indicate progress
+      import_upload.save if (idx % 10).zero?
     end
     post_processing(import_upload)
     # return how many we processed
@@ -59,6 +75,10 @@ class ImportUploadJob < ApplicationJob
   end
 
   def post_processing(import_upload)
+    import_upload.save
+    Rails.logger.debug "\n#######################\n"
+    Rails.logger.debug import_upload.to_json
+    Rails.logger.ap import_upload
     case import_upload.import_type
     when "InvestorAccess"
 
