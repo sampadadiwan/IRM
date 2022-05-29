@@ -4,40 +4,38 @@ class ImportUploadJob < ApplicationJob
   def perform(import_upload_id)
     Chewy.strategy(:sidekiq) do
       import_upload = ImportUpload.find(import_upload_id)
-      import_upload.status = nil
-      import_upload.error_text = nil
-
-      processed_record_count = 0
       file = Tempfile.new(["import_#{import_upload.id}", ".xlsx"], binmode: true)
       begin
         # Download the S3 file to tmp
         file << import_upload.import_file.download
         file.close
 
-        Rails.logger.debug { "Downloaded file to #{file.path}" }
-        processed_record_count = process_file(file, import_upload)
+        case import_upload.import_type
+        when "InvestorAccess"
+          process_investor_access(file, import_upload)
+        when "Holding"
+          process_holdings(file, import_upload)
+        else
+          err_msg = "Bad import_type #{import_upload.import_type} : #{import_upload.id}"
+          Rails.logger.error err_msg
+          raise err_msg
+        end
       rescue StandardError => e
-        import_upload.status ||= e.message
+        import_upload.status = e.message
         import_upload.error_text = e.backtrace
-        Rails.logger.error "Could not download file for import upload job #{import_upload_id} : #{e.message}"
         Rails.logger.error e.backtrace
       ensure
         file.delete
       end
 
-      import_upload.status ||= "Done. Processed #{processed_record_count} records"
       import_upload.save
     end
   end
 
-  def process_file(file, import_upload)
+  def process_investor_access(file, import_upload)
     processed_record_count = 0
-
+    headers, data = pre_process(file, import_upload)
     # Parse the XL rows
-    data = Roo::Spreadsheet.open(file.path) # open spreadsheet
-    headers = data.row(1) # get header row
-    import_upload.total_rows_count = data.last_row - 1
-    import_upload.save
 
     data.each_with_index do |row, idx|
       next if idx.zero? # skip header row
@@ -45,25 +43,11 @@ class ImportUploadJob < ApplicationJob
       # create hash from headers and cells
       user_data = [headers, row].transpose.to_h
 
-      case import_upload.import_type
-      when "InvestorAccess"
-        if save_investor_access(user_data, import_upload)
-          processed_record_count += 1
-          import_upload.processed_row_count += 1
-        else
-          import_upload.failed_row_count += 1
-        end
-      when "Holding"
-        if save_holding(user_data, import_upload)
-          processed_record_count += 1
-          import_upload.processed_row_count += 1
-        else
-          import_upload.failed_row_count += 1
-        end
+      if save_investor_access(user_data, import_upload)
+        processed_record_count += 1
+        import_upload.processed_row_count += 1
       else
-        err_msg = "Bad import_type #{import_upload.import_type} for import_upload #{import_upload.id}"
-        Rails.logger.error err_msg
-        raise err_msg
+        import_upload.failed_row_count += 1
       end
 
       # To indicate progress
@@ -74,11 +58,47 @@ class ImportUploadJob < ApplicationJob
     processed_record_count
   end
 
+  def process_holdings(file, import_upload)
+    processed_record_count = 0
+    headers, data = pre_process(file, import_upload)
+    # Parse the XL rows
+
+    data.each_with_index do |row, idx|
+      next if idx.zero? # skip header row
+
+      # create hash from headers and cells
+      user_data = [headers, row].transpose.to_h
+
+      if save_holding(user_data, import_upload)
+        processed_record_count += 1
+        import_upload.processed_row_count += 1
+      else
+        import_upload.failed_row_count += 1
+      end
+
+      # To indicate progress
+      import_upload.save if (idx % 10).zero?
+    end
+    post_processing(import_upload)
+    # return how many we processed
+    processed_record_count
+  end
+
+  def pre_process(file, import_upload)
+    data = Roo::Spreadsheet.open(file.path) # open spreadsheet
+    headers = data.row(1) # get header row
+
+    import_upload.status = nil
+    import_upload.error_text = nil
+    import_upload.total_rows_count = data.last_row - 1
+    import_upload.save
+
+    [headers, data]
+  end
+
   def post_processing(import_upload)
     import_upload.save
-    Rails.logger.debug "\n#######################\n"
-    Rails.logger.debug import_upload.to_json
-    Rails.logger.ap import_upload
+
     case import_upload.import_type
     when "InvestorAccess"
 
