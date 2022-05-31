@@ -86,6 +86,13 @@
                 <small class="text-muted"> Documents describing the complete process to your employees. </small>
               </div>
 
+              <div class="form-group" data-controller="directuploads" >
+                <%= form.label :certificate_signature, "ESOP Grant Certificate Signature" %>
+                <%= form.file_field :certificate_signature, class: "form-control", direct_upload: true, multiple:false %>
+                <small class="text-muted"> Signature to be shown on the ESOP Grant Certificates for employees. </small>
+              </div>
+
+
               <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
             </div>
         </div>

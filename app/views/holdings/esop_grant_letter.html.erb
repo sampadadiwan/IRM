@@ -42,7 +42,12 @@
     <p class="line">Best Regards</p>
     
     <p class="line">Digital Signature</p>
-        
+
+    <p class="line">
+      <%= image_tag image_url(rails_blob_path(@holding.option_pool.certificate_signature)), 
+          style: "margin:0px; padding:0px; max-width:200px; max-height:200px;" if @holding.option_pool.certificate_signature.present? %>
+    </p>
+
     <p class="line"> Authorised Signatory </p>
 
 </div>

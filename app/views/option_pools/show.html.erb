@@ -76,6 +76,15 @@
       </td>
     </tr>
 
+    <tr>
+      <td>
+        ESOP Grant Certificate Signature
+      </td>
+      <td>
+        <%= render "/layouts/attachments" , attachments: [@option_pool.certificate_signature] if @option_pool.certificate_signature.present? %>
+      </td>
+    </tr>
+
     <tr class="">
       <td>
         Number Of Options
