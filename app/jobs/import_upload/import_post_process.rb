@@ -10,7 +10,7 @@ class ImportPostProcess
   end
 
   def post_processing(import_upload)
-    file = nil
+    result_file_name = "/tmp/import_result_#{import_upload.id}.xlsx"
     case import_upload.import_type
     when "InvestorAccess"
 
@@ -18,11 +18,11 @@ class ImportPostProcess
       # We need to adjust the percentage holdings
       investment = import_upload.entity.actual_scenario.investments.first
       InvestmentPercentageHoldingJob.perform_now(investment.id)
-      file = File.open("/tmp/import_result_#{import_upload.id}.xlsx")
-      import_upload.import_results.attach(io: file, filename: "import_result_#{import_upload.id}.xlsx")
+      result_file = File.open(result_file_name)
+      import_upload.import_results.attach(io: result_file, filename: "import_result_#{import_upload.id}.xlsx")
 
     end
     import_upload.save
-    file&.delete
+    File.delete(result_file_name) if File.exist? result_file_name
   end
 end

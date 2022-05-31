@@ -123,9 +123,9 @@ class ImportHolding
   def option_pool(user_data, import_upload)
     # Create the Holding
     col = "Funding Round or Option Pool"
-    option_pool = OptionPool.where(entity_id: import_upload.owner_id, name: user_data[col].strip).first
+    option_pool = OptionPool.approved.where(entity_id: import_upload.owner_id, name: user_data[col].strip).first
 
-    raise "Option Pool #{user_data[col].strip} not available. Please create before uploading" unless option_pool
+    raise "Option Pool #{user_data[col].strip} not available. Please create or approve the pool before uploading" unless option_pool
 
     option_pool
   end

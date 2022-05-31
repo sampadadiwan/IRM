@@ -46,6 +46,5 @@ class ImportInvestorAccess
       # To indicate progress
       import_upload.save if (idx % 10).zero?
     end
-
   end
 end
