@@ -18,7 +18,7 @@ class OptionPoolPolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_cached_role?(:super) || (user.entity_id == record.entity_id)
+    (user.entity_id == record.entity_id)
   end
 
   def new?
@@ -39,5 +39,9 @@ class OptionPoolPolicy < ApplicationPolicy
 
   def approve?
     update?
+  end
+
+  def approve_all_holdings?
+    create?
   end
 end

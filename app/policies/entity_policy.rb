@@ -18,7 +18,7 @@ class EntityPolicy < ApplicationPolicy
   end
 
   def show?
-    if user.has_cached_role?(:super) || user.entity_id == record.id
+    if user.entity_id == record.id
       true
     else
       user.entity_id != record.id
@@ -34,10 +34,14 @@ class EntityPolicy < ApplicationPolicy
   end
 
   def update?
-    user.has_cached_role?(:super) || user.entity_id == record.id
+    user.entity_id == record.id
   end
 
   def edit?
+    update?
+  end
+
+  def approve_all_holdings?
     update?
   end
 

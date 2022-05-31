@@ -128,6 +128,32 @@ class HoldingsController < ApplicationController
     end
   end
 
+  def approve_all_holdings
+    @parent = if params[:option_pool_id].present?
+                OptionPool.find(params[:option_pool_id])
+              elsif params[:funding_round_id].present?
+                FundingRound.find(params[:funding_round_id])
+              else
+                current_user.entity
+              end
+    authorize @parent
+
+    respond_to do |format|
+      if @parent
+        HoldingApproveJob.perform_later(@parent.class.name, @parent.id)
+        if @parent == current_user.entity
+          format.html { redirect_to holdings_path, notice: "Holdings will be approved shortly. Please checkback in a minute." }
+        else
+          format.html { redirect_to @parent, notice: "Holdings will be approved shortly. Please checkback in a minute." }
+        end
+        format.json { render :show, status: :ok, location: @holding }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @holding.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

@@ -16,6 +16,9 @@ module HoldingScopes
     scope :founders, -> { where(holding_type: "Founder") }
     scope :lapsed, -> { where(lapsed: true) }
 
+    scope :approved, -> { where(approved: true) }
+    scope :not_approved, -> { where(approved: false) }
+
     scope :eq_and_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
   end
 end
