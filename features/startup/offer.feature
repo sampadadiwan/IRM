@@ -6,7 +6,7 @@ Scenario Outline: See my holdings in a sale
   Given there are "2" employee investors
   Given Im logged in as an employee investor
   Given there is a FundingRound "name=Series A"
-  And there is a holding "quantity=100;investment_instrument=Equity" for each employee investor
+  And there is a holding "orig_quantity=100;investment_instrument=Equity" for each employee investor
   Given there is a sale "<sale>"
   Given I have access to the sale  
   And I am at the sales details page
