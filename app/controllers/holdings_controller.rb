@@ -116,9 +116,9 @@ class HoldingsController < ApplicationController
   end
 
   def approve
-    @holding.approved = true
+    result = ApproveHolding.call(holding: @holding)
     respond_to do |format|
-      if @holding.save
+      if result.success?
         format.html { redirect_to holding_url(@holding), notice: "Holding was successfully approved." }
         format.json { render :show, status: :created, location: @holding }
       else

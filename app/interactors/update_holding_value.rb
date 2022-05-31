@@ -4,7 +4,7 @@ class UpdateHoldingValue
   def call
     Rails.logger.debug "Interactor: UpdateHoldingValue called"
     if context.holding.present?
-      holding = context.holding
+      holding = context.holding      
       update_value(holding)
     else
       Rails.logger.debug "No Holding specified"
@@ -19,5 +19,6 @@ class UpdateHoldingValue
     end
     holding.quantity = holding.orig_grant_quantity
     holding.value_cents = holding.quantity * holding.price_cents
+    holding
   end
 end

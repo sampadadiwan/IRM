@@ -7,14 +7,18 @@ class HoldingApproveJob < ApplicationJob
 
       case type
       when "OptionPool"
-        count = Holding.not_approved.where(option_pool_id: id).update(approved: true)
+        holdings = Holding.not_approved.where(option_pool_id: id)
       when "FundingRound"
-        count = Holding.not_approved.where(funding_round_id: id).update(approved: true)
+        holdings = Holding.not_approved.where(funding_round_id: id)
       when "Entity"
-        count = Holding.not_approved.where(entity: id).update(approved: true)
+        holdings = Holding.not_approved.where(entity: id)
       end
 
-      Rails.logger.debug { "HoldingApproveJob: #{type} #{id}. Update #{count} records." }
+      holdings.each do |holding|
+        ApproveHolding.call(holding: holding)
+      end
+
+      Rails.logger.debug { "HoldingApproveJob: #{type} #{id}. Update #{holdings.count} records." }
     end
   end
 end
