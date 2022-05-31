@@ -59,14 +59,14 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def cancel?
-    create? && record.investment_instrument == "Options"
+    create? && record.investment_instrument == "Options" && record.holding_type != "Investor"
   end
 
   def approve?
-    create? && record.investment_instrument == "Options"
+    create? && record.investment_instrument == "Options" && record.holding_type != "Investor"
   end
 
   def esop_grant_letter?
-    show? && record.investment_instrument == "Options"
+    show? && record.investment_instrument == "Options" && record.holding_type != "Investor"
   end
 end
