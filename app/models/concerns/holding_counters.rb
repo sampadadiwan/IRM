@@ -45,7 +45,8 @@ module HoldingCounters
     investment&.scenario&.actual? &&
       INVESTMENT_FOR.include?(holding_type) &&
       EQUITY_LIKE.include?(investment_instrument) &&
-      approved
+      approved &&
+      !cancelled
   end
 
   def update_option_pool?
