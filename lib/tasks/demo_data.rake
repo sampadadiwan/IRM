@@ -199,6 +199,8 @@ namespace :irm do
         pool = FactoryBot.build(:option_pool, entity: e, approved: false, name: "Pool #{p}")
         pool.excercise_instructions.attach(io: File.open("#{Rails.root}/public/sample_uploads/Instructions.txt"), filename: 'Instructions.txt', content_type: 'application/txt')
 
+        pool.certificate_signature.attach(io: File.open("#{Rails.root}/public/sample_uploads/signature.png"), filename: 'signature.png')
+
         (1..4).each do |i|
           # 10 + 20 + 30 + 40
           pool.vesting_schedules << pool.vesting_schedules.build(months_from_grant: i*12, vesting_percent: 10*i, entity_id: e.id)
