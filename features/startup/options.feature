@@ -56,7 +56,7 @@ Scenario Outline:  Options vested
   Given there is a user "" for an entity "<entity>"
   Given a esop pool "<option_pool>" is created with vesting schedule "<schedule>"
   Given there are "1" employee investors
-  And there is an option holding "orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
+  And there is an option holding "approved=true;orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
   And the option grant date is "<months>" ago
   Then the option pool must have "<option_pool_quantites>"
   Then the option holding must have "<holding_quantites>"
@@ -76,7 +76,7 @@ Scenario Outline:  Options lapsed
   Given there is a user "" for an entity "<entity>"
   Given a esop pool "<option_pool>" is created with vesting schedule "<schedule>"
   Given there are "1" employee investors
-  And there is an option holding "orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
+  And there is an option holding "approved=true;orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
   And the option grant date is "<months>" ago
   Then the option pool must have "<option_pool_quantites>"
   Then the option holding must have "<holding_quantites>"

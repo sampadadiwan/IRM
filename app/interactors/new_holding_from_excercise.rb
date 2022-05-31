@@ -22,6 +22,7 @@ class NewHoldingFromExcercise
                           employee_id: excercise.holding.employee_id, created_from_excercise_id: excercise.id, approved: true)
 
     CreateHolding.call(holding:)
+    ApproveHolding.call(holding:)
   end
 
   def create_audit_trail(holding)

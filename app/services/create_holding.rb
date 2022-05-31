@@ -1,6 +1,6 @@
 class CreateHolding
   include Interactor::Organizer
-  organize UpdateHoldingValue, SetupHoldingForInvestment, NewHolding, CreateAuditTrail
+  organize UpdateHoldingValue, NewHolding, CreateAuditTrail
 
   around do |organizer|
     ActiveRecord::Base.transaction do

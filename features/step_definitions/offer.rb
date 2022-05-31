@@ -35,6 +35,10 @@
 
         puts "\n#########Option Holding##########\n"
         puts holding.to_json
+
+        if holding.approved
+          ApproveHolding.call(holding: holding)
+        end
     end
 
   end

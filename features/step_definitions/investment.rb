@@ -207,7 +207,9 @@ Then('There should be a corresponding investment created') do
 end
 
 Then('when the holdings are approved') do
-  Holding.update(approved: true)
+  Holding.all.each do |h|
+    ApproveHolding.call(holding: h)
+  end
 end
 
 

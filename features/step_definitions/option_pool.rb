@@ -259,7 +259,7 @@ Then('the new investment and holding must be created with excercised quantity') 
   @new_holding.user_id.should == @excercise.user_id
   @new_holding.investment_instrument.should == "Equity"
   
-  @new_investment = Investment.last
+  @new_investment = @new_holding.investment
   puts "\n####New Investment####\n"
   puts @new_investment.to_json
 

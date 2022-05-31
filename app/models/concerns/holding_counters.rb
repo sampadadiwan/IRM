@@ -42,14 +42,14 @@ module HoldingCounters
   end
 
   def call_counter_cache?
-    investment.scenario.actual? &&
+    investment&.scenario&.actual? &&
       INVESTMENT_FOR.include?(holding_type) &&
       EQUITY_LIKE.include?(investment_instrument) &&
       approved
   end
 
   def update_option_pool?
-    investment.scenario.actual? &&
+    investment&.scenario&.actual? &&
       INVESTMENT_FOR.include?(holding_type) &&
       investment_instrument == "Options" &&
       approved &&

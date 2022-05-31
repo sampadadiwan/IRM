@@ -63,7 +63,7 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def approve?
-    create? && record.investment_instrument == "Options" && record.holding_type != "Investor"
+    create? && record.holding_type != "Investor"
   end
 
   def esop_grant_letter?

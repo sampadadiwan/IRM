@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_29_143840) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_31_094605) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -396,7 +396,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_29_143840) do
     t.string "investment_instrument", limit: 100
     t.bigint "investor_id", null: false
     t.string "holding_type", limit: 15, null: false
-    t.bigint "investment_id", null: false
+    t.bigint "investment_id"
     t.decimal "price_cents", precision: 20, scale: 2, default: "0.0"
     t.bigint "funding_round_id", null: false
     t.bigint "option_pool_id"
@@ -430,7 +430,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_29_143840) do
     t.bigint "owner_id", null: false
     t.bigint "user_id", null: false
     t.string "import_type", limit: 50
-    t.string "status", limit: 200
+    t.text "status"
     t.text "error_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

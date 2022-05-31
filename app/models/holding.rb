@@ -46,7 +46,7 @@ class Holding < ApplicationRecord
   has_many :excercises, dependent: :destroy
 
   # The Investment to which this is linked
-  belongs_to :investment
+  belongs_to :investment, optional: true
   # If this holding was crated by excercising an option
   belongs_to :created_from_excercise, class_name: "Excercise", optional: true
   has_one :aggregated_investment, through: :investment

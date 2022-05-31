@@ -15,7 +15,7 @@ class HoldingApproveJob < ApplicationJob
       end
 
       holdings.each do |holding|
-        ApproveHolding.call(holding: holding)
+        ApproveHolding.call(holding:)
       end
 
       Rails.logger.debug { "HoldingApproveJob: #{type} #{id}. Update #{holdings.count} records." }
