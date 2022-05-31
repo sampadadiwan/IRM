@@ -47,7 +47,7 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def edit?
-    update?
+    update? && !record.approved
   end
 
   def destroy?
@@ -55,7 +55,7 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def excercise?
-    record.user_id == user.id && record.investment_instrument == "Options" && record.approved
+    record.approved && record.user_id == user.id && record.investment_instrument == "Options"
   end
 
   def cancel?
@@ -67,6 +67,6 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def esop_grant_letter?
-    show? && record.investment_instrument == "Options" && record.holding_type != "Investor"
+    show? && record.approved && record.investment_instrument == "Options" && record.holding_type != "Investor"
   end
 end

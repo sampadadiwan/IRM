@@ -190,7 +190,7 @@
 
   <div>
     <% if policy(@holding).update? %>
-      <%= link_to "Edit" , edit_holding_path(@holding), {class: "btn btn-primary" } %> |
+      <%= link_to "Edit" , edit_holding_path(@holding), {class: "btn btn-primary" } if policy(@holding).edit? %> 
       <%= button_to "Cancel" , cancel_holding_path(@holding), method: :patch, class: "btn btn-danger" , form_class: "deleteButton", data: {turbo:false} if policy(@holding).cancel?   %>
       <%= button_to "Approve" , approve_holding_path(@holding), method: :patch, class: "btn btn-success" , form_class: "deleteButton", data: {turbo:false} if policy(@holding).approve?  %>
     <% end %>
@@ -200,7 +200,7 @@
     <% end %>
 
     <% if policy(@holding).esop_grant_letter? %>
-      | <%= link_to "Download Grant Letter" , esop_grant_letter_holding_path(@holding, format: :pdf), {class: "btn btn-success", target: "_blank" } %> 
+      <%= link_to "Download Grant Letter" , esop_grant_letter_holding_path(@holding, format: :pdf), {class: "btn btn-success", target: "_blank" } %> 
     <% end %>
 
   </div>
