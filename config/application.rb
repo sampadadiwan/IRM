@@ -14,6 +14,8 @@ module InvestorRelationshipManagement
     config.i18n.default_locale = :en
     config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA1
 
+    config.autoload_paths += Dir[Rails.root.join('app/jobs/**/')]
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

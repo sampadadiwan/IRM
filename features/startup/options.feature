@@ -48,6 +48,7 @@ Scenario Outline: Allocate holdings from pool
   Given a esop pool "name=Pool 1" is created with vesting schedule "12:20,24:30,36:50"
   And Given I upload a holdings file
   Then I should see the "Import upload was successfully created"
+  And when the holdings are approved
   And the pool granted amount should be "700"
 
 

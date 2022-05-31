@@ -47,6 +47,5 @@ class ImportInvestorAccess
       import_upload.save if (idx % 10).zero?
     end
 
-    post_processing(import_upload)
   end
 end
