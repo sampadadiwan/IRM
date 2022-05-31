@@ -126,6 +126,7 @@ FactoryBot.define do
     price_cents { rand(3..10) * 10000 }
     holding_type { "Employee" }
     value_cents { quantity * price_cents }
+    approved {true}
   end
 
   factory :investor_access do

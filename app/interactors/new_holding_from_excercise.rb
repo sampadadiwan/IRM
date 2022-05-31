@@ -19,7 +19,7 @@ class NewHoldingFromExcercise
                           investment_instrument: "Equity", investor_id: excercise.holding.investor_id,
                           holding_type: excercise.holding.holding_type,
                           funding_round_id: excercise.option_pool.funding_round_id,
-                          employee_id: excercise.holding.employee_id, created_from_excercise_id: excercise.id)
+                          employee_id: excercise.holding.employee_id, created_from_excercise_id: excercise.id, approved: true)
 
     CreateHolding.call(holding:)
   end

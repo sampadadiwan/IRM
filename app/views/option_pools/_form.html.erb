@@ -80,8 +80,9 @@
               </div>
 
               <div class="form-group" data-controller="directuploads" >
+                <% required = option_pool.new_record? && !Rails.env.test? %>
                 <%= form.label :excercise_instructions %>
-                <%= form.file_field :excercise_instructions, class: "form-control", direct_upload: true, multiple:true, required: option_pool.new_record? %>
+                <%= form.file_field :excercise_instructions, class: "form-control", direct_upload: true, multiple:true, required: required %>
                 <small class="text-muted"> Documents describing the complete process to your employees. </small>
               </div>
 

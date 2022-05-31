@@ -55,15 +55,15 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def excercise?
-    record.user_id == user.id
+    record.user_id == user.id && record.investment_instrument == "Options" && record.approved
   end
 
   def cancel?
-    create?
+    create? && record.investment_instrument == "Options"
   end
 
   def approve?
-    create?
+    create? && record.investment_instrument == "Options"
   end
 
   def esop_grant_letter?

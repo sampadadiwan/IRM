@@ -44,6 +44,22 @@
     </tr>
     <tr>
       <td>
+        Upload File
+      </td>
+      <td>
+        <%= render "/layouts/attachments" , attachments: [@import_upload.import_file], allow_delete: "No" if @import_upload.import_file.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Upload Results
+      </td>
+      <td>
+        <%= render "/layouts/attachments" , attachments: [@import_upload.import_results], allow_delete: "No" if @import_upload.import_results.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td>
         Total Rows
       </td>
       <td>

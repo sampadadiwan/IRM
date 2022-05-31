@@ -34,7 +34,7 @@ class UpdateInvestorHoldings
                               grant_date: Time.zone.today, holding_type: "Investor",
                               investment_instrument: investment.investment_instrument,
                               orig_grant_quantity: investment.quantity,
-                              price_cents: investment.price_cents, value_cents: investment.amount_cents)
+                              price_cents: investment.price_cents, value_cents: investment.amount_cents, approved: true)
 
         CreateHolding.call(holding:)
       end

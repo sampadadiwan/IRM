@@ -206,6 +206,11 @@ Then('There should be a corresponding investment created') do
   @holding_investment.funding_round.id.should == @funding_round.id
 end
 
+Then('when the holdings are approved') do
+  Holding.update(approved: true)
+end
+
+
 Then('Investments is updated with the holdings') do
   Holding.not_investors.each do |h|
     h.investment.quantity.should ==  h.investment.holdings.sum(:quantity)

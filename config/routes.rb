@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     post 'employee_calc', on: :collection
     patch 'cancel', on: :member
     patch 'approve', on: :member
+    post 'approve_all', on: :collection
     get 'esop_grant_letter', on: :member
   end
 

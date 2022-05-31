@@ -23,16 +23,13 @@ class ImportUpload < ApplicationRecord
   belongs_to :owner, polymorphic: true
   belongs_to :user
 
-  if Rails.env.test?
-    has_one_attached :import_file
-  else
-    has_one_attached :import_file, service: :amazon
-  end
+  has_one_attached :import_file, service: :amazon
+  has_one_attached :import_results, service: :amazon
 
   validates :import_file,
             attached: true,
             content_type: ['application/xls', 'application/xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-            size: { less_than: 2.megabytes, message: 'must be less than 2MB in size' }
+            size: { less_than: 5.megabytes, message: 'must be less than 5MB in size' }
 
   after_create :run_import_job
   def run_import_job

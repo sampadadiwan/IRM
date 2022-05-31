@@ -95,7 +95,7 @@ Scenario Outline:  Options Excercised
   Given there is a user "" for an entity "<entity>"
   Given a esop pool "<option_pool>" is created with vesting schedule "<schedule>"
   Given there are "1" employee investors
-  And there is an option holding "orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
+  And there is an option holding "approved=true;orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
   And the option grant date is "<months>" ago
   Then the investment total quantity must be "10000"
   Then when the option is excercised "approved=false"

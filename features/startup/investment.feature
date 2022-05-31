@@ -91,6 +91,7 @@ Scenario Outline: Create new holding
   Given there is a FundingRound "name=Series A"
   And Given I create a holding for each employee with quantity "100"
   Then There should be a corresponding holdings created for each employee
+  And when the holdings are approved
   Then There should be a corresponding investment created
   And the funding round must be updated with the investment
   And the entity must be updated with the investment  
@@ -105,6 +106,7 @@ Scenario Outline: Import holding
   Then There should be "6" holdings created
   And There should be "6" users created for the holdings  
   And There should be "6" Investments created for the holdings
+  And when the holdings are approved
   And Investments is updated with the holdings 
   And the funding round must be updated with the investment
   And the entity must be updated with the investment  
