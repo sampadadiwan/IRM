@@ -18,7 +18,7 @@
                                     funding_round: @funding_round, investor_id: @entity.investors.first.id)
         key_values(holding, args)
         holding = CreateHolding.call(holding: holding).holding
-        
+        ApproveHolding.call(holding: holding)
         puts "\n#########Holding##########\n"
         puts holding.to_json
     end
