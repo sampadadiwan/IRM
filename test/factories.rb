@@ -126,6 +126,7 @@ FactoryBot.define do
     price_cents { rand(3..10) * 10000 }
     holding_type { "Employee" }
     value_cents { quantity * price_cents }
+    grant_date { Date.today - rand(24).months }
     approved {true}
   end
 

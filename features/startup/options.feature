@@ -115,3 +115,5 @@ Examples:
     |entity_type=Startup  |number_of_options=10000;excercise_period_months=90|12:20,24:30,36:50  | 24      | allocated_quantity=1000;vested_quantity=500;unvested_quantity=9500;lapsed_quantity=0;excercised_quantity=500;unexcercised_quantity=0     | quantity=500;vested_quantity=500;unvested_quantity=500;lapsed_quantity=0;excercised_quantity=500;unexcercised_quantity=0 |
     
     |entity_type=Startup  |number_of_options=10000;excercise_period_months=98|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;unvested_quantity=9000;lapsed_quantity=0;excercised_quantity=1000;unexcercised_quantity=0    | quantity=0;vested_quantity=1000;unvested_quantity=0;lapsed_quantity=0;excercised_quantity=1000;unexcercised_quantity=0  |
+
+

@@ -29,8 +29,8 @@
         </thead>
 
         <tbody>
-            <% policy_scope(holdings).each do |holding| %>
-                <tr>
+            <% holdings.each do |holding| %>
+                <tr id="<%= dom_id(holding) %>" >
                     <td><%= holding.option_pool.name %></td>
                     <td><%= holding.quantity %></td>
                     

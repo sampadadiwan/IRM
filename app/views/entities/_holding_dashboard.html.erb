@@ -5,38 +5,43 @@
                 <h6 class="m-0 font-weight-bold text-primary">Options</h6>
             </div>
             <div class="card-body">
-                <%= render "/holdings/esop_summary", holdings: current_user.holdings.options %>
+                <%= render "/holdings/esop_summary", holdings: policy_scope(Holding) %>
             </div>
         </div>
     </div>
     <div class="row associated_entity">
 
-        <div class="col-lg-6 mb-4">
-            <%= render "/holdings/employee_calc" %>
-        </div>
 
         <% 
             entity_id = params[:entity_id].presence || current_user.employee_parent_entity&.id
             if entity_id
-            entity = Entity.find(entity_id)
+                entity = Entity.find(entity_id)
+                if entity.valuations.count > 0
         %>
 
-            <div class="col-lg-6 mb-4">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Projected Profits</h6>
+                    <div class="col-lg-6 mb-4">
+                        <%= render "/holdings/employee_calc" %>
                     </div>
-                    <div class="card-body">
-                        <%= projected_profits_chart(params, current_user, entity)  %>
+
+                    <div class="col-lg-6 mb-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Projected Profits</h6>
+                            </div>
+                            <div class="card-body">
+                                <%= projected_profits_chart(params, current_user, entity)  %>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
             
-        <% end %>
+        <% 
+                end 
+            end 
+        %>
     </div>
     <div>
         <div class="associated_entity">
-            <%= render "/excercises/index", excercises: current_user.excercises %>
+            <%= render "/excercises/index", excercises: policy_scope(Excercise) %>
         </div>
     </div>
 
