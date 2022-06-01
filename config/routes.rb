@@ -93,6 +93,8 @@ Rails.application.routes.draw do
     resources :secondary_sales
     resources :roles
     resources :funding_rounds
+    resources :option_pools
+    resources :excercises
 
     root to: "investors#index"
   end

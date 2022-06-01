@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class HoldingDashboard < Administrate::BaseDashboard
+class ExcerciseDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,19 +8,20 @@ class HoldingDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    user: Field::BelongsTo,
     entity: Field::BelongsTo,
+    holding: Field::BelongsTo,
+    created_holding: Field::HasOne,
+    user: Field::BelongsTo,
+    option_pool: Field::BelongsTo,
     id: Field::Number,
-    quantity: ObfuscatedField,
-    value: ObfuscatedField,
-    price: ObfuscatedField,
+    quantity: Field::Number,
+    price_cents: Field::Number,
+    amount_cents: Field::Number,
+    tax_cents: Field::Number,
+    approved: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    approved: Field::BooleanEmoji,
-    cancelled: Field::BooleanEmoji,
-    lapsed: Field::BooleanEmoji,
-    emp_ack: Field::BooleanEmoji,
-    investment_instrument: Field::Select.with_options(collection: Investment::INSTRUMENT_TYPES)
+    tax_rate: Field::Number
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -29,47 +30,50 @@ class HoldingDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    id
-    user
     entity
-    quantity
-    investment_instrument
-    approved
-    cancelled
-    lapsed
-    emp_ack
+    holding
+    created_holding
+    user
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    id
-    user
     entity
-    investment_instrument
+    holding
+    created_holding
+    user
+    option_pool
+    payment_proof_attachment
+    payment_proof_blob
+    id
     quantity
-    price
-    value
+    price_cents
+    amount_cents
+    tax_cents
+    approved
     created_at
     updated_at
-    approved
-    cancelled
-    lapsed
-    emp_ack
+    tax_rate
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-
+    quantity
+    price_cents
+    amount_cents
+    tax_cents
+    approved
+    tax_rate
   ].freeze
 
   # COLLECTION_FILTERS
   # a hash that defines filters that can be used while searching via the search
   # field of the dashboard.
   #
-  # For example to add an options to search for open resources by typing "open:"
+  # For example to add an option to search for open resources by typing "open:"
   # in the search field:
   #
   #   COLLECTION_FILTERS = {
@@ -77,10 +81,10 @@ class HoldingDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how holdings are displayed
+  # Overwrite this method to customize how excercises are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(holding)
-  #   "Holding ##{holding.id}"
+  # def display_resource(excercise)
+  #   "Excercise ##{excercise.id}"
   # end
 end
