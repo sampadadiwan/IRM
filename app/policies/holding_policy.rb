@@ -5,7 +5,7 @@ class HoldingPolicy < ApplicationPolicy
       when "startup"
         scope.where("entity_id=?", user.entity_id)
       when "holding"
-        scope.where("user_id=?", user.id)
+        scope.approved.where("user_id=?", user.id)
       when "investor"
         scope.joins(:investor).where("investors.investor_entity_id=?", user.entity_id)
       end
@@ -66,7 +66,12 @@ class HoldingPolicy < ApplicationPolicy
     create? && record.holding_type != "Investor"
   end
 
+  def emp_ack?
+    record.user_id == user.id && record.holding_type != "Investor"
+  end
+
   def esop_grant_letter?
-    show? && record.approved && record.investment_instrument == "Options" && record.holding_type != "Investor"
+    show? && record.approved && record.emp_ack &&
+      record.investment_instrument == "Options" && record.holding_type != "Investor"
   end
 end

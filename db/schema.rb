@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_31_094605) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_01_064201) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -414,6 +414,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_31_094605) do
     t.boolean "cancelled", default: false
     t.boolean "approved", default: false
     t.bigint "approved_by_user_id"
+    t.boolean "emp_ack", default: false
+    t.date "emp_ack_date"
     t.index ["created_from_excercise_id"], name: "index_holdings_on_created_from_excercise_id"
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
     t.index ["funding_round_id"], name: "index_holdings_on_funding_round_id"

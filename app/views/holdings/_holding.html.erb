@@ -77,6 +77,8 @@
               {class: "btn btn-success" }   %>
 
       <% end %>
+
+      <%= button_to "Acknowledge" , emp_ack_holding_path(holding), method: :patch, class: "btn btn-success" , form_class: "deleteButton", data: {turbo:false} if policy(holding).emp_ack? && !holding.emp_ack  %>
     <% end %>
   </td>
 </tr>

@@ -75,6 +75,24 @@
     </tr>
     
     <% if @holding.investment_instrument == "Options" %>
+
+    <tr>
+      <td>
+        Employee Acknowledgement
+      </td>
+      <td>
+        <% if @holding.emp_ack %>
+          <span class="badge bg-success">
+            Acknowledged
+          </span>
+        <% else %>
+          <span class="badge bg-warning">
+            Not Acknowledged
+          </span>
+        <% end %>
+      </td>
+    </tr>
+
     <tr>
       <td>
         Option Pool

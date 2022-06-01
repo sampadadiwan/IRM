@@ -1,5 +1,5 @@
 class HoldingsController < ApplicationController
-  before_action :set_holding, only: %i[show edit update destroy cancel approve esop_grant_letter]
+  before_action :set_holding, only: %i[show edit update destroy cancel approve esop_grant_letter emp_ack]
   after_action :verify_authorized, except: %i[employee_calc index search]
 
   # GET /holdings or /holdings.json
@@ -107,6 +107,20 @@ class HoldingsController < ApplicationController
     respond_to do |format|
       if @holding.save
         format.html { redirect_to holding_url(@holding), notice: "Holding was successfully cancelled." }
+        format.json { render :show, status: :created, location: @holding }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @holding.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def emp_ack
+    @holding.emp_ack = true
+    @holding.emp_ack_date = Time.zone.now
+    respond_to do |format|
+      if @holding.save
+        format.html { redirect_to holding_url(@holding), notice: "Holding was successfully acknowledged." }
         format.json { render :show, status: :created, location: @holding }
       else
         format.html { render :new, status: :unprocessable_entity }

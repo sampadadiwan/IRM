@@ -1,4 +1,20 @@
   <%= render "/layouts/alerts" %>
+  
+  <% if policy(@holding).emp_ack? && !@holding.emp_ack %>
+    <div class="alert alert-info">
+      
+      <% if @holding.investment_instrument == "Options" %>
+        <%= render "/layouts/steps", steps: ["Please read the Option Scheme documents", 
+          "Please understand the TnC specified there", "Please acknowledge the grant", 
+          "Click the Acknowledge button below", "Download your Grant Certificate"].freeze %>
+      <% else %>
+        <%= render "/layouts/steps", steps: ["Please read the company policy for equity grants", 
+          "Please understand the TnC specified there", "Please acknowledge the grant", 
+          "Click the Acknowledge button below", "Download your Grant Certificate"].freeze %>
+      <% end %>
+
+    </div>
+  <% end %>
 
   <%= render "/holdings/show" %>
 
@@ -17,6 +33,8 @@
     <% if policy(@holding).esop_grant_letter? %>
       <%= link_to "Download Grant Letter" , esop_grant_letter_holding_path(@holding, format: :pdf), {class: "btn btn-success", target: "_blank" } %> 
     <% end %>
+
+    <%= button_to "Acknowledge" , emp_ack_holding_path(@holding), method: :patch, class: "btn btn-success" , form_class: "deleteButton", data: {turbo:false} if policy(@holding).emp_ack? && !@holding.emp_ack  %>
 
   </div>
 
