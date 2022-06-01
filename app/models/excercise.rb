@@ -18,6 +18,8 @@
 #
 
 class Excercise < ApplicationRecord
+  update_index('entity') { self }
+
   belongs_to :entity
   belongs_to :holding
   has_one :created_holding, foreign_key: :created_from_excercise_id, class_name: "Holding", dependent: :destroy
