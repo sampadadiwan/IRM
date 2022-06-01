@@ -7,6 +7,25 @@ class ExcercisesController < ApplicationController
     @excercises = @excercises.where(option_pool_id: params[:option_pool_id]) if params[:option_pool_id].present?
   end
 
+  def search
+    @entity = current_user.entity
+    query = params[:query]
+    if query.present?
+      @excercises = if current_user.has_role?(:super)
+
+                    ExcerciseIndex.query(query_string: { fields: ExcerciseIndex::SEARCH_FIELDS,
+                                                       query:, default_operator: 'and' }).objects
+
+                  else
+                    ExcerciseIndex.filter(term: { entity_id: @entity.id })
+                                .query(query_string: { fields: ExcerciseIndex::SEARCH_FIELDS,
+                                                       query:, default_operator: 'and' }).objects
+                  end
+
+    end
+    render "index"
+  end
+
   # GET /excercises/1 or /excercises/1.json
   def show; end
 

@@ -16,7 +16,9 @@
     <%= holding.investment_instrument %>
   </td>
   <td class="hideMobP">
-    <%= custom_format_number holding.quantity, params %>
+    <%= custom_format_number holding.quantity, params %>    
+  </td>
+  <td>
     <% if holding.cancelled %>
       <span class="badge bg-danger">
         Cancelled

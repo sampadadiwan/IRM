@@ -14,5 +14,6 @@ class ElasticImporterJob < ApplicationJob
     NoteIndex.import
     SecondarySaleIndex.import
     HoldingAuditTrailIndex.import
+    ExcerciseIndex.import
   end
 end

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :valuations
   resources :excercises do
     patch 'approve', on: :member
+    get 'search', on: :collection
   end
 
   resources :vestings
