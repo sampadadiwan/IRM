@@ -134,4 +134,12 @@ class Holding < ApplicationRecord
     end
     schedule
   end
+
+  def notify_approval
+    HoldingMailer.with(holding_id: id).notify_approval.deliver_later
+  end
+
+  def notify_cancellation
+    HoldingMailer.with(holding_id: id).notify_cancellation.deliver_later
+  end
 end

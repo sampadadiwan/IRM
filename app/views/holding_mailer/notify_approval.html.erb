@@ -1,0 +1,11 @@
+<h3>Dear User</h3>
+
+<p>
+    Your <%=@holding.investment_instrument%> has been approved. 
+</p>
+
+<p>
+    <%= render "/holdings/show", holding: @holding, current_user: nil %>
+</p>
+
+<p class="btn btn-primary"><%= link_to 'View Holding', holding_url(@holding) %></p>
