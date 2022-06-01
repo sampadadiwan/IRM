@@ -12,7 +12,7 @@
 #  investment_instrument     :string(100)
 #  investor_id               :integer          not null
 #  holding_type              :string(15)       not null
-#  investment_id             :integer          not null
+#  investment_id             :integer
 #  price_cents               :decimal(20, 2)   default("0.00")
 #  funding_round_id          :integer          not null
 #  option_pool_id            :integer
@@ -28,6 +28,10 @@
 #  sold_quantity             :integer          default("0")
 #  created_from_excercise_id :integer
 #  cancelled                 :boolean          default("0")
+#  approved                  :boolean          default("0")
+#  approved_by_user_id       :integer
+#  emp_ack                   :boolean          default("0")
+#  emp_ack_date              :date
 #
 
 require "test_helper"

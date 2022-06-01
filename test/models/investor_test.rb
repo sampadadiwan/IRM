@@ -15,6 +15,7 @@
 #  unapproved_investor_access_count :integer          default("0")
 #  is_holdings_entity               :boolean          default("0")
 #  is_trust                         :boolean          default("0")
+#  city                             :string(50)
 #
 
 require "test_helper"
