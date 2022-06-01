@@ -93,16 +93,16 @@ class ImportHolding
     if user_data["Instrument"] == "Options"
       ep = option_pool(user_data, import_upload)
       fr = ep.funding_round
-      date_val = user_data["Grant Date (mm/dd/yyyy)"]
-      begin
-        grant_date = Date.strptime(date_val.to_s, "%m/%d/%Y")
-      rescue StandardError
-        grant_date = DateTime.parse(date_val.to_s)
-      end
     else
       fr = funding_round(user_data, import_upload)
       ep = nil
-      grant_date = nil
+    end
+
+    date_val = user_data["Grant Date (mm/dd/yyyy)"]
+    begin
+      grant_date = Date.strptime(date_val.to_s, "%m/%d/%Y")
+    rescue StandardError
+      grant_date = DateTime.parse(date_val.to_s)
     end
 
     [fr, ep, grant_date]
