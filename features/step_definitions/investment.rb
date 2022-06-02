@@ -214,6 +214,7 @@ end
 
 
 Then('Investments is updated with the holdings') do
+  #ap Investment.all
   Holding.not_investors.each do |h|
     h.investment.quantity.should ==  h.investment.holdings.sum(:quantity)
     h.investment.amount_cents.should ==  h.investment.holdings.sum(:value_cents)
@@ -482,5 +483,5 @@ Then('There should be {string} users created for the holdings') do |count|
 end
 
 Then('There should be {string} Investments created for the holdings') do |count|
-  Investment.count.should == count.to_i  
+  Investment.joins(:investor).where("investors.is_holdings_entity=?", true).count.should == count.to_i  
 end

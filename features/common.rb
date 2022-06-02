@@ -85,6 +85,11 @@ Given(/^the user is logged in$/) do
   )
 end
 
+Given('the user has role {string}') do |arg|
+  @user.add_role arg.to_sym
+end
+
+
 Then(/^he must see the message "([^"]*)"$/) do |arg1|
   expect(page).to have_content(arg1)
 end

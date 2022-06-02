@@ -3,6 +3,7 @@ Feature: Option
 
 Scenario Outline: Create Options pool
   Given Im logged in as a user "" for an entity "<entity>"
+  And the user has role "approver"
   And I am at the Option Pools page
   When I create a new esop pool "<option_pool>"
   Then I should see the "Option pool was successfully created."

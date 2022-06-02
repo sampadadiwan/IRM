@@ -100,7 +100,11 @@ class ImportHolding
 
     date_val = user_data["Grant Date (mm/dd/yyyy)"]
     begin
-      grant_date = Date.strptime(date_val.to_s, "%m/%d/%Y")
+      grant_date = if date_val.present?
+                     Date.strptime(date_val.to_s, "%m/%d/%Y")
+                   else
+                     Time.zone.today
+                   end
     rescue StandardError
       grant_date = DateTime.parse(date_val.to_s)
     end
