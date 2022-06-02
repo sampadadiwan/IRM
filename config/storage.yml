@@ -12,7 +12,7 @@ amazon:
   secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %> #<%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: <%= ENV["AWS_S3_REGION"] %>
   # bucket: <%= ENV["AWS_S3_BUCKET"] %>
-  bucket: videos.altx.com.<%= Rails.env %>
+  bucket: docs.altx.com.<%= Rails.env %>
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:
