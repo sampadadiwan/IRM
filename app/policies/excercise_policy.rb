@@ -40,6 +40,6 @@ class ExcercisePolicy < ApplicationPolicy
   end
 
   def approve?
-    user.entity_id == record.entity_id
+    user.has_cached_role?(:approver) && user.entity_id == record.entity_id
   end
 end

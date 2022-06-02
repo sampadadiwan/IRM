@@ -63,7 +63,9 @@
         Approved
       </td>
       <td class="approved">
-        <%= @offer.approved ? "Yes" : "No" %>
+        <span class="badge <%= @offer.approved ? 'bg-success' : 'bg-warning' %>">
+          <%= @offer.approved ?  "Yes" : "No" %>
+        </span>
       </td>
 
     </tr>

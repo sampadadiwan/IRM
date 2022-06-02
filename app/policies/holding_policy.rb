@@ -59,11 +59,14 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def cancel?
-    create? && record.investment_instrument == "Options" && record.holding_type != "Investor"
+    create? && user.has_cached_role?(:approver) &&
+      record.investment_instrument == "Options" &&
+      record.holding_type != "Investor"
   end
 
   def approve?
-    create? && record.holding_type != "Investor"
+    create? && user.has_cached_role?(:approver) &&
+      record.holding_type != "Investor"
   end
 
   def emp_ack?

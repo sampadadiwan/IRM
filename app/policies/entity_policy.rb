@@ -42,7 +42,7 @@ class EntityPolicy < ApplicationPolicy
   end
 
   def approve_all_holdings?
-    update?
+    update? && user.has_cached_role?(:approver)
   end
 
   def destroy?

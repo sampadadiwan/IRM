@@ -38,10 +38,10 @@ class OptionPoolPolicy < ApplicationPolicy
   end
 
   def approve?
-    update?
+    update? && user.has_cached_role?(:approver)
   end
 
   def approve_all_holdings?
-    create?
+    create? && user.has_cached_role?(:approver)
   end
 end

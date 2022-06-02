@@ -38,6 +38,6 @@ class FundingRoundPolicy < ApplicationPolicy
   end
 
   def approve_all_holdings?
-    create?
+    create? && user.has_cached_role?(:approver)
   end
 end
