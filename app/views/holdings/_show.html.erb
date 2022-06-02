@@ -61,7 +61,15 @@
         Current Quantity
       </td>
       <td>
-        <%= custom_format_number @holding.quantity, params %>
+        <%= custom_format_number @holding.quantity, params %>        
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Company Approval
+      </td>
+      <td>
         <% if @holding.cancelled %>
           <span class="badge bg-danger">
             Cancelled
