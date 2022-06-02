@@ -6,5 +6,8 @@ test:
 staging:
   host: 'https://vpc-dev-ova53iydsngksohawtxyruvnwu.ap-south-1.es.amazonaws.com'
   prefix: 'staging'
+production:
+  host: 'https://vpc-dev-ova53iydsngksohawtxyruvnwu.ap-south-1.es.amazonaws.com'
+  prefix: 'production'
 development:
   host: 'localhost:9200'

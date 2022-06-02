@@ -138,15 +138,18 @@ namespace :irm do
     end
   end
 
-  desc "generates fake Investments for testing"
+  desc "generates fake Investors for testing"
   task generateFakeInvestors: :environment do
+
+    tags = %w[Warm Cold $50m+ $100m+ Secondary]
+
     Entity.startups.each do |e|
       i = nil
       
       round = FactoryBot.create(:funding_round, entity: e)
       scenario = Scenario.where(entity_id: e.id).first
       Entity.vcs.each do |vc|
-        inv = FactoryBot.create(:investor, investee_entity: e, investor_entity: vc)
+        inv = FactoryBot.create(:investor, investee_entity: e, investor_entity: vc, tag_list: [tags.sample, tags.sample].join(","))
         puts "Investor #{inv.id}"
         inv.investor_entity.employees.each do |user|
           InvestorAccess.create!(investor:inv, user: user, email: user.email, approved: rand(2), entity_id: inv.investee_entity_id)
