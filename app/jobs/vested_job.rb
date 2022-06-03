@@ -12,7 +12,6 @@ class VestedJob < ApplicationJob
         end
         holding.save
       end
-
     end
   end
 end

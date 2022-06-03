@@ -41,23 +41,23 @@ module HoldingCounters
                     delta_column: 'uncancelled_quantity' # quantity keeps getting smaller as excercises happen, but the uncancelled_quantity is what we want to count as allocated
     counter_culture :option_pool,
                     column_name: proc { |h| h.update_option_pool? ? 'vested_quantity' : nil },
-                    delta_column: 'vested_quantity' 
+                    delta_column: 'vested_quantity'
     counter_culture :option_pool,
                     column_name: proc { |h| h.update_option_pool? ? 'lapsed_quantity' : nil },
-                    delta_column: 'lapsed_quantity' 
+                    delta_column: 'lapsed_quantity'
   end
 
   def call_counter_cache?
     investment&.scenario&.actual? &&
       INVESTMENT_FOR.include?(holding_type) &&
       EQUITY_LIKE.include?(investment_instrument) &&
-      approved 
+      approved
   end
 
   def update_option_pool?
     investment&.scenario&.actual? &&
       INVESTMENT_FOR.include?(holding_type) &&
       investment_instrument == "Options" &&
-      approved 
+      approved
   end
 end

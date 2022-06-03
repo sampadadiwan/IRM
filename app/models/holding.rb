@@ -63,7 +63,7 @@ class Holding < ApplicationRecord
   before_save :update_quantity
 
   def update_quantity
-    self.uncancelled_quantity = self.orig_grant_quantity - self.cancelled_quantity - self.lapsed_quantity
+    self.uncancelled_quantity = orig_grant_quantity - cancelled_quantity - lapsed_quantity
 
     self.quantity = if investment_instrument == 'Options'
                       uncancelled_quantity - excercised_quantity
@@ -72,11 +72,10 @@ class Holding < ApplicationRecord
                     end
     self.value_cents = quantity * price_cents
     self.vested_quantity = compute_vested_quantity if investment_instrument == 'Options'
-
   end
 
   def compute_vested_quantity
-    (self.uncancelled_quantity * self.allowed_percentage / 100).round(0)
+    (uncancelled_quantity * allowed_percentage / 100).round(0)
   end
 
   def allocation_allowed
@@ -110,7 +109,6 @@ class Holding < ApplicationRecord
     unexcercised_quantity - lapsed_quantity - cancelled_quantity
   end
 
-
   def lapsed?
     (grant_date + option_pool.excercise_period_months.months) < Time.zone.today
   end
@@ -120,7 +118,7 @@ class Holding < ApplicationRecord
   end
 
   def allowed_percentage
-    self.option_pool.get_allowed_percentage(grant_date)
+    option_pool.get_allowed_percentage(grant_date)
   end
 
   def excercisable_quantity
@@ -156,28 +154,23 @@ class Holding < ApplicationRecord
     HoldingMailer.with(holding_id: id).notify_cancellation.deliver_later
   end
 
-
   def cancel(all_or_unvested)
-    
-    if all_or_unvested == "all"
+    case all_or_unvested
+    when "all"
       self.cancelled = true
-      self.cancelled_quantity = self.quantity
-    elsif all_or_unvested == "unvested"
+      self.cancelled_quantity = quantity
+    when "unvested"
       self.cancelled = true
-      self.cancelled_quantity = self.unvested_quantity
+      self.cancelled_quantity = unvested_quantity
     else
-      self.errors.add(:cancelled, "Invalid option provided, all or unvested only")
+      errors.add(:cancelled, "Invalid option provided, all or unvested only")
     end
 
-    if self.save
-      self.notify_cancellation
+    if save
+      notify_cancellation
       true
     else
       false
     end
-
   end
-
-
-
 end
