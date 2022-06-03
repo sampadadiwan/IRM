@@ -5,8 +5,6 @@ class VestedJob < ApplicationJob
     # We need to check for vesting only in pools where excercise is not complete
     OptionPool.where("excercised_quantity < allocated_quantity").each do |pool|
       pool.holdings.each do |holding|
-        holding.vested_quantity = (holding.quantity * holding.allowed_percentage / 100).round(0)
-        Rails.logger.debug { "holding.quantity: #{holding.quantity}, holding.allowed_percentage: #{holding.allowed_percentage}, holding.vested_quantity: #{holding.vested_quantity}" }
         # Check if the Options have lapsed
         if holding.lapsed?
           holding.lapsed = true
@@ -15,9 +13,6 @@ class VestedJob < ApplicationJob
         holding.save
       end
 
-      pool.vested_quantity = pool.holdings.sum(:vested_quantity)
-      pool.lapsed_quantity = pool.holdings.sum(:lapsed_quantity)
-      pool.save
     end
   end
 end

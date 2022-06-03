@@ -185,10 +185,11 @@ Then('the option pool must have {string}') do |args|
   key_values(pool, args)
   
   @option_pool.reload
+  
   puts "@option_pool.unexcercised_quantity #{@option_pool.unexcercised_quantity}"
   puts "@option_pool.lapsed_quantity #{@option_pool.lapsed_quantity}"
   puts "@option_pool.excercised_quantity #{@option_pool.excercised_quantity}"
-  
+  # ap @option_pool
 
   @option_pool.vested_quantity.should == pool["vested_quantity"].to_i
   @option_pool.lapsed_quantity.should == pool["lapsed_quantity"].to_i
@@ -207,7 +208,8 @@ Then('the option holding must have {string}') do |args|
   puts "@holding.unexcercised_quantity #{@holding.unexcercised_quantity}"
   puts "@holding.lapsed_quantity #{@holding.lapsed_quantity}"
   puts "@holding.excercised_quantity #{@holding.excercised_quantity}"
-  
+  puts "@holding.uncancelled_quantity #{@holding.uncancelled_quantity}"
+  # ap @holding
 
   @holding.vested_quantity.should == holding["vested_quantity"].to_i
   @holding.lapsed_quantity.should == holding["lapsed_quantity"].to_i
@@ -223,6 +225,7 @@ Then('the trust esop holdings must be reduced by {string}') do |arg|
   @trust_holding = trust_investor.holdings.where(option_pool_id: @option_pool.id, 
                                   investment_instrument: "Options").first
 
+  # ap trust_investor.holdings
   @trust_holding.quantity.should == @option_pool.number_of_options - arg.to_i
 end
 

@@ -166,6 +166,18 @@
       </tr>
     <% end %>
 
+
+    <% if @holding.cancelled %>      
+      <tr>
+        <td>
+          Cancelled Quantity
+        </td>
+        <td>
+          <%= custom_format_number @holding.cancelled_quantity, params %>
+        </td>
+      </tr>
+    <% end %>
+
     <% if current_user %>
         <tr>
         <td>

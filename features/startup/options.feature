@@ -79,18 +79,19 @@ Scenario Outline:  Options lapsed
   Given there are "1" employee investors
   And there is an option holding "approved=true;orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
   And the option grant date is "<months>" ago
-  Then the option pool must have "<option_pool_quantites>"
   Then the option holding must have "<holding_quantites>"
+  Then the option pool must have "<option_pool_quantites>"
+  
 Examples:
     |entity               |option_pool                    |schedule           | months  | option_pool_quantites | holding_quantites | 
     
     |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 10      | allocated_quantity=1000;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0  | quantity=1000;vested_quantity=0;unvested_quantity=1000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0   | 
     
-    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 12      | allocated_quantity=1000;vested_quantity=200;unvested_quantity=9800;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=200  | quantity=1000;vested_quantity=200;unvested_quantity=800;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=200   |
+    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 12      | allocated_quantity=0;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=0  | quantity=0;vested_quantity=0;unvested_quantity=0;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=0   |
     
-    |entity_type=Startup  |excercise_period_months=24;number_of_options=10000|12:20,24:30,36:50  | 24      | allocated_quantity=1000;vested_quantity=500;unvested_quantity=9500;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=500 | quantity=1000;vested_quantity=500;unvested_quantity=500;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=500 |
+    |entity_type=Startup  |excercise_period_months=24;number_of_options=10000|12:20,24:30,36:50  | 24      | allocated_quantity=0;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=0 | quantity=0;vested_quantity=0;unvested_quantity=0;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=0 |
     
-    |entity_type=Startup  |excercise_period_months=36;number_of_options=10000|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;unvested_quantity=9000;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=1000 | quantity=1000;vested_quantity=1000;unvested_quantity=0;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=1000 |
+    |entity_type=Startup  |excercise_period_months=36;number_of_options=10000|12:20,24:30,36:50  | 36      | allocated_quantity=0;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=0 | quantity=0;vested_quantity=0;unvested_quantity=0;lapsed_quantity=1000;excercised_quantity=0;unexcercised_quantity=0 |
 
 
 Scenario Outline:  Options Excercised

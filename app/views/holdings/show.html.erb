@@ -22,9 +22,19 @@
   <div>
     <% if policy(@holding).update? %>
       <%= link_to "Edit" , edit_holding_path(@holding), {class: "btn btn-primary" } if policy(@holding).edit? %> 
-      <%= button_to "Cancel" , cancel_holding_path(@holding), method: :patch, class: "btn btn-danger" , form_class: "deleteButton", data: {turbo:false} if policy(@holding).cancel?   %>
+
+
+      <% if policy(@holding).cancel? %>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmCancelModal">
+          Cancel
+        </button>
+        <%= render "/holdings/confirm_cancel" %>
+      <% end %>
+
       <%= button_to "Approve" , approve_holding_path(@holding), method: :patch, class: "btn btn-success" , form_class: "deleteButton", data: {turbo:false} if policy(@holding).approve? && !@holding.approved %>
     <% end %>
+
+
 
     <% if policy(@holding).excercise? && @holding.excercisable? %>
       <%= link_to "Excercise" , new_excercise_path("excercise[holding_id]": @holding.id, "excercise[entity_id]": @holding.entity_id), {class: "btn btn-primary" } %> 

@@ -103,9 +103,8 @@ class HoldingsController < ApplicationController
   def employee_calc; end
 
   def cancel
-    @holding.cancelled = true
     respond_to do |format|
-      if @holding.save
+      if @holding.cancel(params[:type])
         format.html { redirect_to holding_url(@holding), notice: "Holding was successfully cancelled." }
         format.json { render :show, status: :created, location: @holding }
       else
@@ -136,7 +135,7 @@ class HoldingsController < ApplicationController
         format.html { redirect_to holding_url(@holding), notice: "Holding was successfully approved." }
         format.json { render :show, status: :created, location: @holding }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @holding.errors, status: :unprocessable_entity }
       end
     end

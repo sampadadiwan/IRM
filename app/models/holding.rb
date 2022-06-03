@@ -60,15 +60,23 @@ class Holding < ApplicationRecord
   validates :quantity, :holding_type, presence: true
   validate :allocation_allowed, if: -> { investment_instrument == 'Options' }
 
-  before_update :update_quantity
+  before_save :update_quantity
 
   def update_quantity
+    self.uncancelled_quantity = self.orig_grant_quantity - self.cancelled_quantity - self.lapsed_quantity
+
     self.quantity = if investment_instrument == 'Options'
-                      orig_grant_quantity - excercised_quantity
+                      uncancelled_quantity - excercised_quantity
                     else
-                      orig_grant_quantity - sold_quantity
+                      uncancelled_quantity - sold_quantity
                     end
     self.value_cents = quantity * price_cents
+    self.vested_quantity = compute_vested_quantity if investment_instrument == 'Options'
+
+  end
+
+  def compute_vested_quantity
+    (self.uncancelled_quantity * self.allowed_percentage / 100).round(0)
   end
 
   def allocation_allowed
@@ -95,12 +103,13 @@ class Holding < ApplicationRecord
   end
 
   def unvested_quantity
-    orig_grant_quantity - vested_quantity
+    uncancelled_quantity - vested_quantity
   end
 
   def balance_quantity
-    unexcercised_quantity - lapsed_quantity
+    unexcercised_quantity - lapsed_quantity - cancelled_quantity
   end
+
 
   def lapsed?
     (grant_date + option_pool.excercise_period_months.months) < Time.zone.today
@@ -111,7 +120,7 @@ class Holding < ApplicationRecord
   end
 
   def allowed_percentage
-    option_pool.get_allowed_percentage(grant_date)
+    self.option_pool.get_allowed_percentage(grant_date)
   end
 
   def excercisable_quantity
@@ -146,4 +155,29 @@ class Holding < ApplicationRecord
   def notify_cancellation
     HoldingMailer.with(holding_id: id).notify_cancellation.deliver_later
   end
+
+
+  def cancel(all_or_unvested)
+    
+    if all_or_unvested == "all"
+      self.cancelled = true
+      self.cancelled_quantity = self.quantity
+    elsif all_or_unvested == "unvested"
+      self.cancelled = true
+      self.cancelled_quantity = self.unvested_quantity
+    else
+      self.errors.add(:cancelled, "Invalid option provided, all or unvested only")
+    end
+
+    if self.save
+      self.notify_cancellation
+      true
+    else
+      false
+    end
+
+  end
+
+
+
 end
