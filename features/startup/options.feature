@@ -119,3 +119,29 @@ Examples:
     |entity_type=Startup  |number_of_options=10000;excercise_period_months=98|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;unvested_quantity=9000;lapsed_quantity=0;excercised_quantity=1000;unexcercised_quantity=0    | quantity=0;vested_quantity=1000;unvested_quantity=0;lapsed_quantity=0;excercised_quantity=1000;unexcercised_quantity=0  |
 
 
+
+Scenario Outline:  Options cancelled
+  Given there is a user "" for an entity "<entity>"
+  Given a esop pool "<option_pool>" is created with vesting schedule "<schedule>"
+  Given there are "1" employee investors
+  And there is an option holding "approved=true;orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
+  And the option grant date is "<months>" ago
+  And the option is cancelled "<cancel>"
+  Then the option holding must have "<holding_quantites>"
+  Then the option pool must have "<option_pool_quantites>"
+  
+Examples:
+    |entity               |option_pool                    |schedule           | months  | option_pool_quantites | holding_quantites | cancel |
+    
+    |entity_type=Startup  |excercise_period_months=120;number_of_options=10000|12:20,24:30,36:50  | 12      | allocated_quantity=0;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0  | quantity=0;vested_quantity=0;unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0;cancelled_quantity=1000   | all |
+    
+    |entity_type=Startup  |excercise_period_months=120;number_of_options=10000|12:20,24:30,36:50  | 12      | allocated_quantity=200;vested_quantity=200;unvested_quantity=9800;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=200  | quantity=200;vested_quantity=200;unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=200;cancelled_quantity=800   | unvested |
+    
+    |entity_type=Startup  |excercise_period_months=120;number_of_options=10000|12:20,24:30,36:50  | 24      | allocated_quantity=0;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0  | quantity=0;vested_quantity=0;unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0;cancelled_quantity=1000   | all |
+    
+    |entity_type=Startup  |excercise_period_months=120;number_of_options=10000|12:20,24:30,36:50  | 24      | allocated_quantity=500;vested_quantity=500;unvested_quantity=9500;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=500  | quantity=500;vested_quantity=500;unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=500;cancelled_quantity=500   | unvested |
+
+    |entity_type=Startup  |excercise_period_months=240;number_of_options=10000|12:20,24:30,36:50  | 0      | allocated_quantity=0;vested_quantity=0;unvested_quantity=10000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0 | quantity=0;vested_quantity=0;unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=0;cancelled_quantity=1000 | all |
+    
+    |entity_type=Startup  |excercise_period_months=360;number_of_options=10000|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;unvested_quantity=9000;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=1000 | quantity=1000;vested_quantity=1000;unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;unexcercised_quantity=1000;cancelled_quantity=0 | unvested |
+

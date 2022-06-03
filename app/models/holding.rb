@@ -65,17 +65,18 @@ class Holding < ApplicationRecord
   def update_quantity
     self.uncancelled_quantity = orig_grant_quantity - cancelled_quantity - lapsed_quantity
 
-    self.quantity = if investment_instrument == 'Options'
-                      uncancelled_quantity - excercised_quantity
-                    else
-                      uncancelled_quantity - sold_quantity
-                    end
+    if investment_instrument == 'Options'
+      self.quantity = uncancelled_quantity - excercised_quantity
+      self.vested_quantity = compute_vested_quantity unless cancelled
+    else
+      self.quantity = uncancelled_quantity - sold_quantity
+    end
+
     self.value_cents = quantity * price_cents
-    self.vested_quantity = compute_vested_quantity if investment_instrument == 'Options'
   end
 
   def compute_vested_quantity
-    (uncancelled_quantity * allowed_percentage / 100).round(0)
+    (orig_grant_quantity * allowed_percentage / 100).round(0)
   end
 
   def allocation_allowed

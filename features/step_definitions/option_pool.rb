@@ -157,6 +157,11 @@ Then('the unexcercised amount should be {string}') do |qty|
   @option_pool.unexcercised_quantity.should == qty.to_f
 end
 
+Given('the option is cancelled {string}') do |arg|
+  @holding.cancel(arg)
+end
+
+
 Then('when the option is excercised {string}') do |args|
   @holding.reload
   puts @holding.to_json
@@ -189,7 +194,7 @@ Then('the option pool must have {string}') do |args|
   puts "@option_pool.unexcercised_quantity #{@option_pool.unexcercised_quantity}"
   puts "@option_pool.lapsed_quantity #{@option_pool.lapsed_quantity}"
   puts "@option_pool.excercised_quantity #{@option_pool.excercised_quantity}"
-  # ap @option_pool
+  ap @option_pool
 
   @option_pool.vested_quantity.should == pool["vested_quantity"].to_i
   @option_pool.lapsed_quantity.should == pool["lapsed_quantity"].to_i
@@ -209,7 +214,7 @@ Then('the option holding must have {string}') do |args|
   puts "@holding.lapsed_quantity #{@holding.lapsed_quantity}"
   puts "@holding.excercised_quantity #{@holding.excercised_quantity}"
   puts "@holding.uncancelled_quantity #{@holding.uncancelled_quantity}"
-  # ap @holding
+  ap @holding
 
   @holding.vested_quantity.should == holding["vested_quantity"].to_i
   @holding.lapsed_quantity.should == holding["lapsed_quantity"].to_i
