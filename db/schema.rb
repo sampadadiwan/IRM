@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_03_150046) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_04_124826) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -431,8 +431,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_03_150046) do
     t.bigint "approved_by_user_id"
     t.boolean "emp_ack", default: false
     t.date "emp_ack_date"
-    t.integer "cancelled_quantity", default: 0
     t.integer "uncancelled_quantity", default: 0
+    t.integer "cancelled_quantity", default: 0
+    t.integer "gross_avail_to_excercise_quantity", default: 0
+    t.integer "unexcercised_cancelled_quantity", default: 0
+    t.integer "net_avail_to_excercise_quantity", default: 0
+    t.integer "gross_unvested_quantity", default: 0
+    t.integer "unvested_cancelled_quantity", default: 0
+    t.integer "net_unvested_quantity", default: 0
     t.index ["created_from_excercise_id"], name: "index_holdings_on_created_from_excercise_id"
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
     t.index ["funding_round_id"], name: "index_holdings_on_funding_round_id"
@@ -667,6 +673,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_03_150046) do
     t.bigint "lapsed_quantity", default: 0
     t.boolean "approved", default: false
     t.bigint "cancelled_quantity", default: 0
+    t.bigint "gross_avail_to_excercise_quantity", default: 0
+    t.bigint "unexcercised_cancelled_quantity", default: 0
+    t.bigint "net_avail_to_excercise_quantity", default: 0
+    t.bigint "gross_unvested_quantity", default: 0
+    t.bigint "unvested_cancelled_quantity", default: 0
+    t.bigint "net_unvested_quantity", default: 0
     t.index ["entity_id"], name: "index_option_pools_on_entity_id"
     t.index ["funding_round_id"], name: "index_option_pools_on_funding_round_id"
   end

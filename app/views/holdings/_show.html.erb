@@ -132,7 +132,7 @@
         (Granted - Vested)
       </td>
       <td>
-        <%= custom_format_number @holding.unvested_quantity, params %>
+        <%= custom_format_number @holding.net_unvested_quantity, params %>
       </td>
     </tr>
 
@@ -151,7 +151,7 @@
         (Vested - Excercised)
       </td>
       <td>
-        <%= custom_format_number @holding.unexcercised_quantity, params %>
+        <%= custom_format_number @holding.net_avail_to_excercise_quantity, params %>
       </td>
     </tr>
     

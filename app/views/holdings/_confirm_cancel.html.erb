@@ -13,11 +13,11 @@
         <form id="confirm_submit" class="button_to" method="post" action="<%= cancel_holding_path(@holding) %>">
 
             <div class="modal-body">
-                <% if holding.unvested_quantity > 0 %>
+                <% if holding.net_unvested_quantity > 0 %>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="type" value="unvested" id="unvested">
                     <label class="form-check-label" for="unvested">
-                        Cancel Only Unvested Options (<%= holding.unvested_quantity %> Options)
+                        Cancel Only Unvested Options (<%= holding.net_unvested_quantity %> Options)
                     </label>
                 </div>
                 <% end %>

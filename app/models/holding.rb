@@ -122,37 +122,38 @@ class Holding < ApplicationRecord
   before_save :update_quantity
 
   def update_quantity
-    self.uncancelled_quantity = orig_grant_quantity - cancelled_quantity - lapsed_quantity
+    if investment_instrument == 'Options'
+      self.cancelled_quantity = unexcercised_cancelled_quantity + unvested_cancelled_quantity
+      self.uncancelled_quantity = orig_grant_quantity - cancelled_quantity - lapsed_quantity
 
-    self.quantity = if investment_instrument == 'Options'
-                      uncancelled_quantity - excercised_quantity
-                    else
-                      uncancelled_quantity - sold_quantity
-                    end
+      self.gross_avail_to_excercise_quantity = vested_quantity - excercised_quantity - lapsed_quantity
+      self.net_avail_to_excercise_quantity = gross_avail_to_excercise_quantity - unexcercised_cancelled_quantity
+      self.gross_unvested_quantity = orig_grant_quantity - vested_quantity
+      self.net_unvested_quantity = gross_unvested_quantity - unvested_cancelled_quantity
+
+      self.quantity = net_unvested_quantity + net_avail_to_excercise_quantity
+    else
+      self.quantity = orig_grant_quantity - sold_quantity
+    end
 
     self.value_cents = quantity * price_cents
   end
 
   def compute_vested_quantity
-    if cancelled_quantity.positive?
-      # its either fully cancelled or unvested is cancelled
-      orig_grant_quantity - cancelled_quantity
-    else
-      (orig_grant_quantity * allowed_percentage / 100).round(0)
-    end
+    (orig_grant_quantity * allowed_percentage / 100).round(0)
   end
 
-  def unexcercised_quantity
-    [0, vested_quantity - excercised_quantity - cancelled_quantity - lapsed_quantity].max
-  end
+  # def unexcercised_quantity
+  #   [0, vested_quantity - excercised_quantity - cancelled_quantity - lapsed_quantity].max
+  # end
 
-  def unvested_quantity
-    [0, orig_grant_quantity - vested_quantity - cancelled_quantity - lapsed_quantity].max
-  end
+  # def unvested_quantity
+  #   [0, orig_grant_quantity - vested_quantity - cancelled_quantity - lapsed_quantity].max
+  # end
 
-  def balance_quantity
-    unexcercised_quantity - lapsed_quantity - cancelled_quantity
-  end
+  # def balance_quantity
+  #   unexcercised_quantity - lapsed_quantity - cancelled_quantity
+  # end
 
   def lapsed?
     (grant_date + option_pool.excercise_period_months.months) < Time.zone.today
@@ -181,9 +182,11 @@ class Holding < ApplicationRecord
 
   def vesting_breakdown
     schedules = option_pool.vesting_schedules.order(months_from_grant: :asc)
-    vesting_breakdown = Struct.new(:vesting_date, :quantity, :lapsed_quantity, :excercised_quantity,
-                                   :expiry_date)
-    schedules.map { |vs| vesting_breakdown.new(grant_date + vs.months_from_grant.months, (orig_grant_quantity * vs.vesting_percent) / 100, 0, 0) }
+    vesting_breakdown = Struct.new(:vesting_date, :quantity, :lapsed_quantity, :excercised_quantity, :expiry_date)
+    schedules.map do |vs|
+      vesting_breakdown.new(grant_date + vs.months_from_grant.months,
+                            (orig_grant_quantity * vs.vesting_percent) / 100, 0, 0)
+    end
   end
 
   def compute_lapsed_quantity

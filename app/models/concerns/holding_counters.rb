@@ -45,10 +45,29 @@ module HoldingCounters
     counter_culture :option_pool,
                     column_name: proc { |h| h.update_option_pool? ? 'lapsed_quantity' : nil },
                     delta_column: 'lapsed_quantity'
-
     counter_culture :option_pool,
                     column_name: proc { |h| h.update_option_pool? ? 'cancelled_quantity' : nil },
                     delta_column: 'cancelled_quantity'
+
+    counter_culture :option_pool,
+                    column_name: proc { |h| h.update_option_pool? ? 'gross_avail_to_excercise_quantity' : nil },
+                    delta_column: 'gross_avail_to_excercise_quantity'
+    counter_culture :option_pool,
+                    column_name: proc { |h| h.update_option_pool? ? 'unexcercised_cancelled_quantity' : nil },
+                    delta_column: 'unexcercised_cancelled_quantity'
+    counter_culture :option_pool,
+                    column_name: proc { |h| h.update_option_pool? ? 'net_avail_to_excercise_quantity' : nil },
+                    delta_column: 'net_avail_to_excercise_quantity'
+
+    counter_culture :option_pool,
+                    column_name: proc { |h| h.update_option_pool? ? 'gross_unvested_quantity' : nil },
+                    delta_column: 'gross_unvested_quantity'
+    counter_culture :option_pool,
+                    column_name: proc { |h| h.update_option_pool? ? 'unvested_cancelled_quantity' : nil },
+                    delta_column: 'unvested_cancelled_quantity'
+    counter_culture :option_pool,
+                    column_name: proc { |h| h.update_option_pool? ? 'net_unvested_quantity' : nil },
+                    delta_column: 'net_unvested_quantity'
   end
 
   def call_counter_cache?
