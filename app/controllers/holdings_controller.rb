@@ -178,6 +178,6 @@ class HoldingsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def holding_params
     params.require(:holding).permit(:user_id, :investor_id, :entity_id, :orig_grant_quantity, :price,
-                                    :value, :investment_instrument, :holding_type, :funding_round_id, :option_pool_id, :grant_date, :employee_id)
+                                    :value, :investment_instrument, :holding_type, :funding_round_id, :option_pool_id, :grant_date, :employee_id, :manual_vesting, :vested_quantity)
   end
 end

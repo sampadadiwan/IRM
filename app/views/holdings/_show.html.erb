@@ -179,23 +179,37 @@
     <% end %>
 
     <% if current_user %>
-        <tr>
-        <td>
-            Schedule
-        </td>
-        <td>
-            
-            <ul class="vesting_schedule">
-            <% @holding.vesting_schedule.each do |schedule| %>
-                <li>
-                On <%= l schedule[0] %>, 
-                <%= schedule[1] %>% of your Options,
-                which is <%= schedule[2] %> Options, can be vested.
-                </li>
-            <% end %>
-            </ul>
-        </td>
-        </tr>
+        <% if @holding.manual_vesting %>
+
+          <tr>
+            <td>
+              Manual Vesting
+            </td>
+            <td>
+              <span class="badge <%= @holding.manual_vesting ? 'bg-success' : 'bg-warning' %>">
+                <%= @holding.manual_vesting ? "Yes" : "No" %>
+              </span>
+            </td>
+          </tr>
+        <% else %>
+          <tr>
+            <td>
+                Schedule
+            </td>
+            <td>
+                
+                <ul class="vesting_schedule">
+                <% @holding.vesting_schedule.each do |schedule| %>
+                    <li>
+                    On <%= l schedule[0] %>, 
+                    <%= schedule[1] %>% of your Options,
+                    which is <%= schedule[2] %> Options, can be vested.
+                    </li>
+                <% end %>
+                </ul>
+            </td>
+          </tr>
+        <% end %>
     <% end %>
     
     <% else %>

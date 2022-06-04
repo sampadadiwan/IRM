@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_04_124826) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_04_150157) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -439,6 +439,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_04_124826) do
     t.integer "gross_unvested_quantity", default: 0
     t.integer "unvested_cancelled_quantity", default: 0
     t.integer "net_unvested_quantity", default: 0
+    t.boolean "manual_vesting", default: false
     t.index ["created_from_excercise_id"], name: "index_holdings_on_created_from_excercise_id"
     t.index ["entity_id"], name: "index_holdings_on_entity_id"
     t.index ["funding_round_id"], name: "index_holdings_on_funding_round_id"
@@ -679,6 +680,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_04_124826) do
     t.bigint "gross_unvested_quantity", default: 0
     t.bigint "unvested_cancelled_quantity", default: 0
     t.bigint "net_unvested_quantity", default: 0
+    t.boolean "manual_vesting", default: false
     t.index ["entity_id"], name: "index_option_pools_on_entity_id"
     t.index ["funding_round_id"], name: "index_option_pools_on_funding_round_id"
   end

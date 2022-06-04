@@ -21,7 +21,8 @@ module HoldingScopes
 
     scope :cancelled, -> { where(cancelled: true) }
     scope :not_cancelled, -> { where(cancelled: false) }
-
+    scope :manual_vesting, -> { where(manual_vesting: true) }
+    scope :not_manual_vesting, -> { where(manual_vesting: false) }
     scope :eq_and_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
   end
 end

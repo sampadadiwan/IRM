@@ -160,12 +160,26 @@
           <%= @option_pool.available_quantity %>
         </td>
       </tr>
+
+      <% if @option_pool.manual_vesting %>
+        <tr class="collapse multi-collapse">
+          <td>
+            Manual Vesting
+          </td>
+          <td>
+            <span class="badge <%= @option_pool.manual_vesting ? 'bg-success' : 'bg-warning' %>">
+              <%= @option_pool.manual_vesting ? "Yes" : "No" %>
+            </span>
+          </td>
+        </tr>
+      <% end %>
       
     <% end %>
   </table>
   </div>
 </div>
 
+<% unless @option_pool.manual_vesting %>
   <div class="card">
     <div class="card-header">
       Vesting Schedule
@@ -189,7 +203,7 @@
       </table>
     </div>
   </div>
-
+<% end %>
 
   <div class="actions">
     

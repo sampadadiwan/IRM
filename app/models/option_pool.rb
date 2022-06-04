@@ -42,11 +42,15 @@ class OptionPool < ApplicationRecord
   monetize :excercise_price_cents, with_currency: ->(i) { i.entity.currency }
 
   scope :approved, -> { where(approved: true) }
+  scope :manual_vesting, -> { where(manual_vesting: true) }
+  scope :not_manual_vesting, -> { where(manual_vesting: false) }
 
   def check_vesting_schedules
-    total_percent = vesting_schedules.inject(0) { |sum, e| sum + e.vesting_percent }
-    logger.debug vesting_schedules.to_json
-    errors.add(:vesting_schedules, "Total percentage should be 100%") if total_percent != 100
+    unless manual_vesting
+      total_percent = vesting_schedules.inject(0) { |sum, e| sum + e.vesting_percent }
+      logger.debug vesting_schedules.to_json
+      errors.add(:vesting_schedules, "Total percentage should be 100%") if total_percent != 100
+    end
   end
 
   def get_allowed_percentage(grant_date)

@@ -87,6 +87,14 @@ class Holding < ApplicationRecord
     HoldingMailer.with(holding_id: id).notify_cancellation.deliver_later
   end
 
+  def notify_lapsed
+    HoldingMailer.with(holding_id: id).notify_lapsed.deliver_later
+  end
+
+  def notify_lapse_upcoming
+    HoldingMailer.with(holding_id: id).notify_lapse_upcoming.deliver_later
+  end
+
   def cancel(all_or_unvested)
     case all_or_unvested
     when "all"
@@ -142,8 +150,16 @@ class Holding < ApplicationRecord
     (orig_grant_quantity * allowed_percentage / 100).round(0)
   end
 
+  def lapse_date
+    grant_date + option_pool.excercise_period_months.months
+  end
+
+  def days_to_lapse
+    (lapse_date - Time.zone.today).to_i
+  end
+
   def lapsed?
-    (grant_date + option_pool.excercise_period_months.months) < Time.zone.today
+    Time.zone.today > lapse_date
   end
 
   def allowed_percentage
