@@ -85,13 +85,13 @@ Scenario Outline:  Options lapsed
 Examples:
     |entity               |option_pool                    |schedule           | months  | option_pool_quantites | holding_quantites | 
     
-    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 10      | allocated_quantity=1000;vested_quantity=0;net_unvested_quantity=10000;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=0  | quantity=1000;vested_quantity=0;net_unvested_quantity=1000;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=0   | 
+    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 10      | allocated_quantity=1000;vested_quantity=0;net_unvested_quantity=1000;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=0  | quantity=1000;vested_quantity=0;net_unvested_quantity=1000;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=0   | 
     
-    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 12      | allocated_quantity=1000;vested_quantity=200;net_unvested_quantity=9800;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=200  | quantity=1000;vested_quantity=200;net_unvested_quantity=800;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=200   |
+    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 12      | allocated_quantity=1000;vested_quantity=200;net_unvested_quantity=800;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=200  | quantity=1000;vested_quantity=200;net_unvested_quantity=800;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=200   |
     
-    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 24      | allocated_quantity=800;vested_quantity=500;net_unvested_quantity=9500;lapsed_quantity=200;excercised_quantity=0;net_avail_to_excercise_quantity=300 | quantity=800;vested_quantity=500;net_unvested_quantity=300;lapsed_quantity=200;excercised_quantity=0;net_avail_to_excercise_quantity=300 |
+    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 24      | allocated_quantity=800;vested_quantity=500;net_unvested_quantity=500;lapsed_quantity=200;excercised_quantity=0;net_avail_to_excercise_quantity=300 | quantity=800;vested_quantity=500;net_unvested_quantity=500;lapsed_quantity=200;excercised_quantity=0;net_avail_to_excercise_quantity=300 |
     
-    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 36      | allocated_quantity=500;vested_quantity=1000;net_unvested_quantity=9000;lapsed_quantity=500;excercised_quantity=0;net_avail_to_excercise_quantity=500 | quantity=500;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=500;excercised_quantity=0;net_avail_to_excercise_quantity=500 |
+    |entity_type=Startup  |excercise_period_months=12;number_of_options=10000|12:20,24:30,36:50  | 36      | allocated_quantity=500;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=500;excercised_quantity=0;net_avail_to_excercise_quantity=500 | quantity=500;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=500;excercised_quantity=0;net_avail_to_excercise_quantity=500 |
 
 
 Scenario Outline:  Options Excercised
