@@ -149,9 +149,9 @@ Then('the lapsed amount should be {string}') do |qty|
 end
 
 Then('the unexcercised amount should be {string}') do |qty|
-  puts "@option_pool.unexcercised_quantity: #{@option_pool.unexcercised_quantity}"
-  @holding.unexcercised_quantity.should == qty.to_f
-  @option_pool.unexcercised_quantity.should == qty.to_f
+  puts "@option_pool.net_avail_to_excercise_quantity: #{@option_pool.net_avail_to_excercise_quantity}"
+  @holding.net_avail_to_excercise_quantity.should == qty.to_f
+  @option_pool.net_avail_to_excercise_quantity.should == qty.to_f
 end
 
 Given('the option is cancelled {string}') do |arg|
@@ -179,7 +179,7 @@ Then('the excercise is approved') do
 end
 
 Then('the unvested amount should be {string}') do |arg|
-  @option_pool.unvested_quantity.should == arg.to_f
+  @option_pool.net_unvested_quantity.should == arg.to_f
 end
 
 Then('the option pool must have {string}') do |args|
@@ -188,7 +188,7 @@ Then('the option pool must have {string}') do |args|
   
   @option_pool.reload
   
-  puts "@option_pool.unexcercised_quantity #{@option_pool.unexcercised_quantity}"
+  puts "@option_pool.net_avail_to_excercise_quantity #{@option_pool.net_avail_to_excercise_quantity}"
   puts "@option_pool.lapsed_quantity #{@option_pool.lapsed_quantity}"
   puts "@option_pool.excercised_quantity #{@option_pool.excercised_quantity}"
   ap @option_pool
@@ -196,8 +196,8 @@ Then('the option pool must have {string}') do |args|
   @option_pool.vested_quantity.should == pool["vested_quantity"].to_i
   @option_pool.lapsed_quantity.should == pool["lapsed_quantity"].to_i
   @option_pool.excercised_quantity.should == pool["excercised_quantity"].to_i
-  @option_pool.unexcercised_quantity.should == pool["unexcercised_quantity"].to_i
-  @option_pool.unvested_quantity.should == pool["unvested_quantity"].to_i
+  @option_pool.net_avail_to_excercise_quantity.should == pool["net_avail_to_excercise_quantity"].to_i
+  @option_pool.net_unvested_quantity.should == pool["net_unvested_quantity"].to_i
   @option_pool.allocated_quantity.should == pool["allocated_quantity"].to_i
 
 end
@@ -207,7 +207,7 @@ Then('the option holding must have {string}') do |args|
   key_values(holding, args)
   
   @holding.reload
-  puts "@holding.unexcercised_quantity #{@holding.unexcercised_quantity}"
+  puts "@holding.net_avail_to_excercise_quantity #{@holding.net_avail_to_excercise_quantity}"
   puts "@holding.lapsed_quantity #{@holding.lapsed_quantity}"
   puts "@holding.excercised_quantity #{@holding.excercised_quantity}"
   puts "@holding.uncancelled_quantity #{@holding.uncancelled_quantity}"
@@ -216,8 +216,8 @@ Then('the option holding must have {string}') do |args|
   @holding.vested_quantity.should == holding["vested_quantity"].to_i
   @holding.lapsed_quantity.should == holding["lapsed_quantity"].to_i
   @holding.excercised_quantity.should == holding["excercised_quantity"].to_i
-  @holding.unexcercised_quantity.should == holding["unexcercised_quantity"].to_i
-  @holding.unvested_quantity.should == holding["unvested_quantity"].to_i
+  @holding.net_avail_to_excercise_quantity.should == holding["net_avail_to_excercise_quantity"].to_i
+  @holding.net_unvested_quantity.should == holding["net_unvested_quantity"].to_i
   @holding.quantity.should == holding["quantity"].to_i
 
 end

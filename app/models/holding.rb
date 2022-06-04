@@ -91,13 +91,12 @@ class Holding < ApplicationRecord
     case all_or_unvested
     when "all"
       self.cancelled = true
-      self.cancelled_quantity = quantity
-      self.vested_quantity = compute_vested_quantity
+      self.unvested_cancelled_quantity = net_unvested_quantity
+      self.unexcercised_cancelled_quantity = net_avail_to_excercise_quantity
       # puts "### all Calling compute_vested_quantity #{self.vested_quantity}"
     when "unvested"
       self.cancelled = true
-      self.cancelled_quantity = unvested_quantity
-      self.vested_quantity = compute_vested_quantity
+      self.unvested_cancelled_quantity = net_unvested_quantity
       # puts "### unvested Calling compute_vested_quantity #{self.vested_quantity}"
     else
       errors.add(:cancelled, "Invalid option provided, all or unvested only")
@@ -142,18 +141,6 @@ class Holding < ApplicationRecord
   def compute_vested_quantity
     (orig_grant_quantity * allowed_percentage / 100).round(0)
   end
-
-  # def unexcercised_quantity
-  #   [0, vested_quantity - excercised_quantity - cancelled_quantity - lapsed_quantity].max
-  # end
-
-  # def unvested_quantity
-  #   [0, orig_grant_quantity - vested_quantity - cancelled_quantity - lapsed_quantity].max
-  # end
-
-  # def balance_quantity
-  #   unexcercised_quantity - lapsed_quantity - cancelled_quantity
-  # end
 
   def lapsed?
     (grant_date + option_pool.excercise_period_months.months) < Time.zone.today
