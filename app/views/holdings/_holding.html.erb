@@ -1,4 +1,4 @@
-<tr id="<%= dom_id holding %>">
+<tr id="holding_<%= holding.id %>">
   <td class="hideMobP">
     <%= current_user.entity_id == holding.entity_id ?  
         link_to(holding.funding_round.name, holding.funding_round) : holding.funding_round.name  %>

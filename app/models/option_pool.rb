@@ -65,7 +65,7 @@ class OptionPool < ApplicationRecord
   end
 
   def unexcercised_quantity
-    vested_quantity - excercised_quantity
+    [0, vested_quantity - excercised_quantity - lapsed_quantity].max
   end
 
   def unvested_quantity
@@ -73,11 +73,11 @@ class OptionPool < ApplicationRecord
   end
 
   def balance_quantity
-    unexcercised_quantity - lapsed_quantity
+    unexcercised_quantity
   end
 
   def available_quantity
-    number_of_options - allocated_quantity + lapsed_quantity
+    number_of_options - allocated_quantity + lapsed_quantity + cancelled_quantity
   end
 
   def trust_quantity

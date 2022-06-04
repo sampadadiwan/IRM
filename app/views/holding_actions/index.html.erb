@@ -1,0 +1,40 @@
+<%= render "/layouts/alerts" %>
+
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Holding Actions</h1>
+  </div>
+
+  <div class="table-responsive" data-controller="datatable">
+
+    <table id="holding_actions" class="table table-bordered dataTable">
+      <thead>
+        <tr>
+          <th>
+            Holding
+          </th>
+          <th>
+            User
+          </th>
+          <th>
+            Quantity
+          </th>
+          <th>
+            Action
+          </th>
+          <th>
+            Notes
+          </th>
+
+          <th>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @holding_actions.each do |holding_action| %>
+          <%= render holding_action %>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>

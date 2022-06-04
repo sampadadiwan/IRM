@@ -5,7 +5,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Options</h6>
             </div>
             <div class="card-body">
-                <%= render "/holdings/esop_summary", holdings: policy_scope(Holding) %>
+                <%= render "/holdings/esop_summary", holdings: policy_scope(Holding).options %>
             </div>
         </div>
     </div>

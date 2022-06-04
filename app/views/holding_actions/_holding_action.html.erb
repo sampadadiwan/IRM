@@ -1,0 +1,20 @@
+<tr id="<%= dom_id holding_action %>">
+  <td>
+    <%= link_to holding_action.holding_id, holding_path(id: holding_action.holding_id) %>
+  </td>
+  <td>
+    <%= holding_action.user&.full_name %>
+  </td>
+  <td>
+    <%= holding_action.quantity %>
+  </td>
+  <td>
+    <%= holding_action.action %>
+  </td>
+  <td>
+    <%= holding_action.notes %>
+  </td>
+  <td>
+    <%= link_to "Show" , holding_action , {class: "btn btn-primary" }%>
+  </td>
+</tr>

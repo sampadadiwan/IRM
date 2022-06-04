@@ -45,6 +45,10 @@ module HoldingCounters
     counter_culture :option_pool,
                     column_name: proc { |h| h.update_option_pool? ? 'lapsed_quantity' : nil },
                     delta_column: 'lapsed_quantity'
+
+    counter_culture :option_pool,
+                    column_name: proc { |h| h.update_option_pool? ? 'cancelled_quantity' : nil },
+                    delta_column: 'cancelled_quantity'
   end
 
   def call_counter_cache?

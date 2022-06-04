@@ -10,7 +10,7 @@ class SecondarySalePolicy < ApplicationPolicy
       elsif user.curr_role.to_sym == :secondary_buyer
         scope.where(visible_externally: true)
       else
-        scope.nil
+        scope.none
       end
     end
   end

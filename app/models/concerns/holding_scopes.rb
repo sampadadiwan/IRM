@@ -19,6 +19,9 @@ module HoldingScopes
     scope :approved, -> { where(approved: true) }
     scope :not_approved, -> { where(approved: false) }
 
+    scope :cancelled, -> { where(cancelled: true) }
+    scope :not_cancelled, -> { where(cancelled: false) }
+
     scope :eq_and_pref, -> { where(investment_instrument: %w[Equity Preferred]) }
   end
 end

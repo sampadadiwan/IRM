@@ -23,17 +23,15 @@
     <% if policy(@holding).update? %>
       <%= link_to "Edit" , edit_holding_path(@holding), {class: "btn btn-primary" } if policy(@holding).edit? %> 
 
-
-      <% if policy(@holding).cancel? %>
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmCancelModal">
-          Cancel
-        </button>
-        <%= render "/holdings/confirm_cancel" %>
-      <% end %>
-
       <%= button_to "Approve" , approve_holding_path(@holding), method: :patch, class: "btn btn-success" , form_class: "deleteButton", data: {turbo:false} if policy(@holding).approve? && !@holding.approved %>
     <% end %>
 
+    <% if policy(@holding).cancel? %>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmCancelModal">
+          Cancel
+        </button>
+        <%= render "/holdings/confirm_cancel", holding: @holding %>
+    <% end %>
 
 
     <% if policy(@holding).excercise? && @holding.excercisable? %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_03_070017) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_03_150046) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -329,6 +329,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_03_070017) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "tax_rate", precision: 5, scale: 2, default: "0.0"
+    t.date "approved_on"
     t.index ["entity_id"], name: "index_excercises_on_entity_id"
     t.index ["holding_id"], name: "index_excercises_on_holding_id"
     t.index ["option_pool_id"], name: "index_excercises_on_option_pool_id"
@@ -367,6 +368,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_03_070017) do
     t.integer "options", default: 0
     t.index ["deleted_at"], name: "index_funding_rounds_on_deleted_at"
     t.index ["entity_id"], name: "index_funding_rounds_on_entity_id"
+  end
+
+  create_table "holding_actions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.bigint "holding_id", null: false
+    t.bigint "user_id"
+    t.integer "quantity"
+    t.string "action", limit: 20
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entity_id"], name: "index_holding_actions_on_entity_id"
+    t.index ["holding_id"], name: "index_holding_actions_on_holding_id"
+    t.index ["user_id"], name: "index_holding_actions_on_user_id"
   end
 
   create_table "holding_audit_trails", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -651,6 +666,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_03_070017) do
     t.bigint "vested_quantity", default: 0
     t.bigint "lapsed_quantity", default: 0
     t.boolean "approved", default: false
+    t.bigint "cancelled_quantity", default: 0
     t.index ["entity_id"], name: "index_option_pools_on_entity_id"
     t.index ["funding_round_id"], name: "index_option_pools_on_funding_round_id"
   end
@@ -852,6 +868,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_03_070017) do
   add_foreign_key "excercises", "users"
   add_foreign_key "folders", "entities"
   add_foreign_key "funding_rounds", "entities"
+  add_foreign_key "holding_actions", "entities"
+  add_foreign_key "holding_actions", "holdings"
+  add_foreign_key "holding_actions", "users"
   add_foreign_key "holding_audit_trails", "entities"
   add_foreign_key "holdings", "entities"
   add_foreign_key "holdings", "excercises", column: "created_from_excercise_id"

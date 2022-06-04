@@ -61,6 +61,7 @@ class HoldingPolicy < ApplicationPolicy
   def cancel?
     create? && user.has_cached_role?(:approver) &&
       record.investment_instrument == "Options" &&
+      record.quantity.positive? &&
       record.holding_type != "Investor"
   end
 

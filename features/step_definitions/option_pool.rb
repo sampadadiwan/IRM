@@ -20,10 +20,6 @@
     click_on("Next")
     click_on("Next")
     
-    # click_on("Add Schedule")
-    # find(:css, ".months_from_grant").set(12)
-    # find(:css, ".vesting_percent").set(100)
-
     click_on("Save")
   end
   
@@ -131,6 +127,7 @@ end
     @holding.grant_date = Date.today - months.to_i.months - 1.day
     @holding.save!
     VestedJob.new.perform
+    @holding.reload
   end
   
   Then('the vested amount should be {string}') do |qty|

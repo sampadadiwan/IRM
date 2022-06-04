@@ -7,6 +7,7 @@ class ExcerciseApproved
     if context.excercise.present?
       excercise = context.excercise
       excercise.approved = true
+      excercise.approved_on = Time.zone.today
       context.fail!(message: excercise.errors.full_messages) unless excercise.save
     else
       Rails.logger.debug "No Excercise specified"

@@ -1,4 +1,5 @@
 FactoryBot.define do
+
   factory :holding_audit_trail do
     action { "MyString" }
     action_id { "" }

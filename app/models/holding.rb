@@ -60,25 +60,6 @@ class Holding < ApplicationRecord
   validates :quantity, :holding_type, presence: true
   validate :allocation_allowed, if: -> { investment_instrument == 'Options' }
 
-  before_save :update_quantity
-
-  def update_quantity
-    self.uncancelled_quantity = orig_grant_quantity - cancelled_quantity - lapsed_quantity
-
-    if investment_instrument == 'Options'
-      self.quantity = uncancelled_quantity - excercised_quantity
-      self.vested_quantity = compute_vested_quantity unless cancelled
-    else
-      self.quantity = uncancelled_quantity - sold_quantity
-    end
-
-    self.value_cents = quantity * price_cents
-  end
-
-  def compute_vested_quantity
-    (orig_grant_quantity * allowed_percentage / 100).round(0)
-  end
-
   def allocation_allowed
     errors.add(:option_pool, "Option pool required") if option_pool.nil?
 
@@ -98,12 +79,75 @@ class Holding < ApplicationRecord
     user ? user.full_name : investor.investor_name
   end
 
+  def notify_approval
+    HoldingMailer.with(holding_id: id).notify_approval.deliver_later
+  end
+
+  def notify_cancellation
+    HoldingMailer.with(holding_id: id).notify_cancellation.deliver_later
+  end
+
+  def cancel(all_or_unvested)
+    case all_or_unvested
+    when "all"
+      self.cancelled = true
+      self.cancelled_quantity = quantity
+      self.vested_quantity = compute_vested_quantity
+      # puts "### all Calling compute_vested_quantity #{self.vested_quantity}"
+    when "unvested"
+      self.cancelled = true
+      self.cancelled_quantity = unvested_quantity
+      self.vested_quantity = compute_vested_quantity
+      # puts "### unvested Calling compute_vested_quantity #{self.vested_quantity}"
+    else
+      errors.add(:cancelled, "Invalid option provided, all or unvested only")
+    end
+
+    if save
+      notify_cancellation
+      true
+    else
+      false
+    end
+  end
+
+  def vesting_schedule
+    schedule = []
+    option_pool.vesting_schedules.each do |pvs|
+      schedule << [grant_date + pvs.months_from_grant.month, pvs.vesting_percent, (orig_grant_quantity * pvs.vesting_percent / 100.0).round(0)]
+    end
+    schedule
+  end
+
+  before_save :update_quantity
+
+  def update_quantity
+    self.uncancelled_quantity = orig_grant_quantity - cancelled_quantity - lapsed_quantity
+
+    self.quantity = if investment_instrument == 'Options'
+                      uncancelled_quantity - excercised_quantity
+                    else
+                      uncancelled_quantity - sold_quantity
+                    end
+
+    self.value_cents = quantity * price_cents
+  end
+
+  def compute_vested_quantity
+    if cancelled_quantity.positive?
+      # its either fully cancelled or unvested is cancelled
+      orig_grant_quantity - cancelled_quantity
+    else
+      (orig_grant_quantity * allowed_percentage / 100).round(0)
+    end
+  end
+
   def unexcercised_quantity
-    vested_quantity - excercised_quantity
+    [0, vested_quantity - excercised_quantity - cancelled_quantity - lapsed_quantity].max
   end
 
   def unvested_quantity
-    uncancelled_quantity - vested_quantity
+    [0, orig_grant_quantity - vested_quantity - cancelled_quantity - lapsed_quantity].max
   end
 
   def balance_quantity
@@ -112,10 +156,6 @@ class Holding < ApplicationRecord
 
   def lapsed?
     (grant_date + option_pool.excercise_period_months.months) < Time.zone.today
-  end
-
-  def compute_lapsed_quantity
-    lapsed ? quantity : 0
   end
 
   def allowed_percentage
@@ -139,39 +179,31 @@ class Holding < ApplicationRecord
       !lapsed
   end
 
-  def vesting_schedule
-    schedule = []
-    option_pool.vesting_schedules.each do |pvs|
-      schedule << [grant_date + pvs.months_from_grant.month, pvs.vesting_percent, (orig_grant_quantity * pvs.vesting_percent / 100.0).round(0)]
-    end
-    schedule
+  def vesting_breakdown
+    schedules = option_pool.vesting_schedules.order(months_from_grant: :asc)
+    vesting_breakdown = Struct.new(:vesting_date, :quantity, :lapsed_quantity, :excercised_quantity,
+                                   :expiry_date)
+    schedules.map { |vs| vesting_breakdown.new(grant_date + vs.months_from_grant.months, (orig_grant_quantity * vs.vesting_percent) / 100, 0, 0) }
   end
 
-  def notify_approval
-    HoldingMailer.with(holding_id: id).notify_approval.deliver_later
-  end
+  def compute_lapsed_quantity
+    lapsed_breakdown = []
+    vesting_breakdown.each do |struct|
+      # excercise_period_months after the vesting date - the option expires
+      struct.expiry_date = struct.vesting_date + option_pool.excercise_period_months.months
 
-  def notify_cancellation
-    HoldingMailer.with(holding_id: id).notify_cancellation.deliver_later
-  end
+      if struct.expiry_date < Time.zone.today
+        # But did we excercise it?
+        struct.excercised_quantity = excercises.where("approved_on > ? and approved_on < ?",
+                                                      struct.vesting_date, struct.expiry_date).sum(:quantity)
+        # This has expired
+        struct.lapsed_quantity += struct.quantity - struct.excercised_quantity
+      end
 
-  def cancel(all_or_unvested)
-    case all_or_unvested
-    when "all"
-      self.cancelled = true
-      self.cancelled_quantity = quantity
-    when "unvested"
-      self.cancelled = true
-      self.cancelled_quantity = unvested_quantity
-    else
-      errors.add(:cancelled, "Invalid option provided, all or unvested only")
+      lapsed_breakdown << struct
     end
 
-    if save
-      notify_cancellation
-      true
-    else
-      false
-    end
+    Rails.logger.debug lapsed_breakdown
+    lapsed_breakdown.inject(0) { |sum, e| sum + e.lapsed_quantity }
   end
 end
