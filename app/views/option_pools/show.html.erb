@@ -161,6 +161,58 @@
         </td>
       </tr>
 
+      <% if params[:debug].present? %>
+        <tr>
+          <td>
+            Gross Available To Excercise
+          </td>
+          <td>
+            <%= @option_pool.gross_avail_to_excercise_quantity %>            
+          </td>
+        </tr>
+        <tr>
+          <td>
+            UnExcercised Cancelled Quantity
+          </td>
+          <td>
+            <%= @option_pool.unexcercised_cancelled_quantity %>            
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Net Available To Excercise
+          </td>
+          <td>
+            <%= @option_pool.net_avail_to_excercise_quantity %>            
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Gross Unvested Quantity
+          </td>
+          <td>
+            <%= @option_pool.gross_unvested_quantity %>            
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Unvested Cancelled Quantity
+          </td>
+          <td>
+            <%= @option_pool.unvested_cancelled_quantity %>            
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Net Unvested Quantity
+          </td>
+          <td>
+            <%= @option_pool.net_unvested_quantity %>            
+          </td>
+        </tr>
+        
+      <% end %>
+
       <% if @option_pool.manual_vesting %>
         <tr class="collapse multi-collapse">
           <td>

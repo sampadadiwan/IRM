@@ -84,135 +84,187 @@
     
     <% if @holding.investment_instrument == "Options" %>
 
-    <tr>
-      <td>
-        Employee Acknowledgement
-      </td>
-      <td>
-        <% if @holding.emp_ack %>
-          <span class="badge bg-success">
-            Acknowledged
-          </span>
-        <% else %>
-          <span class="badge bg-warning">
-            Not Acknowledged
-          </span>
-        <% end %>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        Option Pool
-      </td>
-      <td>
-        <%= link_to  @holding.option_pool.name, @holding.option_pool if @holding.option_pool %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Grant Date
-      </td>
-      <td>
-        <%= l @holding.grant_date if @holding.grant_date %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Vested Quantity
-      </td>
-      <td>
-        <%= custom_format_number @holding.vested_quantity, params %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Unvested Quantity
-        </br> 
-        (Granted - Vested)
-      </td>
-      <td>
-        <%= custom_format_number @holding.net_unvested_quantity, params %>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        Excercised Quantity
-      </td>
-      <td>
-        <%= custom_format_number @holding.excercised_quantity, params %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        UnExcercised Quantity
-        </br>
-        (Vested - Excercised)
-      </td>
-      <td>
-        <%= custom_format_number @holding.net_avail_to_excercise_quantity, params %>
-      </td>
-    </tr>
-    
-    <% if @holding.lapsed %>      
       <tr>
         <td>
-          Lapsed Quantity
+          Employee Acknowledgement
         </td>
         <td>
-          <%= custom_format_number @holding.lapsed_quantity, params %>
+          <% if @holding.emp_ack %>
+            <span class="badge bg-success">
+              Acknowledged
+            </span>
+          <% else %>
+            <span class="badge bg-warning">
+              Not Acknowledged
+            </span>
+          <% end %>
         </td>
       </tr>
-    <% end %>
 
-
-    <% if @holding.cancelled %>      
       <tr>
         <td>
-          Cancelled Quantity
+          Option Pool
         </td>
         <td>
-          <%= custom_format_number @holding.cancelled_quantity, params %>
+          <%= link_to  @holding.option_pool.name, @holding.option_pool if @holding.option_pool %>
         </td>
       </tr>
-    <% end %>
+      <tr>
+        <td>
+          Grant Date
+        </td>
+        <td>
+          <%= l @holding.grant_date if @holding.grant_date %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Vested Quantity
+        </td>
+        <td>
+          <%= custom_format_number @holding.vested_quantity, params %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Unvested Quantity
+          </br> 
+          (Granted - Vested)
+        </td>
+        <td>
+          <%= custom_format_number @holding.net_unvested_quantity, params %>
+        </td>
+      </tr>
 
-    <% if current_user %>
-        <% if @holding.manual_vesting %>
+      <tr>
+        <td>
+          Excercised Quantity
+        </td>
+        <td>
+          <%= custom_format_number @holding.excercised_quantity, params %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          UnExcercised Quantity
+          </br>
+          (Vested - Excercised)
+        </td>
+        <td>
+          <%= custom_format_number @holding.net_avail_to_excercise_quantity, params %>
+        </td>
+      </tr>
+      
+      <% if @holding.lapsed %>      
+        <tr>
+          <td>
+            Lapsed Quantity
+          </td>
+          <td>
+            <%= custom_format_number @holding.lapsed_quantity, params %>
+          </td>
+        </tr>
+      <% end %>
 
-          <tr>
-            <td>
-              Manual Vesting
-            </td>
-            <td>
-              <span class="badge <%= @holding.manual_vesting ? 'bg-success' : 'bg-warning' %>">
-                <%= @holding.manual_vesting ? "Yes" : "No" %>
-              </span>
-            </td>
-          </tr>
-        <% else %>
-          <tr>
-            <td>
-                Schedule
-            </td>
-            <td>
-                
-                <ul class="vesting_schedule">
-                <% @holding.vesting_schedule.each do |schedule| %>
-                    <li>
-                    On <%= l schedule[0] %>, 
-                    <%= schedule[1] %>% of your Options,
-                    which is <%= schedule[2] %> Options, can be vested.
-                    </li>
-                <% end %>
-                </ul>
-            </td>
-          </tr>
-        <% end %>
-    <% end %>
+
+      <% if @holding.cancelled %>      
+        <tr>
+          <td>
+            Cancelled Quantity
+          </td>
+          <td>
+            <%= custom_format_number @holding.cancelled_quantity, params %>
+          </td>
+        </tr>
+      <% end %>
+
+      <% if current_user %>
+          <% if @holding.manual_vesting %>
+
+            <tr>
+              <td>
+                Manual Vesting
+              </td>
+              <td>
+                <span class="badge <%= @holding.manual_vesting ? 'bg-success' : 'bg-warning' %>">
+                  <%= @holding.manual_vesting ? "Yes" : "No" %>
+                </span>
+              </td>
+            </tr>
+          <% else %>
+            <tr>
+              <td>
+                  Schedule
+              </td>
+              <td>
+                  
+                  <ul class="vesting_schedule">
+                  <% @holding.vesting_schedule.each do |schedule| %>
+                      <li>
+                      On <%= l schedule[0] %>, 
+                      <%= schedule[1] %>% of your Options,
+                      which is <%= schedule[2] %> Options, can be vested.
+                      </li>
+                  <% end %>
+                  </ul>
+              </td>
+            </tr>
+          <% end %>
+      <% end %>
+
+      <% if params[:debug].present? %>
+        <tr>
+          <td>
+            Gross Available To Excercise
+          </td>
+          <td>
+            <%= @holding.gross_avail_to_excercise_quantity %>            
+          </td>
+        </tr>
+        <tr>
+          <td>
+            UnExcercised Cancelled Quantity
+          </td>
+          <td>
+            <%= @holding.unexcercised_cancelled_quantity %>            
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Net Available To Excercise
+          </td>
+          <td>
+            <%= @holding.net_avail_to_excercise_quantity %>            
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Gross Unvested Quantity
+          </td>
+          <td>
+            <%= @holding.gross_unvested_quantity %>            
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Unvested Cancelled Quantity
+          </td>
+          <td>
+            <%= @holding.unvested_cancelled_quantity %>            
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Net Unvested Quantity
+          </td>
+          <td>
+            <%= @holding.net_unvested_quantity %>            
+          </td>
+        </tr>
+        
+      <% end %>
     
-    <% else %>
+    <% else # ends if Options %>
       
       <tr>
         <td>
