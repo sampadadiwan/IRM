@@ -251,7 +251,7 @@ end
 
   
 Then('the investment total quantity must be {string}') do |args|
-  ap Investment.all
+  # ap Investment.all
   Investment.all.sum(:quantity).should == args.to_i
 end
 
