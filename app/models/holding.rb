@@ -142,6 +142,14 @@ class Holding < ApplicationRecord
     Time.zone.today > lapse_date
   end
 
+  def lapse
+    if lapsed?
+      self.lapsed = true
+      self.lapsed_quantity = compute_lapsed_quantity
+      save
+    end
+  end
+
   def allowed_percentage
     option_pool.get_allowed_percentage(grant_date)
   end
