@@ -32,6 +32,7 @@ class OptionPool < ApplicationRecord
   has_many_attached :attachments, service: :amazon
   has_many_attached :excercise_instructions, service: :amazon
   has_one_attached :certificate_signature, service: :amazon
+  has_rich_text :details
 
   validates :name, :start_date, :number_of_options, :excercise_price, presence: true
   validates :number_of_options, :excercise_price, numericality: { greater_than: 0 }

@@ -61,13 +61,6 @@
                 <%= form.number_field :excercise_period_months, class: "form-control", required: true  %>
               </div>
 
-              <div class="form-group">
-                <%= form.label :manual_vesting %>
-                <%= form.check_box :manual_vesting, class: "form-control form-checkbox"  %>
-                <small class="text-muted">Only if you want the options to be manually vested. This will ignore the vesting schedule</small> 
-              </div>
-            
-
               <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
             </div>
         </div>
@@ -109,7 +102,7 @@
   <div class="row setup-content" id="step-3">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header"> 3. Vesting Schedule </div>
+            <div class="card-header"> 3. Description & Vesting Schedule </div>
             <div class="card-body">
 
             <div id='vesting_schedules' class="">              
@@ -118,6 +111,11 @@
               <% end %>
             </div>
 
+
+            <div class="form-group">
+              <%= form.label :details %>
+              <%= form.rich_text_area :details, class: "form-control trix-content"  %>
+            </div>
 
             <div class="form-group">
               <%= link_to_add_association 'Add Schedule', form, :vesting_schedules , class: "btn btn-success btn-lg" %>

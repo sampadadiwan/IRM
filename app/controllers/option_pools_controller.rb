@@ -96,7 +96,7 @@ class OptionPoolsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def option_pool_params
     params.require(:option_pool).permit(:name, :start_date, :number_of_options, :excercise_price,
-                                        :excercise_period_months, :entity_id, :funding_round_id, :certificate_signature, :manual_vesting,
+                                        :excercise_period_months, :entity_id, :funding_round_id, :certificate_signature, :manual_vesting, :details,
                                         attachments: [], excercise_instructions: [],
                                         vesting_schedules_attributes: %i[id months_from_grant vesting_percent _destroy])
   end

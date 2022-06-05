@@ -47,7 +47,7 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def edit?
-    update? && !record.approved
+    update? && (!record.approved || record.manual_vesting)
   end
 
   def destroy?
