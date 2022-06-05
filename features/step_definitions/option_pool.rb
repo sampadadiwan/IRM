@@ -155,7 +155,7 @@ Then('the unexcercised amount should be {string}') do |qty|
 end
 
 Given('the option is cancelled {string}') do |arg|
-  @holding.cancel(arg)
+  CancelHolding.call(holding: @holding, all_or_unvested: arg)
 end
 
 
@@ -251,6 +251,7 @@ end
 
   
 Then('the investment total quantity must be {string}') do |args|
+  ap Investment.all
   Investment.all.sum(:quantity).should == args.to_i
 end
 

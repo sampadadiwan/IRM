@@ -42,10 +42,13 @@ class Holding < ApplicationRecord
 
   belongs_to :user, optional: true
   belongs_to :entity
+
   belongs_to :funding_round, optional: true
+
   belongs_to :investor
   # This is only for options
   belongs_to :option_pool, optional: true
+
   has_many :offers, dependent: :destroy
   has_many :excercises, dependent: :destroy
 
@@ -93,29 +96,6 @@ class Holding < ApplicationRecord
 
   def notify_lapse_upcoming
     HoldingMailer.with(holding_id: id).notify_lapse_upcoming.deliver_later
-  end
-
-  def cancel(all_or_unvested)
-    case all_or_unvested
-    when "all"
-      self.cancelled = true
-      self.unvested_cancelled_quantity = net_unvested_quantity
-      self.unexcercised_cancelled_quantity = net_avail_to_excercise_quantity
-      # puts "### all Calling compute_vested_quantity #{self.vested_quantity}"
-    when "unvested"
-      self.cancelled = true
-      self.unvested_cancelled_quantity = net_unvested_quantity
-      # puts "### unvested Calling compute_vested_quantity #{self.vested_quantity}"
-    else
-      errors.add(:cancelled, "Invalid option provided, all or unvested only")
-    end
-
-    if save
-      notify_cancellation
-      true
-    else
-      false
-    end
   end
 
   def vesting_schedule

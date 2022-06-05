@@ -15,6 +15,8 @@ class VestedJob < ApplicationJob
         check_lapsed(holding)
         holding.save
       end
+
+      pool.save
     end
   end
 

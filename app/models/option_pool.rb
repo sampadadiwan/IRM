@@ -22,7 +22,6 @@
 class OptionPool < ApplicationRecord
   belongs_to :entity
   belongs_to :funding_round, optional: true
-
   has_many :holdings, inverse_of: :option_pool, dependent: :destroy
   has_many :excercises, dependent: :destroy
 
@@ -69,20 +68,8 @@ class OptionPool < ApplicationRecord
     allowed_percentage
   end
 
-  def unexcercised_quantity
-    [0, vested_quantity - excercised_quantity - lapsed_quantity].max
-  end
-
-  def unvested_quantity
-    number_of_options - vested_quantity
-  end
-
-  def balance_quantity
-    unexcercised_quantity
-  end
-
   def available_quantity
-    number_of_options - allocated_quantity + lapsed_quantity + cancelled_quantity
+    number_of_options - allocated_quantity
   end
 
   def trust_quantity

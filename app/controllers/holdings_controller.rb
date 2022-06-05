@@ -103,8 +103,10 @@ class HoldingsController < ApplicationController
   def employee_calc; end
 
   def cancel
+    result = CancelHolding.call(holding: @holding, all_or_unvested: params[:type])
+
     respond_to do |format|
-      if @holding.cancel(params[:type])
+      if result.success?
         format.html { redirect_to holding_url(@holding), notice: "Holding was successfully cancelled." }
         format.json { render :show, status: :created, location: @holding }
       else
