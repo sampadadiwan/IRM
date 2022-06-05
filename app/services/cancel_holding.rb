@@ -7,4 +7,10 @@ class CancelHolding
       organizer.call
     end
   end
+
+  after do
+    # The trust must be updated only after the counter caches have updated the option pool
+    context.holding.option_pool.reload
+    UpdateTrustHoldings.call(holding: context.holding)
+  end
 end

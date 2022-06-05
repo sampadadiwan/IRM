@@ -23,7 +23,9 @@ class UpdateTrustHoldings
         funding_round_id: holding.option_pool.funding_round_id,
         investment_instrument: 'Options'
       ).first
-      pool_investment.quantity -= holding.quantity
+
+      pool_investment.quantity = holding.option_pool.available_quantity
+
       result = SaveInvestment.call(investment: pool_investment)
       create_audit_trail(holding, pool_investment) if result.success?
     end

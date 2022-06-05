@@ -44,6 +44,29 @@ Examples:
     |entity_type=Startup  |name=Pool 123;number_of_options=10000;excercise_price_cents=2000  |12:180        |
 
 
+
+Scenario Outline:  Options Approved
+  Given there is a user "" for an entity "<entity>"
+  Given a esop pool "<option_pool>" is created with vesting schedule "<schedule>"
+  Given there are "1" employee investors
+  And there is an option holding "approved=true;orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
+  And the option grant date is "<months>" ago
+  Then the option pool must have "<option_pool_quantites>"
+  Then the option holding must have "<holding_quantites>"
+  And the investment total quantity must be "10000"
+  And the trust esop holdings must be reduced by "1000"
+
+Examples:
+    |entity               |option_pool                                      |schedule            | months  | option_pool_quantites | holding_quantites |
+    
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=98|12:20,24:30,36:50  | 12      | allocated_quantity=1000;vested_quantity=200;net_unvested_quantity=800;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=200     | quantity=1000;vested_quantity=200;net_unvested_quantity=800;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=200 |
+
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=90|12:20,24:30,36:50  | 24      | allocated_quantity=1000;vested_quantity=500;net_unvested_quantity=500;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=500     | quantity=1000;vested_quantity=500;net_unvested_quantity=500;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=500 |
+    
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=98|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=1000    | quantity=1000;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=1000  |
+
+
+
 Scenario Outline: Allocate holdings from pool
   Given Im logged in as a user "first_name=Test" for an entity "name=Urban;entity_type=Startup"
   Given a esop pool "name=Pool 1" is created with vesting schedule "12:20,24:30,36:50"
@@ -129,6 +152,7 @@ Scenario Outline:  Options cancelled
   And the option is cancelled "<cancel>"
   Then the option holding must have "<holding_quantites>"
   Then the option pool must have "<option_pool_quantites>"
+  And the investment total quantity must be "10000"
   
 Examples:
     |entity               |option_pool                    |schedule           | months  | option_pool_quantites | holding_quantites | cancel |
