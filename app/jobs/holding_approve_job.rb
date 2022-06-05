@@ -18,6 +18,9 @@ class HoldingApproveJob < ApplicationJob
         ApproveHolding.call(holding:)
       end
 
+      # Ensure the approved holdings go thru the vesting algo
+      VestedJob.new.perform
+
       Rails.logger.debug { "HoldingApproveJob: #{type} #{id}. Update #{holdings.count} records." }
     end
   end
