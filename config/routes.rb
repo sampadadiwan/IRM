@@ -96,6 +96,9 @@ Rails.application.routes.draw do
     resources :funding_rounds
     resources :option_pools
     resources :excercises
+    namespace :audited do
+      resources :audits
+    end
 
     root to: "investors#index"
   end
