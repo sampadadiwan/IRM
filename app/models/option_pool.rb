@@ -66,7 +66,7 @@ class OptionPool < ApplicationRecord
       allowed_percentage += sched.vesting_percent if grant_date + sched.months_from_grant.months <= Time.zone.now
     end
 
-    logger.debug "excercisable_quantity allowed_percentage: #{allowed_percentage}"
+    logger.debug "Option Pool allowed_percentage: #{allowed_percentage}"
     allowed_percentage
   end
 

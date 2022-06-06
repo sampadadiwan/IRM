@@ -8,7 +8,7 @@
                     Pool
                 </th>
                 <th>
-                    Granted Options
+                    Balance Options
                 </th>
                 <th>
                     Acknowledgement
@@ -46,7 +46,7 @@
                         <% end %>
                     </td>
                     
-                    <td><%= holding.vested_quantity %></td>
+                    <td><%= holding.net_avail_to_excercise_quantity %></td>
                     <td><%= holding.option_pool.excercise_price %></td>
                     <td><%= money_to_currency holding.value, params %></td>
                     <td>

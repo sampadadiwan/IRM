@@ -151,16 +151,6 @@ class Holding < ApplicationRecord
     option_pool.get_allowed_percentage(grant_date)
   end
 
-  def excercisable_quantity
-    percentage = allowed_percentage
-
-    if percentage.positive?
-      (percentage * orig_grant_quantity / 100.0)
-    else
-      0
-    end
-  end
-
   def excercisable?
     investment_instrument == "Options" &&
       vested_quantity.positive? &&

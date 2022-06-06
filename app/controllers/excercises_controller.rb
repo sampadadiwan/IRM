@@ -35,7 +35,7 @@ class ExcercisesController < ApplicationController
     @excercise.user_id = current_user.id
     @excercise.option_pool_id = @excercise.holding.option_pool_id
     @excercise.entity_id = @excercise.holding.entity_id
-    @excercise.quantity = @excercise.holding.excercisable_quantity
+    @excercise.quantity = @excercise.holding.net_avail_to_excercise_quantity
     @excercise.price = @excercise.option_pool.excercise_price
 
     authorize(@excercise)

@@ -55,14 +55,11 @@ class Excercise < ApplicationRecord
 
   def lapsed_holding
     # errors.add(:holding, "can't be lapsed") if holding.lapsed
-    errors.add(:quantity, "can't be greater than #{holding.excercisable_quantity}") if quantity > holding.excercisable_quantity
+    errors.add(:quantity, "can't be greater than #{holding.net_avail_to_excercise_quantity}") if quantity > holding.net_avail_to_excercise_quantity
   end
 
   def validate_quantity
-    allowed = holding.excercisable_quantity
-    # if new_record?
-    # end
-    errors.add(:quantity, "can't be greater than #{allowed}") if quantity > allowed
+    errors.add(:quantity, "can't be greater than #{allowed}") if quantity > holding.net_avail_to_excercise_quantity
   end
 
   def notify_excercise
