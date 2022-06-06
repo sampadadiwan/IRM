@@ -29,7 +29,7 @@
     </div>
   <% end %>
 
-  <%= render "/layouts/steps", steps: ["Holding Quantity: #{excercise.holding.quantity}", "Vesting Percent allowed: #{excercise.holding.allowed_percentage} %", "Max Excercisable Quantity: #{excercise.holding.excercisable_quantity}", "Input Your Tax Rate", "Excercise Your Option", "Wait For Approval"].freeze %>
+  <%= render "/layouts/steps", steps: ["Holding Quantity: #{excercise.holding.quantity}", "Vesting Percent allowed: #{excercise.holding.allowed_percentage} %", "Max Excercisable Quantity: #{excercise.holding.net_avail_to_excercise_quantity}", "Input Your Tax Rate", "Excercise Your Option", "Wait For Approval"].freeze %>
 
 
   <%= form.number_field :holding_id, class: "form-control", hidden: true  %>
@@ -60,7 +60,7 @@
               <div class="form-group">
                 <%= form.label :quantity %>
                 <%= form.number_field :quantity, class: "form-control", data: {action: "change->excercise#onChange"}  %>
-                <small class="text-muted">Quantity defaults to the maximum <%= excercise.holding.excercisable_quantity %> that can be excercised per the <%= link_to "Vesting Schedule", excercise.option_pool %></small> 
+                <small class="text-muted">Quantity defaults to the maximum <%= excercise.holding.net_avail_to_excercise_quantity %> that can be excercised per the <%= link_to "Vesting Schedule", excercise.option_pool %></small> 
               </div>
 
               <div class="form-group">

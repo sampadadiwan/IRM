@@ -25,8 +25,10 @@ class HoldingPolicy < ApplicationPolicy
 
   def offer?
     (
-      (user.id == record.user_id && user.has_cached_role?(:holding)) ||
-      (user.entity_id == record.investor.investor_entity_id && user.has_cached_role?(:investor))
+      record.investment_instrument != "Options" && (
+        (user.id == record.user_id && user.has_cached_role?(:holding)) ||
+        (user.entity_id == record.investor.investor_entity_id && user.has_cached_role?(:investor))
+      )
     )
   end
 
@@ -42,7 +44,7 @@ class HoldingPolicy < ApplicationPolicy
     # Only employee holdings can be and only if its not excercised
     create? &&
       record.holding_type != "Investor" &&
-      record.excercised_quantity.zero? &&
+      (record.excercised_quantity.zero? || record.manual_vesting) &&
       !record.cancelled
   end
 
@@ -55,7 +57,7 @@ class HoldingPolicy < ApplicationPolicy
   end
 
   def excercise?
-    record.approved && record.user_id == user.id && record.investment_instrument == "Options"
+    record.approved && record.user_id == user.id && record.investment_instrument == "Options" && record.net_avail_to_excercise_quantity.positive?
   end
 
   def cancel?

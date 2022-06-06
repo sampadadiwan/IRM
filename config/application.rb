@@ -72,5 +72,7 @@ module InvestorRelationshipManagement
     }
 
     config.active_storage.replace_on_assign_to_many = false
+    config.active_storage.analyzers = []
+    config.active_storage.previewers = []
   end
 end

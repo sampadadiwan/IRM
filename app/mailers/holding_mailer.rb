@@ -8,7 +8,7 @@ class HoldingMailer < ApplicationMailer
     @label = @holding.cancelled ? "Cancelled" : nil
     @label ||= @holding.lapsed ? "Lapsed" : "Updated"
 
-    subject = "Your #{@holding.investment_instrument} has been #{@label}"
+    subject = "Your #{@holding.investment_instrument} have been #{@label}"
     mail(to: emails,
          cc: ENV['SUPPORT_EMAIL'],
          subject:)
@@ -17,7 +17,7 @@ class HoldingMailer < ApplicationMailer
   def notify_approval
     @holding = Holding.find params[:holding_id]
     emails = @holding.user.email
-    subject = "Your #{@holding.investment_instrument} has been approved"
+    subject = "Your #{@holding.investment_instrument} have been approved"
     mail(to: emails,
          cc: ENV['SUPPORT_EMAIL'],
          subject:)
@@ -26,7 +26,7 @@ class HoldingMailer < ApplicationMailer
   def notify_lapsed
     @holding = Holding.find params[:holding_id]
     emails = @holding.user.email
-    subject = "Your #{@holding.investment_instrument} has lapsed"
+    subject = "Your #{@holding.investment_instrument} have lapsed"
     mail(to: emails,
          cc: ENV['SUPPORT_EMAIL'],
          subject:)

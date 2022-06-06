@@ -27,13 +27,6 @@ class HoldingCancelled
       holding.errors.add(:cancelled, "Invalid option provided, all or unvested only")
       false
     end
-
-    # if holding.save
-    #   holding.option_pool.save
-    #   true
-    # else
-    #   false
-    # end
   end
 
   def create_audit_trail(holding)
