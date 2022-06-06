@@ -33,8 +33,7 @@ class SetupHoldingForInvestment
                                     currency: holding.entity.currency, funding_round: holding.funding_round,
                                     scenario: holding.entity.actual_scenario, notes: "Holdings Investment")
 
-        holding.investment = SaveInvestment.call(investment:,
-                                                 audit_comment: "Investment setup for Holding").investment
+        holding.investment = SaveInvestment.call(investment:).investment
       else
         Rails.logger.debug { "Investment already exists for #{holding.id}" }
       end

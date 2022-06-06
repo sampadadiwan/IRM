@@ -21,6 +21,7 @@
 #
 
 class FundingRound < ApplicationRecord
+  audited
   include Trackable
   include ActivityTrackable
 

@@ -21,7 +21,8 @@ class CreateAggregateInvestment
       investment.aggregate_investment = ai.presence ||
                                         AggregateInvestment.create!(investor_id: investment.investor_id,
                                                                     entity_id: investment.investee_entity_id,
-                                                                    scenario_id: investment.scenario_id)
+                                                                    scenario_id: investment.scenario_id,
+                                                                    audit_comment: context.audit_comment)
 
       create_audit_trail(investment)
     end

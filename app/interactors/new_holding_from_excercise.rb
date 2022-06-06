@@ -21,7 +21,7 @@ class NewHoldingFromExcercise
                           funding_round_id: excercise.option_pool.funding_round_id,
                           employee_id: excercise.holding.employee_id, created_from_excercise_id: excercise.id, approved: true)
 
-    CreateHolding.call(holding:, audit_comment: "New Holding From Excercise")
+    CreateHolding.call(holding:)
     ApproveHolding.call(holding:)
   end
 

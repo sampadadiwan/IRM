@@ -17,11 +17,11 @@ class HoldingCancelled
     when "all"
       holding.update(cancelled: true, unvested_cancelled_quantity: holding.net_unvested_quantity,
                      unexcercised_cancelled_quantity: holding.net_avail_to_excercise_quantity,
-                     audit_comment: "Cancelled All")
+                     audit_comment: "#{context.audit_comment} : Cancelled All")
     # puts "### all Calling compute_vested_quantity #{holding.vested_quantity}"
     when "unvested"
       holding.update(cancelled: true, unvested_cancelled_quantity: holding.net_unvested_quantity,
-                     audit_comment: "Cancelled Unvested")
+                     audit_comment: "#{context.audit_comment} : Cancelled Unvested")
     # puts "### unvested Calling compute_vested_quantity #{holding.vested_quantity}"
     else
       holding.errors.add(:cancelled, "Invalid option provided, all or unvested only")

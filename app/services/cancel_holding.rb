@@ -2,6 +2,10 @@ class CancelHolding
   include Interactor::Organizer
   organize HoldingCancelled, NotifyHoldingCancelled, CreateAuditTrail
 
+  before do |_organizer|
+    context.audit_comment = "Cancel Holding"
+  end
+
   around do |organizer|
     ActiveRecord::Base.transaction do
       organizer.call

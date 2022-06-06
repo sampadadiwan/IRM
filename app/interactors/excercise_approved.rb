@@ -8,7 +8,7 @@ class ExcerciseApproved
       excercise = context.excercise
 
       context.fail!(message: excercise.errors.full_messages) unless
-              excercise.update(approved: true, approved_on: Time.zone.today, audit_comment: "Excercise approved")
+              excercise.update(approved: true, approved_on: Time.zone.today, audit_comment: "#{context.audit_comment} : Excercise approved")
 
       context.holding = excercise.holding
     else

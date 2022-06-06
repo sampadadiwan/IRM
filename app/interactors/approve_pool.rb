@@ -6,7 +6,7 @@ class ApprovePool
 
     if context.option_pool.present?
       option_pool = context.option_pool
-      context.fail!(message: option_pool.errors.full_messages) unless option_pool.update(approved: true, audit_comment: "OptionPool approved")
+      context.fail!(message: option_pool.errors.full_messages) unless option_pool.update(approved: true, audit_comment: "#{context.audit_comment} :  Approve Pool")
     else
       Rails.logger.debug "No OptionPool specified"
       context.fail!(message: "No OptionPool specified")

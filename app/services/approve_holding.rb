@@ -8,6 +8,10 @@ class ApproveHolding
     end
   end
 
+  before do |_organizer|
+    context.audit_comment = "Approve Holding"
+  end
+
   after do
     if context.holding.option_pool
       # The trust must be updated only after the counter caches have updated the option pool

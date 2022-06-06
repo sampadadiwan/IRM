@@ -4,8 +4,9 @@ class NewHolding
   def call
     Rails.logger.debug "Interactor: NewHolding called"
     if context.holding.present?
-      holding = context.holding
-      context.fail!(message: holding.errors.full_messages) unless holding.save
+      context.holding.audit_comment = "#{context.audit_comment} : New Holding"
+      context.holding = Holding.create(context.holding.attributes)
+      context.fail!(message: holding.errors.full_messages) if context.holding.id.blank?
     else
       Rails.logger.debug "No Holding specified"
       context.fail!(message: "No Holding specified")

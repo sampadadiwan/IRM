@@ -6,13 +6,15 @@ class SetupFundingRoundForPool
 
     if context.option_pool.present?
       option_pool = context.option_pool
-      option_pool.funding_round = FundingRound.new(
+      option_pool.funding_round = FundingRound.create(
         name: option_pool.name,
         currency: option_pool.entity.currency,
         entity_id: option_pool.entity_id,
-        status: "Open"
+        status: "Open",
+        audit_comment: "#{context.audit_comment} : Create Funding Round"
       )
-      context.fail!(message: option_pool.funding_round.errors.full_messages) unless option_pool.funding_round.save
+
+      context.fail!(message: option_pool.funding_round.errors.full_messages) if option_pool.funding_round.id.blank?
 
     else
       Rails.logger.error "No OptionPool specified"

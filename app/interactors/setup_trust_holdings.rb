@@ -35,7 +35,7 @@ class SetupTrustHoldings
 
     end
 
-    SaveInvestment.call(investment:, audit_trail: "Investment setup for Trust")
+    SaveInvestment.call(investment:, audit_comment: "#{context.audit_comment} : Investment setup for Trust")
   end
 
   def create_audit_trail(_option_pool)

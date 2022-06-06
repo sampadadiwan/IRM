@@ -33,7 +33,8 @@ class UpdateInvestorHoldings
                               orig_grant_quantity: investment.quantity,
                               price_cents: investment.price_cents, value_cents: investment.amount_cents, approved: true)
 
-        CreateHolding.call(holding:, audit_comment: "Update Investor Holding")
+        audit_comment = "#{context.audit_comment} : Update Investor Holding"
+        CreateHolding.call(holding:, audit_comment:)
       end
 
     else

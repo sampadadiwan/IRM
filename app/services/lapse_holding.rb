@@ -2,6 +2,10 @@ class LapseHolding
   include Interactor::Organizer
   organize HoldingLapsed, CreateAuditTrail
 
+  before do |_organizer|
+    context.audit_comment = "Lapse Holding"
+  end
+
   around do |organizer|
     ActiveRecord::Base.transaction do
       organizer.call

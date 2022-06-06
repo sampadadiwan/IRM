@@ -6,7 +6,7 @@ class HoldingApproved
 
     if context.holding.present?
       holding = context.holding
-      context.fail!(message: holding.errors.full_messages) unless holding.update(approved: true, audit_comment: "Holding approved")
+      context.fail!(message: holding.errors.full_messages) unless holding.update(approved: true, audit_comment: "#{context.audit_comment} : Holding approved")
     else
       Rails.logger.debug "No Holding specified"
       context.fail!(message: "No Holding specified")

@@ -17,6 +17,8 @@
 #
 
 class AggregateInvestment < ApplicationRecord
+  audited
+
   belongs_to :entity
   delegate :actual_scenario, to: :entity
 
