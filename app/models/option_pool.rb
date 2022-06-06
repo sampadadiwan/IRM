@@ -20,6 +20,8 @@
 #
 
 class OptionPool < ApplicationRecord
+  audited
+
   belongs_to :entity
   belongs_to :funding_round, optional: true
   has_many :holdings, inverse_of: :option_pool, dependent: :destroy

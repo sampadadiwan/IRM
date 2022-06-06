@@ -6,9 +6,10 @@ class ExcerciseApproved
 
     if context.excercise.present?
       excercise = context.excercise
-      excercise.approved = true
-      excercise.approved_on = Time.zone.today
-      context.fail!(message: excercise.errors.full_messages) unless excercise.save
+
+      context.fail!(message: excercise.errors.full_messages) unless
+              excercise.update(approved: true, approved_on: Time.zone.today, audit_comment: "Excercise approved")
+
       context.holding = excercise.holding
     else
       Rails.logger.debug "No Excercise specified"
@@ -17,9 +18,9 @@ class ExcerciseApproved
   end
 
   def create_audit_trail(excercise)
-    context.audit_trail ||= []
+    context.holding_audit_trail ||= []
     context.parent_id ||= SecureRandom.uuid
-    context.audit_trail << HoldingAuditTrail.new(action: :approve_excercise, owner: "Excercise", quantity: excercise.quantity, operation: :modify, ref: excercise, entity_id: excercise.entity_id, completed: true, parent_id: context.parent_id)
+    context.holding_audit_trail << HoldingAuditTrail.new(action: :approve_excercise, owner: "Excercise", quantity: excercise.quantity, operation: :modify, ref: excercise, entity_id: excercise.entity_id, completed: true, parent_id: context.parent_id)
   end
 
   after do

@@ -6,8 +6,7 @@ class HoldingApproved
 
     if context.holding.present?
       holding = context.holding
-      holding.approved = true
-      context.fail!(message: holding.errors.full_messages) unless holding.save
+      context.fail!(message: holding.errors.full_messages) unless holding.update(approved: true, audit_comment: "Holding approved")
     else
       Rails.logger.debug "No Holding specified"
       context.fail!(message: "No Holding specified")
@@ -15,9 +14,9 @@ class HoldingApproved
   end
 
   def create_audit_trail(holding)
-    context.audit_trail ||= []
+    context.holding_audit_trail ||= []
     context.parent_id ||= SecureRandom.uuid
-    context.audit_trail << HoldingAuditTrail.new(action: :approve_holding, owner: "Holding", quantity: holding.quantity, operation: :modify, ref: holding, entity_id: holding.entity_id, completed: true, parent_id: context.parent_id)
+    context.holding_audit_trail << HoldingAuditTrail.new(action: :approve_holding, owner: "Holding", quantity: holding.quantity, operation: :modify, ref: holding, entity_id: holding.entity_id, completed: true, parent_id: context.parent_id)
   end
 
   after do

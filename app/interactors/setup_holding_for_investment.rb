@@ -33,7 +33,8 @@ class SetupHoldingForInvestment
                                     currency: holding.entity.currency, funding_round: holding.funding_round,
                                     scenario: holding.entity.actual_scenario, notes: "Holdings Investment")
 
-        holding.investment = SaveInvestment.call(investment:).investment
+        holding.investment = SaveInvestment.call(investment:,
+                                                 audit_comment: "Investment setup for Holding").investment
       else
         Rails.logger.debug { "Investment already exists for #{holding.id}" }
       end
@@ -45,8 +46,8 @@ class SetupHoldingForInvestment
   end
 
   def create_audit_trail(holding)
-    context.audit_trail ||= []
+    context.holding_audit_trail ||= []
     context.parent_id ||= SecureRandom.uuid
-    context.audit_trail << HoldingAuditTrail.new(action: :setup_investment, owner: "Holding", quantity: holding.quantity, operation: :modify, ref: holding, entity_id: holding.entity_id, completed: true, parent_id: context.parent_id)
+    context.holding_audit_trail << HoldingAuditTrail.new(action: :setup_investment, owner: "Holding", quantity: holding.quantity, operation: :modify, ref: holding, entity_id: holding.entity_id, completed: true, parent_id: context.parent_id)
   end
 end

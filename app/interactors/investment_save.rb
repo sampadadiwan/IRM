@@ -13,9 +13,9 @@ class InvestmentSave
   end
 
   def create_audit_trail(investment)
-    context.audit_trail ||= []
+    context.holding_audit_trail ||= []
     context.parent_id ||= SecureRandom.uuid
-    context.audit_trail << HoldingAuditTrail.new(action: :save_investment, owner: "investment", quantity: investment.quantity, operation: context.audit_trail_op, ref: investment, entity_id: investment.investee_entity_id, completed: true, parent_id: context.parent_id)
+    context.holding_audit_trail << HoldingAuditTrail.new(action: :save_investment, owner: "investment", quantity: investment.quantity, operation: context.holding_audit_trail_op, ref: investment, entity_id: investment.investee_entity_id, completed: true, parent_id: context.parent_id)
   end
 
   after do
@@ -23,6 +23,6 @@ class InvestmentSave
   end
 
   before do
-    context.audit_trail_op = context.investment.new_record? ? :create_record : :modify
+    context.holding_audit_trail_op = context.investment.new_record? ? :create_record : :modify
   end
 end

@@ -6,8 +6,7 @@ class ApprovePool
 
     if context.option_pool.present?
       option_pool = context.option_pool
-      option_pool.approved = true
-      context.fail!(message: option_pool.errors.full_messages) unless option_pool.save
+      context.fail!(message: option_pool.errors.full_messages) unless option_pool.update(approved: true, audit_comment: "OptionPool approved")
     else
       Rails.logger.debug "No OptionPool specified"
       context.fail!(message: "No OptionPool specified")
@@ -15,9 +14,9 @@ class ApprovePool
   end
 
   def create_audit_trail(option_pool)
-    context.audit_trail ||= []
+    context.holding_audit_trail ||= []
     context.parent_id ||= SecureRandom.uuid
-    context.audit_trail << HoldingAuditTrail.new(action: :approve_option_pool, owner: "OptionPool", quantity: option_pool.number_of_options, operation: :modify, ref: option_pool, entity_id: option_pool.entity_id, completed: true, parent_id: context.parent_id)
+    context.holding_audit_trail << HoldingAuditTrail.new(action: :approve_option_pool, owner: "OptionPool", quantity: option_pool.number_of_options, operation: :modify, ref: option_pool, entity_id: option_pool.entity_id, completed: true, parent_id: context.parent_id)
   end
 
   after do

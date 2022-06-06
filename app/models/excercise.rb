@@ -18,6 +18,8 @@
 #
 
 class Excercise < ApplicationRecord
+  audited
+
   update_index('entity') { self }
 
   belongs_to :entity

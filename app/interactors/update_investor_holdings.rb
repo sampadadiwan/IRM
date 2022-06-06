@@ -15,7 +15,7 @@ class UpdateInvestorHoldings
   # corresponding to this investment.
   # There will be only one such Holding per investment
   def update_investor_holdings(investment)
-    Rails.logger.debug { "update_investor_holdings: investment.investor = #{investment.investor.investor_name}" }
+    # Rails.logger.debug { "update_investor_holdings: investment.investor = #{investment.investor.investor_name}" }
     if investment.scenario.actual? && !investment.investor.is_holdings_entity &&
        Investment::EQUITY_LIKE.include?(investment.investment_instrument)
 
@@ -23,10 +23,7 @@ class UpdateInvestorHoldings
       if holding
         # Since there is only 1 holding per Investor Investment
         # Just assign the quantityand price
-        holding.orig_grant_quantity = investment.quantity
-        holding.investment_instrument = investment.investment_instrument
-        holding.price = investment.price
-        holding.save!
+        holding.update(orig_grant_quantity: investment.quantity, investment_instrument: investment.investment_instrument, price: investment.price, audit_comment: "Updated by UpdateInvestorHoldings")
       else
         holding = Holding.new(entity: investment.investee_entity, investment_id: investment.id,
                               investor_id: investment.investor_id, funding_round_id: investment.funding_round_id,
@@ -36,7 +33,7 @@ class UpdateInvestorHoldings
                               orig_grant_quantity: investment.quantity,
                               price_cents: investment.price_cents, value_cents: investment.amount_cents, approved: true)
 
-        CreateHolding.call(holding:)
+        CreateHolding.call(holding:, audit_comment: "Update Investor Holding")
       end
 
     else
