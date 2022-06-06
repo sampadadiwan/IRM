@@ -10,26 +10,21 @@ module ScenariosHelper
     cookies.delete :scenario_id
   end
 
-  # # This is a critical helper method for Investment & AggregateInvestment to fuction properly
-  # # It dictates which Investment and AI are shown based on the current_scenario
-  # # Also any new Investment created are set to the current_scenario
-  # def current_scenario(entity = nil)
+  def calculate_scenario(scenario, params)
+    total_stake = params[:pre_money_valuation].to_f + params[:amount].to_f
+    stake = total_stake.positive? ? (params[:amount].to_f / total_stake) : 0
 
-  #   scenario_id = nil
-  #   # Get it from params
-  #   if params[:scenario_id].present?
-  #     scenario_id = params[:scenario_id]
-  #   elsif cookies[:scenario].present? && cookies[:scenario].split(":")[1].to_i == entity.id
-  #     # Get it from cookie set below
-  #     sne = cookies[:scenario].split(":")
-  #     scenario_id = sne[0]
-  #   else
-  #     # Go to DB and get the Scenario
-  #     scenario_id = entity.actual_scenario.id if entity&.actual_scenario
-  #   end
+    aggregate_investments = []
+    ai = Struct.new(:investor_name, :percentage, :full_diluted_percentage)
 
-  #   # Set the cookie
-  #   cookies[:scenario] = "#{scenario_id}:#{entity.id}" if scenario_id
-  #   scenario_id
-  # end
+    scenario.aggregate_investments.includes(:investor).each do |aggregate_investment|
+      new_ai = ai.new(aggregate_investment.investor_name, aggregate_investment.percentage * (1 - stake).round(2), aggregate_investment.full_diluted_percentage * (1 - stake).round(2))
+
+      aggregate_investments << new_ai
+    end
+
+    aggregate_investments << ai.new("NewInvestor", (stake * 100).round(2), (stake * 100).round(2))
+
+    [(stake * 100).round(2), aggregate_investments]
+  end
 end

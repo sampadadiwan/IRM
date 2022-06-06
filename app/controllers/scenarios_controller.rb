@@ -1,9 +1,14 @@
 class ScenariosController < ApplicationController
   before_action :set_scenario, only: %i[show edit update destroy]
+  after_action :verify_authorized, except: %i[simple_simulator search index]
 
   # GET /scenarios or /scenarios.json
   def index
     @scenarios = policy_scope(Scenario)
+  end
+
+  def simple_simulator
+    @scenario = current_user.entity.actual_scenario
   end
 
   # GET /scenarios/1 or /scenarios/1.json
