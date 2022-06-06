@@ -8,6 +8,7 @@ class InvestmentDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    audits: Field::HasMany,
     investor: Field::BelongsTo,
     investee_entity: Field::BelongsTo,
     id: Field::Number,
@@ -50,6 +51,7 @@ class InvestmentDashboard < Administrate::BaseDashboard
     quantity
     created_at
     updated_at
+    audits
   ].freeze
 
   # FORM_ATTRIBUTES

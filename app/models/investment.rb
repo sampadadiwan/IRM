@@ -31,6 +31,8 @@
 #
 
 class Investment < ApplicationRecord
+  audited
+
   include Trackable
   include InvestmentScopes
   include InvestmentCounters
