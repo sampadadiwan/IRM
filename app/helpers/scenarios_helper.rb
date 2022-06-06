@@ -18,7 +18,7 @@ module ScenariosHelper
     ai = Struct.new(:investor_name, :percentage, :full_diluted_percentage)
 
     scenario.aggregate_investments.includes(:investor).each do |aggregate_investment|
-      new_ai = ai.new(aggregate_investment.investor_name, aggregate_investment.percentage * (1 - stake).round(2), aggregate_investment.full_diluted_percentage * (1 - stake).round(2))
+      new_ai = ai.new(aggregate_investment.investor_name, (aggregate_investment.percentage * (1 - stake)).round(2), (aggregate_investment.full_diluted_percentage * (1 - stake)).round(2))
 
       aggregate_investments << new_ai
     end
