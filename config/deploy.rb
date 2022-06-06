@@ -63,6 +63,7 @@ namespace :deploy do
   end
 
   before "deploy:assets:precompile", :upload_env
+  after "deploy", "sidekiq:restart"
 
   # desc 'Initial Deploy'
   # task :initial do

@@ -23,7 +23,7 @@ module ScenariosHelper
       aggregate_investments << new_ai
     end
 
-    aggregate_investments << ai.new("NewInvestor", (stake * 100).round(2), (stake * 100).round(2))
+    aggregate_investments << ai.new("New Investor", (stake * 100).round(2), (stake * 100).round(2))
 
     [(stake * 100).round(2), aggregate_investments]
   end
