@@ -145,6 +145,8 @@ GEM
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     ast (2.4.2)
+    audited (5.0.2)
+      activerecord (>= 5.0, < 7.1)
     awesome_print (1.9.2)
     aws-eventstream (1.1.1)
     aws-partitions (1.480.0)
@@ -659,6 +661,7 @@ DEPENDENCIES
   administrate-field-boolean_emoji (~> 0.3.0)
   ajax-datatables-rails!
   annotate
+  audited (~> 5.0)
   awesome_print
   aws-sdk-s3
   better_errors

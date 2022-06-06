@@ -17,7 +17,6 @@ class HoldingLapsed
     # Check if the Options have lapsed
     if holding.lapsed?
       holding.lapse
-      HoldingAction.create(entity: holding.entity, holding:, action: "Lapsed", quantity: holding.lapsed_quantity)
       holding.notify_lapsed
     elsif LAPSE_WARNING_DAYS.include?(holding.days_to_lapse)
       holding.notify_lapse_upcoming

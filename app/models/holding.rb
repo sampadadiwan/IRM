@@ -35,6 +35,7 @@
 #
 
 class Holding < ApplicationRecord
+  audited
   include HoldingCounters
   include HoldingScopes
 
@@ -143,11 +144,7 @@ class Holding < ApplicationRecord
   end
 
   def lapse
-    if lapsed?
-      self.lapsed = true
-      self.lapsed_quantity = compute_lapsed_quantity
-      save
-    end
+    update(lapsed: true, lapsed_quantity: compute_lapsed_quantity, audit_comment: "Holding lapsed") if lapsed?
   end
 
   def allowed_percentage

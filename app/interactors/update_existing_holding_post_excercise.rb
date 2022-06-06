@@ -6,8 +6,6 @@ class UpdateExistingHoldingPostExcercise
 
     if context.excercise.present?
       holding = context.excercise.holding.reload
-      HoldingAction.create(entity: holding.entity, holding:, action: "Excercise",
-                           quantity: context.excercise.quantity)
       context.fail!(message: holding.errors.full_messages) unless holding.save
     else
       Rails.logger.debug "No Excercise specified"

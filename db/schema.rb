@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_04_150157) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_06_020951) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -140,6 +140,28 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_04_150157) do
     t.index ["entity_id"], name: "index_aggregate_investments_on_entity_id"
     t.index ["investor_id"], name: "index_aggregate_investments_on_investor_id"
     t.index ["scenario_id"], name: "index_aggregate_investments_on_scenario_id"
+  end
+
+  create_table "audits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "auditable_id"
+    t.string "auditable_type"
+    t.integer "associated_id"
+    t.string "associated_type"
+    t.integer "user_id"
+    t.string "user_type"
+    t.string "username"
+    t.string "action"
+    t.text "audited_changes"
+    t.integer "version", default: 0
+    t.string "comment"
+    t.string "remote_address"
+    t.string "request_uuid"
+    t.datetime "created_at"
+    t.index ["associated_type", "associated_id"], name: "associated_index"
+    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
+    t.index ["created_at"], name: "index_audits_on_created_at"
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
+    t.index ["user_id", "user_type"], name: "user_index"
   end
 
   create_table "deal_activities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -368,20 +390,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_04_150157) do
     t.integer "options", default: 0
     t.index ["deleted_at"], name: "index_funding_rounds_on_deleted_at"
     t.index ["entity_id"], name: "index_funding_rounds_on_entity_id"
-  end
-
-  create_table "holding_actions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "entity_id", null: false
-    t.bigint "holding_id", null: false
-    t.bigint "user_id"
-    t.integer "quantity"
-    t.string "action", limit: 20
-    t.text "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["entity_id"], name: "index_holding_actions_on_entity_id"
-    t.index ["holding_id"], name: "index_holding_actions_on_holding_id"
-    t.index ["user_id"], name: "index_holding_actions_on_user_id"
   end
 
   create_table "holding_audit_trails", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -882,9 +890,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_04_150157) do
   add_foreign_key "excercises", "users"
   add_foreign_key "folders", "entities"
   add_foreign_key "funding_rounds", "entities"
-  add_foreign_key "holding_actions", "entities"
-  add_foreign_key "holding_actions", "holdings"
-  add_foreign_key "holding_actions", "users"
   add_foreign_key "holding_audit_trails", "entities"
   add_foreign_key "holdings", "entities"
   add_foreign_key "holdings", "excercises", column: "created_from_excercise_id"

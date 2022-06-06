@@ -7,12 +7,7 @@ class VestedJob < ApplicationJob
       pool.holdings.not_investors.each do |holding|
         unless holding.manual_vesting
           vested_quantity = holding.compute_vested_quantity
-          holding.vested_quantity = vested_quantity
-
-          if holding.vested_quantity_changed?
-            HoldingAction.create(entity: holding.entity, holding:, action: "Vesting", quantity: vested_quantity)
-            holding.save
-          end
+          holding.update(vested_quantity:, audit_comment: "Vested quantity updated") if holding.vested_quantity != vested_quantity
         end
 
         LapseHolding.call(holding:)

@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :holding_actions
   resources :holding_audit_trails do
     get 'search', on: :collection
   end
