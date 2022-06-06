@@ -169,3 +169,34 @@ Examples:
     
     |entity_type=Startup  |excercise_period_months=360;number_of_options=10000|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=1000 | quantity=1000;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=0;excercised_quantity=0;net_avail_to_excercise_quantity=1000;cancelled_quantity=0;unexcercised_cancelled_quantity=0;unvested_cancelled_quantity=1000 | unvested |
 
+
+
+Scenario Outline:  Options Excercised, Cancelled and Lapsed
+  Given there is a user "" for an entity "<entity>"
+  Given a esop pool "<option_pool>" is created with vesting schedule "<schedule>"
+  Given there are "1" employee investors
+  And there is an option holding "approved=true;orig_grant_quantity=1000;investment_instrument=Options" for each employee investor
+  And the option grant date is "<months>" ago
+  Then the investment total quantity must be "10000"
+  Then when the option is excercised "approved=false;quantity=10"
+  And the excercise is approved
+  And the option is cancelled "unvested"
+  Then the option pool must have "<option_pool_quantites>"
+  Then the option holding must have "<holding_quantites>"
+  And the new investment and holding must be created with excercised quantity
+  And the investment total quantity must be "10000"
+  And the trust esop holdings must be reduced by "<trust_quantity>"
+
+Examples:
+    |entity               |option_pool                                      |schedule            | months  | option_pool_quantites | holding_quantites | trust_quantity |
+    
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=98|12:20,24:30,36:50  | 12      | allocated_quantity=200;vested_quantity=200;net_unvested_quantity=0;lapsed_quantity=0;excercised_quantity=10;net_avail_to_excercise_quantity=190     | quantity=200;vested_quantity=200;net_unvested_quantity=0;lapsed_quantity=0;excercised_quantity=10;net_avail_to_excercise_quantity=190 | 200 |
+
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=90|12:20,24:30,36:50  | 24      | allocated_quantity=500;vested_quantity=500;net_unvested_quantity=0;lapsed_quantity=0;excercised_quantity=10;net_avail_to_excercise_quantity=490     | quantity=500;vested_quantity=500;net_unvested_quantity=0;lapsed_quantity=0;excercised_quantity=10;net_avail_to_excercise_quantity=490 | 500 |
+
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=12|12:20,24:30,36:50  | 24      | allocated_quantity=300;vested_quantity=500;net_unvested_quantity=0;lapsed_quantity=200;excercised_quantity=10;net_avail_to_excercise_quantity=290     | quantity=300;vested_quantity=500;net_unvested_quantity=0;lapsed_quantity=200;excercised_quantity=10;net_avail_to_excercise_quantity=290 | 300 |
+
+
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=98|12:20,24:30,36:50  | 36      | allocated_quantity=1000;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=0;excercised_quantity=10;net_avail_to_excercise_quantity=990    | quantity=990;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=0;excercised_quantity=10;net_avail_to_excercise_quantity=990  | 1000 |
+
+    |entity_type=Startup  |number_of_options=10000;excercise_period_months=12|12:20,24:30,36:50  | 36      | allocated_quantity=500;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=500;excercised_quantity=10;net_avail_to_excercise_quantity=490     | quantity=490;vested_quantity=1000;net_unvested_quantity=0;lapsed_quantity=500;excercised_quantity=10;net_avail_to_excercise_quantity=490 | 500 |
