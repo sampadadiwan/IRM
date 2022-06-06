@@ -34,4 +34,15 @@ class Scenario < ApplicationRecord
   end
 
   after_create ->(s) { CloneScenarioJob.perform_later(s.id) }, if: :cloned_from
+
+  def recompute_investment_percentages(force: false)
+    if force || !percentage_in_progress
+      begin
+        update(percentage_in_progress: true)
+        InvestmentPercentageHoldingJob.perform_later(id)
+      rescue ActiveRecord::StaleObjectError => e
+        Rails.logger.info "StaleObjectError: #{e.message}"
+      end
+    end
+  end
 end

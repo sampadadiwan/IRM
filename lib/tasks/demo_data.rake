@@ -177,8 +177,6 @@ namespace :irm do
           puts "Investment #{i.to_json}"
         end
       end
-
-      InvestmentPercentageHoldingJob.perform_now(i.id)
     
       5.times do
         inv = e.investors.sample

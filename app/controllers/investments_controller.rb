@@ -102,7 +102,6 @@ class InvestmentsController < ApplicationController
 
     respond_to do |format|
       if investments.length.positive? && saved_count == investments.length
-        InvestmentPercentageHoldingJob.perform_later(@investment.id)
         format.html { redirect_to investments_path, notice: "Investment was successfully created." }
         format.json { render :show, status: :created, location: @investment }
       else
@@ -123,7 +122,6 @@ class InvestmentsController < ApplicationController
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @investment.errors, status: :unprocessable_entity }
       else
-        InvestmentPercentageHoldingJob.perform_later(@investment.id)
         format.html { redirect_to investment_url(@investment), notice: "Investment was successfully updated." }
         format.json { render :show, status: :ok, location: @investment }
       end

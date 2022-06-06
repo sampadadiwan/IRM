@@ -1,26 +1,31 @@
 class InvestmentPercentageHoldingJob < ApplicationJob
   queue_as :default
 
-  def perform(investment_id)
+  def perform(scenario_id)
     Chewy.strategy(:sidekiq) do
-      Rails.logger.debug { "InvestmentPercentageHoldingJob: Started #{investment_id}" }
-      investment = Investment.find(investment_id)
-      # Ensure that all investments of the investee entity are adjusted for percentage
-      update_investment_percentage(investment)
-      # Ensure that all aggregate investments of the investee entity are adjusted for percentage
-      update_aggregate_percentage(investment.aggregate_investment) if investment.aggregate_investment
-      # We also update the funding round to reflect the amount_raised
-      investment.funding_round&.save
+      scenario = Scenario.find(scenario_id)
+      if scenario.percentage_in_progress
 
-      Rails.logger.debug { "InvestmentPercentageHoldingJob: Completed #{investment_id}" }
+        Rails.logger.debug { "InvestmentPercentageHoldingJob: Started #{scenario_id}" }
+
+        # Ensure that all investments of the investee entity are adjusted for percentage
+        update_investment_percentage(scenario)
+        # Ensure that all aggregate investments of the investee entity are adjusted for percentage
+        update_aggregate_percentage(scenario) if scenario.aggregate_investments.present?
+
+        scenario.percentage_in_progress = false
+        scenario.save
+
+        Rails.logger.debug { "InvestmentPercentageHoldingJob: Completed #{scenario_id}" }
+      end
     end
   end
 
   private
 
-  def update_investment_percentage(investment)
-    equity_investments = investment.scenario.investments.equity_or_pref
-    esop_investments = investment.scenario.investments.options_or_esop
+  def update_investment_percentage(scenario)
+    equity_investments = scenario.investments.equity_or_pref
+    esop_investments = scenario.investments.options_or_esop
     equity_quantity = equity_investments.sum(:quantity)
     esop_quantity = esop_investments.sum(:quantity)
 
@@ -35,8 +40,8 @@ class InvestmentPercentageHoldingJob < ApplicationJob
     )
   end
 
-  def update_aggregate_percentage(aggregate_investment)
-    all = aggregate_investment.scenario.aggregate_investments
+  def update_aggregate_percentage(scenario)
+    all = scenario.aggregate_investments
     equity = all.sum(:equity)
     preferred = all.sum(:preferred)
     options = all.sum(:options)

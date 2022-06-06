@@ -11,17 +11,16 @@ class ImportPostProcess
 
   def post_processing(import_upload)
     result_file_name = "/tmp/import_result_#{import_upload.id}.xlsx"
+
     case import_upload.import_type
     when "InvestorAccess"
-
+      Rails.logger.info "Importing InvestorAccess Done"
     when "Holding"
-      # We need to adjust the percentage holdings
-      investment = import_upload.entity.actual_scenario.investments.first
-      InvestmentPercentageHoldingJob.perform_now(investment.id)
       result_file = File.open(result_file_name)
       import_upload.import_results.attach(io: result_file, filename: "import_result_#{import_upload.id}.xlsx")
-
+      Rails.logger.info "Importing Holding Done"
     end
+
     import_upload.save
     File.delete(result_file_name) if File.exist? result_file_name
   end

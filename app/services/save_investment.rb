@@ -11,4 +11,9 @@ class SaveInvestment
       organizer.call
     end
   end
+
+  # Ensure that the percentages are recomputed
+  before do |_organizer|
+    context.investment.scenario.recompute_investment_percentages
+  end
 end
