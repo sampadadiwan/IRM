@@ -8,6 +8,7 @@ class ExcerciseDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    audits: Field::HasMany,
     entity: Field::BelongsTo,
     holding: Field::BelongsTo,
     created_holding: Field::HasOne,
@@ -41,11 +42,8 @@ class ExcerciseDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
     entity
     holding
-    created_holding
     user
     option_pool
-    payment_proof_attachment
-    payment_proof_blob
     id
     quantity
     price_cents
@@ -55,6 +53,10 @@ class ExcerciseDashboard < Administrate::BaseDashboard
     created_at
     updated_at
     tax_rate
+
+    created_holding
+    audits
+
   ].freeze
 
   # FORM_ATTRIBUTES

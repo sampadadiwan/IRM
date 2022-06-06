@@ -9,6 +9,7 @@ class HoldingDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     audits: Field::HasMany,
+    excercises: Field::HasMany,
     user: Field::BelongsTo,
     entity: Field::BelongsTo,
     id: Field::Number,
@@ -57,6 +58,7 @@ class HoldingDashboard < Administrate::BaseDashboard
     cancelled
     lapsed
     emp_ack
+    excercises
     audits
   ].freeze
 
