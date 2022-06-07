@@ -92,9 +92,10 @@ include InvestmentsHelper
     @deal_activity = @deal.deal_activities.last
     within("#deal_activity_#{@deal_activity.id}") do
       find('span', text: 'No').click
+      sleep(1)
       find('button', text: "Toggle Done").click      
     end
-    sleep(1)
+    sleep(5)
   end
   
   Then('the activity must be completed') do

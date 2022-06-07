@@ -156,6 +156,8 @@ Given('existing investor has access rights to the sale') do
 
   
   ia = InvestorAccess.create!(investor:@investor, user: @employee_investor, 
+              last_name: @employee_investor.last_name, 
+              first_name: @employee_investor.first_name, 
               email: @employee_investor.email,  approved: true, 
               entity_id: @sale.entity_id)
 
