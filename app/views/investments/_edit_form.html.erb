@@ -23,7 +23,7 @@
     <div class="form-group" data-controller="newinvestment">
       <%= form.label :investor %>
       <%= form.select :investor_id, 
-        current_user.entity.investors.not_holding.includes(:investor_entity).order("entities.name").map{|c| [c.investor_name, c.id]}, 
+        current_user.entity.investors.not_holding.not_trust.includes(:investor_entity).order("entities.name").map{|c| [c.investor_name, c.id]}, 
         {include_blank: true}, class: "form-control select2", data: { action: "change->newinvestment#setCategory" }  %>
     </div>
   
