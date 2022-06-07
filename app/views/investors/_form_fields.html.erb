@@ -1,5 +1,5 @@
 
-  <% if investor.investor_name.blank? %>
+  <% if false && investor.investor_name.blank? %>
     <div class="form-group">
       <%= form.label :investment_firm %>
       <%= form.select :investor_entity_id, Entity.vcs.order("entities.name").map{|c| [c.name, c.id]}, 
@@ -7,9 +7,10 @@
       <small class="text-muted">Leave blank if you cannot find the investment firm, and enter name below</small>
     </div>
   <% end %>
-  <div class="form-group" id="investor_name_group">
+  <div class="form-group" id="investor_name_group" data-controller="investorsearch">
     <%= form.label :investor_name, "New Investor Name" %>
-    <%= form.text_field :investor_name, class: "form-control" %>
+    <%= form.text_field :investor_name, class: "form-control", autocomplete: false %>
+    <%= form.text_field :investor_entity_id, class: "form-control", hidden: true %>
   </div>
 
   <div class="form-group">

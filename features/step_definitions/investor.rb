@@ -8,11 +8,12 @@ When('I create a new investor {string}') do |arg1|
   click_on("New Investor")
 
   if (Entity.vcs.count > 0)
-    first('.select2-container', minimum: 1).click
-    find('li.select2-results__option[role="treeitem"]', text: @investor_entity.name).click
+    fill_in('investor_investor_name', with: @investor_entity.name)
+    find('ui-menu-item-wrapper', text: @investor_entity.name).click
   end
   fill_in('investor_investor_name', with: @investor_entity.name)
   select("Founder", from: "investor_category")
+
   click_on("Save")
 end
 
@@ -84,6 +85,7 @@ Given('there is an existing investor entity {string}') do |arg1|
   @investor_entity.save
   puts "\n####Investor Entity####\n"
   puts @investor_entity.to_json
+  EntityIndex.import
 end
 
 When('I create a new investor {string} for the existing investor entity') do |string|
@@ -91,8 +93,7 @@ When('I create a new investor {string} for the existing investor entity') do |st
   
   fill_in('investor_investor_name', with: @investor_entity.name)
   
-  first('.select2-container', minimum: 1).click
-  find('li', text: @investor_entity.name).click
+  find('.ui-menu-item-wrapper', text: @investor_entity.name).click
   select("Founder", from: "investor_category")
   click_on("Save")
 end

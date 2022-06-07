@@ -27,9 +27,10 @@ Scenario Outline: Create new investor from exiting entity
   And I should see the investor details on the details page
 
   Examples:
-  	|user	      |entity               |investor     |msg	|
-  	|  	        |entity_type=Startup  |name=Sequoia |Investor was successfully created|
-    |  	        |entity_type=Startup  |name=Bearing |Investor was successfully created|
+  	|user	      |entity               |investor         |msg	|
+  	|  	        |entity_type=Startup  |name=Accel       |Investor was successfully created|
+    |  	        |entity_type=Startup  |name=Bearing     |Investor was successfully created|
+    |  	        |entity_type=Startup  |name=Kalaari     |Investor was successfully created|
 
 
 Scenario Outline: Import investor access
