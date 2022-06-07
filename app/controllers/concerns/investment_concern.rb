@@ -5,9 +5,7 @@ module InvestmentConcern
     investments = []
 
     params[:investment][:investment_instrument].each_with_index do |instrument, idx|
-      quantity = params[:investment][:quantity][idx]
-      price = params[:investment][:price][idx]
-      liquidation_preference = params[:investment][:liquidation_preference][idx]
+      quantity, price, liquidation_preference, spv = parse_params(params, idx)
 
       next unless instrument.present? && quantity.present? && price.present?
 
@@ -15,10 +13,10 @@ module InvestmentConcern
       @investment.investee_entity_id = current_user.entity_id
       @investment.currency = current_user.entity.currency
       @investment.scenario_id ||= @investment.actual_scenario.id
-
       @investment.investment_instrument = instrument
       @investment.quantity = quantity
       @investment.price_cents = price.to_f * 100
+      @investment.spv = spv
       @investment.liquidation_preference = liquidation_preference
 
       authorize @investment
@@ -26,5 +24,13 @@ module InvestmentConcern
     end
 
     investments
+  end
+
+  def parse_params(params, idx)
+    quantity = params[:investment][:quantity][idx]
+    price = params[:investment][:price][idx]
+    liquidation_preference = params[:investment][:liquidation_preference][idx]
+    spv = params[:investment][:spv][idx]
+    [quantity, price, liquidation_preference, spv]
   end
 end

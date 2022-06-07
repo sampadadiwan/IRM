@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_06_110712) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_07_054346) do
   create_table "abraham_histories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "controller_name"
     t.string "action_name"
@@ -310,11 +310,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_06_110712) do
     t.integer "documents_count", default: 0, null: false
     t.decimal "total_investments", precision: 20, default: "0"
     t.boolean "is_holdings_entity", default: false
-    t.boolean "enable_documents", default: true
-    t.boolean "enable_deals", default: true
-    t.boolean "enable_investments", default: true
-    t.boolean "enable_holdings", default: true
-    t.boolean "enable_secondary_sale", default: true
+    t.boolean "enable_documents", default: false
+    t.boolean "enable_deals", default: false
+    t.boolean "enable_investments", default: false
+    t.boolean "enable_holdings", default: false
+    t.boolean "enable_secondary_sale", default: false
     t.integer "parent_entity_id"
     t.string "currency", limit: 10
     t.string "units", limit: 15
@@ -564,6 +564,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_06_110712) do
     t.decimal "liquidation_preference", precision: 4, scale: 2
     t.bigint "scenario_id", null: false
     t.bigint "aggregate_investment_id"
+    t.string "spv", limit: 50
     t.index ["aggregate_investment_id"], name: "index_investments_on_aggregate_investment_id"
     t.index ["deleted_at"], name: "index_investments_on_deleted_at"
     t.index ["funding_round_id"], name: "index_investments_on_funding_round_id"
