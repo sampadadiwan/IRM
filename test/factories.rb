@@ -229,7 +229,8 @@ FactoryBot.define do
     category { ["Lead Investor", "Co-Investor"][rand(2)] }
     quantity { (rand(3..10) * 10000) }
     price { rand(3..10) * 1000}
-
+    spv { "SPV-#{rand(1-10)}" }
+    liquidation_preference { rand(1.0..2.0).round(1) } 
     current_value {}
   end
 

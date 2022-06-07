@@ -23,6 +23,8 @@ Given('I create an investment {string}') do |arg1|
 
   fill_in('investment_quantity', with: @investment.quantity)
   fill_in('investment_price', with: @investment.price)
+  fill_in('investment_liquidation_preference', with: @investment.liquidation_preference)
+  fill_in('investment_spv', with: @investment.spv)
   click_on("Save")
 end
 
@@ -39,6 +41,9 @@ Then('when I edit the investment {string}') do |arg1|
   
   fill_in('investment_quantity', with: @edit_investment.quantity)
   fill_in('investment_price', with: @edit_investment.price)
+  fill_in('investment_liquidation_preference', with: @investment.liquidation_preference)
+  fill_in('investment_spv', with: @investment.spv)
+
   click_on("Save")
   sleep(1)
   @investment = Investment.last
@@ -58,6 +63,9 @@ Then('an investment should be created') do
   @created.price_cents.should == @investment.price_cents
   @created.currency.should == @investment.investee_entity.currency
   @created.amount.should == @investment.price * @investment.quantity 
+  @created.liquidation_preference.should == @investment.liquidation_preference 
+  @created.spv.should == @investment.spv
+  
   @investment = @created
 end
 
