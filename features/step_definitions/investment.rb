@@ -410,7 +410,8 @@ end
 
 Given('I have been granted access {string} to the investments') do |arg|
   Investment.joins(:investor).where("investors.investor_entity_id=?", @entity.id).each do |inv|
-    InvestorAccess.create!(investor:inv.investor, user: @user, email: @user.email, approved: true, 
+    InvestorAccess.create!(investor:inv.investor, user: @user, first_name: @user.first_name,
+        last_name: @user.last_name, email: @user.email, approved: true, 
         entity_id: inv.investee_entity_id)
 
     AccessRight.create(owner: inv.investee_entity, access_type: "Investment", metadata: arg,

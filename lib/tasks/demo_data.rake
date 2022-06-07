@@ -152,7 +152,7 @@ namespace :irm do
         inv = FactoryBot.create(:investor, investee_entity: e, investor_entity: vc, tag_list: [tags.sample, tags.sample].join(","))
         puts "Investor #{inv.id}"
         inv.investor_entity.employees.each do |user|
-          InvestorAccess.create!(investor:inv, user: user, email: user.email, approved: rand(2), entity_id: inv.investee_entity_id)
+          InvestorAccess.create!(investor:inv, user: user, first_name: user.first_name, last_name: user.last_name,  email: user.email, approved: rand(2), entity_id: inv.investee_entity_id)
         end
       end
     end
@@ -218,8 +218,9 @@ namespace :irm do
         user ||= FactoryBot.create(:user, entity: investor.investor_entity, first_name: "Emp#{j}-#{investor.id}")
         puts user.to_json
         
-        InvestorAccess.create!(investor:investor, user: user, email: user.email, 
-          approved: false, entity_id: investor.investee_entity_id)
+        InvestorAccess.create!(investor:investor, user: user, first_name: user.first_name, 
+              last_name: user.last_name, email: user.email, approved: false, 
+              entity_id: investor.investee_entity_id)
 
       
 

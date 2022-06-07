@@ -21,7 +21,7 @@ class InvestorAccess < ApplicationRecord
   # Make all models searchable
   update_index('investor_access') { self }
 
-  validates :email, presence: true
+  validates :email, :first_name, :last_name, presence: true
   belongs_to :entity
   counter_culture :entity, column_name: proc { |ia| ia.approved ? nil : 'pending_accesses_count' }
 
@@ -61,7 +61,11 @@ class InvestorAccess < ApplicationRecord
   def update_user
     self.email = email.strip
     u = User.find_by(email:)
-    self.user = u if u
+    if u.blank?
+      u = User.create(first_name:, last_name:, email:, active: true, system_created: true,
+                      entity_id: investor.investor_entity_id, password: SecureRandom.hex(8))
+    end
+    self.user = u
   end
 
   def send_notification

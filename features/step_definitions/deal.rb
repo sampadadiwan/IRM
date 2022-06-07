@@ -120,6 +120,7 @@ end
 
 Given('another user has investor access {string} in the investor') do |arg|
   @investor_access = InvestorAccess.new(entity: @entity, investor: @investor, 
+                            first_name: @another_user.first_name, last_name: @another_user.last_name,
                             email: @another_user.email, granter: @user )
   key_values(@investor_access, arg)
 
@@ -192,8 +193,11 @@ end
 
 Given('I have access to all deals') do
   DealInvestor.all.each do |di|
-    InvestorAccess.create!(investor:di.investor, user: @user, email: @user.email, approved: true, 
-        entity_id: di.entity_id)
+    InvestorAccess.create!(investor:di.investor, user: @user, 
+      first_name: @user.first_name, 
+      last_name: @user.last_name,
+      email: @user.email, approved: true, 
+      entity_id: di.entity_id)
 
     AccessRight.create(owner: di.deal, access_type: "Deal",
         entity: di.entity, access_to_investor_id: di.investor_id)

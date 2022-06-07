@@ -182,7 +182,10 @@ Given('my firm is an investor in the startup') do
   @startup = Entity.startups.first
   @investor = Investor.create!(investee_entity: @startup, investor_entity: @entity, category: "Lead Investor")
 
-  InvestorAccess.create!(investor:@investor, user: @user, email: @user.email, approved: true, 
+  InvestorAccess.create!(investor:@investor, user: @user, 
+    first_name: @user.first_name, 
+    last_name: @user.last_name,
+    email: @user.email, approved: true, 
     entity_id: @startup.id)
 
   puts @investor.to_json

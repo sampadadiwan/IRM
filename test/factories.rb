@@ -131,14 +131,6 @@ FactoryBot.define do
     approved {true}
   end
 
-  factory :investor_access do
-    investor_id { 1 }
-    user_id { 1 }
-    email { "MyString" }
-    approved { false }
-    granted_by { 1 }
-    entity_id { 1 }
-  end
 
   factory :document do
     name { "Fact Sheet,Cap Table,Latest Financials,Conversion Stats,Deal Sheet".split(",").sample }
