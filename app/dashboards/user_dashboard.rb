@@ -20,7 +20,8 @@ class UserDashboard < Administrate::BaseDashboard
     phone: Field::String,
     active: Field::BooleanEmoji,
     confirmed_at: Field::DateTime,
-    roles: Field::HasMany
+    roles: Field::HasMany,
+    curr_role: Field::String
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -36,6 +37,7 @@ class UserDashboard < Administrate::BaseDashboard
     active
     created_at
     entity
+    curr_role
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -51,6 +53,7 @@ class UserDashboard < Administrate::BaseDashboard
     phone
     active
     confirmed_at
+    curr_role
     roles
   ].freeze
 
@@ -66,6 +69,7 @@ class UserDashboard < Administrate::BaseDashboard
     password_confirmation
     phone
     active
+    curr_role
     roles
   ].freeze
 
