@@ -12,8 +12,10 @@
 
     <% if current_user.entity_id == @entity.id %>
 
-      <%= render "investments/scenarios_form"  %>
-      <%= link_to "Scenarios", scenarios_path, {class: "btn btn-primary", data: {toggle: "tooltip", title: "View all scenarios"} } %>
+      <%#= render "investments/scenarios_form"  %>
+      <%#= link_to "Scenarios", scenarios_path, {class: "btn btn-primary", data: {toggle: "tooltip", title: "View all scenarios"} } %>
+      
+      <%= link_to "Scenarios", simple_simulator_scenarios_path, {class: "btn btn-primary", data: {toggle: "tooltip", title: "Plan Scenarios"} } %>
 
       <%= link_to "Details View", investments_path, {class: "btn btn-primary"} %>
 
