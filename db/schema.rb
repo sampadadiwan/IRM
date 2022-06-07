@@ -310,11 +310,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_06_110712) do
     t.integer "documents_count", default: 0, null: false
     t.decimal "total_investments", precision: 20, default: "0"
     t.boolean "is_holdings_entity", default: false
-    t.boolean "enable_documents", default: false
-    t.boolean "enable_deals", default: false
-    t.boolean "enable_investments", default: false
-    t.boolean "enable_holdings", default: false
-    t.boolean "enable_secondary_sale", default: false
+    t.boolean "enable_documents", default: true
+    t.boolean "enable_deals", default: true
+    t.boolean "enable_investments", default: true
+    t.boolean "enable_holdings", default: true
+    t.boolean "enable_secondary_sale", default: true
     t.integer "parent_entity_id"
     t.string "currency", limit: 10
     t.string "units", limit: 15
