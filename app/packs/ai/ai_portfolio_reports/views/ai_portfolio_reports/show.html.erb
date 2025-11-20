@@ -49,8 +49,8 @@
     url: ai_portfolio_report_ai_report_section_path(@report, @current_section),
     method: :patch,
     class: 'flex-grow-1 d-flex flex-column' do |f| %>
-  <div class="flex-grow-1 mb-3">
-    <%= f.rich_text_area :content, style: "min-height: 400px; height: 100%;" %>
+  <div class="flex-grow-1 mb-3 editor-wrapper">
+    <%= f.rich_text_area :content %>
   </div>
   <div>
     <%= f.submit 'Save Section', class: 'btn btn-primary' %>
@@ -108,11 +108,25 @@
 </div>
 
 <style>
-  trix-editor {
-    min-height: 300px !important;
+  /* Editor wrapper to control height */
+  .editor-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .editor-wrapper trix-toolbar {
+    flex-shrink: 0;
+  }
+  
+  .editor-wrapper trix-editor {
+    flex-grow: 1;
+    min-height: 400px !important;
     height: 100% !important;
     overflow-y: auto !important;
     padding: 15px !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 0.25rem !important;
   }
   
   /* Style content inside Trix editor */
