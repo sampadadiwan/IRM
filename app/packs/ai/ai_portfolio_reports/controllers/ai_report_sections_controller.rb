@@ -6,8 +6,10 @@ class AiReportSectionsController < ApplicationController
     @report = AiPortfolioReport.find(params[:ai_portfolio_report_id])
     @section = @report.ai_report_sections.find(params[:id])
 
-    # Handle plain_content from textarea
-    @section.content = params[:ai_report_section][:plain_content] if params[:ai_report_section][:plain_content].present?
+    # Handle content from rich text area
+    if params[:ai_report_section][:content].present?
+      @section.content = params[:ai_report_section][:content]
+    end
 
     # Mark as reviewed when saved
     @section.reviewed = true
@@ -24,15 +26,15 @@ class AiReportSectionsController < ApplicationController
     @section = @report.ai_report_sections.find(params[:id])
     content_to_add = params[:content]
 
-    # Add attribution
-    attributed_content = "#{content_to_add}\n\n-- Added from AI at #{Time.current.strftime('%H:%M')} --\n\n"
+    # Add attribution with HTML formatting
+    attributed_content = "#{content_to_add}<p><em>-- Added from AI at #{Time.current.strftime('%H:%M')} --</em></p>"
 
-    # Append to section content
-    current_content = @section.content&.body&.to_plain_text || ""
+    # Append to section content (preserve HTML)
+    current_content = @section.content&.body&.to_html || ""
     @section.content = current_content + attributed_content
 
     @section.save!
 
-    render json: { success: true, content: @section.content.body.to_plain_text }
+    render json: { success: true, content: @section.content.body.to_html }
   end
 end

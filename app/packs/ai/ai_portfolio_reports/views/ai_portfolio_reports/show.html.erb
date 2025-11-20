@@ -50,9 +50,7 @@
     method: :patch,
     class: 'flex-grow-1 d-flex flex-column' do |f| %>
   <div class="flex-grow-1 mb-3">
-    <textarea name="ai_report_section[plain_content]" 
-              class="form-control" 
-              style="min-height: 400px; height: 100%;"><%= @current_section.content&.body&.to_plain_text %></textarea>
+    <%= f.rich_text_area :content, style: "min-height: 400px; height: 100%;" %>
   </div>
   <div>
     <%= f.submit 'Save Section', class: 'btn btn-primary' %>
@@ -114,6 +112,45 @@
     min-height: 300px !important;
     height: 100% !important;
     overflow-y: auto !important;
+    padding: 15px !important;
+  }
+  
+  /* Style content inside Trix editor */
+  trix-editor h1 {
+    font-size: 1.8rem !important;
+    font-weight: bold !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  trix-editor h2, trix-editor h3 {
+    font-size: 1.4rem !important;
+    font-weight: bold !important;
+    margin-top: 1rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  trix-editor h4 {
+    font-size: 1.1rem !important;
+    font-weight: bold !important;
+    margin-top: 0.8rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+  
+  trix-editor strong {
+    font-weight: bold !important;
+  }
+  
+  trix-editor ul, trix-editor ol {
+    margin-left: 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  trix-editor li {
+    margin-bottom: 0.3rem !important;
+  }
+  
+  trix-editor p {
+    margin-bottom: 0.5rem !important;
   }
   
   action-text-attachment {
