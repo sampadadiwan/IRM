@@ -16,3 +16,14 @@ resources :chats do
 end
 
 resources :ai_rules
+
+# AI Portfolio Report Builder
+resources :ai_portfolio_reports do
+  resources :ai_report_sections do
+    member do
+      post :add_content
+    end
+  end
+
+  resources :ai_chat_messages, only: [:create]
+end

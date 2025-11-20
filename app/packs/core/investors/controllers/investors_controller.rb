@@ -1,6 +1,6 @@
 class InvestorsController < ApplicationController
   before_action :set_investor, only: %w[show update destroy edit dashboard generate_reports portfolio_investments_report]
-  after_action :verify_authorized, except: %i[merge portfolio_investments_report_all]
+  after_action :verify_authorized, except: %i[merge portfolio_investments_report_all portfolio_llm_report]
 
   # GET /investors or /investors.json
   def index
@@ -189,5 +189,21 @@ class InvestorsController < ApplicationController
   def investor_params
     params.require(:investor).permit(:investor_entity_id, :tag_list, :investor_name, :form_type_id,
                                      :pan, :entity_id, :category, :city, :primary_email, documents_attributes: Document::NESTED_ATTRIBUTES, properties: {})
+  end
+
+  def portfolio_llm_report
+    Rails.logger.info "DEBUG: params[:id] = #{params[:id].inspect}"
+    Rails.logger.info "DEBUG: full params = #{params.inspect}"
+
+    @investor = Investor.find(params[:id])
+    authorize @investor
+    if request.post?
+      PortfolioReportGenerationJob.perform_later(@investor.id, current_user.id)
+      redirect_to investor_path(@investor, tab: 'docs-tab'),
+                  notice: "Portfolio LLM report is being generated..."
+    else
+      render "portfolio_llm_report"
+
+    end
   end
 end

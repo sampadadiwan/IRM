@@ -81,6 +81,12 @@
           <i class="ti ti-file-text"></i> Portfolio Investment Report
         <% end %>
 
+        <%= link_to portfolio_llm_report_investor_path(@investor),
+                    class: "dropdown-item d-flex align-items-center",
+                    data: { turbo: false } do %>
+          <i class="ti ti-file-text"></i> Portfolio LLM Report
+        <% end %>
+
         <% if @investor.entity.support_agents.set?(:portfolio_company_agent) %>
             <%= button_to run_support_agents_path(agent_type: "PortfolioCompanyAgent", target_id: @investor.id, method: :post), class: "dropdown-item" do %>
               <i class="ti ti-robot"></i> Run Portfolio Company Agent

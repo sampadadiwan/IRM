@@ -135,6 +135,10 @@ resources :investors do
   post 'portfolio_investments_report', on: :member
   get 'portfolio_investments_report_all', on: :collection
   post 'portfolio_investments_report_all', on: :collection
+
+  # LLM-based Portfolio Report Route
+  get 'portfolio_llm_report', on: :member
+  post 'portfolio_llm_report', on: :member
 end
 
 resources :investor_notice_entries

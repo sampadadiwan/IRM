@@ -1,0 +1,213 @@
+<div class="card" style="margin-top: 0;">
+  <div class="card-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="card-title mb-0">
+        <%= @report.portfolio_company&.name || "Company ##{@report.portfolio_company_id}" %> - AI Report Builder
+      </h5>
+      <div>
+        <span class="badge bg-secondary"><%= @report.status&.humanize || 'Draft' %></span>
+        <span class="ms-2 text-muted"><%= @report.ai_report_sections.where(reviewed: true).count %>/<%= @report.ai_report_sections.count %> reviewed</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card-body p-0">
+    <div class="row g-0" style="height: calc(100vh - 200px);">
+      
+      <!-- Left: Section Navigation (25%) -->
+<!-- Left: Section Navigation (25%) -->
+<!-- Left: Section Navigation (25%) -->
+<div class="col-md-3 border-end" style="height: 100%; overflow-y: auto; background: #f8f9fa;">
+  <div class="p-3" style="padding-bottom: 200px !important;">
+    <h6 class="text-muted mb-3">SECTIONS</h6>
+    <div class="flex-grow-1">
+      <% @report.ai_report_sections.order(:order_index).each do |section| %>
+        <% is_active = section == @current_section %>
+        <% is_reviewed = section.reviewed? %>
+        <%= link_to ai_portfolio_report_path(@report, section_id: section.id), 
+            class: "d-block p-2 mb-1 rounded text-decoration-none #{is_active ? 'bg-primary text-white' : 'bg-white border text-dark'}" do %>
+          <small class="d-flex justify-content-between align-items-center">
+            <span><%= section.section_type %></span>
+            <% if is_reviewed %>
+              <span class="<%= is_active ? 'text-white' : 'text-success' %>" style="font-size: 18px; font-weight: bold;">&#10004;</span>
+            <% end %>
+          </small>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+      <!-- Middle: Report Editor (45%) -->
+      <div class="col-md-5 border-end d-flex flex-column" style="height: 100%;">
+        <div class="p-3 flex-grow-1 d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0"><%= @current_section.section_type %></h5>
+          </div>
+          
+          <%= form_with model: [@report, @current_section], 
+    url: ai_portfolio_report_ai_report_section_path(@report, @current_section),
+    method: :patch,
+    class: 'flex-grow-1 d-flex flex-column' do |f| %>
+  <div class="flex-grow-1 mb-3">
+    <textarea name="ai_report_section[plain_content]" 
+              class="form-control" 
+              style="min-height: 400px; height: 100%;"><%= @current_section.content&.body&.to_plain_text %></textarea>
+  </div>
+  <div>
+    <%= f.submit 'Save Section', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+        </div>
+      </div>
+
+      <!-- Right: AI Chat (30%) -->
+      <div class="col-md-4 d-flex flex-column" style="height: 100%;">
+        <div class="p-3 border-bottom" style="background: #f8f9fa;">
+          <strong>AI Assistant</strong><br>
+          <small class="text-muted">Context: <%= @current_section.section_type %></small>
+        </div>
+        
+        <div class="flex-grow-1 p-3" id="chat-messages" style="overflow-y: auto; background: #fafafa;">
+          <% if @chat_session.ai_chat_messages.any? %>
+            <% @chat_session.ai_chat_messages.order(:created_at).each do |message| %>
+              <div class="mb-3 <%= message.role == 'user' ? 'text-end' : '' %>">
+                <div class="d-inline-block p-2 rounded <%= message.role == 'user' ? 'bg-primary text-white' : 'bg-white border' %>" style="max-width: 90%; text-align: left;">
+                  <%= simple_format(message.content) %>
+                  <% if message.role == 'assistant' && message.sources.any? %>
+                    <div class="small text-muted mt-2 pt-2 border-top">Sources: <%= message.sources.join(', ') %></div>
+                  <% end %>
+                  <% if message.role == 'assistant' %>
+                    <button class="btn btn-sm btn-success mt-2" onclick="addToReport('<%= j message.content.gsub("'", "\\'") %>')">+ Add to Report</button>
+                  <% end %>
+                </div>
+                <div class="small text-muted mt-1"><%= message.created_at.strftime('%H:%M') %></div>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="text-center text-muted py-4">
+              <p>Hello! I can help you build this report.</p>
+              <p>Ask me anything about the portfolio company!</p>
+            </div>
+          <% end %>
+        </div>
+        
+        <div class="p-3 border-top">
+          <div class="mb-2">
+            <small class="text-muted">Quick actions:</small><br>
+            <button class="btn btn-sm btn-outline-secondary mt-1" onclick="sendMessage('What was Q3 revenue?')">Q3 revenue?</button>
+            <button class="btn btn-sm btn-outline-secondary mt-1" onclick="sendMessage('Show key risks')">Key risks</button>
+          </div>
+          <div class="input-group input-group-sm">
+            <input type="text" id="chat-input" class="form-control" placeholder="Ask about the portfolio...">
+            <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<style>
+  trix-editor {
+    min-height: 300px !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+  }
+  
+  action-text-attachment {
+    max-width: 100% !important;
+  }
+  
+  /* Force left column to stretch full height */
+  .sections-column {
+    background: #f8f9fa !important;
+    min-height: 100% !important;
+  }
+</style>
+
+<script>
+  const reportId = <%= @report.id %>;
+  const sectionId = <%= @current_section.id %>;
+  const chatSessionId = <%= @chat_session.id %>;
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    var chatMessages = document.getElementById('chat-messages');
+    if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+  
+  document.getElementById('chat-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+  
+  async function sendMessage(text) {
+    var input = document.getElementById('chat-input');
+    var message = text || input.value.trim();
+    if (!message) return;
+    
+    input.value = '';
+    addMessageToUI('user', message);
+    addMessageToUI('assistant', 'Thinking...', [], true);
+    
+    try {
+      var response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_chat_messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: message, section_id: sectionId, chat_session_id: chatSessionId })
+      });
+      var data = await response.json();
+      removeLoadingMessage();
+      
+      if (data.success) {
+        addMessageToUI('assistant', data.response, data.sources || []);
+      } else {
+        addMessageToUI('assistant', 'Error: ' + (data.error || 'Something went wrong'));
+      }
+    } catch (error) {
+      removeLoadingMessage();
+      addMessageToUI('assistant', 'Connection error. Is Python backend running on port 8000?');
+    }
+  }
+  
+  function addMessageToUI(role, content, sources, isLoading) {
+    var container = document.getElementById('chat-messages');
+    var time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    var sourcesHtml = (sources && sources.length > 0) ? '<div class="small text-muted mt-2 pt-2 border-top">Sources: ' + sources.join(', ') + '</div>' : '';
+    var addBtn = (role === 'assistant' && !isLoading) ? '<button class="btn btn-sm btn-success mt-2" onclick="addToReport(\'' + content.replace(/'/g, "\\'").replace(/\n/g, ' ') + '\')">+ Add to Report</button>' : '';
+    var loadClass = isLoading ? 'loading-message' : '';
+    var bgClass = (role === 'user') ? 'bg-primary text-white' : 'bg-white border';
+    var alignClass = (role === 'user') ? 'text-end' : '';
+    
+    var html = '<div class="mb-3 ' + alignClass + ' ' + loadClass + '">' +
+      '<div class="d-inline-block p-2 rounded ' + bgClass + '" style="max-width: 90%; text-align: left;">' +
+      content.replace(/\n/g, '<br>') + sourcesHtml + addBtn +
+      '</div><div class="small text-muted mt-1">' + time + '</div></div>';
+    
+    container.insertAdjacentHTML('beforeend', html);
+    container.scrollTop = container.scrollHeight;
+  }
+  
+  function removeLoadingMessage() {
+    var el = document.querySelector('.loading-message');
+    if (el) el.remove();
+  }
+  
+  async function addToReport(content) {
+    try {
+      var response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + sectionId + '/add_content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: content })
+      });
+      var data = await response.json();
+      if (data.success) {
+        if (confirm('Content added! Reload to see changes?')) window.location.reload();
+      } else {
+        alert('Failed to add content');
+      }
+    } catch (error) {
+      alert('Error adding content');
+    }
+  }
+</script>
