@@ -34,4 +34,31 @@ class AiReportSectionsController < ApplicationController
 
     render json: { success: true, content: @section.content_html }
   end
+
+  def regenerate
+    @report = AiPortfolioReport.find(params[:ai_portfolio_report_id])
+    @section = @report.ai_report_sections.find(params[:id])
+
+    user_prompt = params[:prompt]
+    current_content = params[:current_content]
+    section_type = params[:section_type]
+
+    # Call Python backend to regenerate with refinement
+    response = PythonBackendClient.refine_section(
+      section_type: section_type,
+      current_content: current_content,
+      user_prompt: user_prompt
+    )
+
+    if response.success?
+      data = response.parsed_response
+      refined_content = data['content']
+
+      render json: { success: true, content: refined_content }
+    else
+      render json: { success: false, error: 'Failed to regenerate content' }, status: :unprocessable_entity
+    end
+  rescue StandardError => e
+    render json: { success: false, error: e.message }, status: :internal_server_error
+  end
 end

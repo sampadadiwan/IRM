@@ -9,7 +9,7 @@ class GenerateSectionContentJob < ApplicationJob
 
     report.ai_report_sections.each do |section|
       # Skip if already has content
-      next if section.content.present? && section.content.body.present?
+      next if section.content_html.present?
 
       begin
         Rails.logger.info "Generating content for: #{section.section_type}"
@@ -22,24 +22,21 @@ class GenerateSectionContentJob < ApplicationJob
 
         if response.success?
           data = response.parsed_response
-          content = data['content']
-
-          Rails.logger.info "Content received (#{content.length} chars): #{content[0..100]}..."
-
-          # ActionText needs the content assigned properly
           content_html = data['content']
+
+          Rails.logger.info "Content received (#{content_html.length} chars): #{content_html[0..100]}..."
+
           section.content_html = content_html
           if section.save
             Rails.logger.info "Saved content for #{section.section_type}"
-            Rails.logger.info "Plain text: #{section.content.body.to_plain_text[0..100]}"
+            Rails.logger.info "Content HTML: #{section.content_html[0..100]}"
           else
             Rails.logger.error "Failed to save: #{section.errors.full_messages}"
           end
 
           # Verify it saved
           section.reload
-          Rails.logger.info "Content saved: #{section.content.present?}"
-          Rails.logger.info "Content body: #{section.content.body.present?}"
+          Rails.logger.info "Content saved: #{section.content_html.present?}"
 
           Rails.logger.info "Generated content for section: #{section.section_type}"
         else

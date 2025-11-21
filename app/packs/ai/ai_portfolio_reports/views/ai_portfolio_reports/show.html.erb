@@ -47,40 +47,55 @@
       </div>
 
       <!-- MIDDLE EDITOR COLUMN (simplified, stable) -->
-      <div class="col-md-5 border-end" style="height: 100%; overflow: hidden;">
-        <div class="p-3 d-flex flex-column" style="height: 100%;">
+      <!-- MIDDLE EDITOR COLUMN -->
+<div class="col-md-5 border-end" style="height: 100%; overflow: hidden;">
+  <div class="p-3 d-flex flex-column" style="height: 100%;">
 
-          <!-- Section title -->
-          <div class="mb-3">
-            <h5 class="mb-0"><%= @current_section.section_type %></h5>
-          </div>
+    <!-- Section title -->
+    <div class="mb-3">
+      <h5 class="mb-0"><%= @current_section.section_type %></h5>
+    </div>
 
-          <%= form_with model: [@report, @current_section],
-                        url: ai_portfolio_report_ai_report_section_path(@report, @current_section),
-                        method: :patch,
-                        id: "section-form" do |f| %>
+    <%= form_with model: [@report, @current_section],
+                  url: ai_portfolio_report_ai_report_section_path(@report, @current_section),
+                  method: :patch,
+                  id: "section-form" do |f| %>
 
-            <%= f.hidden_field :content, id: "content-hidden-field" %>
+      <%= f.hidden_field :content, id: "content-hidden-field" %>
 
-            <!-- Scrollable HTML "textarea-like" box -->
-            <div class="mb-3"
-                 style="height: calc(100vh - 350px); max-height: 100%; overflow-y: auto; border: 1px solid #dee2e6;
-                        border-radius: 4px; background: #ffffff; padding: 5px 5px;">
-              <div id="report-content"
-                   contenteditable="true"
-                   style="min-height: 100%; white-space: pre-wrap; font-size: 14px;">
-                <%= @current_section.content_html.to_s.html_safe %>
-              </div>
-            </div>
-
-            <!-- Save button (always visible just below editor) -->
-            <div>
-              <%= f.submit "Save Section", class: "btn btn-primary" %>
-            </div>
-
-          <% end %>
+      <!-- Scrollable content editor - REDUCED HEIGHT -->
+      <div class="mb-3"
+           style="height: calc(100vh - 400px); max-height: 100%; overflow-y: auto; border: 1px solid #dee2e6;
+                  border-radius: 4px; background: #ffffff; padding: 5px 5px;">
+        <div id="report-content"
+             contenteditable="true"
+             style="min-height: 100%; white-space: pre-wrap; font-size: 14px;">
+          <%= @current_section.content_html.to_s.html_safe %>
         </div>
       </div>
+
+      <!-- NEW: AI Refinement Section -->
+      <div class="border-top pt-3 mb-3">
+        <label class="form-label small text-muted mb-2">
+          ?? Refine with AI
+        </label>
+        <textarea 
+          id="ai-refinement-prompt" 
+          class="form-control form-control-sm mb-2" 
+          rows="2" 
+          placeholder="e.g., 'Add more competitive advantages' or 'Make it more concise'"></textarea>
+        
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="regenerateWithAI()">
+            ? Regenerate with AI
+          </button>
+          <%= f.submit "Save Section", class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+
+    <% end %>
+  </div>
+</div>
 
       <!-- RIGHT AI CHAT COLUMN -->
       <div class="col-md-4 d-flex flex-column" style="height: 100%; overflow: hidden;">
@@ -285,6 +300,56 @@ if (flash) {
       alert('Error adding content');
     }
   }
+
+async function regenerateWithAI() {
+  const prompt = document.getElementById('ai-refinement-prompt').value.trim();
+  const currentContent = document.getElementById('report-content').innerHTML;
+  
+  if (!prompt) {
+    alert('Please enter a prompt describing how you want to refine the content');
+    return;
+  }
+  
+  // Show loading state
+  const button = event.target;
+  const originalText = button.innerHTML;
+  button.disabled = true;
+  button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Generating...';
+  
+  try {
+    const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + sectionId + '/regenerate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        prompt: prompt,
+        current_content: currentContent,
+        section_type: '<%= @current_section.section_type %>'
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      // Update the content area with new content
+      document.getElementById('report-content').innerHTML = data.content;
+      
+      // Clear the prompt
+      document.getElementById('ai-refinement-prompt').value = '';
+      
+      // Show success message
+      alert('Content regenerated! Review and click Save Section to keep changes.');
+    } else {
+      alert('Error: ' + (data.error || 'Failed to regenerate content'));
+    }
+  } catch (error) {
+    console.error(error);
+    alert('Connection error. Is Python backend running on port 8000?');
+  } finally {
+    // Restore button state
+    button.disabled = false;
+    button.innerHTML = originalText;
+  }
+}  
 </script>
 
 <style>

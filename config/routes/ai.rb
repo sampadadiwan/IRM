@@ -22,6 +22,7 @@ resources :ai_portfolio_reports do
   resources :ai_report_sections do
     member do
       post :add_content
+      post :regenerate # ADD THIS LINE
     end
   end
 
