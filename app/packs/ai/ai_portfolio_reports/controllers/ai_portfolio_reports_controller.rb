@@ -21,7 +21,8 @@ class AiPortfolioReportsController < ApplicationController
       # Generate AI content for all sections in background
       GenerateSectionContentJob.perform_later(@report.id)
 
-      redirect_to @report, notice: 'Report created! AI is generating content for all sections (this may take a minute)...'
+      # redirect_to @report, notice: 'Report created! AI is generating content for all sections (this may take a minute)...'
+      redirect_to @report, flash: { ai_notice: 'Report created! AI is generating content for all sections (this may take a minute)...' }
     else
       render :new, status: :unprocessable_entity
     end

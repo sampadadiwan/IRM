@@ -7,15 +7,15 @@ class AiReportSectionsController < ApplicationController
     @section = @report.ai_report_sections.find(params[:id])
 
     # Handle content from rich text area
-    if params[:ai_report_section][:content].present?
-      @section.content = params[:ai_report_section][:content]
-    end
+    @section.content = params[:ai_report_section][:content] if params[:ai_report_section][:content].present?
 
     # Mark as reviewed when saved
     @section.reviewed = true
 
     if @section.save
-      redirect_to ai_portfolio_report_path(@report, section_id: @section.id), notice: 'Section saved and marked as reviewed.'
+      # redirect_to ai_portfolio_report_path(@report, section_id: @section.id), notice: 'Section saved and marked as reviewed.'
+      redirect_to ai_portfolio_report_path(@report, section_id: @section.id), flash: { ai_notice: 'Section saved and marked as reviewed.' }
+
     else
       redirect_to ai_portfolio_report_path(@report, section_id: @section.id), alert: 'Failed to save section.'
     end
