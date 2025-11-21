@@ -65,7 +65,7 @@
             <!-- Scrollable HTML "textarea-like" box -->
             <div class="mb-3"
                  style="height: calc(100vh - 350px); max-height: 100%; overflow-y: auto; border: 1px solid #dee2e6;
-                        border-radius: 4px; background: #ffffff; padding: 15px;">
+                        border-radius: 4px; background: #ffffff; padding: 5px 5px;">
               <div id="report-content"
                    contenteditable="true"
                    style="min-height: 100%; white-space: pre-wrap; font-size: 14px;">
@@ -300,6 +300,18 @@ if (flash) {
   .ai-chat-wrapper {
     padding-top: 6px !important;   /* reduce top padding */
   }
+
+ #report-content > *:first-child {
+  margin-top: 0 !important;
+}
+
+#report-content h1:first-child,
+#report-content h2:first-child,
+#report-content h3:first-child,
+#report-content p:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+} 
 </style>
 
 
