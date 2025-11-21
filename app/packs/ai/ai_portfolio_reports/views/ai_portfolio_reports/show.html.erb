@@ -296,23 +296,32 @@ if (flash) {
   to { opacity: 0; }
 }
 
-.middle-editor-wrapper,
-  .ai-chat-wrapper {
-    padding-top: 6px !important;   /* reduce top padding */
-  }
-
- .trix-content {
+/* Target the content area more specifically */
+#report-content .trix-content {
   margin: 0 !important;
   padding: 0 !important;
+  line-height: 1.5 !important;
 }
 
-.trix-content > *:first-child {
+#report-content .trix-content > *:first-child {
   margin-top: 0 !important;
   padding-top: 0 !important;
 }
 
-.trix-content h3:first-child {
+#report-content .trix-content h1,
+#report-content .trix-content h2,
+#report-content .trix-content h3 {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.3 !important;
+}
+
+#report-content .trix-content h3:first-child {
   margin-top: 0 !important;
+}
+
+#report-content .trix-content p {
+  margin-bottom: 0.5rem !important;
 }
 </style>
 
