@@ -6,16 +6,13 @@ class AiReportSectionsController < ApplicationController
     @report = AiPortfolioReport.find(params[:ai_portfolio_report_id])
     @section = @report.ai_report_sections.find(params[:id])
 
-    # Handle content from rich text area
-    @section.content = params[:ai_report_section][:content] if params[:ai_report_section][:content].present?
+    # Handle content from contenteditable
+    @section.content_html = params[:ai_report_section][:content] if params[:ai_report_section][:content].present?
 
-    # Mark as reviewed when saved
     @section.reviewed = true
 
     if @section.save
-      # redirect_to ai_portfolio_report_path(@report, section_id: @section.id), notice: 'Section saved and marked as reviewed.'
       redirect_to ai_portfolio_report_path(@report, section_id: @section.id), flash: { ai_notice: 'Section saved and marked as reviewed.' }
-
     else
       redirect_to ai_portfolio_report_path(@report, section_id: @section.id), alert: 'Failed to save section.'
     end
@@ -30,11 +27,11 @@ class AiReportSectionsController < ApplicationController
     attributed_content = "#{content_to_add}<p><em>-- Added from AI at #{Time.current.strftime('%H:%M')} --</em></p>"
 
     # Append to section content (preserve HTML)
-    current_content = @section.content&.body&.to_html || ""
-    @section.content = current_content + attributed_content
+    current_content = @section.content_html || ""
+    @section.content_html = current_content + attributed_content
 
     @section.save!
 
-    render json: { success: true, content: @section.content.body.to_html }
+    render json: { success: true, content: @section.content_html }
   end
 end

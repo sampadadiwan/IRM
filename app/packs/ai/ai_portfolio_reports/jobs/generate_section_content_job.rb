@@ -27,8 +27,8 @@ class GenerateSectionContentJob < ApplicationJob
           Rails.logger.info "Content received (#{content.length} chars): #{content[0..100]}..."
 
           # ActionText needs the content assigned properly
-          content_text = data['content']
-          section.content = content_text
+          content_html = data['content']
+          section.content_html = content_html
           if section.save
             Rails.logger.info "Saved content for #{section.section_type}"
             Rails.logger.info "Plain text: #{section.content.body.to_plain_text[0..100]}"
