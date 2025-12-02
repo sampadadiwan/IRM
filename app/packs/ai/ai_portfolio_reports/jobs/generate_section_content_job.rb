@@ -8,6 +8,9 @@ class GenerateSectionContentJob < ApplicationJob
     Rails.logger.info "=== Starting content generation for report #{report_id} ==="
 
     report.ai_report_sections.each do |section|
+      # SKIP ALL SECTIONS EXCEPT CUSTOM CHARTS
+      # next unless section.section_type == "Custom Charts"
+
       # Skip if already has content
       next if section.content_html.present?
 

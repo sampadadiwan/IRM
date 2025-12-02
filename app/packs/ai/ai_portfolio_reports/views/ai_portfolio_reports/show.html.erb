@@ -79,11 +79,11 @@
         <label class="form-label small text-muted mb-2">
           ?? Refine with AI
         </label>
-        <textarea 
-          id="ai-refinement-prompt" 
-          class="form-control form-control-sm mb-2" 
-          rows="2" 
-          placeholder="e.g., 'Add more competitive advantages' or 'Make it more concise'"></textarea>
+         <textarea 
+  id="ai-refinement-prompt" 
+  class="form-control form-control-sm mb-2" 
+  rows="2" 
+  placeholder="<%= @current_section.section_type == 'Custom Charts' ? 'e.g., Show customer growth trend or Revenue breakdown by tier' : 'e.g., Add more competitive advantages or Make it more concise' %>"></textarea>
         
         <div class="d-flex gap-2">
           <button type="button" class="btn btn-outline-primary btn-sm" onclick="regenerateWithAI()">
@@ -121,12 +121,7 @@
                       Sources: <%= message.sources.join(', ') %>
                     </div>
                   <% end %>
-                  <% if message.role == 'assistant' %>
-                    <button class="btn btn-sm btn-success mt-2"
-                            onclick="addToReport('<%= j message.content.gsub("'", "\\'") %>')">
-                      + Add to Report
-                    </button>
-                  <% end %>
+                 
                 </div>
                 <div class="small text-muted mt-1"><%= message.created_at.strftime('%H:%M') %></div>
               </div>
@@ -168,6 +163,58 @@
   const reportId      = <%= @report.id %>;
   const sectionId     = <%= @current_section.id %>;
   const chatSessionId = <%= @chat_session.id %>;
+
+  // Add this inside your existing <script> tag
+document.addEventListener('DOMContentLoaded', function() {
+  renderAllCharts();
+});
+
+function renderAllCharts() {
+  const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
+  
+  chartPlaceholders.forEach((placeholder, index) => {
+    const chartConfig = placeholder.getAttribute('data-chart-config');
+    const chartType = placeholder.getAttribute('data-chart-type') || 'bar';
+    
+    if (!chartConfig) return;
+    
+    try {
+      const data = JSON.parse(chartConfig);
+      
+      // Clear placeholder and create canvas
+      placeholder.innerHTML = '';
+      const canvas = document.createElement('canvas');
+      canvas.id = `chart-${index}`;
+      placeholder.appendChild(canvas);
+      
+      // Create the chart
+      new Chart(canvas, {
+        type: chartType,
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            }
+          },
+          scales: chartType !== 'pie' && chartType !== 'doughnut' ? {
+            y: {
+              beginAtZero: true
+            }
+          } : {}
+        }
+      });
+      
+      console.log(`Chart ${index} rendered successfully`);
+    } catch (error) {
+      console.error(`Error rendering chart ${index}:`, error);
+      placeholder.innerHTML = `<div style="color: red;">Error rendering chart: ${error.message}</div>`;
+    }
+  });
+}
 
   document.addEventListener('DOMContentLoaded', function () {
     // Scroll chat to bottom
@@ -250,11 +297,7 @@ if (flash) {
       ? '<div class="small text-muted mt-2 pt-2 border-top">Sources: ' + sources.join(', ') + '</div>'
       : '';
 
-    const addBtn = (role === 'assistant' && !isLoading)
-      ? '<button class="btn btn-sm btn-success mt-2" onclick="addToReport(\'' +
-          content.replace(/'/g, "\\'").replace(/\n/g, ' ') +
-        '\')">+ Add to Report</button>'
-      : '';
+    const addBtn = '';
 
     const loadClass = isLoading ? 'loading-message' : '';
     const bgClass   = (role === 'user') ? 'bg-primary text-white' : 'bg-white border';
@@ -335,9 +378,11 @@ async function regenerateWithAI() {
       
       // Clear the prompt
       document.getElementById('ai-refinement-prompt').value = '';
+
+      renderAllCharts();
       
       // Show success message
-      alert('Content regenerated! Review and click Save Section to keep changes.');
+      //alert('Content regenerated! Review and click Save Section to keep changes.');
     } else {
       alert('Error: ' + (data.error || 'Failed to regenerate content'));
     }
@@ -366,6 +411,12 @@ async function regenerateWithAI() {
   margin: 0 !important;
   padding: 0 !important;
   line-height: 1.5 !important;
+}
+
+/* Make placeholder text darker */
+#ai-refinement-prompt::placeholder {
+  color: #7c8fac !important;
+  opacity: 1 !important;
 }
 
 #report-content .trix-content > *:first-child {
