@@ -42,4 +42,20 @@ class AiPortfolioReportPolicy < ApplicationPolicy
   def add_content?
     true
   end
+
+  def collated_report?
+    show? # Same permission as viewing the report
+  end
+
+  def save_collated_report?
+    update? # Same permission as updating the report
+  end
+
+  # def export_pdf?
+  #   show? # Same permission as viewing the report
+  # end
+
+  def export_docx?
+    show? # Same permission as viewing the report
+  end
 end

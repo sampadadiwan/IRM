@@ -8,18 +8,19 @@
 <% end %>
 <div class="card" style="margin-top: 0;">
   <div class="card-header">
-    <div class="d-flex justify-content-between align-items-center">
-      <h5 class="card-title mb-0">
-        <%= @report.portfolio_company&.name || "Company ##{@report.portfolio_company_id}" %> - AI Report Builder
-      </h5>
-      <div>
-        <span class="badge bg-secondary"><%= @report.status&.humanize || 'Draft' %></span>
-        <span class="ms-2 text-muted">
-          <%= @report.ai_report_sections.where(reviewed: true).count %>/<%= @report.ai_report_sections.count %> reviewed
-        </span>
-      </div>
+  <div class="d-flex justify-content-between align-items-center">
+    <h5 class="card-title mb-0">
+      <%= @report.portfolio_company&.name || "Company ##{@report.portfolio_company_id}" %> - AI Report Builder
+    </h5>
+    <div class="d-flex align-items-center gap-2">
+      <%= link_to "Generate Final Report", collated_report_ai_portfolio_report_path(@report), class: "btn btn-success", style: "font-size: 1.1rem; font-weight: 600;" %>
+      <span class="badge bg-secondary"><%= @report.status&.humanize || 'Draft' %></span>
+      <span class="ms-2 text-muted">
+        <%= @report.ai_report_sections.where(reviewed: true).count %>/<%= @report.ai_report_sections.count %> reviewed
+      </span>
     </div>
   </div>
+</div>
 
   <div class="card-body p-0">
     <div class="row g-0" style="height: calc(100vh - 200px); overflow: hidden;">

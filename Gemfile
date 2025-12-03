@@ -257,6 +257,9 @@ gem 'ostruct'
 # The only change in this gem is that models.json has the new gemini 2.5 flash model
 gem 'doorkeeper'
 gem 'doorkeeper-openid_connect'
+gem 'htmltoword'
 gem 'i18n-tasks', group: :development
 gem 'json_schemer'
 gem 'ruby_llm', git: 'https://github.com/crmne/ruby_llm.git'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'

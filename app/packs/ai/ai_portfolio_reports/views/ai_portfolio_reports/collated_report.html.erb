@@ -1,0 +1,263 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<div class="container-fluid" style="height: 100vh; display: flex; flex-direction: column; overflow: hidden; margin: 0; padding: 0;">
+
+<div class="container-fluid" style="height: 100vh; display: flex; flex-direction: column; overflow: hidden; margin: 0; padding: 0;">
+  
+  <!-- TOP HEADER BAR -->
+  <!-- TOP HEADER BAR -->
+<!-- TOP HEADER BAR -->
+<div class="bg-white border-bottom p-3" style="flex-shrink: 0; z-index: 100;">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <h4 class="mb-1">Final Report Review</h4>
+      <small class="text-muted">Edit the report directly. Changes are saved automatically.</small>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      <span class="text-muted small" id="save-status"></span>
+      <button class="btn btn-primary" onclick="saveCollatedReport()">
+        &#128190; Save Report
+      </button>
+      <div class="btn-group">
+  <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown">
+    Export
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#" onclick="window.print(); return false;">Download PDF</a></li>
+    <li><a class="dropdown-item" href="<%= export_docx_ai_portfolio_report_path(@report) %>">Download Word</a></li>
+  </ul>
+</div>
+      <%= link_to "&#8592; Back to Sections".html_safe, ai_portfolio_report_path(@report), class: "btn btn-outline-secondary" %>
+      <span class="badge bg-secondary">Draft</span>
+    </div>
+  </div>
+</div>
+  
+  <!-- MAIN CONTENT AREA -->
+  <div class="row g-0" style="flex: 1; overflow: hidden;">
+    
+    <!-- LEFT SIDEBAR - SCROLLABLE -->
+    <div class="col-md-2 bg-light border-end" style="height: 100%; overflow-y: auto; overflow-x: hidden;">
+      <div class="p-3">
+        <h6 class="text-muted mb-3">REPORT SECTIONS</h6>
+        
+        <% @sections.each do |section| %>
+          <div class="mb-2">
+            <a href="#section-<%= section.id %>" class="text-decoration-none text-dark d-block p-2 rounded hover-bg">
+              <small><%= section.section_type %></small>
+            </a>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- MAIN EDITOR AREA - SCROLLABLE -->
+    <div class="col-md-10" style="height: 100%; overflow-y: auto; overflow-x: hidden;">
+      <div class="p-4">
+        
+        <!-- Editable Content Area -->
+        <div id="collated-content" 
+             contenteditable="true" 
+             style="background: white; padding: 3rem; min-height: 80vh; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <%= @collated_content.html_safe %>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<script>
+  const reportId = <%= @report.id %>;
+  
+  // Save collated report
+  async function saveCollatedReport() {
+    const content = document.getElementById('collated-content').innerHTML;
+    const saveStatus = document.getElementById('save-status');
+    
+    saveStatus.textContent = 'Saving...';
+    saveStatus.style.color = '#6c757d';
+    
+    try {
+      const response = await fetch('/ai_portfolio_reports/' + reportId + '/save_collated_report', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ content: content })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        saveStatus.textContent = 'Saved at ' + new Date().toLocaleTimeString();
+        saveStatus.style.color = '#28a745';
+      } else {
+        saveStatus.textContent = '? Failed to save';
+        saveStatus.style.color = '#dc3545';
+        alert('Error: ' + data.error);
+      }
+    } catch (error) {
+      console.error(error);
+      saveStatus.textContent = '? Connection error';
+      saveStatus.style.color = '#dc3545';
+    }
+  }
+
+  // Render all charts after page load
+  document.addEventListener('DOMContentLoaded', function() {
+    renderAllCharts();
+  });
+
+  function renderAllCharts() {
+    const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
+    
+    chartPlaceholders.forEach((placeholder, index) => {
+      const chartConfig = placeholder.getAttribute('data-chart-config');
+      const chartType = placeholder.getAttribute('data-chart-type') || 'bar';
+      
+      if (!chartConfig) return;
+      
+      try {
+        const data = JSON.parse(chartConfig);
+        
+        // Clear placeholder and create canvas
+        placeholder.innerHTML = '';
+        const canvas = document.createElement('canvas');
+        canvas.id = `chart-${index}`;
+        placeholder.appendChild(canvas);
+        
+        // Create the chart
+        new Chart(canvas, {
+          type: chartType,
+          data: data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top'
+              }
+            },
+            scales: chartType !== 'pie' && chartType !== 'doughnut' ? {
+              y: {
+                beginAtZero: true
+              }
+            } : {}
+          }
+        });
+        
+        console.log(`Chart ${index} rendered successfully`);
+      } catch (error) {
+        console.error(`Error rendering chart ${index}:`, error);
+        placeholder.innerHTML = `<div style="color: red;">Error rendering chart: ${error.message}</div>`;
+      }
+    });
+  }
+  
+  // Smooth scroll to sections
+  document.querySelectorAll('a[href^="#section-"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const href = this.getAttribute('href');
+      const mainContent = document.querySelector('.col-md-10');
+      const targetElement = mainContent.querySelector(href);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+<style>
+  .hover-bg:hover {
+    background-color: #e5e7eb !important;
+  }
+  
+  #collated-content:focus {
+    outline: none;
+    border-color: #3b82f6 !important;
+  }
+  
+  /* Preserve the beautiful formatting from sections */
+  #collated-content h1 {
+    color: #1e40af !important;
+    font-size: 1.75rem !important;
+    border-bottom: 3px solid #3b82f6 !important;
+    padding-bottom: 0.5rem !important;
+    margin-top: 1.2rem !important;
+    margin-bottom: 0.8rem !important;
+  }
+  
+  #collated-content h2 {
+    color: #2563eb !important;
+    font-size: 1.5rem !important;
+    border-bottom: 2px solid #60a5fa !important;
+    padding-bottom: 0.4rem !important;
+    margin-top: 1.2rem !important;
+    margin-bottom: 0.8rem !important;
+  }
+  
+  #collated-content h3 {
+    color: #3b82f6 !important;
+    font-size: 1.25rem !important;
+    border-left: 4px solid #3b82f6 !important;
+    padding-left: 0.75rem !important;
+    margin-top: 1.2rem !important;
+    margin-bottom: 0.8rem !important;
+  }
+  
+  #collated-content ul {
+    list-style-type: disc !important;
+    padding-left: 2rem !important;
+  }
+  
+  #collated-content li::marker {
+    color: #3b82f6 !important;
+    font-weight: bold !important;
+  }
+  
+  #collated-content p {
+    margin-bottom: 0.75rem !important;
+    line-height: 1.6 !important;
+  }
+  /* Print styles for PDF export */
+@media print {
+  /* Hide buttons and UI elements */
+  .btn, .badge, #save-status {
+    display: none !important;
+  }
+  
+  /* Hide left sidebar */
+  .col-md-2 {
+    display: none !important;
+  }
+  
+  /* Make content full width */
+  .col-md-10 {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Remove borders and shadows */
+  #collated-content {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 1rem !important;
+  }
+  
+  /* Page breaks */
+  h2 {
+    page-break-after: avoid;
+  }
+  
+  /* Better chart printing */
+  canvas {
+    max-width: 100%;
+    height: auto !important;
+  }
+}
+</style>
