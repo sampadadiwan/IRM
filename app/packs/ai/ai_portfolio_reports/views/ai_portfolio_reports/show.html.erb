@@ -273,7 +273,7 @@ if (flash) {
 }
 
 // Toggle web search for a section
-async function toggleWebSearch(event, sectionId) {
+async function toggleWebSearch(event, toggleSectionId) {
   event.preventDefault();
   event.stopPropagation();
   
@@ -281,7 +281,7 @@ async function toggleWebSearch(event, sectionId) {
   const isEnabled = icon.classList.contains('active');
   
   try {
-    const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + sectionId + '/toggle_web_search', {
+    const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + toggleSectionId + '/toggle_web_search', {
       method: 'PATCH',
       headers: { 
         'Content-Type': 'application/json',
@@ -292,13 +292,18 @@ async function toggleWebSearch(event, sectionId) {
     const data = await response.json();
     
     if (data.success) {
-      // Toggle the active class
-      if (data.web_search_enabled) {
-        icon.classList.add('active');
-        icon.title = 'Web search enabled';
+      // If toggling the current section, reload the page to update the header text
+      if (toggleSectionId === sectionId) {
+        window.location.reload();
       } else {
-        icon.classList.remove('active');
-        icon.title = 'Click to enable web search';
+        // Toggle the active class for other sections
+        if (data.web_search_enabled) {
+          icon.classList.add('active');
+          icon.title = 'Web search enabled';
+        } else {
+          icon.classList.remove('active');
+          icon.title = 'Click to enable web search';
+        }
       }
     } else {
       alert('Failed to toggle web search');
