@@ -78,14 +78,15 @@
     <%= form_with model: [@report, @current_section],
                   url: ai_portfolio_report_ai_report_section_path(@report, @current_section),
                   method: :patch,
-                  id: "section-form" do |f| %>
+                  id: "section-form",
+                  html: { style: "display: flex; flex-direction: column; flex: 1; min-height: 0;" } do |f| %>
 
       <%= f.hidden_field :content, id: "content-hidden-field" %>
 
       <!-- Scrollable content editor - REDUCED HEIGHT -->
       <div class="mb-3"
            style="flex: 1; overflow-y: auto; border: 1px solid #dee2e6;
-                  border-radius: 4px; background: #ffffff; padding: 5px 5px;">
+                  border-radius: 4px; background: #ffffff; padding: 5px 5px; min-height: 0;">
         <div id="report-content"
              contenteditable="true"
              style="min-height: 100%; white-space: pre-wrap; font-size: 14px;">
