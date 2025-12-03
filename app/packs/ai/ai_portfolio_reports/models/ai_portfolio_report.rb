@@ -40,6 +40,21 @@ class AiPortfolioReport < ApplicationRecord
     "Investment Ask"
   ]
 
+  # Sections that benefit from web search (current external information)
+  WEB_SEARCH_DEFAULT_SECTIONS = [
+    "Company Overview",
+    "Key Products & Services",
+    "Market Size & Target",
+    "Recent Updates & Developments",
+    "Founders & Shareholders",
+    "Raise History, Valuations & Funding Trend",
+    "SWOT Analysis - Blitz",
+    "Competition Analysis",
+    "Key Risks",
+    "Operational Red Flags",
+    "Negative News"
+  ]
+
   private
 
   def create_default_sections
@@ -47,7 +62,8 @@ class AiPortfolioReport < ApplicationRecord
       ai_report_sections.create!(
         section_type: section_type,
         order_index: index + 1,
-        status: 'draft'
+        status: 'draft',
+        web_search_enabled: WEB_SEARCH_DEFAULT_SECTIONS.include?(section_type)
       )
     end
   end

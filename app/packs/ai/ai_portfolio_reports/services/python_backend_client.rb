@@ -3,11 +3,12 @@ class PythonBackendClient
 
   base_uri ENV.fetch('PYTHON_BACKEND_URL', 'http://localhost:8000')
 
-  def self.chat(message:, section:)
+  def self.chat(message:, section:, web_search_enabled: false)
     post('/api/chat',
          body: {
            message: message,
-           section: section
+           section: section,
+           web_search_enabled: web_search_enabled
          }.to_json,
          headers: { 'Content-Type' => 'application/json' },
          timeout: 30)
@@ -23,11 +24,12 @@ class PythonBackendClient
          timeout: 30)
   end
 
-  def self.generate_section(section_type:, company_name:)
+  def self.generate_section(section_type:, company_name:, web_search_enabled: false)
     post('/api/generate-section',
          body: {
            section_type: section_type,
-           company_name: company_name
+           company_name: company_name,
+           web_search_enabled: web_search_enabled
          }.to_json,
          headers: { 'Content-Type' => 'application/json' },
          timeout: 60)

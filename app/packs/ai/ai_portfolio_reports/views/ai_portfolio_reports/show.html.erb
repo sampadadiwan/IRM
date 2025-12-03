@@ -25,26 +25,41 @@
     <div class="row g-0" style="height: calc(100vh - 200px); overflow: hidden;">
 
       <!-- LEFT NAV COLUMN -->
-      <div class="col-md-3 border-end" style="height: 100%; overflow-y: auto; background: #f8f9fa;">
-        <div class="p-3">
-          <h6 class="text-muted mb-3">SECTIONS</h6>
-          <% @report.ai_report_sections.order(:order_index).each do |section| %>
-            <% is_active   = section == @current_section %>
-            <% is_reviewed = section.reviewed? %>
+<div class="col-md-3 border-end" style="height: 100%; overflow-y: auto; background: #f8f9fa;">
+  <div class="p-3">
+    <h6 class="text-muted mb-3">SECTIONS</h6>
+    <% @report.ai_report_sections.order(:order_index).each do |section| %>
+      <% is_active = section == @current_section %>
+      <% is_reviewed = section.reviewed? %>
 
-            <%= link_to ai_portfolio_report_path(@report, section_id: section.id),
-                class: "d-block p-2 mb-1 rounded text-decoration-none #{is_active ? 'bg-primary text-white' : 'bg-white border text-dark'}" do %>
-              <small class="d-flex justify-content-between align-items-center">
-                <span><%= section.section_type %></span>
-                <% if is_reviewed %>
-                  <span class="<%= is_active ? 'text-white' : 'text-success' %>"
-                        style="font-size: 18px; font-weight: bold;">&#10004;</span>
-                <% end %>
-              </small>
-            <% end %>
+      <div class="d-flex align-items-center mb-1 position-relative">
+        <!-- Web Search Icon Toggle - Only show for eligible sections, but maintain spacing -->
+        <span style="min-width: 24px; margin-right: 8px; text-align: center;">
+          <% if AiPortfolioReport::WEB_SEARCH_DEFAULT_SECTIONS.include?(section.section_type) %>
+            <span class="web-search-icon <%= section.web_search_enabled ? 'active' : '' %>"
+                  data-section-id="<%= section.id %>"
+                  onclick="toggleWebSearch(event, <%= section.id %>)"
+                  title="<%= section.web_search_enabled ? 'Web search enabled' : 'Click to enable web search' %>"
+                  style="cursor: pointer; font-size: 16px; user-select: none; display: inline-block;">
+              &#127760;
+            </span>
           <% end %>
-        </div>
+        </span>
+
+        <%= link_to ai_portfolio_report_path(@report, section_id: section.id),
+            class: "flex-grow-1 p-2 rounded text-decoration-none #{is_active ? 'bg-primary text-white' : 'bg-white border text-dark'}" do %>
+          <small class="d-flex justify-content-between align-items-center">
+            <span><%= section.section_type %></span>
+            <% if is_reviewed %>
+              <span class="<%= is_active ? 'text-white' : 'text-success' %>"
+                    style="font-size: 18px; font-weight: bold;">&#10004;</span>
+            <% end %>
+          </small>
+        <% end %>
       </div>
+    <% end %>
+  </div>
+</div>
 
       <!-- MIDDLE EDITOR COLUMN (simplified, stable) -->
       <!-- MIDDLE EDITOR COLUMN -->
@@ -52,8 +67,12 @@
   <div class="p-3 d-flex flex-column" style="height: 100%;">
 
     <!-- Section title -->
+    
     <div class="mb-3">
       <h5 class="mb-0"><%= @current_section.section_type %></h5>
+      <% if @current_section.web_search_enabled %>
+        <small class="text-muted">?? Web search enabled for this section</small>
+      <% end %>
     </div>
 
     <%= form_with model: [@report, @current_section],
@@ -252,6 +271,42 @@ if (flash) {
   }, 5000);
 }
 
+// Toggle web search for a section
+async function toggleWebSearch(event, sectionId) {
+  event.preventDefault();
+  event.stopPropagation();
+  
+  const icon = event.target;
+  const isEnabled = icon.classList.contains('active');
+  
+  try {
+    const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + sectionId + '/toggle_web_search', {
+      method: 'PATCH',
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      }
+    });
+
+    const data = await response.json();
+    
+    if (data.success) {
+      // Toggle the active class
+      if (data.web_search_enabled) {
+        icon.classList.add('active');
+        icon.title = 'Web search enabled';
+      } else {
+        icon.classList.remove('active');
+        icon.title = 'Click to enable web search';
+      }
+    } else {
+      alert('Failed to toggle web search');
+    }
+  } catch (error) {
+    console.error(error);
+    alert('Error toggling web search');
+  }
+}
   async function sendMessage(text) {
     const input   = document.getElementById('chat-input');
     const message = text || (input ? input.value.trim() : '');
@@ -439,6 +494,30 @@ async function regenerateWithAI() {
 #report-content .trix-content p {
   margin-bottom: 0.5rem !important;
 }
+
+/* Web Search Icon Styles */
+.web-search-icon {
+  opacity: 0.3;
+  transition: opacity 0.2s ease;
+}
+
+.web-search-icon:hover {
+  opacity: 0.6;
+}
+
+.web-search-icon.active {
+  opacity: 1;
+}
+
+/* Completed Section Styling - Always green when saved */
+/* Completed Section Styling - Always green when saved */
+.section-completed a {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: white !important;
+}
+
+/* Selected but not completed - Blue (default behavior, no change needed) */
 </style>
 
 

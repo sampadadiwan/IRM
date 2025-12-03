@@ -23,6 +23,7 @@ resources :ai_portfolio_reports do
     member do
       post :add_content
       post :regenerate # ADD THIS LINE
+      patch :toggle_web_search # ADD THIS LINE
     end
   end
 

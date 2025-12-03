@@ -18,7 +18,8 @@ class AiChatMessagesController < ApplicationController
     begin
       response = PythonBackendClient.chat(
         message: params[:message],
-        section: @current_section.section_type
+        section: @current_section.section_type,
+        web_search_enabled: @current_section.web_search_enabled
       )
 
       if response.success?

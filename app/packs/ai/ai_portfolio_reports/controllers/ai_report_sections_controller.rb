@@ -19,6 +19,25 @@ class AiReportSectionsController < ApplicationController
     end
   end
 
+  def toggle_web_search
+    @report = AiPortfolioReport.find(params[:ai_portfolio_report_id])
+    @section = @report.ai_report_sections.find(params[:id])
+
+    @section.web_search_enabled = !@section.web_search_enabled
+
+    if @section.save
+      render json: {
+        success: true,
+        web_search_enabled: @section.web_search_enabled,
+        message: @section.web_search_enabled ? 'Web search enabled' : 'Web search disabled'
+      }
+    else
+      render json: { success: false, error: 'Failed to toggle web search' }, status: :unprocessable_entity
+    end
+  rescue StandardError => e
+    render json: { success: false, error: e.message }, status: :internal_server_error
+  end
+
   def add_content
     @report = AiPortfolioReport.find(params[:ai_portfolio_report_id])
     @section = @report.ai_report_sections.find(params[:id])

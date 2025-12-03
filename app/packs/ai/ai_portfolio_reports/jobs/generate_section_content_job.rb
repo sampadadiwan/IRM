@@ -20,7 +20,8 @@ class GenerateSectionContentJob < ApplicationJob
         # Call Python backend to generate content
         response = PythonBackendClient.generate_section(
           section_type: section.section_type,
-          company_name: company_name
+          company_name: company_name,
+          web_search_enabled: section.web_search_enabled
         )
 
         if response.success?

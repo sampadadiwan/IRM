@@ -7,11 +7,12 @@ class PythonBackendClient
 
   base_uri PYTHON_BACKEND_URL
 
-  def self.chat(message:, section:)
+  def self.chat(message:, section:, web_search_enabled: false)
     post('/api/chat',
          body: {
            message: message,
-           section: section
+           section: section,
+           web_search_enabled: web_search_enabled  # NEW
          }.to_json,
          headers: { 'Content-Type' => 'application/json' })
   end
@@ -25,11 +26,12 @@ class PythonBackendClient
          headers: { 'Content-Type' => 'application/json' })
   end
 
-  def self.generate_section(section_type:, company_name:)
+  def self.generate_section(section_type:, company_name:, web_search_enabled: false)
     post('/api/generate-section',
          body: {
            section_type: section_type,
-           company_name: company_name
+           company_name: company_name,
+           web_search_enabled: web_search_enabled  # NEW
          }.to_json,
          headers: { 'Content-Type' => 'application/json' },
          timeout: 60)
