@@ -580,9 +580,33 @@ async function regenerateWithAI() {
   padding-left: 1.5rem !important;
 }
 
+#report-content ul {
+  list-style-type: disc !important;
+}
+
+#report-content ul ul {
+  list-style-type: circle !important;
+  margin-top: 0.5rem !important;
+}
+
+#report-content ul ul ul {
+  list-style-type: square !important;
+}
+
+#report-content ol {
+  list-style-type: decimal !important;
+}
+
 #report-content li {
   margin-bottom: 0.5rem !important;
   color: #374151 !important;
+  padding-left: 0.5rem !important;
+  line-height: 1.6 !important;
+}
+
+#report-content li::marker {
+  color: #3b82f6 !important;
+  font-weight: bold !important;
 }
 
 /* Style strong/bold text */
