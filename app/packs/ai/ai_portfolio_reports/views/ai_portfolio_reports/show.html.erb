@@ -71,7 +71,7 @@
     <div class="mb-3">
       <h5 class="mb-0"><%= @current_section.section_type %></h5>
       <% if @current_section.web_search_enabled %>
-        <small class="text-muted">?? Web search enabled for this section</small>
+        <small class="text-muted">🌐 Web search enabled for this section</small>
       <% end %>
     </div>
 
@@ -97,7 +97,7 @@
       <!-- NEW: AI Refinement Section -->
       <div class="border-top pt-3 mb-3" style="flex-shrink: 0;">
         <label class="form-label small text-muted mb-2">
-          ?? Refine with AI
+          🔄 Refine with AI
         </label>
          <textarea 
   id="ai-refinement-prompt" 
@@ -107,7 +107,7 @@
         
         <div class="d-flex gap-2">
           <button type="button" class="btn btn-outline-primary btn-sm" onclick="regenerateWithAI()">
-            ? Regenerate with AI
+            🔄 Regenerate with AI
           </button>
           <%= f.submit "Save Section", class: "btn btn-primary btn-sm" %>
         </div>

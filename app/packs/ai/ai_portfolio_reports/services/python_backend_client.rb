@@ -39,12 +39,13 @@ class PythonBackendClient
     get('/health')
   end
 
-  def self.refine_section(section_type:, current_content:, user_prompt:)
+  def self.refine_section(section_type:, current_content:, user_prompt:, web_search_enabled: false)
     post('/api/refine-section',
          body: {
            section_type: section_type,
            current_content: current_content,
-           user_prompt: user_prompt
+           user_prompt: user_prompt,
+           web_search_enabled: web_search_enabled
          }.to_json,
          headers: { 'Content-Type' => 'application/json' },
          timeout: 60)

@@ -67,7 +67,8 @@ class AiReportSectionsController < ApplicationController
     response = PythonBackendClient.refine_section(
       section_type: section_type,
       current_content: current_content,
-      user_prompt: user_prompt
+      user_prompt: user_prompt,
+      web_search_enabled: @section.web_search_enabled
     )
 
     if response.success?
