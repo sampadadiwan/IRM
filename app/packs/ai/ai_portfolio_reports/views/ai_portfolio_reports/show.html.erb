@@ -67,11 +67,10 @@
   <div class="p-3 d-flex flex-column" style="height: 100%;">
 
     <!-- Section title -->
-    
-    <div class="mb-3">
+    <div class="mb-3 section-header">
       <h5 class="mb-0"><%= @current_section.section_type %></h5>
       <% if @current_section.web_search_enabled %>
-        <small class="text-muted">🌐 Web search enabled for this section</small>
+        <small class="text-muted web-search-status d-block mt-1">🌐 Web search enabled for this section</small>
       <% end %>
     </div>
 
@@ -284,6 +283,30 @@ async function toggleWebSearch(event, toggleSectionId) {
   if (isCurrentSection) {
     icon.style.opacity = '0.5';
     icon.style.pointerEvents = 'none';
+    
+    // Show loading message below section name
+    const sectionHeader = document.querySelector('.section-header');
+    const existingStatus = sectionHeader.querySelector('.web-search-status');
+    if (existingStatus) existingStatus.remove();
+    
+    const loadingMsg = document.createElement('small');
+    loadingMsg.className = 'text-muted web-search-status d-block mt-1';
+    loadingMsg.innerHTML = '🔄 Regenerating section<span class="loading-dots">...</span>';
+    sectionHeader.appendChild(loadingMsg);
+    
+    // Add CSS animation for dots
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes blink {
+        0%, 20% { opacity: 0; }
+        40% { opacity: 1; }
+        100% { opacity: 0; }
+      }
+      .loading-dots {
+        animation: blink 1.4s infinite;
+      }
+    `;
+    document.head.appendChild(style);
   }
   
   try {
@@ -320,6 +343,9 @@ async function toggleWebSearch(event, toggleSectionId) {
       if (isCurrentSection) {
         icon.style.opacity = '1';
         icon.style.pointerEvents = 'auto';
+        // Remove loading message
+        const loadingMsg = document.querySelector('.web-search-status');
+        if (loadingMsg) loadingMsg.remove();
       }
     }
   } catch (error) {
@@ -328,6 +354,9 @@ async function toggleWebSearch(event, toggleSectionId) {
     if (isCurrentSection) {
       icon.style.opacity = '1';
       icon.style.pointerEvents = 'auto';
+      // Remove loading message
+      const loadingMsg = document.querySelector('.web-search-status');
+      if (loadingMsg) loadingMsg.remove();
     }
   }
 }
