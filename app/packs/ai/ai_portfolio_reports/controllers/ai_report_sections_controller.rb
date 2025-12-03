@@ -23,9 +23,28 @@ class AiReportSectionsController < ApplicationController
     @report = AiPortfolioReport.find(params[:ai_portfolio_report_id])
     @section = @report.ai_report_sections.find(params[:id])
 
+    # Toggle the flag
     @section.web_search_enabled = !@section.web_search_enabled
 
     if @section.save
+      # If this is the current section being viewed, regenerate content
+      if params[:regenerate] == 'true'
+        company_name = @report.portfolio_company&.name || "TechVenture Inc."
+        
+        # Call Python backend to regenerate content with new web_search setting
+        response = PythonBackendClient.generate_section(
+          section_type: @section.section_type,
+          company_name: company_name,
+          web_search_enabled: @section.web_search_enabled
+        )
+
+        if response.success?
+          data = response.parsed_response
+          @section.content_html = data['content']
+          @section.save
+        end
+      end
+
       render json: {
         success: true,
         web_search_enabled: @section.web_search_enabled,

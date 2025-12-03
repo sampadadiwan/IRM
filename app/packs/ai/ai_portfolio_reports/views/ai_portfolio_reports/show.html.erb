@@ -278,10 +278,20 @@ async function toggleWebSearch(event, toggleSectionId) {
   event.stopPropagation();
   
   const icon = event.target;
-  const isEnabled = icon.classList.contains('active');
+  const isCurrentSection = (toggleSectionId === sectionId);
+  
+  // Show loading state for current section
+  if (isCurrentSection) {
+    icon.style.opacity = '0.5';
+    icon.style.pointerEvents = 'none';
+  }
   
   try {
-    const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + toggleSectionId + '/toggle_web_search', {
+    // Add regenerate=true for current section
+    const url = '/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + toggleSectionId + '/toggle_web_search' +
+                (isCurrentSection ? '?regenerate=true' : '');
+    
+    const response = await fetch(url, {
       method: 'PATCH',
       headers: { 
         'Content-Type': 'application/json',
@@ -292,8 +302,8 @@ async function toggleWebSearch(event, toggleSectionId) {
     const data = await response.json();
     
     if (data.success) {
-      // If toggling the current section, reload the page to update the header text
-      if (toggleSectionId === sectionId) {
+      // If toggling the current section, reload the page to show new content
+      if (isCurrentSection) {
         window.location.reload();
       } else {
         // Toggle the active class for other sections
@@ -307,10 +317,18 @@ async function toggleWebSearch(event, toggleSectionId) {
       }
     } else {
       alert('Failed to toggle web search');
+      if (isCurrentSection) {
+        icon.style.opacity = '1';
+        icon.style.pointerEvents = 'auto';
+      }
     }
   } catch (error) {
     console.error(error);
     alert('Error toggling web search');
+    if (isCurrentSection) {
+      icon.style.opacity = '1';
+      icon.style.pointerEvents = 'auto';
+    }
   }
 }
   async function sendMessage(text) {
