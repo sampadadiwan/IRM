@@ -28,7 +28,9 @@
   </ul>
 </div>
       <%= link_to "&#8592; Back to Sections".html_safe, ai_portfolio_report_path(@report), class: "btn btn-outline-secondary" %>
-      <span class="badge bg-secondary">Draft</span>
+      <span class="badge <%= @report.status == 'finalized' ? 'bg-success' : 'bg-secondary' %>">
+  <%= @report.status&.humanize || 'Draft' %>
+</span>
     </div>
   </div>
 </div>
@@ -112,51 +114,62 @@
   });
 
   function renderAllCharts() {
-    const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
+  const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
+  
+  chartPlaceholders.forEach((placeholder, index) => {
+    const chartConfig = placeholder.getAttribute('data-chart-config');
+    let chartType = placeholder.getAttribute('data-chart-type') || 'bar';
     
-    chartPlaceholders.forEach((placeholder, index) => {
-      const chartConfig = placeholder.getAttribute('data-chart-config');
-      const chartType = placeholder.getAttribute('data-chart-type') || 'bar';
+    if (!chartConfig) return;
+    
+    try {
+      const data = JSON.parse(chartConfig);
       
-      if (!chartConfig) return;
-      
-      try {
-        const data = JSON.parse(chartConfig);
-        
-        // Clear placeholder and create canvas
-        placeholder.innerHTML = '';
-        const canvas = document.createElement('canvas');
-        canvas.id = `chart-${index}`;
-        placeholder.appendChild(canvas);
-        
-        // Create the chart
-        new Chart(canvas, {
-          type: chartType,
-          data: data,
-          options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-              legend: {
-                display: true,
-                position: 'top'
-              }
-            },
-            scales: chartType !== 'pie' && chartType !== 'doughnut' ? {
-              y: {
-                beginAtZero: true
-              }
-            } : {}
-          }
-        });
-        
-        console.log(`Chart ${index} rendered successfully`);
-      } catch (error) {
-        console.error(`Error rendering chart ${index}:`, error);
-        placeholder.innerHTML = `<div style="color: red;">Error rendering chart: ${error.message}</div>`;
+      // Convert 'area' to 'line' with fill
+      if (chartType === 'area') {
+        chartType = 'line';
+        // Add fill property to all datasets
+        if (data.datasets) {
+          data.datasets.forEach(dataset => {
+            dataset.fill = true;
+          });
+        }
       }
-    });
-  }
+      
+      // Clear placeholder and create canvas
+      placeholder.innerHTML = '';
+      const canvas = document.createElement('canvas');
+      canvas.id = `chart-${index}`;
+      placeholder.appendChild(canvas);
+      
+      // Create the chart
+      new Chart(canvas, {
+        type: chartType,
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            }
+          },
+          scales: chartType !== 'pie' && chartType !== 'doughnut' ? {
+            y: {
+              beginAtZero: true
+            }
+          } : {}
+        }
+      });
+      
+      console.log(`Chart ${index} rendered successfully`);
+    } catch (error) {
+      console.error(`Error rendering chart ${index}:`, error);
+      placeholder.innerHTML = `<div style="color: red;">Error rendering chart: ${error.message}</div>`;
+    }
+  });
+}
   
   // Smooth scroll to sections
   document.querySelectorAll('a[href^="#section-"]').forEach(link => {

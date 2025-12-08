@@ -20,6 +20,7 @@ resources :ai_portfolio_reports do
     patch :save_collated_report    # Save edits to collated report
     # get :export_pdf              # ADD THIS
     get :export_docx # ADD THIS
+    patch :toggle_master_web_search # ADD THIS
   end
 
   resources :ai_report_sections do

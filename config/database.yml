@@ -30,11 +30,11 @@ default: &default_replica
 development:
   primary:
     <<: *default
-    database: IRM_development
+    database: IRM_dev_fresh
     # password: Root1234$
   primary_replica:
     <<: *default_replica
-    database: IRM_development
+    database: IRM_dev_fresh
     database_tasks: false
     # password: Root1234$
 

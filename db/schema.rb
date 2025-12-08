@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_03_055807) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_04_010903) do
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
     t.bigint "owner_id", null: false
@@ -323,6 +323,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_03_055807) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "collated_report_html", size: :medium
+    t.boolean "web_search_enabled", default: false
   end
 
   create_table "ai_report_sections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

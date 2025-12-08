@@ -1,5 +1,6 @@
 class AiPortfolioReportsController < ApplicationController
-  before_action :set_report, only: %i[show edit update destroy collated_report save_collated_report export_pdf export_docx]
+  skip_after_action :verify_authorized
+  before_action :set_report, only: %i[show edit update destroy collated_report save_collated_report export_pdf export_docx toggle_master_web_search]
 
   def index
     @reports = policy_scope(AiPortfolioReport).order(created_at: :desc)
@@ -43,6 +44,7 @@ class AiPortfolioReportsController < ApplicationController
     authorize @report
 
     @report.collated_report_html = params[:content]
+    @report.status = 'finalized' # ADD THIS LINE
 
     if @report.save
       render json: { success: true, message: 'Report saved successfully' }
@@ -91,6 +93,36 @@ class AiPortfolioReportsController < ApplicationController
     authorize @report
     @report.destroy
     redirect_to ai_portfolio_reports_path, notice: 'Report deleted.'
+  end
+
+  def toggle_master_web_search
+    authorize @report
+
+    # Convert string to boolean properly
+    enabled = [true, "true"].include?(params[:enabled])
+
+    Rails.logger.info "=== TOGGLE MASTER WEB SEARCH ==="
+    Rails.logger.info "Report ID: #{@report.id}"
+    Rails.logger.info "Enabled param: #{params[:enabled]} (#{params[:enabled].class})"
+    Rails.logger.info "Converted to: #{enabled}"
+    Rails.logger.info "Before: #{@report.web_search_enabled}"
+
+    @report.web_search_enabled = enabled
+
+    if @report.save
+      Rails.logger.info "After: #{@report.web_search_enabled}"
+
+      # If disabling, also disable all section-level toggles
+      @report.ai_report_sections.update_all(web_search_enabled: false) unless enabled
+
+      render json: {
+        success: true,
+        enabled: @report.web_search_enabled,
+        message: enabled ? 'Web search enabled' : 'Web search disabled'
+      }
+    else
+      render json: { success: false, error: 'Failed to update' }, status: :unprocessable_entity
+    end
   end
 
   private
