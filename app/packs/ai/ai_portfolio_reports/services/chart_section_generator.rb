@@ -47,6 +47,74 @@ class ChartSectionGenerator
     charts_html
   end
 
+  # Add this new method after generate_charts_html
+def add_chart_from_prompt(user_prompt:)
+  # Find relevant CSV documents
+  csv_paths = find_csv_documents
+  
+  Rails.logger.info "=== Adding Chart from Prompt ==="
+  Rails.logger.info "User prompt: #{user_prompt}"
+  Rails.logger.info "Documents found: #{csv_paths.count}"
+  
+  # Determine next chart number
+  existing_charts = @section.agent_charts.count
+  chart_number = existing_charts + 1
+  
+  # Create single chart based on user prompt
+  begin
+    chart = create_chart(user_prompt, csv_paths, chart_number)
+    @section.add_chart(chart)
+    
+    Rails.logger.info "Added chart: #{chart.title}"
+    
+    # Return HTML for just this new chart
+    chart_to_html(chart)
+  rescue StandardError => e
+    Rails.logger.error "Failed to add chart: #{e.message}"
+    error_chart_html(user_prompt, e.message)
+  end
+end
+
+# Update the generate_charts_html method to accept custom prompts
+def generate_charts_html(chart_prompts: nil)
+  # Clear any existing charts
+  @section.agent_chart_ids = []
+  
+  # Use provided prompts or default ones
+  prompts = chart_prompts || [
+    "Revenue trend over last 4 quarters - show quarterly revenue growth as a line chart",
+    "Customer acquisition metrics - show monthly new customers as a bar chart",
+    "Operating expenses breakdown by category - show as a pie chart"
+  ]
+  
+  # Find relevant CSV documents
+  csv_paths = find_csv_documents
+  
+  Rails.logger.info "=== Chart Generation Started ==="
+  Rails.logger.info "Company: #{@portfolio_company.name}"
+  Rails.logger.info "CSV files found: #{csv_paths.count}"
+  
+  # Generate each chart
+  charts_html = ""
+  prompts.each_with_index do |prompt, index|
+    begin
+      chart = create_chart(prompt, csv_paths, index + 1)
+      @section.add_chart(chart)
+      charts_html += chart_to_html(chart)
+    rescue StandardError => e
+      Rails.logger.error "Failed to generate chart #{index + 1}: #{e.message}"
+      charts_html += error_chart_html(prompt, e.message)
+    end
+  end
+  
+  # Save the section
+  @section.save
+  
+  Rails.logger.info "Generated #{@section.agent_chart_ids.count} charts"
+  
+  charts_html
+end
+
   private
 
   # Create a single chart using AgentChart + ChartAgentService

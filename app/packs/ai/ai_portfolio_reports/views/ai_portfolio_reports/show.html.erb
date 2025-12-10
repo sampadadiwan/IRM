@@ -1,5 +1,3 @@
-
-
 <% if flash[:ai_notice] %>
   <div class="alert alert-info py-2 small ai-flash" role="alert">
     <%= flash[:ai_notice] %>
@@ -13,19 +11,6 @@
       <%= @report.portfolio_company&.name || "Company ##{@report.portfolio_company_id}" %> - AI Report Builder
     </h5>
     <div class="d-flex align-items-center gap-2">
-      <!-- MASTER WEB SEARCH TOGGLE -->
-      <!-- MASTER WEB SEARCH TOGGLE -->
-<div class="form-check form-switch me-4">
-  <input class="form-check-input" 
-         type="checkbox" 
-         id="masterWebSearchToggle" 
-         <%= 'checked' if @report.web_search_enabled %>
-         onchange="toggleMasterWebSearch(this.checked)">
-  <label class="form-check-label" for="masterWebSearchToggle">
-    Enable Web Search
-  </label>
-</div>
-      
       <%= link_to "Generate Final Report", collated_report_ai_portfolio_report_path(@report), class: "btn btn-success", style: "font-size: 1rem;" %>
       <span class="badge bg-secondary"><%= @report.status&.humanize || 'Draft' %></span>
       <span class="ms-2 text-muted">
@@ -34,10 +19,8 @@
     </div>
   </div>
 </div>
-
   <div class="card-body p-0">
     <div class="row g-0" style="height: calc(100vh - 200px); overflow: hidden;">
-
       <!-- LEFT NAV COLUMN -->
 <div class="col-md-3 border-end" style="height: 100%; overflow-y: auto; background: #f8f9fa;">
   <div class="p-3">
@@ -46,22 +29,9 @@
       <% is_active = section == @current_section %>
       <% is_reviewed = section.reviewed? %>
 
-      <div class="d-flex align-items-center mb-1 position-relative">
-        <!-- Web Search Icon Toggle - Only show for eligible sections, but maintain spacing -->
-        <span style="min-width: 24px; margin-right: 8px; text-align: center;">
-          <% if AiPortfolioReport::WEB_SEARCH_DEFAULT_SECTIONS.include?(section.section_type) %>
-            <span class="web-search-icon <%= section.web_search_enabled ? 'active' : '' %>"
-                  data-section-id="<%= section.id %>"
-                  onclick="toggleWebSearch(event, <%= section.id %>)"
-                  title="<%= section.web_search_enabled ? 'Web search enabled' : 'Click to enable web search' %>"
-                  style="cursor: pointer; font-size: 16px; user-select: none; display: inline-block;">
-              &#127760;
-            </span>
-          <% end %>
-        </span>
-
+      <div class="mb-1">
         <%= link_to ai_portfolio_report_path(@report, section_id: section.id),
-            class: "flex-grow-1 p-2 rounded text-decoration-none #{is_active ? 'bg-primary text-white' : 'bg-white border text-dark'}" do %>
+            class: "d-block p-2 rounded text-decoration-none #{is_active ? 'bg-primary text-white' : 'bg-white border text-dark'}" do %>
           <small class="d-flex justify-content-between align-items-center">
             <span><%= section.section_type %></span>
             <% if is_reviewed %>
@@ -74,133 +44,132 @@
     <% end %>
   </div>
 </div>
-
       <!-- MIDDLE EDITOR COLUMN (simplified, stable) -->
       <!-- MIDDLE EDITOR COLUMN -->
-<!-- MIDDLE EDITOR COLUMN -->
-<div class="col-md-5 border-end" id="editor-column" style="height: 100%; overflow: hidden; transition: all 0.3s ease;">
-  <div class="p-3 d-flex flex-column" style="height: 100%;">
-
-    <!-- Section title -->
-    <div class="mb-3 section-header">
-      <h5 class="mb-0"><%= @current_section.section_type %></h5>
-      <% if @current_section.web_search_enabled %>
-        <small class="text-muted web-search-status d-block mt-1">🌐 Web search enabled for this section</small>
-      <% end %>
-    </div>
-
-    <%= form_with model: [@report, @current_section],
+      <!-- MIDDLE EDITOR COLUMN -->
+      <div class="col-md-5 border-end" id="editor-column" style="height: 100%; overflow: hidden; transition: all 0.3s ease;">
+        <div class="p-3 d-flex flex-column" style="height: 100%;">
+          <!-- Section title -->
+          <div class="mb-3 section-header">
+            <h5 class="mb-0"><%= @current_section.section_type %></h5>
+            <% if @current_section.web_search_enabled %>
+              <small class="text-muted web-search-status d-block mt-1">🌐 Web search enabled for this section</small>
+            <% end %>
+          </div>
+          <%= form_with model: [@report, @current_section],
                   url: ai_portfolio_report_ai_report_section_path(@report, @current_section),
                   method: :patch,
                   id: "section-form",
                   html: { style: "display: flex; flex-direction: column; flex: 1; min-height: 0;" } do |f| %>
-
-      <%= f.hidden_field :content, id: "content-hidden-field" %>
-
-      <!-- Scrollable content editor - REDUCED HEIGHT -->
-      <div class="mb-3"
+            <%= f.hidden_field :content, id: "content-hidden-field" %>
+            <!-- Scrollable content editor - REDUCED HEIGHT -->
+            <div class="mb-3"
            style="flex: 1; overflow-y: auto; border: 1px solid #dee2e6;
                   border-radius: 4px; background: #ffffff; padding: 5px 5px; min-height: 0;">
-        <div id="report-content"
+              <div id="report-content"
              contenteditable="true"
              style="min-height: 100%; white-space: pre-wrap; font-size: 14px;">
-          <%= @current_section.content_html.to_s.html_safe %>
+                <%= @current_section.content_html.to_s.html_safe %>
+              </div>
+            </div>
+            <!-- NEW: AI Refinement Section -->
+            <div class="border-top pt-3 mb-3" style="flex-shrink: 0;">
+              <label class="form-label small text-muted mb-2">
+                ?? Refine with AI
+              </label>
+              <textarea 
+    id="ai-refinement-prompt" 
+    class="form-control form-control-sm mb-2" 
+    rows="2" 
+    placeholder="<%= @current_section.section_type == 'Custom Charts' ? 'e.g., Add a chart showing revenue by product line OR leave empty to regenerate all charts' : 'e.g., Add more competitive advantages or Make it more concise' %>">
+  </textarea>
+              <!-- WEB SEARCH CHECKBOX - Only for eligible sections -->
+              <% if AiPortfolioReport::WEB_SEARCH_DEFAULT_SECTIONS.include?(@current_section.section_type) %>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" 
+             type="checkbox" 
+             id="webSearchCheckbox" 
+             value="true">
+                  <label class="form-check-label small" for="webSearchCheckbox">
+                    Search the web for latest information
+                  </label>
+                </div>
+              <% end %>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="regenerateWithAI()">
+                  ?? Regenerate with AI
+                </button>
+                <%= f.submit "Save Section", class: "btn btn-primary btn-sm" %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
-
-      <!-- NEW: AI Refinement Section -->
-      <div class="border-top pt-3 mb-3" style="flex-shrink: 0;">
-        <label class="form-label small text-muted mb-2">
-          🔄 Refine with AI
-        </label>
-         <textarea 
-  id="ai-refinement-prompt" 
-  class="form-control form-control-sm mb-2" 
-  rows="2" 
-  placeholder="<%= @current_section.section_type == 'Custom Charts' ? 'e.g., Show customer growth trend or Revenue breakdown by tier' : 'e.g., Add more competitive advantages or Make it more concise' %>"></textarea>
-        
-        <div class="d-flex gap-2">
-          <button type="button" class="btn btn-outline-primary btn-sm" onclick="regenerateWithAI()">
-            🔄 Regenerate with AI
-          </button>
-          <%= f.submit "Save Section", class: "btn btn-primary btn-sm" %>
-        </div>
-      </div>
-
-    <% end %>
-  </div>
-</div>
-
-<!-- RIGHT AI CHAT COLUMN - COLLAPSIBLE -->
-<div class="col-md-4 d-flex flex-column position-relative" style="height: 100%; overflow: hidden;" id="ai-assistant-column">
-
-  <!-- Chat Header with Hide Button -->
-  <div class="p-3 border-bottom d-flex justify-content-between align-items-center" style="background:#f8f9fa; flex-shrink:0;">
-    <div>
-      <strong>AI Assistant</strong><br>
-      <small class="text-muted">Context: <%= @current_section.section_type %></small>
-    </div>
-    <button class="btn btn-sm btn-outline-secondary" 
+      <!-- RIGHT AI CHAT COLUMN - COLLAPSIBLE -->
+      <div class="col-md-4 d-flex flex-column position-relative" style="height: 100%; overflow: hidden;" id="ai-assistant-column">
+        <!-- Chat Header with Hide Button -->
+        <div class="p-3 border-bottom d-flex justify-content-between align-items-center" style="background:#f8f9fa; flex-shrink:0;">
+          <div>
+            <strong>AI Assistant</strong><br>
+            <small class="text-muted">Context: <%= @current_section.section_type %></small>
+          </div>
+          <button class="btn btn-sm btn-outline-secondary" 
             onclick="toggleAIAssistant()"
             id="ai-toggle-btn"
             title="Hide AI Assistant"
             style="padding: 4px 10px; font-size: 12px;">
-      Hide »
-    </button>
-  </div>
-
-  <!-- Chat Messages -->
-  <div id="chat-messages"
+            Hide »
+          </button>
+        </div>
+        <!-- Chat Messages -->
+        <div id="chat-messages"
        class="flex-grow-1 p-3"
        style="background:#fafafa; overflow-y:auto;">
-    <% if @chat_session.ai_chat_messages.any? %>
-      <% @chat_session.ai_chat_messages.order(:created_at).each do |message| %>
-        <div class="mb-3 <%= message.role == 'user' ? 'text-end' : '' %>">
-          <div class="d-inline-block p-2 rounded <%= message.role == 'user' ? 'bg-primary text-white' : 'bg-white border' %>"
+          <% if @chat_session.ai_chat_messages.any? %>
+            <% @chat_session.ai_chat_messages.order(:created_at).each do |message| %>
+              <div class="mb-3 <%= message.role == 'user' ? 'text-end' : '' %>">
+                <div class="d-inline-block p-2 rounded <%= message.role == 'user' ? 'bg-primary text-white' : 'bg-white border' %>"
                style="max-width: 90%; text-align: left;">
-            <%= simple_format(message.content) %>
-            <% if message.role == 'assistant' && message.sources.any? %>
-              <div class="small text-muted mt-2 pt-2 border-top">
-                Sources: <%= message.sources.join(', ') %>
+                  <%= simple_format(message.content) %>
+                  <% if message.role == 'assistant' && message.sources.any? %>
+                    <div class="small text-muted mt-2 pt-2 border-top">
+                      Sources: <%= message.sources.join(', ') %>
+                    </div>
+                  <% end %>
+                </div>
+                <div class="small text-muted mt-1"><%= message.created_at.strftime('%H:%M') %></div>
               </div>
             <% end %>
-          </div>
-          <div class="small text-muted mt-1"><%= message.created_at.strftime('%H:%M') %></div>
+          <% else %>
+            <div class="text-center text-muted py-4">
+              <p>Hello! I can help you build this report.</p>
+              <p>Ask me anything about the portfolio company!</p>
+            </div>
+          <% end %>
         </div>
-      <% end %>
-    <% else %>
-      <div class="text-center text-muted py-4">
-        <p>Hello! I can help you build this report.</p>
-        <p>Ask me anything about the portfolio company!</p>
-      </div>
-    <% end %>
-  </div>
-
-  <!-- Chat Input -->
-  <div class="p-3 border-top" style="flex-shrink:0;">
-    <div class="mb-2">
-      <small class="text-muted">Quick actions:</small><br>
-      <button class="btn btn-sm btn-outline-secondary mt-1"
+        <!-- Chat Input -->
+        <div class="p-3 border-top" style="flex-shrink:0;">
+          <div class="mb-2">
+            <small class="text-muted">Quick actions:</small><br>
+            <button class="btn btn-sm btn-outline-secondary mt-1"
               onclick="sendMessage('What was Q3 revenue?')">
-        Q3 revenue?
-      </button>
-      <button class="btn btn-sm btn-outline-secondary mt-1"
+              Q3 revenue?
+            </button>
+            <button class="btn btn-sm btn-outline-secondary mt-1"
               onclick="sendMessage('Show key risks')">
-        Key risks
-      </button>
+              Key risks
+            </button>
+          </div>
+          <div class="input-group input-group-sm">
+            <input type="text" id="chat-input" class="form-control" placeholder="Ask about the portfolio...">
+            <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="input-group input-group-sm">
-      <input type="text" id="chat-input" class="form-control" placeholder="Ask about the portfolio...">
-      <button class="btn btn-primary" onclick="sendMessage()">Send</button>
-    </div>
-  </div>
-
-</div>
-</div>
-<!-- End of AI Assistant Column -->
-
-<!-- Expand Button - Right edge, vertically centered, smaller -->
-<button class="btn btn-primary" 
+    <!-- End of AI Assistant Column -->
+    <!-- Expand Button - Right edge, vertically centered, smaller -->
+    <button class="btn btn-primary" 
         onclick="toggleAIAssistant()"
         id="ai-expand-btn"
         style="position: fixed; 
@@ -216,607 +185,602 @@
                letter-spacing: 1px;
                box-shadow: 0 3px 8px rgba(0,0,0,0.2);
                border-radius: 6px;">
-  AI ASSISTANT &#171;
-</button>
+      AI ASSISTANT &#171;
+    </button>
+    <script>
+      const reportId      = <%= @report.id %>;
+      const sectionId     = <%= @current_section.id %>;
+      const chatSessionId = <%= @chat_session.id %>;
+
+      // Add this inside your existing <script> tag
+      document.addEventListener('DOMContentLoaded', function() {
+      renderAllCharts();
+      });
 
 
-<script>
-  const reportId      = <%= @report.id %>;
-  const sectionId     = <%= @current_section.id %>;
-  const chatSessionId = <%= @chat_session.id %>;
+      function renderAllCharts() {
+      const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
 
-  // Add this inside your existing <script> tag
-document.addEventListener('DOMContentLoaded', function() {
-  renderAllCharts();
-});
+      chartPlaceholders.forEach((placeholder, index) => {
+        const chartConfig = placeholder.getAttribute('data-chart-config');
+        let chartType = placeholder.getAttribute('data-chart-type') || 'bar';
 
+        if (!chartConfig) return;
 
-function renderAllCharts() {
-  const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
-  
-  chartPlaceholders.forEach((placeholder, index) => {
-    const chartConfig = placeholder.getAttribute('data-chart-config');
-    let chartType = placeholder.getAttribute('data-chart-type') || 'bar';
-    
-    if (!chartConfig) return;
-    
-    try {
-      const data = JSON.parse(chartConfig);
-      
-      // Convert 'area' to 'line' with fill
-      if (chartType === 'area') {
-        chartType = 'line';
-        // Add fill property to all datasets
-        if (data.datasets) {
-          data.datasets.forEach(dataset => {
-            dataset.fill = true;
+        try {
+          const data = JSON.parse(chartConfig);
+
+          // Convert 'area' to 'line' with fill
+          if (chartType === 'area') {
+            chartType = 'line';
+            // Add fill property to all datasets
+            if (data.datasets) {
+              data.datasets.forEach(dataset => {
+                dataset.fill = true;
+              });
+            }
+          }
+
+          // Clear placeholder and create canvas
+          placeholder.innerHTML = '';
+          const canvas = document.createElement('canvas');
+          canvas.id = `chart-${index}`;
+          placeholder.appendChild(canvas);
+
+          // Create the chart
+          new Chart(canvas, {
+            type: chartType,
+            data: data,
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'top'
+                }
+              },
+              scales: chartType !== 'pie' && chartType !== 'doughnut' ? {
+                y: {
+                  beginAtZero: true
+                }
+              } : {}
+            }
+          });
+
+          console.log(`Chart ${index} rendered successfully`);
+        } catch (error) {
+          console.error(`Error rendering chart ${index}:`, error);
+          placeholder.innerHTML = `<div style="color: red;">Error rendering chart: ${error.message}</div>`;
+        }
+      });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        // Scroll chat to bottom
+        const chatMessages = document.getElementById('chat-messages');
+        if (chatMessages) {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Enter key sends message
+        const chatInput = document.getElementById('chat-input');
+        if (chatInput) {
+          chatInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              sendMessage();
+            }
           });
         }
+
+        // Copy HTML from contenteditable into hidden field on submit
+        const sectionForm = document.getElementById('section-form');
+        if (sectionForm) {
+          sectionForm.addEventListener('submit', function () {
+            const htmlContent = document.getElementById('report-content').innerHTML;
+            document.getElementById('content-hidden-field').value = htmlContent;
+          });
+        }
+      });
+
+      // Remove flash after 5 seconds
+      var flash = document.querySelector('.ai-flash');
+      if (flash) {
+      setTimeout(function() {
+        flash.remove();
+      }, 5000);
       }
-      
-      // Clear placeholder and create canvas
-      placeholder.innerHTML = '';
-      const canvas = document.createElement('canvas');
-      canvas.id = `chart-${index}`;
-      placeholder.appendChild(canvas);
-      
-      // Create the chart
-      new Chart(canvas, {
-        type: chartType,
-        data: data,
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          plugins: {
-            legend: {
-              display: true,
-              position: 'top'
-            }
+
+      // Master web search toggle
+      async function toggleMasterWebSearch(enabled) {
+      try {
+        const response = await fetch('/ai_portfolio_reports/' + reportId + '/toggle_master_web_search', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
           },
-          scales: chartType !== 'pie' && chartType !== 'doughnut' ? {
-            y: {
-              beginAtZero: true
-            }
-          } : {}
-        }
-      });
-      
-      console.log(`Chart ${index} rendered successfully`);
-    } catch (error) {
-      console.error(`Error rendering chart ${index}:`, error);
-      placeholder.innerHTML = `<div style="color: red;">Error rendering chart: ${error.message}</div>`;
-    }
-  });
-}
+          body: JSON.stringify({ enabled: enabled })
+        });
 
-  document.addEventListener('DOMContentLoaded', function () {
-    // Scroll chat to bottom
-    const chatMessages = document.getElementById('chat-messages');
-    if (chatMessages) {
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
+        const data = await response.json();
 
-    // Enter key sends message
-    const chatInput = document.getElementById('chat-input');
-    if (chatInput) {
-      chatInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
-    }
+        if (data.success) {
+          // Update UI
+          updateWebSearchUI(enabled);
 
-    // Copy HTML from contenteditable into hidden field on submit
-    const sectionForm = document.getElementById('section-form');
-    if (sectionForm) {
-      sectionForm.addEventListener('submit', function () {
-        const htmlContent = document.getElementById('report-content').innerHTML;
-        document.getElementById('content-hidden-field').value = htmlContent;
-      });
-    }
-  });
-
-// Remove flash after 5 seconds
-var flash = document.querySelector('.ai-flash');
-if (flash) {
-  setTimeout(function() {
-    flash.remove();
-  }, 5000);
-}
-
-// Master web search toggle
-async function toggleMasterWebSearch(enabled) {
-  try {
-    const response = await fetch('/ai_portfolio_reports/' + reportId + '/toggle_master_web_search', {
-      method: 'PATCH',
-      headers: { 
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-      },
-      body: JSON.stringify({ enabled: enabled })
-    });
-
-    const data = await response.json();
-    
-    if (data.success) {
-      // Update UI
-      updateWebSearchUI(enabled);
-      
-      // Show notification
-      const message = enabled ? 'Web search enabled for all sections' : 'Web search disabled globally';
-      showNotification(message, 'success');
-    } else {
-      alert('Failed to toggle web search');
-      // Revert checkbox
-      document.getElementById('masterWebSearchToggle').checked = !enabled;
-    }
-  } catch (error) {
-    console.error(error);
-    alert('Error toggling web search');
-  }
-}
-
-function updateWebSearchUI(enabled) {
-  const icons = document.querySelectorAll('.web-search-icon');
-  
-  icons.forEach(icon => {
-    if (enabled) {
-      icon.style.pointerEvents = 'auto';
-      icon.style.opacity = icon.classList.contains('active') ? '1' : '0.3';
-      icon.title = icon.classList.contains('active') ? 'Web search enabled' : 'Click to enable web search';
-    } else {
-      icon.style.pointerEvents = 'none';
-      icon.style.opacity = '0.1';
-      icon.title = 'Web search disabled globally';
-    }
-  });
-}
-
-function showNotification(message, type) {
-  const notification = document.createElement('div');
-  notification.className = `alert alert-${type} position-fixed`;
-  notification.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
-  notification.textContent = message;
-  document.body.appendChild(notification);
-  
-  setTimeout(() => notification.remove(), 3000);
-}
-
-// Initialize UI on page load
-document.addEventListener('DOMContentLoaded', function() {
-  const masterEnabled = document.getElementById('masterWebSearchToggle').checked;
-  updateWebSearchUI(masterEnabled);
-});
-
-// Toggle web search for a section
-async function toggleWebSearch(event, toggleSectionId) {
-  event.preventDefault();
-  event.stopPropagation();
-
-  // Check if master web search is enabled
-  const masterToggle = document.getElementById('masterWebSearchToggle');
-  if (!masterToggle.checked) {
-    alert('Please enable web search globally first using the master toggle.');
-    return;
-  }
-  
-  const icon = event.currentTarget;  // CHANGED from event.target
-  const isCurrentSection = (toggleSectionId === sectionId);
-  
-  // Show loading state for current section
-  if (isCurrentSection) {
-    icon.style.opacity = '0.5';
-    icon.style.pointerEvents = 'none';
-    
-    // Show loading message below section name
-    const sectionHeader = document.querySelector('.section-header');
-    const existingStatus = sectionHeader.querySelector('.web-search-status');
-    if (existingStatus) existingStatus.remove();
-    
-    const loadingMsg = document.createElement('small');
-    loadingMsg.className = 'text-muted web-search-status d-block mt-1';
-    loadingMsg.innerHTML = 'Regenerating section<span class="loading-dots">...</span>';
-    sectionHeader.appendChild(loadingMsg);
-    
-    // Add CSS animation for dots
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes blink {
-        0%, 20% { opacity: 0; }
-        40% { opacity: 1; }
-        100% { opacity: 0; }
-      }
-      .loading-dots {
-        animation: blink 1.4s infinite;
-      }
-    `;
-    document.head.appendChild(style);
-  }
-  
-  try {
-    // Add regenerate=true for current section
-    const url = '/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + toggleSectionId + '/toggle_web_search' +
-                (isCurrentSection ? '?regenerate=true' : '');
-    
-    const response = await fetch(url, {
-      method: 'PATCH',
-      headers: { 
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-      }
-    });
-
-    const data = await response.json();
-    
-    if (data.success) {
-      // If toggling the current section, reload the page to show new content
-      if (isCurrentSection) {
-        window.location.reload();
-      } else {
-        // Toggle the active class for other sections
-        if (data.web_search_enabled) {
-          icon.classList.add('active');
-          icon.style.opacity = '1';
-          icon.title = 'Web search enabled';
+          // Show notification
+          const message = enabled ? 'Web search enabled for all sections' : 'Web search disabled globally';
+          showNotification(message, 'success');
         } else {
-          icon.classList.remove('active');
-          icon.style.opacity = '0.3';
-          icon.title = 'Click to enable web search';
+          alert('Failed to toggle web search');
+          // Revert checkbox
+          document.getElementById('masterWebSearchToggle').checked = !enabled;
         }
+      } catch (error) {
+        console.error(error);
+        alert('Error toggling web search');
       }
-    } else {
-      alert('Failed to toggle web search');
+      }
+
+      function updateWebSearchUI(enabled) {
+      const icons = document.querySelectorAll('.web-search-icon');
+
+      icons.forEach(icon => {
+        if (enabled) {
+          icon.style.pointerEvents = 'auto';
+          icon.style.opacity = icon.classList.contains('active') ? '1' : '0.3';
+          icon.title = icon.classList.contains('active') ? 'Web search enabled' : 'Click to enable web search';
+        } else {
+          icon.style.pointerEvents = 'none';
+          icon.style.opacity = '0.1';
+          icon.title = 'Web search disabled globally';
+        }
+      });
+      }
+
+      function showNotification(message, type) {
+      const notification = document.createElement('div');
+      notification.className = `alert alert-${type} position-fixed`;
+      notification.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      setTimeout(() => notification.remove(), 3000);
+      }
+
+      // Initialize UI on page load
+      document.addEventListener('DOMContentLoaded', function() {
+      const masterEnabled = document.getElementById('masterWebSearchToggle').checked;
+      updateWebSearchUI(masterEnabled);
+      });
+
+      // Toggle web search for a section
+      async function toggleWebSearch(event, toggleSectionId) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      // Check if master web search is enabled
+      const masterToggle = document.getElementById('masterWebSearchToggle');
+      if (!masterToggle.checked) {
+        alert('Please enable web search globally first using the master toggle.');
+        return;
+      }
+
+      const icon = event.currentTarget;  // CHANGED from event.target
+      const isCurrentSection = (toggleSectionId === sectionId);
+
+      // Show loading state for current section
       if (isCurrentSection) {
-        icon.style.opacity = '1';
-        icon.style.pointerEvents = 'auto';
-        // Remove loading message
-        const loadingMsg = document.querySelector('.web-search-status');
-        if (loadingMsg) loadingMsg.remove();
+        icon.style.opacity = '0.5';
+        icon.style.pointerEvents = 'none';
+
+        // Show loading message below section name
+        const sectionHeader = document.querySelector('.section-header');
+        const existingStatus = sectionHeader.querySelector('.web-search-status');
+        if (existingStatus) existingStatus.remove();
+
+        const loadingMsg = document.createElement('small');
+        loadingMsg.className = 'text-muted web-search-status d-block mt-1';
+        loadingMsg.innerHTML = 'Regenerating section<span class="loading-dots">...</span>';
+        sectionHeader.appendChild(loadingMsg);
+
+        // Add CSS animation for dots
+        const style = document.createElement('style');
+        style.textContent = `
+          @keyframes blink {
+            0%, 20% { opacity: 0; }
+            40% { opacity: 1; }
+            100% { opacity: 0; }
+          }
+          .loading-dots {
+            animation: blink 1.4s infinite;
+          }
+        `;
+        document.head.appendChild(style);
       }
-    }
-  } catch (error) {
-    console.error(error);
-    alert('Error toggling web search');
-    if (isCurrentSection) {
-      icon.style.opacity = '1';
-      icon.style.pointerEvents = 'auto';
-      // Remove loading message
-      const loadingMsg = document.querySelector('.web-search-status');
-      if (loadingMsg) loadingMsg.remove();
-    }
-  }
-}
-  async function sendMessage(text) {
-    const input   = document.getElementById('chat-input');
-    const message = text || (input ? input.value.trim() : '');
 
-    if (!message) return;
-    if (input) input.value = '';
+      try {
+        // Add regenerate=true for current section
+        const url = '/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + toggleSectionId + '/toggle_web_search' +
+                    (isCurrentSection ? '?regenerate=true' : '');
 
-    addMessageToUI('user', message);
-    addMessageToUI('assistant', 'Thinking...', [], true);
+        const response = await fetch(url, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          }
+        });
 
-    try {
-      const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_chat_messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message:        message,
-          section_id:     sectionId,
-          chat_session_id: chatSessionId
-        })
-      });
+        const data = await response.json();
 
-      const data = await response.json();
-      removeLoadingMessage();
-
-      if (data.success) {
-        addMessageToUI('assistant', data.response, data.sources || []);
-      } else {
-        addMessageToUI('assistant', 'Error: ' + (data.error || 'Something went wrong'));
-      }
-    } catch (error) {
-      console.error(error);
-      removeLoadingMessage();
-      addMessageToUI('assistant', 'Connection error. Is Python backend running on port 8000?');
-    }
-  }
-
-  function addMessageToUI(role, content, sources, isLoading) {
-    const container  = document.getElementById('chat-messages');
-    if (!container) return;
-
-    const time       = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    const sourcesHtml = (sources && sources.length > 0)
-      ? '<div class="small text-muted mt-2 pt-2 border-top">Sources: ' + sources.join(', ') + '</div>'
-      : '';
-
-    const addBtn = '';
-
-    const loadClass = isLoading ? 'loading-message' : '';
-    const bgClass   = (role === 'user') ? 'bg-primary text-white' : 'bg-white border';
-    const alignClass = (role === 'user') ? 'text-end' : '';
-
-    const html =
-      '<div class="mb-3 ' + alignClass + ' ' + loadClass + '">' +
-        '<div class="d-inline-block p-2 rounded ' + bgClass + '" style="max-width: 90%; text-align: left;">' +
-          content.replace(/\n/g, '<br>') +
-          sourcesHtml +
-          addBtn +
-        '</div>' +
-        '<div class="small text-muted mt-1">' + time + '</div>' +
-      '</div>';
-
-    container.insertAdjacentHTML('beforeend', html);
-    container.scrollTop = container.scrollHeight;
-  }
-
-  function removeLoadingMessage() {
-    const el = document.querySelector('.loading-message');
-    if (el) el.remove();
-  }
-
-  async function addToReport(content) {
-    try {
-      const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + sectionId + '/add_content', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: content })
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        if (confirm('Content added! Reload to see changes?')) {
-          window.location.reload();
+        if (data.success) {
+          // If toggling the current section, reload the page to show new content
+          if (isCurrentSection) {
+            window.location.reload();
+          } else {
+            // Toggle the active class for other sections
+            if (data.web_search_enabled) {
+              icon.classList.add('active');
+              icon.style.opacity = '1';
+              icon.title = 'Web search enabled';
+            } else {
+              icon.classList.remove('active');
+              icon.style.opacity = '0.3';
+              icon.title = 'Click to enable web search';
+            }
+          }
+        } else {
+          alert('Failed to toggle web search');
+          if (isCurrentSection) {
+            icon.style.opacity = '1';
+            icon.style.pointerEvents = 'auto';
+            // Remove loading message
+            const loadingMsg = document.querySelector('.web-search-status');
+            if (loadingMsg) loadingMsg.remove();
+          }
         }
-      } else {
-        alert('Failed to add content');
+      } catch (error) {
+        console.error(error);
+        alert('Error toggling web search');
+        if (isCurrentSection) {
+          icon.style.opacity = '1';
+          icon.style.pointerEvents = 'auto';
+          // Remove loading message
+          const loadingMsg = document.querySelector('.web-search-status');
+          if (loadingMsg) loadingMsg.remove();
+        }
       }
-    } catch (error) {
-      console.error(error);
-      alert('Error adding content');
-    }
-  }
+      }
+      async function sendMessage(text) {
+        const input   = document.getElementById('chat-input');
+        const message = text || (input ? input.value.trim() : '');
 
-async function regenerateWithAI() {
-  const prompt = document.getElementById('ai-refinement-prompt').value.trim();
-  const currentContent = document.getElementById('report-content').innerHTML;
-  
-  if (!prompt) {
-    alert('Please enter a prompt describing how you want to refine the content');
-    return;
-  }
-  
-  // Show loading state
-  const button = event.target;
-  const originalText = button.innerHTML;
-  button.disabled = true;
-  button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Generating...';
-  
-  try {
-    const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + sectionId + '/regenerate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        prompt: prompt,
-        current_content: currentContent,
-        section_type: '<%= @current_section.section_type %>'
-      })
-    });
-    
-    const data = await response.json();
-    
-    if (data.success) {
-      // Update the content area with new content
-      document.getElementById('report-content').innerHTML = data.content;
-      
-      // Clear the prompt
-      document.getElementById('ai-refinement-prompt').value = '';
+        if (!message) return;
+        if (input) input.value = '';
 
-      renderAllCharts();
-      
-      // Show success message
-      //alert('Content regenerated! Review and click Save Section to keep changes.');
-    } else {
-      alert('Error: ' + (data.error || 'Failed to regenerate content'));
-    }
-  } catch (error) {
-    console.error(error);
-    alert('Connection error. Is Python backend running on port 8000?');
-  } finally {
-    // Restore button state
-    button.disabled = false;
-    button.innerHTML = originalText;
-  }
-}  
+        addMessageToUI('user', message);
+        addMessageToUI('assistant', 'Thinking...', [], true);
 
+        try {
+          const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_chat_messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message:        message,
+              section_id:     sectionId,
+              chat_session_id: chatSessionId
+            })
+          });
 
-function toggleAIAssistant() {
-  const aiColumn = document.getElementById('ai-assistant-column');
-  const editorColumn = document.getElementById('editor-column');
-  const expandBtn = document.getElementById('ai-expand-btn');
-  
-  if (aiColumn.style.display === 'none') {
-    // Expand AI Assistant
-    aiColumn.style.display = 'flex';
-    editorColumn.classList.remove('col-md-9');
-    editorColumn.classList.add('col-md-5');
-    expandBtn.style.display = 'none';
-  } else {
-    // Collapse AI Assistant
-    aiColumn.style.display = 'none';
-    editorColumn.classList.remove('col-md-5');
-    editorColumn.classList.add('col-md-9');
-    expandBtn.style.display = 'block';
-  }
-}
-</script>
+          const data = await response.json();
+          removeLoadingMessage();
 
-<style>
-.ai-flash {
-  animation: fadeOut 0.5s ease 4.5s forwards;
-}
+          if (data.success) {
+            addMessageToUI('assistant', data.response, data.sources || []);
+          } else {
+            addMessageToUI('assistant', 'Error: ' + (data.error || 'Something went wrong'));
+          }
+        } catch (error) {
+          console.error(error);
+          removeLoadingMessage();
+          addMessageToUI('assistant', 'Connection error. Is Python backend running on port 8000?');
+        }
+      }
 
-@keyframes fadeOut {
-  to { opacity: 0; }
-}
+      function addMessageToUI(role, content, sources, isLoading) {
+        const container  = document.getElementById('chat-messages');
+        if (!container) return;
 
-/* Target the content area more specifically */
-#report-content .trix-content {
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1.5 !important;
-}
+        const time       = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        const sourcesHtml = (sources && sources.length > 0)
+          ? '<div class="small text-muted mt-2 pt-2 border-top">Sources: ' + sources.join(', ') + '</div>'
+          : '';
 
-/* Make placeholder text darker */
-#ai-refinement-prompt::placeholder {
-  color: #7c8fac !important;
-  opacity: 1 !important;
-}
+        const addBtn = '';
 
-#report-content .trix-content > *:first-child {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
+        const loadClass = isLoading ? 'loading-message' : '';
+        const bgClass   = (role === 'user') ? 'bg-primary text-white' : 'bg-white border';
+        const alignClass = (role === 'user') ? 'text-end' : '';
 
-/* Styled headings with colors */
-#report-content h1,
-#report-content h2,
-#report-content h3 {
-  font-weight: 600 !important;
-  margin-top: 1.2rem !important;
-  margin-bottom: 0.8rem !important;
-  line-height: 1.3 !important;
-}
+        const html =
+          '<div class="mb-3 ' + alignClass + ' ' + loadClass + '">' +
+            '<div class="d-inline-block p-2 rounded ' + bgClass + '" style="max-width: 90%; text-align: left;">' +
+              content.replace(/\n/g, '<br>') +
+              sourcesHtml +
+              addBtn +
+            '</div>' +
+            '<div class="small text-muted mt-1">' + time + '</div>' +
+          '</div>';
 
-#report-content h1 {
-  color: #1e40af !important; /* Deep blue */
-  font-size: 1.75rem !important;
-  border-bottom: 3px solid #3b82f6 !important;
-  padding-bottom: 0.5rem !important;
-}
+        container.insertAdjacentHTML('beforeend', html);
+        container.scrollTop = container.scrollHeight;
+      }
 
-#report-content h2 {
-  color: #2563eb !important; /* Medium blue */
-  font-size: 1.5rem !important;
-  border-bottom: 2px solid #60a5fa !important;
-  padding-bottom: 0.4rem !important;
-}
+      function removeLoadingMessage() {
+        const el = document.querySelector('.loading-message');
+        if (el) el.remove();
+      }
 
-#report-content h3 {
-  color: #3b82f6 !important; /* Bright blue */
-  font-size: 1.25rem !important;
-  border-left: 4px solid #3b82f6 !important;
-  padding-left: 0.75rem !important;
-}
+      async function addToReport(content) {
+        try {
+          const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + sectionId + '/add_content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: content })
+          });
 
-#report-content h3:first-child {
-  margin-top: 0 !important;
-}
+          const data = await response.json();
+          if (data.success) {
+            if (confirm('Content added! Reload to see changes?')) {
+              window.location.reload();
+            }
+          } else {
+            alert('Failed to add content');
+          }
+        } catch (error) {
+          console.error(error);
+          alert('Error adding content');
+        }
+      }
 
-#report-content p {
-  margin-bottom: 0.75rem !important;
-  color: #374151 !important;
-  line-height: 1.6 !important;
-}
+      async function regenerateWithAI() {
+      const prompt = document.getElementById('ai-refinement-prompt').value.trim();
+      const currentContent = document.getElementById('report-content').innerHTML;
 
-/* Style lists */
-#report-content ul,
-#report-content ol {
-  margin-bottom: 1rem !important;
-  padding-left: 1.5rem !important;
-}
+      if (!prompt) {
+        alert('Please enter a prompt describing how you want to refine the content');
+        return;
+      }
 
-#report-content ul {
-  list-style-type: disc !important;
-}
+      // Show loading state
+      const button = event.target;
+      const originalText = button.innerHTML;
+      button.disabled = true;
+      button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Generating...';
 
-#report-content ul ul {
-  list-style-type: circle !important;
-  margin-top: 0.5rem !important;
-}
+      try {
+        const response = await fetch('/ai_portfolio_reports/' + reportId + '/ai_report_sections/' + sectionId + '/regenerate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: prompt,
+            current_content: currentContent,
+            section_type: '<%= @current_section.section_type %>'
+          })
+        });
 
-#report-content ul ul ul {
-  list-style-type: square !important;
-}
+        const data = await response.json();
 
-#report-content ol {
-  list-style-type: decimal !important;
-}
+        if (data.success) {
+          // Update the content area with new content
+          document.getElementById('report-content').innerHTML = data.content;
 
-#report-content li {
-  margin-bottom: 0.5rem !important;
-  color: #374151 !important;
-  padding-left: 0.5rem !important;
-  line-height: 1.6 !important;
-}
+          // Clear the prompt
+          document.getElementById('ai-refinement-prompt').value = '';
 
-#report-content li::marker {
-  color: #3b82f6 !important;
-  font-weight: bold !important;
-}
+          renderAllCharts();
 
-/* Style strong/bold text */
-#report-content strong,
-#report-content b {
-  color: #1f2937 !important;
-  font-weight: 600 !important;
-}
-
-/* Web Search Icon Styles */
-.web-search-icon {
-  opacity: 0.3;
-  transition: opacity 0.2s ease;
-}
-
-.web-search-icon:hover {
-  opacity: 0.6;
-}
-
-.web-search-icon.active {
-  opacity: 1;
-}
-
-/* Completed Section Styling - Always green when saved */
-/* Completed Section Styling - Always green when saved */
-.section-completed a {
-  background-color: #28a745 !important;
-  border-color: #28a745 !important;
-  color: white !important;
-}
-#ai-assistant-column,
-#editor-column {
-  transition: all 0.3s ease;
-}
-
-#ai-toggle-btn:hover,
-#ai-expand-btn:hover {
-  transform: scale(1.1);
-  transition: transform 0.2s;
-}
-```
-
----
-
-## **How It Works:**
-
-### **Normal View (AI Visible):**
-```
-+--------------------------------------+
-¦  Nav    ¦   Editor     ¦ AI Assistant¦
-¦  (3)    ¦     (5)      ¦     (4)     ¦
-+--------------------------------------+
-                            [« button]
-```
-
-### **Collapsed View (AI Hidden):**
-```
-+--------------------------------------+
-¦  Nav    ¦   Editor (expanded)        ¦ [» button]
-¦  (3)    ¦          (9)               ¦
-+--------------------------------------+
-/* Selected but not completed - Blue (default behavior, no change needed) */
-</style>
+          // Show success message
+          //alert('Content regenerated! Review and click Save Section to keep changes.');
+        } else {
+          alert('Error: ' + (data.error || 'Failed to regenerate content'));
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Connection error. Is Python backend running on port 8000?');
+      } finally {
+        // Restore button state
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
+      }
 
 
+      function toggleAIAssistant() {
+      const aiColumn = document.getElementById('ai-assistant-column');
+      const editorColumn = document.getElementById('editor-column');
+      const expandBtn = document.getElementById('ai-expand-btn');
+
+      if (aiColumn.style.display === 'none') {
+        // Expand AI Assistant
+        aiColumn.style.display = 'flex';
+        editorColumn.classList.remove('col-md-9');
+        editorColumn.classList.add('col-md-5');
+        expandBtn.style.display = 'none';
+      } else {
+        // Collapse AI Assistant
+        aiColumn.style.display = 'none';
+        editorColumn.classList.remove('col-md-5');
+        editorColumn.classList.add('col-md-9');
+        expandBtn.style.display = 'block';
+      }
+      }
+    </script>
+    <style>
+      .ai-flash {
+        animation: fadeOut 0.5s ease 4.5s forwards;
+      }
+
+      @keyframes fadeOut {
+        to { opacity: 0; }
+      }
+
+      /* Target the content area more specifically */
+      #report-content .trix-content {
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.5 !important;
+      }
+
+      /* Make placeholder text darker */
+      #ai-refinement-prompt::placeholder {
+        color: #7c8fac !important;
+        opacity: 1 !important;
+      }
+
+      #report-content .trix-content > *:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+
+      /* Styled headings with colors */
+      #report-content h1,
+      #report-content h2,
+      #report-content h3 {
+        font-weight: 600 !important;
+        margin-top: 1.2rem !important;
+        margin-bottom: 0.8rem !important;
+        line-height: 1.3 !important;
+      }
+
+      #report-content h1 {
+        color: #1e40af !important; /* Deep blue */
+        font-size: 1.75rem !important;
+        border-bottom: 3px solid #3b82f6 !important;
+        padding-bottom: 0.5rem !important;
+      }
+
+      #report-content h2 {
+        color: #2563eb !important; /* Medium blue */
+        font-size: 1.5rem !important;
+        border-bottom: 2px solid #60a5fa !important;
+        padding-bottom: 0.4rem !important;
+      }
+
+      #report-content h3 {
+        color: #3b82f6 !important; /* Bright blue */
+        font-size: 1.25rem !important;
+        border-left: 4px solid #3b82f6 !important;
+        padding-left: 0.75rem !important;
+      }
+
+      #report-content h3:first-child {
+        margin-top: 0 !important;
+      }
+
+      #report-content p {
+        margin-bottom: 0.75rem !important;
+        color: #374151 !important;
+        line-height: 1.6 !important;
+      }
+
+      /* Style lists */
+      #report-content ul,
+      #report-content ol {
+        margin-bottom: 1rem !important;
+        padding-left: 1.5rem !important;
+      }
+
+      #report-content ul {
+        list-style-type: disc !important;
+      }
+
+      #report-content ul ul {
+        list-style-type: circle !important;
+        margin-top: 0.5rem !important;
+      }
+
+      #report-content ul ul ul {
+        list-style-type: square !important;
+      }
+
+      #report-content ol {
+        list-style-type: decimal !important;
+      }
+
+      #report-content li {
+        margin-bottom: 0.5rem !important;
+        color: #374151 !important;
+        padding-left: 0.5rem !important;
+        line-height: 1.6 !important;
+      }
+
+      #report-content li::marker {
+        color: #3b82f6 !important;
+        font-weight: bold !important;
+      }
+
+      /* Style strong/bold text */
+      #report-content strong,
+      #report-content b {
+        color: #1f2937 !important;
+        font-weight: 600 !important;
+      }
+
+      /* Web Search Icon Styles */
+      .web-search-icon {
+        opacity: 0.3;
+        transition: opacity 0.2s ease;
+      }
+
+      .web-search-icon:hover {
+        opacity: 0.6;
+      }
+
+      .web-search-icon.active {
+        opacity: 1;
+      }
+
+      /* Completed Section Styling - Always green when saved */
+      /* Completed Section Styling - Always green when saved */
+      .section-completed a {
+        background-color: #28a745 !important;
+        border-color: #28a745 !important;
+        color: white !important;
+      }
+      #ai-assistant-column,
+      #editor-column {
+        transition: all 0.3s ease;
+      }
+
+      #ai-toggle-btn:hover,
+      #ai-expand-btn:hover {
+        transform: scale(1.1);
+        transition: transform 0.2s;
+      }
+      ```
+
+      ---
+
+      ## **How It Works:**
+
+      ### **Normal View (AI Visible):**
+      ```
+      +--------------------------------------+
+      ¦  Nav    ¦   Editor     ¦ AI Assistant¦
+      ¦  (3)    ¦     (5)      ¦     (4)     ¦
+      +--------------------------------------+
+                                  [« button]
+      ```
+
+      ### **Collapsed View (AI Hidden):**
+      ```
+      +--------------------------------------+
+      ¦  Nav    ¦   Editor (expanded)        ¦ [» button]
+      ¦  (3)    ¦          (9)               ¦
+      +--------------------------------------+
+      /* Selected but not completed - Blue (default behavior, no change needed) */
+    </style>

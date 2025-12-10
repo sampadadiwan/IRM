@@ -1,25 +1,9 @@
 class PortfolioReportAgent < SupportAgentService
-  # PortfolioReportAgent generates professional report sections
-  # for portfolio companies using AI analysis of available documents.
-  #
-  # == Features ==
-  # - Generates specific report sections (Executive Summary, SWOT, etc.)
-  # - Uses document context for data-driven analysis
-  # - Professional formatting with markdown
-  # - Saves directly to ai_report_sections table
-  #
-  # == Usage ==
-  # result = PortfolioReportAgent.call(
-  #   support_agent_id: agent.id,
-  #   target: ai_report_section,
-  #   action: 'generate',
-  #   document_folder_path: "/tmp/test_documents"
-  # )
-
   step :initialize_agent
   step :load_document_context
   step :load_section_template
-  step :generate_section_content
+  step :determine_action        # ? ADD THIS
+  step :generate_or_refine      # ? RENAME THIS
   step :save_section
 
   private
@@ -30,7 +14,7 @@ class PortfolioReportAgent < SupportAgentService
     ctx[:support_agent] = @support_agent
   end
 
-  # Load document context (same as ChatAgent)
+  # Load document context (same as before)
   def load_document_context(ctx, **)
     folder_path = ctx[:document_folder_path]
     
@@ -62,10 +46,30 @@ class PortfolioReportAgent < SupportAgentService
     ctx[:section_type] = section.section_type
     ctx[:template] = get_section_template(section.section_type)
     
-    Rails.logger.info "[PortfolioReportAgent] Generating: #{section.section_type}"
+    Rails.logger.info "[PortfolioReportAgent] Processing: #{section.section_type}"
   end
 
-  # Generate section content using LLM
+  # NEW: Determine if generate or refine
+  def determine_action(ctx, action: 'generate',web_search_enabled: false, **)
+    ctx[:action] = action
+    ctx[:user_prompt] = ctx[:user_prompt] || ""
+    ctx[:current_content] = ctx[:current_content] || ""
+    ctx[:web_search_enabled] = web_search_enabled
+    
+    Rails.logger.info "[PortfolioReportAgent] Action: #{action}"
+    Rails.logger.info "[PortfolioReportAgent] Web search: #{web_search_enabled}"
+  end
+
+  # UPDATED: Generate OR refine based on action
+  def generate_or_refine(ctx, **)
+    if ctx[:action] == 'refine' && ctx[:current_content].present?
+      refine_section_content(ctx)
+    else
+      generate_section_content(ctx)
+    end
+  end
+
+  # Generate section content using LLM (existing)
   def generate_section_content(ctx, **)
     section_type = ctx[:section_type]
     template = ctx[:template]
@@ -84,7 +88,7 @@ class PortfolioReportAgent < SupportAgentService
       report_date: report.report_date
     )
     
-        # Call LLM
+    # Call LLM
     api_key = ENV['OPENAI_API_KEY']
     raise "OpenAI API key not found" unless api_key
 
@@ -98,7 +102,6 @@ class PortfolioReportAgent < SupportAgentService
 
     Rails.logger.info "[PortfolioReportAgent] Calling LLM to generate content..."
 
-    # Use complete method instead of chat
     response = llm.complete(prompt: prompt)
     content = response.completion
 
@@ -107,12 +110,55 @@ class PortfolioReportAgent < SupportAgentService
     Rails.logger.info "[PortfolioReportAgent] Generated #{content.length} characters"
   end
 
+  # NEW: Refine existing content
+  def refine_section_content(ctx, **)
+    section_type = ctx[:section_type]
+    documents = ctx[:documents_context]
+    current_content = ctx[:current_content]
+    user_prompt = ctx[:user_prompt]
+    web_search_enabled = ctx[:web_search_enabled]  # ? ADD THIS
+    section = ctx[:section]
+    
+    report = section.ai_portfolio_report
+    company = report.portfolio_company
+    
+    # Build refinement prompt
+    prompt = build_refinement_prompt(
+      section_type: section_type,
+      current_content: current_content,
+      user_prompt: user_prompt,
+      documents: documents,
+      company_name: company.name,
+      web_search_enabled: web_search_enabled  # ? ADD THIS
+    )
+    
+    # Call LLM
+    api_key = ENV['OPENAI_API_KEY']
+    raise "OpenAI API key not found" unless api_key
+
+    llm = Langchain::LLM::OpenAI.new(
+      api_key: api_key,
+      default_options: { 
+        chat_completion_model_name: ENV['REPORT_AGENT_MODEL'] || 'gpt-4o',
+        temperature: 0.7
+      }
+    )
+
+    Rails.logger.info "[PortfolioReportAgent] Calling LLM to refine content..."
+
+    response = llm.complete(prompt: prompt)
+    content = response.completion
+
+    ctx[:generated_content] = content
+    
+    Rails.logger.info "[PortfolioReportAgent] Refined #{content.length} characters"
+  end
+
   # Save section to database
   def save_section(ctx, section:, generated_content:, **)
     section.update!(
       content_html: generated_content,
-      reviewed: false,  # Analyst needs to review
-      #generated_at: Time.current
+      reviewed: false
     )
     
     Rails.logger.info "[PortfolioReportAgent] Section saved successfully"
@@ -122,7 +168,7 @@ class PortfolioReportAgent < SupportAgentService
 
   # == Helper Methods ==
 
-  # Get section-specific template
+  # Get section-specific template (existing - keep as is)
   def get_section_template(section_type)
     templates = {
       "Company Overview" => {
@@ -150,7 +196,6 @@ class PortfolioReportAgent < SupportAgentService
         structure: ["Main Competitors", "Competitive Advantages", "Market Position"],
         length: "2-3 paragraphs"
       }
-      # Add more templates as needed
     }
     
     templates[section_type] || {
@@ -160,45 +205,81 @@ class PortfolioReportAgent < SupportAgentService
     }
   end
 
+  # Existing generation prompt
   def build_generation_prompt(section_type:, template:, documents:, company_name:, report_date:)
+    prompt = <<~PROMPT
+      You are a professional investment analyst creating a #{section_type} section for a portfolio company report.
+      
+      Company: #{company_name}
+      Report Date: #{report_date}
+      
+      #{documents.present? ? "AVAILABLE DOCUMENTS:\n#{documents}\n" : ""}
+      
+      SECTION REQUIREMENTS:
+      Description: #{template[:description]}
+      Structure: #{template[:structure].join(', ')}
+      Length: #{template[:length]}
+      
+      CRITICAL - OUTPUT FORMAT:
+      - Return ONLY HTML content (no markdown)
+      - Use proper HTML tags: <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
+      - Use <h2> for main section headers
+      - Use <h3> for subsections
+      - Use <ul><li> for bullet points
+      - Use <p> for paragraphs
+      - Make it visually professional and well-formatted
+      
+      INSTRUCTIONS:
+      1. Write in professional, analytical tone
+      2. Use data from documents when available
+      3. Be specific and factual
+      4. Format in HTML (NOT markdown)
+      5. Include relevant metrics and numbers
+      6. #{documents.present? ? "Base analysis on provided documents" : "Use general industry knowledge"}
+      
+      Generate the #{section_type} section now in HTML format:
+    PROMPT
+    
+    prompt
+  end
+
+  def build_refinement_prompt(section_type:, current_content:, user_prompt:, documents:, company_name:, web_search_enabled: false)
   prompt = <<~PROMPT
-    You are a professional investment analyst creating a #{section_type} section for a portfolio company report.
+    You are a professional investment analyst refining a #{section_type} section for a portfolio company report.
     
     Company: #{company_name}
-    Report Date: #{report_date}
     
-    #{documents.present? ? "AVAILABLE DOCUMENTS:\n#{documents}\n" : ""}
+    CURRENT CONTENT (HTML):
+    #{current_content}
     
-    SECTION REQUIREMENTS:
-    Description: #{template[:description]}
-    Structure: #{template[:structure].join(', ')}
-    Length: #{template[:length]}
+    USER REQUEST:
+    #{user_prompt}
+    
+    #{documents.present? ? "AVAILABLE DOCUMENTS FOR REFERENCE:\n#{documents}\n" : ""}
+    
+    #{web_search_enabled ? "IMPORTANT: Use real-time web search to find the latest information about #{company_name}. Include current news, recent developments, and up-to-date market data.\n" : ""}
     
     CRITICAL - OUTPUT FORMAT:
-    - Return ONLY HTML content (no markdown)
+    - Return ONLY HTML content (no markdown, no code blocks)
     - Use proper HTML tags: <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
-    - Use <h2> for main section headers
-    - Use <h3> for subsections
-    - Use <ul><li> for bullet points
-    - Use <p> for paragraphs
-    - Include proper line breaks with <br> if needed
-    - Make it visually professional and well-formatted
+    - Maintain professional formatting
     
     INSTRUCTIONS:
-    1. Write in professional, analytical tone
-    2. Use data from documents when available
-    3. Be specific and factual
-    4. Format in HTML (NOT markdown)
-    5. Include relevant metrics and numbers
-    6. #{documents.present? ? "Base analysis on provided documents" : "Use general industry knowledge"}
+    1. Carefully read the current content and user request
+    2. Apply the requested changes while maintaining professional quality
+    3. Preserve important information unless asked to remove it
+    4. Add new information if requested
+    5. Adjust tone, length, or focus as requested
+    6. Use document data if relevant to the request
+    #{web_search_enabled ? "7. Search the web for latest information and incorporate recent findings" : ""}
     
-    Generate the #{section_type} section now in HTML format:
+    Refine the content according to the user's request now:
   PROMPT
   
   prompt
 end
 
-  # Load documents from folder (same as ChatAgent)
+  # Load documents from folder (existing - keep as is)
   def load_documents_from_folder(folder_path)
     return "" unless folder_path.present? && Dir.exist?(folder_path)
     
@@ -228,7 +309,7 @@ end
     format_documents_for_llm(documents)
   end
 
-  # Extract text from file
+  # Extract text from file (existing - keep as is)
   def extract_text_from_file(file_path, extension)
     case extension
     when '.txt', '.md'
@@ -240,7 +321,7 @@ end
     end
   end
 
-  # Extract PDF text
+  # Extract PDF text (existing - keep as is)
   def extract_pdf_text(file_path)
     require 'pdf-reader'
     
@@ -252,7 +333,7 @@ end
     "Error extracting PDF: #{e.message}"
   end
 
-  # Format documents for LLM
+  # Format documents for LLM (existing - keep as is)
   def format_documents_for_llm(documents)
     return "No documents available." if documents.empty?
     

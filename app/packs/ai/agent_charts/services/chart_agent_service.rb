@@ -12,29 +12,41 @@ class ChartAgentService
   end
 
   def build_system_msg
-    <<~SYS
-      You are a Chart.js config generator.
-      TASK: Output ONLY a single JSON object representing a valid Chart.js config:
-        {
-          "type": "<one of: #{ALLOWED_TYPES.join(', ')}>",
-          "data": {
-            "labels": [<strings or numbers>],
-            "datasets": [
-              {"label": "<name>", "data": [<numbers>], "borderWidth": 1}
-            ]
-          },
-          "options": { }
-        }
-      RULES:
-      - No markdown, no code fences, no commentary—just JSON.
-      - If CSV files are provided, use them as primary data; if JSON is provided, merge it sensibly.
-      - If both are provided, reconcile them (CSV for series, JSON for metadata/options).
-      - If multiple CSV files are provided, treat them as separate data sources that can be combined or compared as needed to fulfill the prompt.
-      - Ensure arrays are equal length where required by Chart.js.
-      - Prefer sensible defaults; do not invent extra fields not in Chart.js.
-      - If labels are dates, keep them as strings in ISO-8601 where possible.
-    SYS
-  end
+  <<~SYS
+    You are a Chart.js config generator.
+    TASK: Output ONLY a single JSON object representing a valid Chart.js config:
+      {
+        "type": "<one of: #{ALLOWED_TYPES.join(', ')}>",
+        "data": {
+          "labels": [<strings or numbers>],
+          "datasets": [
+            {
+              "label": "<name>",
+              "data": [<numbers>],
+              "backgroundColor": [<array of colors for pie/bar> or <single color for line>],
+              "borderColor": "<color>",
+              "borderWidth": 2,
+              "fill": false
+            }
+          ]
+        },
+        "options": { }
+      }
+    RULES:
+    - No markdown, no code fences, no commentaryjust JSON.
+    - IMPORTANT: Always include vibrant colors in backgroundColor and borderColor
+    - For pie/doughnut charts: Use array of different colors like ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
+    - For bar charts: Use array of colors or single color like "#36A2EB"
+    - For line charts: Use borderColor like "#FF6384" and backgroundColor "rgba(255, 99, 132, 0.2)"
+    - Use these color palettes:
+      * Primary: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"]
+      * Professional: ["#3B82F6", "#8B5CF6", "#EC4899", "#F59E0B", "#10B981", "#6366F1"]
+      * Vibrant: ["#EF4444", "#F59E0B", "#10B981", "#3B82F6", "#8B5CF6", "#EC4899"]
+    - If CSV files are provided, use them as primary data; if JSON is provided, merge it sensibly.
+    - Ensure arrays are equal length where required by Chart.js.
+    - Prefer sensible defaults; do not invent extra fields not in Chart.js.
+  SYS
+end
 
   def build_user_msg(prompt)
     <<~USER
