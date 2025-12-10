@@ -1,9 +1,10 @@
 class PortfolioReportAgent < SupportAgentService
   step :initialize_agent
   step :load_document_context
+  step :load_web_search_context  # NEW: Fetch web search results
   step :load_section_template
-  step :determine_action        # ? ADD THIS
-  step :generate_or_refine      # ? RENAME THIS
+  step :determine_action
+  step :generate_or_refine
   step :save_section
 
   private
@@ -35,6 +36,40 @@ class PortfolioReportAgent < SupportAgentService
     rescue => e
       Rails.logger.error "[PortfolioReportAgent] Error loading documents: #{e.message}"
       ctx[:documents_context] = ""
+    end
+  end
+
+  # NEW: Load web search results if enabled
+  def load_web_search_context(ctx, target:, web_search_enabled: false, **)
+    ctx[:web_search_enabled] = web_search_enabled
+    ctx[:web_search_context] = ""
+    
+    return unless web_search_enabled
+    
+    section = target
+    report = section.ai_portfolio_report
+    company_name = report.portfolio_company&.name
+    
+    return unless company_name.present?
+    
+    Rails.logger.info "[PortfolioReportAgent] Web search enabled - searching for #{company_name}"
+    
+    begin
+      # Build search queries based on section type
+      queries = build_search_queries(section.section_type, company_name)
+      
+      search_results = []
+      queries.each do |query|
+        result = AgentTools::WebSearchTool.search(query)
+        search_results << format_search_result(query, result) unless result[:error]
+      end
+      
+      ctx[:web_search_context] = search_results.join("\n\n")
+      
+      Rails.logger.info "[PortfolioReportAgent] Loaded #{search_results.count} web search results"
+    rescue => e
+      Rails.logger.error "[PortfolioReportAgent] Web search error: #{e.message}"
+      ctx[:web_search_context] = ""
     end
   end
 
@@ -74,6 +109,7 @@ class PortfolioReportAgent < SupportAgentService
     section_type = ctx[:section_type]
     template = ctx[:template]
     documents = ctx[:documents_context]
+    web_search = ctx[:web_search_context]  # NEW
     section = ctx[:section]
     
     report = section.ai_portfolio_report
@@ -84,6 +120,7 @@ class PortfolioReportAgent < SupportAgentService
       section_type: section_type,
       template: template,
       documents: documents,
+      web_search: web_search,  # NEW
       company_name: company.name,
       report_date: report.report_date
     )
@@ -114,9 +151,10 @@ class PortfolioReportAgent < SupportAgentService
   def refine_section_content(ctx, **)
     section_type = ctx[:section_type]
     documents = ctx[:documents_context]
+    web_search = ctx[:web_search_context]  # NEW
     current_content = ctx[:current_content]
     user_prompt = ctx[:user_prompt]
-    web_search_enabled = ctx[:web_search_enabled]  # ? ADD THIS
+    web_search_enabled = ctx[:web_search_enabled]
     section = ctx[:section]
     
     report = section.ai_portfolio_report
@@ -128,8 +166,9 @@ class PortfolioReportAgent < SupportAgentService
       current_content: current_content,
       user_prompt: user_prompt,
       documents: documents,
+      web_search: web_search,  # NEW
       company_name: company.name,
-      web_search_enabled: web_search_enabled  # ? ADD THIS
+      web_search_enabled: web_search_enabled
     )
     
     # Call LLM
@@ -206,7 +245,7 @@ class PortfolioReportAgent < SupportAgentService
   end
 
   # Existing generation prompt
-  def build_generation_prompt(section_type:, template:, documents:, company_name:, report_date:)
+  def build_generation_prompt(section_type:, template:, documents:, web_search: "", company_name:, report_date:)
     prompt = <<~PROMPT
       You are a professional investment analyst creating a #{section_type} section for a portfolio company report.
       
@@ -214,6 +253,8 @@ class PortfolioReportAgent < SupportAgentService
       Report Date: #{report_date}
       
       #{documents.present? ? "AVAILABLE DOCUMENTS:\n#{documents}\n" : ""}
+      
+      #{web_search.present? ? "LATEST WEB SEARCH RESULTS:\n#{web_search}\n" : ""}
       
       SECTION REQUIREMENTS:
       Description: #{template[:description]}
@@ -243,7 +284,7 @@ class PortfolioReportAgent < SupportAgentService
     prompt
   end
 
-  def build_refinement_prompt(section_type:, current_content:, user_prompt:, documents:, company_name:, web_search_enabled: false)
+  def build_refinement_prompt(section_type:, current_content:, user_prompt:, documents:, web_search: "", company_name:, web_search_enabled: false)
   prompt = <<~PROMPT
     You are a professional investment analyst refining a #{section_type} section for a portfolio company report.
     
@@ -257,7 +298,7 @@ class PortfolioReportAgent < SupportAgentService
     
     #{documents.present? ? "AVAILABLE DOCUMENTS FOR REFERENCE:\n#{documents}\n" : ""}
     
-    #{web_search_enabled ? "IMPORTANT: Use real-time web search to find the latest information about #{company_name}. Include current news, recent developments, and up-to-date market data.\n" : ""}
+    #{web_search.present? ? "LATEST WEB SEARCH RESULTS:\n#{web_search}\n" : ""}
     
     CRITICAL - OUTPUT FORMAT:
     - Return ONLY HTML content (no markdown, no code blocks)
@@ -342,5 +383,50 @@ end
     end
     
     formatted.join("\n---\n\n")
+  end
+
+  # NEW: Build search queries based on section type
+  def build_search_queries(section_type, company_name)
+    base_query = company_name
+    
+    queries = case section_type
+    when "Company Overview"
+      ["#{base_query} company overview", "#{base_query} business model"]
+    when "Market Size & Target"
+      ["#{base_query} market size", "#{base_query} target market"]
+    when "Recent Updates & Developments"
+      ["#{base_query} news", "#{base_query} recent developments"]
+    when "Competition Analysis"
+      ["#{base_query} competitors", "#{base_query} market position"]
+    when "Key Risks"
+      ["#{base_query} risks", "#{base_query} challenges"]
+    when "Negative News"
+      ["#{base_query} controversy", "#{base_query} negative news"]
+    else
+      ["#{base_query} #{section_type.downcase}"]
+    end
+    
+    queries.first(2)  # Limit to 2 queries to avoid rate limiting
+  end
+
+  # NEW: Format search result for prompt
+  def format_search_result(query, result)
+    return "" if result[:error]
+    
+    formatted = "=== Web Search: #{query} ===\n"
+    
+    if result[:abstract_text].present?
+      formatted += "Summary: #{result[:abstract_text]}\n"
+      formatted += "Source: #{result[:abstract_source]} (#{result[:abstract_url]})\n" if result[:abstract_source]
+    end
+    
+    if result[:related_topics].present?
+      formatted += "\nRelated Information:\n"
+      result[:related_topics].first(3).each do |topic|
+        formatted += "- #{topic}\n"
+      end
+    end
+    
+    formatted
   end
 end
