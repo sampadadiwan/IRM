@@ -8,7 +8,16 @@ class AiReportSectionsController < ApplicationController
     @section = @report.ai_report_sections.find(params[:id])
 
     # Handle content from contenteditable
-    @section.content_html = params[:ai_report_section][:content] if params[:ai_report_section][:content].present?
+    if params[:ai_report_section][:content].present?
+      # Save to the appropriate column based on which version is currently displayed
+      if @section.show_web_search_version?
+        @section.content_html_with_web = params[:ai_report_section][:content]
+        @section.updated_at_web_included = Time.current
+      else
+        @section.content_html = params[:ai_report_section][:content]
+        @section.updated_at_document_only = Time.current
+      end
+    end
 
     @section.reviewed = true
 
@@ -23,36 +32,45 @@ class AiReportSectionsController < ApplicationController
     @report = AiPortfolioReport.find(params[:ai_portfolio_report_id])
     @section = @report.ai_report_sections.find(params[:id])
 
-    # Toggle the flag
-    @section.web_search_enabled = !@section.web_search_enabled
+    # Get the desired state from params (if provided) or toggle
+    if params[:enable_web_search].present?
+      desired_state = params[:enable_web_search] == true || params[:enable_web_search] == 'true'
+    else
+      desired_state = !@section.web_search_enabled
+    end
 
-    if @section.save
-      # If this is the current section being viewed, regenerate content
-      if params[:regenerate] == 'true'
-        company_name = @report.portfolio_company&.name || "TechVenture Inc."
-        
-        # Call Python backend to regenerate content with new web_search setting
-        response = PythonBackendClient.generate_section(
-          section_type: @section.section_type,
-          company_name: company_name,
-          web_search_enabled: @section.web_search_enabled
-        )
+    # Only update if state is changing
+    if @section.web_search_enabled != desired_state
+      @section.web_search_enabled = desired_state
 
-        if response.success?
-          data = response.parsed_response
-          @section.content_html = data['content']
-          @section.save
-        end
+      # Update timestamp to track the toggle action
+      if @section.web_search_enabled
+        @section.updated_at_web_included = Time.current
+      else
+        @section.updated_at_document_only = Time.current
       end
 
-      render json: {
-        success: true,
-        web_search_enabled: @section.web_search_enabled,
-        message: @section.web_search_enabled ? 'Web search enabled' : 'Web search disabled'
-      }
-    else
-      render json: { success: false, error: 'Failed to toggle web search' }, status: :unprocessable_entity
+      @section.save!
     end
+
+    # Get content from cache or DB based on desired state
+    session_id = session.id.to_s
+
+    if desired_state
+      content_to_return = SectionContentCache.get_web_content(@section.id, session_id) ||
+                          @section.content_html_with_web
+    else
+      content_to_return = SectionContentCache.get_document_content(@section.id, session_id) ||
+                          @section.content_html
+    end
+
+    render json: {
+      success: true,
+      web_search_enabled: @section.web_search_enabled,
+      content: content_to_return,
+      has_web_content: @section.content_html_with_web.present?,
+      message: @section.web_search_enabled ? 'Web search enabled' : 'Web search disabled'
+    }
   rescue StandardError => e
     render json: { success: false, error: e.message }, status: :internal_server_error
   end
@@ -75,80 +93,85 @@ class AiReportSectionsController < ApplicationController
   end
 
   def regenerate
-    @report = AiPortfolioReport.find(params[:ai_portfolio_report_id])
-    @section = @report.ai_report_sections.find(params[:id])
+  @report = AiPortfolioReport.find(params[:ai_portfolio_report_id])
+  @section = @report.ai_report_sections.find(params[:id])
 
-    user_prompt = params[:prompt]
-    current_content = params[:current_content]
-    section_type = params[:section_type]
-    web_search_enabled = params[:web_search_enabled] == 'true'  # ? Should be there from Phase 1
+  user_prompt = params[:prompt]
+  current_content = params[:current_content]
+  section_type = params[:section_type]
+  web_search_enabled = params[:web_search_enabled] == true || params[:web_search_enabled] == 'true'
   
+  Rails.logger.info "=== Regenerate Request ==="
+  Rails.logger.info "Section: #{section_type}"
+  Rails.logger.info "Web search: #{web_search_enabled}"
 
-    begin
-      if section_type == "Custom Charts"
-        Rails.logger.info "=== Custom Charts Action ==="
-        
-        generator = ChartSectionGenerator.new(report: @report, section: @section)
-        
-        if user_prompt.present?
-          # USER PROVIDED PROMPT - Add a new chart based on prompt
-          Rails.logger.info "Adding chart based on prompt: #{user_prompt}"
-          
-          new_chart_html = generator.add_chart_from_prompt(user_prompt: user_prompt)
-          
-          # Append new chart to existing content
-          if current_content.present?
-            refined_content = current_content + new_chart_html
-          else
-            refined_content = new_chart_html
-          end
-          
-        else
-          # NO PROMPT - Regenerate all charts (clear and create 3 default)
-          Rails.logger.info "Regenerating all default charts"
-          
-          @section.update(agent_chart_ids: [])
-          refined_content = generator.generate_charts_html
-        end
-        
-        Rails.logger.info "Charts in section: #{@section.reload.agent_chart_ids.count}"
-        
+  begin
+    if section_type == "Custom Charts"
+      # Charts logic (unchanged)
+      generator = ChartSectionGenerator.new(report: @report, section: @section)
+      
+      if user_prompt.present?
+        new_chart_html = generator.add_chart_from_prompt(user_prompt: user_prompt)
+        refined_content = current_content + new_chart_html
       else
-        # Text sections - use PortfolioReportAgent
-        Rails.logger.info "=== Refining #{section_type} ==="
-        rails.logger.info "Web search enabled: #{web_search_enabled}"
-        
-        agent = SupportAgent.find_or_create_by!(
-          agent_type: 'PortfolioReportAgent',
-          entity_id: @report.analyst.entity_id
-        ) do |a|
-          a.name = 'Portfolio Report Generator'
-          a.enabled = true
-        end
-        
-        result = PortfolioReportAgent.call(
-          support_agent_id: agent.id,
-          target: @section,
-          action: 'refine',
-          document_folder_path: "/tmp/test_documents",
-          current_content: current_content,
-          user_prompt: user_prompt,
-          web_search_enabled: web_search_enabled  # ? ADD THIS
-        )
-        
-        if result.success?
-          refined_content = @section.reload.content_html
-        else
-          return render json: { success: false, error: result[:error] || 'Refinement failed' }, status: :unprocessable_entity
-        end
+        @section.update(agent_chart_ids: [])
+        refined_content = generator.generate_charts_html
       end
       
-      render json: { success: true, content: refined_content }
+      @section.update(content_html: refined_content)
       
-    rescue StandardError => e
-      Rails.logger.error "Regenerate error: #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      render json: { success: false, error: e.message }, status: :internal_server_error
+    else
+      # Text sections
+      agent = SupportAgent.find_or_create_by!(
+        agent_type: 'PortfolioReportAgent',
+        entity_id: @report.analyst.entity_id
+      ) do |a|
+        a.name = 'Portfolio Report Generator'
+        a.enabled = true
+      end
+
+      action = user_prompt.present? ? 'refine' : 'generate'
+
+      result = PortfolioReportAgent.call(
+        support_agent_id: agent.id,
+        target: @section,
+        action: action,
+        document_folder_path: "/tmp/test_documents",
+        current_content: current_content,
+        user_prompt: user_prompt,
+        web_search_enabled: web_search_enabled
+      )
+
+      if result.success?
+        refined_content = result[:generated_content]
+        # Note: Saving is handled by PortfolioReportAgent.save_section step
+        # Reload section to get updated timestamps
+        @section.reload
+
+        # Cache the content for quick toggling within session
+        session_id = session.id.to_s
+        if web_search_enabled
+          SectionContentCache.store(@section.id, session_id, web_content: refined_content)
+        else
+          SectionContentCache.store(@section.id, session_id, document_content: refined_content)
+        end
+
+        Rails.logger.info "? Generated #{section_type} (web_search: #{web_search_enabled})"
+      else
+        Rails.logger.error "? Failed #{section_type}"
+        render json: { success: false, error: "Generation failed" }, status: :unprocessable_entity
+        return
+      end
     end
+
+    render json: {
+      success: true,
+      content: refined_content
+    }
+    
+  rescue => e
+    Rails.logger.error "Error: #{e.message}"
+    render json: { success: false, error: e.message }, status: :unprocessable_entity
   end
+end
 end

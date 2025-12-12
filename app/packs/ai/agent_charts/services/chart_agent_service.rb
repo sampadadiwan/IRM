@@ -33,15 +33,16 @@ class ChartAgentService
         "options": { }
       }
     RULES:
-    - No markdown, no code fences, no commentaryjust JSON.
-    - IMPORTANT: Always include vibrant colors in backgroundColor and borderColor
-    - For pie/doughnut charts: Use array of different colors like ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
-    - For bar charts: Use array of colors or single color like "#36A2EB"
-    - For line charts: Use borderColor like "#FF6384" and backgroundColor "rgba(255, 99, 132, 0.2)"
-    - Use these color palettes:
-      * Primary: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"]
-      * Professional: ["#3B82F6", "#8B5CF6", "#EC4899", "#F59E0B", "#10B981", "#6366F1"]
-      * Vibrant: ["#EF4444", "#F59E0B", "#10B981", "#3B82F6", "#8B5CF6", "#EC4899"]
+    - No markdown, no code fences, no commentary - just JSON.
+    - IMPORTANT: Always use LIGHT, PASTEL colors - NOT dark saturated colors
+    - For pie/doughnut charts: Use array of light pastel colors like ["#93C5FD", "#A5B4FC", "#F9A8D4", "#FCD34D", "#6EE7B7", "#FDBA74"]
+    - For bar charts: Use array of light colors like ["#93C5FD", "#A5B4FC", "#F9A8D4", "#FCD34D", "#6EE7B7", "#FDBA74"]
+    - For line charts: Use borderColor like "#60A5FA" and backgroundColor "rgba(96, 165, 250, 0.15)"
+    - Use these LIGHT color palettes (prefer Pastel):
+      * Pastel (PREFERRED): ["#93C5FD", "#A5B4FC", "#F9A8D4", "#FCD34D", "#6EE7B7", "#FDBA74", "#C4B5FD", "#FCA5A5"]
+      * Soft Blue-Green: ["#7DD3FC", "#67E8F9", "#5EEAD4", "#6EE7B7", "#86EFAC", "#A3E635"]
+      * Warm Pastels: ["#FECACA", "#FED7AA", "#FDE68A", "#FEF08A", "#D9F99D", "#BBF7D0"]
+      * Cool Pastels: ["#BFDBFE", "#C7D2FE", "#DDD6FE", "#F5D0FE", "#FBCFE8", "#FECDD3"]
     - If CSV files are provided, use them as primary data; if JSON is provided, merge it sensibly.
     - Ensure arrays are equal length where required by Chart.js.
     - Prefer sensible defaults; do not invent extra fields not in Chart.js.
@@ -82,7 +83,7 @@ end
           end
 
     Rails.logger.debug raw.inspect
-    # Parse & validate the LLM’s JSON
+    # Parse & validate the LLM's JSON
     config = parse_json(raw)
     validate_chartjs!(config)
 

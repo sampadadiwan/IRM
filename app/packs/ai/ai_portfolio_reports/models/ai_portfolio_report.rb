@@ -63,7 +63,7 @@ class AiPortfolioReport < ApplicationRecord
         section_type: section_type,
         order_index: index + 1,
         status: 'draft',
-        web_search_enabled: WEB_SEARCH_DEFAULT_SECTIONS.include?(section_type)
+        web_search_enabled: false
       )
     end
   end

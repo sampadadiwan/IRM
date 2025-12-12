@@ -193,6 +193,9 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller"
 
+  gem "ruby-lsp", require: false
+  gem "debug", platforms: [:mri]   # optional, but recommended
+
   # gem 'rails-erd'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]

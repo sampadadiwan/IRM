@@ -25,4 +25,23 @@ class AiReportSection < ApplicationRecord
   def charts_section?
     section_type == "Custom Charts"
   end
+
+  # Determine if web search version should be displayed
+  # Based on comparing timestamps - whichever was last updated is shown
+  def show_web_search_version?
+    return false if updated_at_web_included.blank?
+    return true if updated_at_document_only.blank?
+
+    updated_at_web_included > updated_at_document_only
+  end
+
+  # Get the appropriate content based on timestamp comparison
+  def current_content
+    show_web_search_version? ? content_html_with_web : content_html
+  end
+
+  # Check if web search content has ever been generated
+  def web_search_content_exists?
+    content_html_with_web.present?
+  end
 end

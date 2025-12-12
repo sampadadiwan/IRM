@@ -4,4 +4,11 @@
         "comments": true,
         "strings": true
       },
+
+      {
+        "rubyLsp.useBundler": true,
+        "rubyLsp.bundleGemfile": "Gemfile",
+        "rubyLsp.rubyVersionManager": "mise"
+      }
+
 }

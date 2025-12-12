@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_03_055807) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_11_100000) do
   create_table "access_rights", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "owner_type", null: false
     t.bigint "owner_id", null: false
@@ -323,6 +323,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_03_055807) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "collated_report_html", size: :medium
+    t.boolean "web_search_enabled", default: false
   end
 
   create_table "ai_report_sections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -337,6 +338,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_03_055807) do
     t.text "content_html"
     t.boolean "web_search_enabled", default: false, null: false
     t.json "agent_chart_ids"
+    t.text "content_html_with_web"
+    t.datetime "created_at_document_only"
+    t.datetime "updated_at_document_only"
+    t.datetime "created_at_web_included"
+    t.datetime "updated_at_web_included"
     t.index ["ai_portfolio_report_id"], name: "index_ai_report_sections_on_ai_portfolio_report_id"
   end
 

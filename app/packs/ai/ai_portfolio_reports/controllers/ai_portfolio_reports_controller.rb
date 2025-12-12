@@ -30,6 +30,9 @@ class AiPortfolioReportsController < ApplicationController
     @current_section = @report.ai_report_sections.find_by(id: params[:section_id]) ||
                        @report.ai_report_sections.order(:order_index).first
     @chat_session = @report.ai_chat_sessions.first || @report.ai_chat_sessions.create!(analyst_id: current_user.id)
+
+    # Use the persisted web_search_enabled flag for checkbox state
+    @show_web_search_version = @current_section.web_search_enabled
   end
 
   def collated_report
@@ -158,12 +161,15 @@ class AiPortfolioReportsController < ApplicationController
     Rails.logger.info "Reviewed sections: #{reviewed_sections.count}"
 
     reviewed_sections.each do |section|
+      # Use the appropriate content based on timestamp comparison
+      section_content = section.current_content
+
       content += <<-HTML
       <div id="section-#{section.id}" style="margin-top: 2rem; margin-bottom: 2rem;">
         <h2 style="color: #2563eb; border-bottom: 2px solid #60a5fa; padding-bottom: 0.5rem; margin-bottom: 1rem;">
           #{section.section_type}
         </h2>
-        #{section.content_html}
+        #{section_content}
       </div>
       HTML
     end
