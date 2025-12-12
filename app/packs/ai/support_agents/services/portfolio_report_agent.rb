@@ -70,39 +70,39 @@ class PortfolioReportAgent < SupportAgentService
   end
 
   def load_web_search_context(ctx, target:, web_search_enabled: false, **)
-  ctx[:web_search_enabled] = web_search_enabled
-  ctx[:web_search_context] = ""
-  
-  Rails.logger.info "[PortfolioReportAgent] Web search enabled in : #{web_search_enabled}"
-  return true unless web_search_enabled  # ? CHANGE from 'return' to 'return true'
-  
-  section = target
-  report = section.ai_portfolio_report
-  company_name = report.portfolio_company&.name
-  
-  return true unless company_name.present?  # ? CHANGE from 'return' to 'return true'
-  
-  Rails.logger.info "[PortfolioReportAgent] Web search enabled - searching for #{company_name}"
-  
-  begin
-    queries = build_search_queries(section.section_type, company_name)
-    
-    search_results = []
-    queries.each do |query|
-      result = AgentTools::WebSearchTool.search(query)
-      search_results << format_search_result(query, result) unless result[:error]
-    end
-    
-    ctx[:web_search_context] = search_results.join("\n\n")
-    
-    Rails.logger.info "[PortfolioReportAgent] Loaded #{search_results.count} web search results"
-    true
-  rescue => e
-    Rails.logger.error "[PortfolioReportAgent] Web search error: #{e.message}"
+    ctx[:web_search_enabled] = web_search_enabled
     ctx[:web_search_context] = ""
-    true
+    
+    Rails.logger.info "[PortfolioReportAgent] Web search enabled in : #{web_search_enabled}"
+    return true unless web_search_enabled
+    
+    section = target
+    report = section.ai_portfolio_report
+    company_name = report.portfolio_company&.name
+    
+    return true unless company_name.present?
+    
+    Rails.logger.info "[PortfolioReportAgent] Web search enabled - searching for #{company_name}"
+    
+    begin
+      queries = build_search_queries(section.section_type, company_name)
+      
+      search_results = []
+      queries.each do |query|
+        result = AgentTools::WebSearchTool.search(query)
+        search_results << format_search_result(query, result) unless result[:error]
+      end
+      
+      ctx[:web_search_context] = search_results.join("\n\n")
+      
+      Rails.logger.info "[PortfolioReportAgent] Loaded #{search_results.count} web search results"
+      true
+    rescue => e
+      Rails.logger.error "[PortfolioReportAgent] Web search error: #{e.message}"
+      ctx[:web_search_context] = ""
+      true
+    end
   end
-end
 
   # Load section-specific template
   def load_section_template(ctx, target:, **)
@@ -121,16 +121,16 @@ end
   end
 
   def determine_action(ctx, action: 'generate', web_search_enabled: false, **)
-  ctx[:action] = action
-  ctx[:user_prompt] = ctx[:user_prompt] || ""
-  ctx[:current_content] = ctx[:current_content] || ""
-  ctx[:web_search_enabled] = web_search_enabled
-  
-  Rails.logger.info "[PortfolioReportAgent] Action: #{action}"
-  Rails.logger.info "[PortfolioReportAgent] Web search: #{web_search_enabled}"
-  
-  true  # ? ADD THIS
-end
+    ctx[:action] = action
+    ctx[:user_prompt] = ctx[:user_prompt] || ""
+    ctx[:current_content] = ctx[:current_content] || ""
+    ctx[:web_search_enabled] = web_search_enabled
+    
+    Rails.logger.info "[PortfolioReportAgent] Action: #{action}"
+    Rails.logger.info "[PortfolioReportAgent] Web search: #{web_search_enabled}"
+    
+    true
+  end
 
   # Generate OR refine based on action
   def generate_or_refine(ctx, **)
@@ -188,13 +188,13 @@ end
     Rails.logger.info "[PortfolioReportAgent] Calling LLM to generate content..."
 
     response = llm.complete(prompt: prompt)
-    content = clean_llm_output(response.completion)  # ? Use helper
+    content = clean_llm_output(response.completion)
 
     ctx[:generated_content] = content
     
     Rails.logger.info "[PortfolioReportAgent] Generated #{content.length} characters"
 
-    true  # ? ADD THIS
+    true
   end
 
   # Refine existing content
@@ -241,7 +241,7 @@ end
     ctx[:generated_content] = content
     
     Rails.logger.info "[PortfolioReportAgent] Refined #{content.length} characters"
-    true  # ? ADD THIS LINE at the end
+    true
   end
 
   # Save section to database
@@ -282,84 +282,223 @@ end
   def get_section_template(section_type)
     templates = {
       "Company Overview" => {
-        description: "Comprehensive company overview including history, mission, and key facts",
-        structure: ["Company Background", "Mission & Vision", "Key Milestones", "Current Operations"],
-        length: "2-3 paragraphs"
+        description: "A sharp, investment-grade overview describing the company’s sector, problem statement, product focus, and founder details.",
+        structure: [
+          "Identify the sector and precise sub-sector (D2C, fintech, SaaS, etc.)",
+          "State the core customer problem the company solves in one crisp line",
+          "Describe key product lines and/or business model with clarity",
+          "Include founding year, founder name, and 1-2 key background highlights",
+          "Highlight what makes the company differentiated (USP, model, tech, distribution)"
+        ],
+        length: "1 strong paragraph plus 3-5 high-impact bullet points"
+      },
+      "Key Products & Services" => {
+        description: "Clear articulation of the company’s major products, revenue drivers, business model structure, and distribution channels.",
+        structure: [
+          "List core product categories and sub-categories",
+          "Describe revenue model (D2C, marketplace, subscription, enterprise, etc.)",
+          "Highlight product or service differentiators (tech, ingredients, IP, supply chain, pricing)",
+          "Refer to any charts generated from Excel to support explanation where relevant",
+          "Mention customer segments and top use cases"
+        ],
+        length: "4-6 sharp bullet points plus an optional short paragraph summary"
       },
       "Financial Snapshot" => {
-        description: "Financial performance summary with key metrics",
-        structure: ["Revenue", "Profitability", "Growth Metrics", "Key Ratios"],
-        length: "2-3 paragraphs with data points"
+        description: "Data-driven summary of the company’s financial performance using uploaded spreadsheets and dashboard KPIs.",
+        structure: [
+          "Summarize revenue growth patterns (Y/Y, Q/Q, M/M as available)",
+          "Describe profitability or burn profile (EBITDA, margins, cash burn)",
+          "Comment on working capital, CAC, payback, or other available metrics",
+          "Highlight trends with charts (revenue vs time, margin trends, burn/runway, etc.)",
+          "Include 3-5 insightful interpretation lines, not just a repeat of numbers"
+        ],
+        length: "1 paragraph plus at least 1 chart reference and 3-4 analytical bullet points"
+      },
+      "Market Size & Target" => {
+        description: "Clearly defined TAM, SAM, and SOM with supporting market logic and numerical justification.",
+        structure: [
+          "Give a concise contextual definition of the broader sector",
+          "Provide latest TAM, SAM, SOM values based on documents and/or web search",
+          "Show the computation in a small table (TAM, SAM, SOM, and values)",
+          "State why the market timing is attractive (macro trends, digital adoption, etc.)",
+          "Include 2-3 competitive or macro tailwinds relevant to the company"
+        ],
+        length: "1 paragraph plus a 3-row table and 3 concise bullets"
+      },
+      "Recent Updates & Developments" => {
+        description: "Crisp summary of the latest noteworthy events extracted from uploaded documents and optionally web search.",
+        structure: [
+          "Product launches or enhancements",
+          "Partnerships, distribution expansions, or key customer wins",
+          "Hiring of senior leadership or critical team changes",
+          "Operational or financial milestones in the last 1-4 quarters",
+          "Keep items factual, time-stamped where possible, and concise"
+        ],
+        length: "5-7 bullet points"
+      },
+      "Custom Charts" => {
+        description: "Generate and interpret insightful charts based on user-chosen parameters (cash burn, runway, revenue trends, industry metrics, etc.).",
+        structure: [
+          "Identify which metric combinations make most sense for this company and industry",
+          "Describe the chart(s) to be generated from provided Excel/CSV (axes, metrics, timeframe)",
+          "Provide 3-4 lines of interpretation explaining what the chart shows and why it matters",
+          "Optionally suggest additional charts that an analyst may want to explore next"
+        ],
+        length: "Chart description plus 3-4 analytical bullets"
+      },
+      "Founders & Shareholders" => {
+        description: "Concise founder biography plus cap table and investor quality insights.",
+        structure: [
+          "Summarize founder’s education and 2-3 relevant past experiences",
+          "Highlight domain expertise or technology/scale-up capabilities",
+          "Describe founder-led strengths (distribution, product, brand building, etc.)",
+          "Summarize key shareholders (VCs, angels, strategics) and any notable names",
+          "Explain briefly why this founder and cap table are well aligned with the opportunity"
+        ],
+        length: "1 paragraph plus 3-4 bullet points"
+      },
+      "Raise History, Valuations & Funding trend" => {
+        description: "Timeline of funding with insights on valuation trajectory, investor quality, and capital deployment.",
+        structure: [
+          "Provide a tabular history of all funding rounds with date, round, raise amount, and valuation",
+          "Comment on valuation growth trend and any inflection points",
+          "Highlight marquee investors and their relevance to the company and sector",
+          "Mention how capital has likely been deployed (product, marketing, team, expansion, etc.)",
+          "Add 2-3 forward-looking insights on runway implications and future capital needs"
+        ],
+        length: "1 table plus 4-5 bullet points of commentary"
       },
       "SWOT Analysis - Blitz" => {
-        description: "Strategic analysis of Strengths, Weaknesses, Opportunities, Threats",
-        structure: ["Strengths", "Weaknesses", "Opportunities", "Threats"],
-        length: "4 sections with 3-5 points each"
-      },
-      "Key Risks" => {
-        description: "Identification and analysis of key business risks",
-        structure: ["Market Risks", "Operational Risks", "Financial Risks", "Regulatory Risks"],
-        length: "2-3 paragraphs"
+        description: "Comprehensive SWOT analysis rooted in sector realities and company-specific data.",
+        structure: [
+          "Strengths: 6-10 points on brand, tech, distribution, margins, community, etc.",
+          "Weaknesses: 6-10 points on dependencies, recall, CAC, concentration, etc.",
+          "Opportunities: 6-10 points on market growth, new segments, new geos, new channels, etc.",
+          "Threats: 6-10 points on regulation, competition, churn, raw material, macro, etc."
+        ],
+        length: "Four quadrants with 6-10 points each"
       },
       "Competition Analysis" => {
-        description: "Competitive landscape and positioning",
-        structure: ["Main Competitors", "Competitive Advantages", "Market Position"],
-        length: "2-3 paragraphs"
+        description: "Position the company relative to market alternatives in a structured, analytical manner.",
+        structure: [
+          "Describe overall competitive landscape (incumbents, D2C challengers, premium/clinical players, etc.)",
+          "Identify where this company sits on price point, brand voice, tech, and formulation/feature set",
+          "Highlight clear USPs (for example, Ayurveda plus science plus personalization, or similar)",
+          "Discuss customer perception and loyalty vs key competitors",
+          "Conclude with 2-3 lines on sustainable edge or lack thereof"
+        ],
+        length: "1-2 tight paragraphs plus 3 key differentiator bullets"
+      },
+      "Key Risks" => {
+        description: "Highlight investor-relevant risks with clear reasoning and potential business impact.",
+        structure: [
+          "Market risks (competition intensity, category maturity, customer behavior changes)",
+          "Operational risks (supply chain, logistics, manufacturing, R&D limitations)",
+          "Financial risks (CAC creep, burn rate, dependence on external funding)",
+          "Regulatory risks (labeling, data/privacy, sector-specific compliance requirements)",
+          "Each risk should include cause plus potential impact and a hint of mitigation where visible"
+        ],
+        length: "4-6 bullet points with 2 lines of explanation each"
+      },
+      "Operational Red Flags" => {
+        description: "Identify execution risks and operational fragilities based on documents and industry norms.",
+        structure: [
+          "Supply chain dependencies and single points of failure",
+          "Quality control gaps or lack of robust testing/QA",
+          "Inventory or demand planning risks (stockouts, overstock, seasonality)",
+          "Customer service, fulfilment, and logistics-related weaknesses",
+          "Tech, data, or process reliability concerns that may not yet be visible in financials"
+        ],
+        length: "4-6 concise bullet points"
+      },
+      "Negative News" => {
+        description: "Summarize negative press, regulatory actions, controversies, or customer concerns impacting the company.",
+        structure: [
+          "Potential controversies related to product claims, ingredients, or safety",
+          "Regulatory tightening risks or any known notices/warnings",
+          "Consumer complaints, rating downgrades, or social media criticism patterns",
+          "Brand reputation vulnerabilities and how quickly sentiment can turn"
+        ],
+        length: "3-5 bullet points"
+      },
+      "AML/KYB Check" => {
+        description: "Perform a structured compliance and background screening summary using AML/KYB data.",
+        structure: [
+          "Verify legal entity details and jurisdiction of incorporation",
+          "Summarize checks for sanctions, watchlists, and adverse media hits (if any)",
+          "Mention any historical red flags, legal disputes, or compliance gaps identified",
+          "Provide a simple qualitative risk rating (Low, Medium, or High) with justification"
+        ],
+        length: "Short compliance summary of 1 paragraph plus 2-3 bullets if needed"
+      },
+      "Investment Ask" => {
+        description: "Summarize funding ask, valuation, and capital deployment rationale in an investor-ready way.",
+        structure: [
+          "State the amount being raised, currency, and valuation (pre or post-money)",
+          "Break down planned use of funds (customer acquisition, product development, team, expansion, etc.)",
+          "Explain how this capital will move core metrics (revenue, runway, profitability, market share)",
+          "Close with 1-2 lines on why this is the right moment for investors to participate"
+        ],
+        length: "1 compact paragraph plus 3-4 bullet points"
       }
     }
     
     templates[section_type] || {
-      description: "Analysis and insights for #{section_type}",
-      structure: ["Overview", "Key Points", "Analysis"],
-      length: "2-3 paragraphs"
+      description: "Investor-grade analysis and insights for #{section_type}, grounded in the uploaded documents and, where allowed, web search.",
+      structure: [
+        "Define what this section should cover in the context of a portfolio company",
+        "Summarize key quantitative and qualitative insights",
+        "Explain implications for investors (upside, risks, and watchpoints)"
+      ],
+      length: "1-2 short paragraphs or 3-5 bullet points"
     }
   end
 
   def build_generation_prompt(section_type:, template:, documents:, web_search: "", company_name:, report_date:)
-  prompt = <<~PROMPT
-    You are a professional investment analyst creating a #{section_type} section for a portfolio company report.
-    
-    Company: #{company_name}
-    Report Date: #{report_date}
-    
-    #{documents.present? ? "AVAILABLE DOCUMENTS:\n#{documents}\n" : ""}
-    
-    #{web_search.present? ? "LATEST WEB SEARCH RESULTS:\n#{web_search}\n" : ""}
-    
-    SECTION REQUIREMENTS:
-    Description: #{template[:description]}
-    Structure: #{template[:structure].join(', ')}
-    Length: #{template[:length]}
-    
-    CRITICAL - OUTPUT FORMAT:
-    - Return ONLY HTML content (no markdown)
-    - DO NOT wrap output in code blocks or backticks
-    - DO NOT include ```html or ``` markers
-    - Use proper HTML tags: <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
-    - Start directly with HTML tags (e.g., <h2>Section Title</h2>)
-    - End with closing HTML tags (no extra text after)
-    
-    INSTRUCTIONS:
-    1. Write in professional, analytical tone
-    2. Format in HTML (NOT markdown)
-    3. Include relevant metrics and numbers from the documents
-    #{documents.present? ? <<~DOC_RULES
+    prompt = <<~PROMPT
+      You are a professional investment analyst creating a #{section_type} section for a portfolio company report.
+      
+      Company: #{company_name}
+      Report Date: #{report_date}
+      
+      #{documents.present? ? "AVAILABLE DOCUMENTS:\n#{documents}\n" : ""}
+      
+      #{web_search.present? ? "LATEST WEB SEARCH RESULTS:\n#{web_search}\n" : ""}
+      
+      SECTION REQUIREMENTS:
+      Description: #{template[:description]}
+      Structure: #{template[:structure].join(', ')}
+      Length: #{template[:length]}
+      
+      CRITICAL - OUTPUT FORMAT:
+      - Return ONLY HTML content (no markdown)
+      - DO NOT wrap output in code blocks or backticks
+      - DO NOT include ```html or ``` markers
+      - Use proper HTML tags: <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
+      - Start directly with HTML tags (e.g., <h2>Section Title</h2>)
+      - End with closing HTML tags (no extra text after)
+      
+      INSTRUCTIONS:
+      1. Write in professional, analytical tone
+      2. Format in HTML (NOT markdown)
+      3. Include relevant metrics and numbers from the documents
+      #{documents.present? ? <<~DOC_RULES
 
-    CRITICAL - SOURCE RESTRICTIONS:
-    - ONLY use information explicitly stated in the provided documents
-    - DO NOT add any facts, figures, or claims not found in the documents
-    - DO NOT use your general knowledge about the company or industry
-    - If information for a required section is missing from documents, write "Information not available in provided documents"
-    - Every claim must be traceable to the document content above
-    DOC_RULES
-    : "4. Use general industry knowledge since no documents are provided"}
-    #{web_search.present? ? "- You may also incorporate facts from the web search results provided above" : ""}
+      CRITICAL - SOURCE RESTRICTIONS:
+      - ONLY use information explicitly stated in the provided documents
+      - DO NOT add any facts, figures, or claims not found in the documents
+      - DO NOT use your general knowledge about the company or industry
+      - If information for a required section is missing from documents, write "Information not available in provided documents"
+      - Every claim must be traceable to the document content above
+      DOC_RULES
+      : "4. Use general industry knowledge since no documents are provided"}
+      #{web_search.present? ? "- You may also incorporate facts from the web search results provided above" : ""}
+      
+      Generate the #{section_type} section now in pure HTML format (no code blocks):
+    PROMPT
     
-    Generate the #{section_type} section now in pure HTML format (no code blocks):
-  PROMPT
-  
-  prompt
-end
+    prompt
+  end
 
   # Refinement prompt
   def build_refinement_prompt(section_type:, current_content:, user_prompt:, documents:, web_search: "", company_name:, web_search_enabled: false)
@@ -371,7 +510,7 @@ end
       CURRENT CONTENT (HTML):
       #{current_content}
       
-      USER REQUEST:
+      USER REQUEST (treat as refinement instruction, not a question):
       #{user_prompt}
       
       #{documents.present? ? "AVAILABLE DOCUMENTS FOR REFERENCE:\n#{documents}\n" : ""}
@@ -628,21 +767,30 @@ end
   # NEW: Format search result for prompt
   def format_search_result(query, result)
     return "" if result[:error]
-    
+
+    # Check if we have any meaningful content
+    has_content = result[:abstract_text].present? || result[:related_topics].present?
+
+    unless has_content
+      Rails.logger.warn "[PortfolioReportAgent] Web search returned no results for: #{query}"
+      return ""
+    end
+
     formatted = "=== Web Search: #{query} ===\n"
-    
+
     if result[:abstract_text].present?
       formatted += "Summary: #{result[:abstract_text]}\n"
       formatted += "Source: #{result[:abstract_source]} (#{result[:abstract_url]})\n" if result[:abstract_source]
     end
-    
+
     if result[:related_topics].present?
       formatted += "\nRelated Information:\n"
       result[:related_topics].first(3).each do |topic|
         formatted += "- #{topic}\n"
       end
     end
-    
+
+    Rails.logger.info "[PortfolioReportAgent] Web search found content for: #{query} (#{formatted.length} chars)"
     formatted
   end
 end

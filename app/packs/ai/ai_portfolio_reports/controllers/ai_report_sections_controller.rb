@@ -39,14 +39,15 @@ class AiReportSectionsController < ApplicationController
       desired_state = !@section.web_search_enabled
     end
 
-    # Only update if state is changing
+    # Only update flag if state is changing
     if @section.web_search_enabled != desired_state
       @section.web_search_enabled = desired_state
 
-      # Update timestamp to track the toggle action
-      if @section.web_search_enabled
+      # Only update timestamps when switching to a version that has content
+      # This prevents the checkbox from appearing checked when no web content exists
+      if @section.web_search_enabled && @section.content_html_with_web.present?
         @section.updated_at_web_included = Time.current
-      else
+      elsif !@section.web_search_enabled && @section.content_html.present?
         @section.updated_at_document_only = Time.current
       end
 

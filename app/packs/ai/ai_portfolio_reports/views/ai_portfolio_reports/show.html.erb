@@ -118,9 +118,10 @@
               </svg>
               <textarea
                 id="ai-refinement-prompt"
+                onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); regenerateWithAI(); }"
                 class="ai-refinement-input"
                 rows="2"
-                placeholder="<%= @current_section.section_type == 'Custom Charts' ? 'e.g., Add a chart showing revenue by product line OR leave empty to regenerate all charts' : 'e.g., Add more competitive advantages or Make it more concise' %>"></textarea>
+                placeholder="<%= @current_section.section_type == 'Custom Charts' ? 'e.g., Add a chart showing revenue by product line OR leave empty to regenerate all charts' : 'Give instructions like: Add more competitive advantages, Expand risk analysis, Make it more concise...' %>"></textarea>
             </div>
             <div class="ai-refinement-actions">
               <button type="button" class="ai-btn ai-btn-outline" onclick="regenerateWithAI()">
@@ -473,6 +474,7 @@ async function setWebSearchState(enabled) {
             options: {
               responsive: true,
               maintainAspectRatio: true,
+              aspectRatio: 2,
               plugins: {
                 legend: {
                   display: true,
@@ -788,6 +790,97 @@ async function setWebSearchState(enabled) {
         }
       }
 
+      // Detect if user input looks like a question
+      function isQuestionPattern(text) {
+        if (!text || text.trim().length < 3) return false;
+        const trimmed = text.trim().toLowerCase();
+
+        // Check for question marks
+        if (trimmed.includes('?')) return true;
+
+        // Check for question starters
+        const questionStarters = [
+          'what ', 'what\'s', 'whats',
+          'how ', 'how\'s', 'hows',
+          'why ', 'why\'s', 'whys',
+          'when ', 'when\'s', 'whens',
+          'where ', 'where\'s', 'wheres',
+          'who ', 'who\'s', 'whos',
+          'which ',
+          'is there', 'are there',
+          'can you', 'could you', 'would you',
+          'do you', 'does it', 'did it',
+          'is it', 'is this', 'are they',
+          'tell me about', 'explain '
+        ];
+
+        return questionStarters.some(starter => trimmed.startsWith(starter));
+      }
+
+      // Convert question to instruction suggestion
+      function suggestRefinementInstruction(question) {
+        const q = question.trim().toLowerCase();
+
+        // Common patterns and their instruction equivalents
+        if (q.includes('revenue') || q.includes('financial')) {
+          return 'Add more details about revenue and financial performance';
+        }
+        if (q.includes('risk')) {
+          return 'Expand the section on key risks and mitigation strategies';
+        }
+        if (q.includes('competitor') || q.includes('competition')) {
+          return 'Add competitive analysis and market positioning details';
+        }
+        if (q.includes('growth') || q.includes('market')) {
+          return 'Include more information about market growth and opportunities';
+        }
+        if (q.includes('team') || q.includes('management')) {
+          return 'Add details about the management team and their experience';
+        }
+        if (q.includes('product') || q.includes('service')) {
+          return 'Expand on product/service offerings and differentiation';
+        }
+        if (q.includes('concise') || q.includes('shorter') || q.includes('brief')) {
+          return 'Make the content more concise and focused';
+        }
+        if (q.includes('detail') || q.includes('more') || q.includes('expand')) {
+          return 'Add more details and depth to the analysis';
+        }
+
+        // Generic fallback - extract the topic
+        const topic = question.replace(/\?/g, '').replace(/^(what|how|why|when|where|who|which|is|are|can|could|would|do|does|did|tell me about|explain)\s*(is|are|the|a|an)?\s*/i, '').trim();
+        if (topic.length > 2) {
+          return `Add more details about ${topic}`;
+        }
+
+        return 'Add more details on this topic';
+      }
+
+      // Show guidance in AI Assistant when question is detected
+      function showRefinementGuidance(userQuestion) {
+        const suggestion = suggestRefinementInstruction(userQuestion);
+
+        const guidanceMessage = `💡 **Tip: Use refinement instructions, not questions**
+
+I noticed you typed: "${userQuestion}"
+
+For refinements, try phrasing as an **instruction** instead. For example:
+• "${suggestion}"
+
+**Why?** The refinement box directly modifies the report content. Instructions like "Add...", "Expand...", "Make more concise...", or "Include..." work best.
+
+**Need to ask a question instead?** Use this AI Assistant chat! I can answer questions about the portfolio company, and you can then add relevant information to your report.`;
+
+        // Add the guidance to the AI chat
+        addMessageToUI('assistant', guidanceMessage);
+
+        // Scroll chat to bottom
+        const chatMessages = document.getElementById('chat-messages');
+        if (chatMessages) {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      }
+
       async function regenerateWithAI() {
   const prompt = document.getElementById('ai-refinement-prompt').value.trim();
   const currentContent = document.getElementById('report-content').innerHTML;
@@ -795,6 +888,12 @@ async function setWebSearchState(enabled) {
   if (!prompt) {
     alert('Please enter a prompt describing how you want to refine the content');
     return;
+  }
+
+  // Check if the prompt looks like a question and show guidance
+  if (isQuestionPattern(prompt)) {
+    showRefinementGuidance(prompt);
+    // Don't block - still allow the regeneration but educate the user
   }
 
   // Get web search checkbox value - use the top checkbox
@@ -1391,11 +1490,12 @@ async function setWebSearchState(enabled) {
       }
 
       .ai-assistant-panel.collapsed {
-        width: 0;
-        min-width: 0;
+        width: 0 !important;
+        min-width: 0 !important;
         overflow: hidden;
         opacity: 0;
         border: none;
+        flex: 0 0 0 !important;
       }
 
       .ai-assistant-panel.resizing {

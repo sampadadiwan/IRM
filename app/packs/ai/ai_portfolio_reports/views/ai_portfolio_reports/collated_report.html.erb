@@ -213,10 +213,49 @@
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
 
-  // Render all charts after page load
+  // Render all charts and setup event listeners after page load
   document.addEventListener('DOMContentLoaded', function() {
     renderAllCharts();
+    setupSectionNavigation();
   });
+
+  function setupSectionNavigation() {
+    // Get all sidebar links
+    const sidebarLinks = document.querySelectorAll('.ai-sidebar-item');
+    const editorPane = document.querySelector('.ai-collated-editor');
+
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const href = this.getAttribute('href');
+        if (!href || !href.startsWith('#section-')) return;
+
+        const targetId = href.substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement && editorPane) {
+          // Calculate position relative to the editor pane's scroll container
+          const editorRect = editorPane.getBoundingClientRect();
+          const targetRect = targetElement.getBoundingClientRect();
+
+          // How far the target is from the top of the visible editor area
+          const relativeTop = targetRect.top - editorRect.top;
+
+          // New scroll position = current scroll + relative position - some padding
+          const newScrollTop = editorPane.scrollTop + relativeTop - 20;
+
+          // Scroll only the editor pane, not the whole page
+          editorPane.scrollTop = newScrollTop;
+
+          // Highlight active sidebar item
+          sidebarLinks.forEach(item => item.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+  }
 
   function renderAllCharts() {
     const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
@@ -278,22 +317,6 @@
     });
   }
 
-  // Smooth scroll to sections
-  document.querySelectorAll('a[href^="#section-"]').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const href = this.getAttribute('href');
-      const mainContent = document.querySelector('.ai-collated-editor');
-      const targetElement = mainContent.querySelector(href);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-
-      // Highlight active sidebar item
-      document.querySelectorAll('.ai-sidebar-item').forEach(item => item.classList.remove('active'));
-      this.classList.add('active');
-    });
-  });
 </script>
 
 <style>
@@ -565,7 +588,10 @@
   .ai-sidebar-list {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 8px 0;
+    /* Prevent sidebar from scrolling when section anchors are clicked */
+    overscroll-behavior: contain;
   }
 
   .ai-sidebar-item {

@@ -31,8 +31,9 @@ class AiPortfolioReportsController < ApplicationController
                        @report.ai_report_sections.order(:order_index).first
     @chat_session = @report.ai_chat_sessions.first || @report.ai_chat_sessions.create!(analyst_id: current_user.id)
 
-    # Use the persisted web_search_enabled flag for checkbox state
-    @show_web_search_version = @current_section.web_search_enabled
+    # Checkbox should only be checked if web search content actually exists and is being displayed
+    # This ensures the checkbox accurately reflects what the user is seeing
+    @show_web_search_version = @current_section.show_web_search_version? && @current_section.web_search_content_exists?
   end
 
   def collated_report

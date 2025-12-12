@@ -22,7 +22,7 @@ class GenerateSectionContentJob < ApplicationJob
       begin
         Rails.logger.info "Generating: #{section.section_type}"
 
-        #next unless section.section_type == "Company Overview"  # Skip this section as per requirements
+        #next unless section.section_type == "Custom Charts"  # Skip this section as per requirements
 
         # SPECIAL HANDLING: Custom Charts section uses Rails service
         if section.section_type == "Custom Charts"
