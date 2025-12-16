@@ -22,7 +22,7 @@ class GenerateSectionContentJob < ApplicationJob
       begin
         Rails.logger.info "Generating: #{section.section_type}"
 
-        #next unless section.section_type == "Custom Charts"  # Skip this section as per requirements
+        # next unless ["Company Overview", "Key Products & Services"].include?(section.section_type) # Skip this section as per requirements
 
         # SPECIAL HANDLING: Custom Charts section uses Rails service
         if section.section_type == "Custom Charts"
@@ -32,12 +32,11 @@ class GenerateSectionContentJob < ApplicationJob
           # All other sections use PortfolioReportAgent with cached documents
           generate_text_section(report, section, cached_documents_context)
         end
-
       rescue StandardError => e
         Rails.logger.error "Error: #{section.section_type}: #{e.message}"
       end
 
-      sleep(2)  # Rate limiting
+      sleep(2) # Rate limiting
     end
 
     Rails.logger.info "=== Completed generation for report #{report_id} ==="
@@ -70,7 +69,7 @@ class GenerateSectionContentJob < ApplicationJob
         }
 
         break if documents.count >= 10
-      rescue => e
+      rescue StandardError => e
         Rails.logger.warn "[GenerateSectionContentJob] Could not extract: #{file_path} - #{e.message}"
       end
     end
@@ -98,7 +97,7 @@ class GenerateSectionContentJob < ApplicationJob
     require 'pdf-reader'
     reader = PDF::Reader.new(file_path)
     reader.pages.first(100).map(&:text).join("\n\n")
-  rescue => e
+  rescue StandardError => e
     "Error extracting PDF: #{e.message}"
   end
 
@@ -121,7 +120,7 @@ class GenerateSectionContentJob < ApplicationJob
     end
 
     text_parts.join("\n\n")
-  rescue => e
+  rescue StandardError => e
     "Error extracting Excel: #{e.message}"
   end
 
@@ -167,7 +166,7 @@ class GenerateSectionContentJob < ApplicationJob
     end
 
     text_parts.join("\n\n").presence || "No text content found in PowerPoint"
-  rescue => e
+  rescue StandardError => e
     "Error extracting PPTX: #{e.message}"
   end
 
@@ -219,7 +218,6 @@ class GenerateSectionContentJob < ApplicationJob
   end
 
   def save_extracted_text_for_inspection(text, report_id)
-  begin
     file_path = "/tmp/generated_txt.txt"
 
     # Ensure text is string
@@ -232,11 +230,9 @@ class GenerateSectionContentJob < ApplicationJob
     end
 
     Rails.logger.info "[DEBUG] Extracted text saved to #{file_path}"
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "[ERROR] Failed to save extracted text: #{e.message}"
   end
-end
-
 
   # Generate text using PortfolioReportAgent with cached documents
   def generate_text_section(report, section, cached_documents_context)
@@ -256,7 +252,7 @@ end
       support_agent_id: agent.id,
       target: section,
       action: 'generate',
-      cached_documents_context: cached_documents_context,  # Pass cached context
+      cached_documents_context: cached_documents_context, # Pass cached context
       web_search_enabled: false
     )
 

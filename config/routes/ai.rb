@@ -18,9 +18,9 @@ resources :ai_portfolio_reports do
   member do
     get :collated_report           # View the collated report page
     patch :save_collated_report    # Save edits to collated report
-    # get :export_pdf              # ADD THIS
-    get :export_docx # ADD THIS
-    patch :toggle_master_web_search # ADD THIS
+    get :export_pdf                # Export as PDF
+    get :export_docx               # Export as Word
+    patch :toggle_master_web_search
   end
 
   resources :ai_report_sections do

@@ -1,7 +1,7 @@
 class PortfolioReportAgent < SupportAgentService
   step :initialize_agent
   step :load_document_context
-  step :load_web_search_context  # NEW: Load web search results
+  step :load_web_search_context # NEW: Load web search results
   step :load_section_template
   step :determine_action
   step :generate_or_refine
@@ -18,19 +18,19 @@ class PortfolioReportAgent < SupportAgentService
   # Clean markdown artifacts from LLM output
   def clean_llm_output(content)
     return "" if content.blank?
-    
+
     content = content.dup
-    
+
     # Remove markdown code fences
     content.gsub!(/```html\n?/, '')
     content.gsub!(/```\n?/, '')
-    
+
     # Remove common markdown artifacts
     content.gsub!(/^html\n/, '')
-    
+
     # Remove leading/trailing whitespace
     content.strip!
-    
+
     content
   end
 
@@ -59,9 +59,9 @@ class PortfolioReportAgent < SupportAgentService
       documents_context = load_documents_from_folder(folder_path)
       ctx[:documents_context] = documents_context
 
-      doc_count = documents_context.present? ? documents_context.scan(/=== Document:/).count : 0
+      doc_count = documents_context.present? ? documents_context.scan('=== Document:').count : 0
       Rails.logger.info "[PortfolioReportAgent] Loaded #{doc_count} documents"
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "[PortfolioReportAgent] Error loading documents: #{e.message}"
       ctx[:documents_context] = ""
     end
@@ -72,32 +72,44 @@ class PortfolioReportAgent < SupportAgentService
   def load_web_search_context(ctx, target:, web_search_enabled: false, **)
     ctx[:web_search_enabled] = web_search_enabled
     ctx[:web_search_context] = ""
-    
+
     Rails.logger.info "[PortfolioReportAgent] Web search enabled in : #{web_search_enabled}"
     return true unless web_search_enabled
-    
+
     section = target
     report = section.ai_portfolio_report
     company_name = report.portfolio_company&.name
-    
+
     return true unless company_name.present?
-    
+
     Rails.logger.info "[PortfolioReportAgent] Web search enabled - searching for #{company_name}"
-    
+
     begin
       queries = build_search_queries(section.section_type, company_name)
-      
+      Rails.logger.info "[PortfolioReportAgent] Executing #{queries.count} web searches..."
+
       search_results = []
-      queries.each do |query|
-        result = AgentTools::WebSearchTool.search(query)
-        search_results << format_search_result(query, result) unless result[:error]
+      # Use threads to execute searches in parallel to avoid timeout
+      threads = queries.map do |query|
+        Thread.new do
+          Rails.logger.info "[PortfolioReportAgent] Starting search for: #{query}"
+          result = AgentTools::WebSearchTool.search(query)
+          formatted = format_search_result(query, result) unless result[:error]
+          Rails.logger.info "[PortfolioReportAgent] Finished search for: #{query}"
+          formatted
+        end
       end
-      
+
+      threads.each do |t|
+        res = t.value
+        search_results << res if res.present?
+      end
+
       ctx[:web_search_context] = search_results.join("\n\n")
-      
+
       Rails.logger.info "[PortfolioReportAgent] Loaded #{search_results.count} web search results"
       true
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "[PortfolioReportAgent] Web search error: #{e.message}"
       ctx[:web_search_context] = ""
       true
@@ -107,14 +119,14 @@ class PortfolioReportAgent < SupportAgentService
   # Load section-specific template
   def load_section_template(ctx, target:, **)
     section = target
-    
+
     ctx[:section] = section
     ctx[:section_type] = section.section_type
     ctx[:template] = get_section_template(section.section_type)
 
     Rails.logger.info "[PortfolioReportAgent] section_type: #{section.section_type}"
     Rails.logger.info "[PortfolioReportAgent] STEP 4: load_section_template END"
-    
+
     Rails.logger.info "[PortfolioReportAgent] Processing: #{section.section_type}"
 
     true
@@ -125,10 +137,10 @@ class PortfolioReportAgent < SupportAgentService
     ctx[:user_prompt] = ctx[:user_prompt] || ""
     ctx[:current_content] = ctx[:current_content] || ""
     ctx[:web_search_enabled] = web_search_enabled
-    
+
     Rails.logger.info "[PortfolioReportAgent] Action: #{action}"
     Rails.logger.info "[PortfolioReportAgent] Web search: #{web_search_enabled}"
-    
+
     true
   end
 
@@ -142,7 +154,6 @@ class PortfolioReportAgent < SupportAgentService
     true
   end
 
-
   # Generate section content using LLM
   def generate_section_content(ctx, **)
     section_type = ctx[:section_type]
@@ -153,6 +164,8 @@ class PortfolioReportAgent < SupportAgentService
 
     Rails.logger.info "[PortfolioReportAgent] ===== GENERATE SECTION CONTENT ====="
     Rails.logger.info "[PortfolioReportAgent] Section type: #{section_type}"
+    Rails.logger.info "[PortfolioReportAgent] Web Search Enabled: #{ctx[:web_search_enabled]}"
+    Rails.logger.info "[PortfolioReportAgent] Web Search Context Present: #{web_search.present?}"
     Rails.logger.info "[PortfolioReportAgent] Documents context length: #{documents&.length || 0}"
     Rails.logger.info "[PortfolioReportAgent] Documents context preview (first 1000 chars): #{documents&.[](0..1000).inspect}"
     Rails.logger.info "[PortfolioReportAgent] Web search context length: #{web_search&.length || 0}"
@@ -174,7 +187,7 @@ class PortfolioReportAgent < SupportAgentService
     Rails.logger.info "[PortfolioReportAgent] Full prompt (first 2000 chars): #{prompt[0..2000].inspect}"
 
     # Call LLM
-    api_key = ENV['OPENAI_API_KEY']
+    api_key = ENV.fetch('OPENAI_API_KEY', nil)
     raise "OpenAI API key not found" unless api_key
 
     llm = Langchain::LLM::OpenAI.new(
@@ -191,7 +204,7 @@ class PortfolioReportAgent < SupportAgentService
     content = clean_llm_output(response.completion)
 
     ctx[:generated_content] = content
-    
+
     Rails.logger.info "[PortfolioReportAgent] Generated #{content.length} characters"
 
     true
@@ -206,10 +219,14 @@ class PortfolioReportAgent < SupportAgentService
     user_prompt = ctx[:user_prompt]
     web_search_enabled = ctx[:web_search_enabled]
     section = ctx[:section]
-    
+
     report = section.ai_portfolio_report
     company = report.portfolio_company
-    
+
+    Rails.logger.info "[PortfolioReportAgent] ===== REFINE SECTION CONTENT ====="
+    Rails.logger.info "[PortfolioReportAgent] Web Search Enabled: #{web_search_enabled}"
+    Rails.logger.info "[PortfolioReportAgent] Web Search Context Present: #{web_search.present?}"
+
     # Build refinement prompt
     prompt = build_refinement_prompt(
       section_type: section_type,
@@ -220,14 +237,14 @@ class PortfolioReportAgent < SupportAgentService
       company_name: company.name,
       web_search_enabled: web_search_enabled
     )
-    
+
     # Call LLM
-    api_key = ENV['OPENAI_API_KEY']
+    api_key = ENV.fetch('OPENAI_API_KEY', nil)
     raise "OpenAI API key not found" unless api_key
 
     llm = Langchain::LLM::OpenAI.new(
       api_key: api_key,
-      default_options: { 
+      default_options: {
         chat_completion_model_name: ENV['REPORT_AGENT_MODEL'] || 'gpt-4o',
         temperature: 0.7
       }
@@ -239,7 +256,7 @@ class PortfolioReportAgent < SupportAgentService
     content = clean_llm_output(response.completion)
 
     ctx[:generated_content] = content
-    
+
     Rails.logger.info "[PortfolioReportAgent] Refined #{content.length} characters"
     true
   end
@@ -442,7 +459,7 @@ class PortfolioReportAgent < SupportAgentService
         length: "1 compact paragraph plus 3-4 bullet points"
       }
     }
-    
+
     templates[section_type] || {
       description: "Investor-grade analysis and insights for #{section_type}, grounded in the uploaded documents and, where allowed, web search.",
       structure: [
@@ -454,22 +471,22 @@ class PortfolioReportAgent < SupportAgentService
     }
   end
 
-  def build_generation_prompt(section_type:, template:, documents:, web_search: "", company_name:, report_date:)
-    prompt = <<~PROMPT
+  def build_generation_prompt(section_type:, template:, documents:, company_name:, report_date:, web_search: "")
+    <<~PROMPT
       You are a professional investment analyst creating a #{section_type} section for a portfolio company report.
-      
+
       Company: #{company_name}
       Report Date: #{report_date}
-      
-      #{documents.present? ? "AVAILABLE DOCUMENTS:\n#{documents}\n" : ""}
-      
-      #{web_search.present? ? "LATEST WEB SEARCH RESULTS:\n#{web_search}\n" : ""}
-      
+
+      #{"AVAILABLE DOCUMENTS:\n#{documents}\n" if documents.present?}
+
+      #{"LATEST WEB SEARCH RESULTS:\n#{web_search}\n" if web_search.present?}
+
       SECTION REQUIREMENTS:
       Description: #{template[:description]}
       Structure: #{template[:structure].join(', ')}
       Length: #{template[:length]}
-      
+
       CRITICAL - OUTPUT FORMAT:
       - Return ONLY HTML content (no markdown)
       - DO NOT wrap output in code blocks or backticks
@@ -477,71 +494,69 @@ class PortfolioReportAgent < SupportAgentService
       - Use proper HTML tags: <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
       - Start directly with HTML tags (e.g., <h2>Section Title</h2>)
       - End with closing HTML tags (no extra text after)
-      
+
       INSTRUCTIONS:
       1. Write in professional, analytical tone
       2. Format in HTML (NOT markdown)
       3. Include relevant metrics and numbers from the documents
-      #{documents.present? ? <<~DOC_RULES
+      #{if documents.present?
+          <<~DOC_RULES
+            CRITICAL - SOURCE RESTRICTIONS:
+            - ONLY use information explicitly stated in the provided documents
+            - DO NOT add any facts, figures, or claims not found in the documents
+            - DO NOT use your general knowledge about the company or industry
+            - If information for a required section is missing from documents, write "Information not available in provided documents"
+            - Every claim must be traceable to the document content above
+          DOC_RULES
+        else
+          '4. Use general industry knowledge since no documents are provided'
+        end}
+      #{'- You may also incorporate facts from the web search results provided above' if web_search.present?}
 
-      CRITICAL - SOURCE RESTRICTIONS:
-      - ONLY use information explicitly stated in the provided documents
-      - DO NOT add any facts, figures, or claims not found in the documents
-      - DO NOT use your general knowledge about the company or industry
-      - If information for a required section is missing from documents, write "Information not available in provided documents"
-      - Every claim must be traceable to the document content above
-      DOC_RULES
-      : "4. Use general industry knowledge since no documents are provided"}
-      #{web_search.present? ? "- You may also incorporate facts from the web search results provided above" : ""}
-      
       Generate the #{section_type} section now in pure HTML format (no code blocks):
     PROMPT
-    
-    prompt
   end
 
   # Refinement prompt
-  def build_refinement_prompt(section_type:, current_content:, user_prompt:, documents:, web_search: "", company_name:, web_search_enabled: false)
-    prompt = <<~PROMPT
+  def build_refinement_prompt(section_type:, current_content:, user_prompt:, documents:, company_name:, web_search: "", web_search_enabled: false)
+    <<~PROMPT
       You are a professional investment analyst refining a #{section_type} section for a portfolio company report.
-      
+
       Company: #{company_name}
-      
+
       CURRENT CONTENT (HTML):
       #{current_content}
-      
+
       USER REQUEST (treat as refinement instruction, not a question):
       #{user_prompt}
-      
-      #{documents.present? ? "AVAILABLE DOCUMENTS FOR REFERENCE:\n#{documents}\n" : ""}
-      
-      #{web_search.present? ? "LATEST WEB SEARCH RESULTS:\n#{web_search}\n" : ""}
-      
+
+      #{"AVAILABLE DOCUMENTS FOR REFERENCE:\n#{documents}\n" if documents.present?}
+
+      #{"LATEST WEB SEARCH RESULTS:\n#{web_search}\n" if web_search.present?}
+
       CRITICAL - OUTPUT FORMAT:
       - Return ONLY HTML content (no markdown, no code blocks)
       - Use proper HTML tags: <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
       - Maintain professional formatting
-      
+
       INSTRUCTIONS:
       1. Carefully read the current content and user request
       2. Apply the requested changes while maintaining professional quality
       3. Preserve important information unless asked to remove it
       4. Adjust tone, length, or focus as requested
-      #{documents.present? ? <<~DOC_RULES
+      #{if documents.present?
+          <<~DOC_RULES
+            CRITICAL - SOURCE RESTRICTIONS:
+            - ONLY use information from the provided documents or current content
+            - DO NOT add any facts, figures, or claims not found in documents
+            - DO NOT use your general knowledge about the company or industry
+            - If user requests information not in documents, state "Information not available in provided documents"
+          DOC_RULES
+        end}
+      #{'- You may also incorporate facts from the web search results provided above' if web_search.present?}
 
-      CRITICAL - SOURCE RESTRICTIONS:
-      - ONLY use information from the provided documents or current content
-      - DO NOT add any facts, figures, or claims not found in documents
-      - DO NOT use your general knowledge about the company or industry
-      - If user requests information not in documents, state "Information not available in provided documents"
-      DOC_RULES
-      : ""}
-      #{web_search.present? ? "- You may also incorporate facts from the web search results provided above" : ""}
-      
       Refine the content according to the user's request now:
     PROMPT
-    
-    prompt
   end
 
   # Load documents from folder
@@ -553,24 +568,24 @@ class PortfolioReportAgent < SupportAgentService
 
     Dir.glob(File.join(folder_path, "*")).each do |file_path|
       next unless File.file?(file_path)
-      
+
       extension = File.extname(file_path).downcase
       next unless supported_extensions.include?(extension)
-      
+
       begin
         text = extract_text_from_file(file_path, extension)
-        
+
         documents << {
           name: File.basename(file_path),
           content: text[0..5000]
         }
-        
+
         break if documents.count >= 10
-      rescue => e
+      rescue StandardError => e
         Rails.logger.warn "[PortfolioReportAgent] Could not extract: #{file_path}"
       end
     end
-    
+
     format_documents_for_llm(documents)
   end
 
@@ -598,7 +613,7 @@ class PortfolioReportAgent < SupportAgentService
     text = reader.pages.first(20).map(&:text)
 
     text.join("\n\n")
-  rescue => e
+  rescue StandardError => e
     "Error extracting PDF: #{e.message}"
   end
 
@@ -624,7 +639,7 @@ class PortfolioReportAgent < SupportAgentService
     end
 
     text_parts.join("\n\n")
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "[PortfolioReportAgent] Error extracting Excel: #{e.message}"
     "Error extracting Excel: #{e.message}"
   end
@@ -676,12 +691,12 @@ class PortfolioReportAgent < SupportAgentService
 
         # Extract series names and values from charts
         chart_data = extract_chart_data(chart_doc)
-        if chart_data.present?
-          Rails.logger.info "[PortfolioReportAgent] PPTX Chart #{idx + 1}: #{chart_data.length} chars extracted"
-          Rails.logger.info "[PortfolioReportAgent] PPTX Chart #{idx + 1} preview: #{chart_data[0..200]}"
-          text_parts << "=== Chart #{idx + 1} Data ==="
-          text_parts << chart_data
-        end
+        next unless chart_data.present?
+
+        Rails.logger.info "[PortfolioReportAgent] PPTX Chart #{idx + 1}: #{chart_data.length} chars extracted"
+        Rails.logger.info "[PortfolioReportAgent] PPTX Chart #{idx + 1} preview: #{chart_data[0..200]}"
+        text_parts << "=== Chart #{idx + 1} Data ==="
+        text_parts << chart_data
       end
     end
 
@@ -694,7 +709,7 @@ class PortfolioReportAgent < SupportAgentService
     Rails.logger.info "[PortfolioReportAgent] PPTX Full extracted text (500-1000 chars): #{result[500..1000].inspect}"
 
     result.presence || "No text content found in PowerPoint"
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "[PortfolioReportAgent] Error extracting PPTX: #{e.message}"
     Rails.logger.error "[PortfolioReportAgent] PPTX Error backtrace: #{e.backtrace.first(5).join("\n")}"
     "Error extracting PPTX: #{e.message}"
@@ -732,36 +747,36 @@ class PortfolioReportAgent < SupportAgentService
   # Format documents for LLM
   def format_documents_for_llm(documents)
     return "No documents available." if documents.empty?
-    
+
     formatted = documents.map do |doc|
       "=== Document: #{doc[:name]} ===\n#{doc[:content]}\n"
     end
-    
+
     formatted.join("\n---\n\n")
   end
 
   # NEW: Build search queries based on section type
   def build_search_queries(section_type, company_name)
     base_query = company_name
-    
+
     queries = case section_type
-    when "Company Overview"
-      ["#{base_query} company overview", "#{base_query} business model"]
-    when "Market Size & Target"
-      ["#{base_query} market size", "#{base_query} target market"]
-    when "Recent Updates & Developments"
-      ["#{base_query} news", "#{base_query} recent developments"]
-    when "Competition Analysis"
-      ["#{base_query} competitors", "#{base_query} market position"]
-    when "Key Risks"
-      ["#{base_query} risks", "#{base_query} challenges"]
-    when "Negative News"
-      ["#{base_query} controversy", "#{base_query} negative news"]
-    else
-      ["#{base_query} #{section_type.downcase}"]
-    end
-    
-    queries.first(2)  # Limit to 2 queries to avoid rate limiting
+              when "Company Overview"
+                ["#{base_query} company overview", "#{base_query} business model"]
+              when "Market Size & Target"
+                ["#{base_query} market size", "#{base_query} target market"]
+              when "Recent Updates & Developments"
+                ["#{base_query} news", "#{base_query} recent developments"]
+              when "Competition Analysis"
+                ["#{base_query} competitors", "#{base_query} market position"]
+              when "Key Risks"
+                ["#{base_query} risks", "#{base_query} challenges"]
+              when "Negative News"
+                ["#{base_query} controversy", "#{base_query} negative news"]
+              else
+                ["#{base_query} #{section_type.downcase}"]
+              end
+
+    queries.first(2) # Limit to 2 queries to avoid rate limiting
   end
 
   # NEW: Format search result for prompt

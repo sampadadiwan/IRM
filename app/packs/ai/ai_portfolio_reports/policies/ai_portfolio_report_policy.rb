@@ -62,4 +62,8 @@ class AiPortfolioReportPolicy < ApplicationPolicy
   def toggle_master_web_search?
     update?
   end
+
+  def export_pdf?
+    show? # Same permission as viewing the report
+  end
 end

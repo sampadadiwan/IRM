@@ -31,7 +31,7 @@ class AiReportSectionsController < ApplicationController
   def toggle_web_search
     @report = AiPortfolioReport.find(params[:ai_portfolio_report_id])
     @section = @report.ai_report_sections.find(params[:id])
-
+    
     # Get the desired state from params (if provided) or toggle
     if params[:enable_web_search].present?
       desired_state = params[:enable_web_search] == true || params[:enable_web_search] == 'true'

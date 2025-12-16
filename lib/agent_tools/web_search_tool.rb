@@ -4,6 +4,7 @@ module AgentTools
     # @param query [String] search query
     # @return [Hash] search results with abstract, related topics, and sources
     def self.search(query)
+      start_time = Time.current
       Rails.logger.info "[WebSearchTool] Searching for: #{query}"
       
       response = HTTParty.get(
@@ -17,9 +18,12 @@ module AgentTools
         timeout: 10
       )
       
+      duration = (Time.current - start_time).round(2)
+      Rails.logger.info "[WebSearchTool] Search completed for '#{query}' in #{duration}s"
+      
       parse_results(response)
     rescue StandardError => e
-      Rails.logger.error "[WebSearchTool] Search failed: #{e.message}"
+      Rails.logger.error "[WebSearchTool] Search failed for '#{query}': #{e.message}"
       { error: e.message }
     end
 

@@ -166,7 +166,6 @@ group :development, :test do
   gem 'bullet'
   gem 'htmlbeautifier'
   gem 'parallel_tests'
-  gem 'pry-byebug'
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
@@ -194,7 +193,6 @@ group :development do
   gem "binding_of_caller"
 
   gem "ruby-lsp", require: false
-  gem "debug", platforms: [:mri]   # optional, but recommended
 
   # gem 'rails-erd'
 

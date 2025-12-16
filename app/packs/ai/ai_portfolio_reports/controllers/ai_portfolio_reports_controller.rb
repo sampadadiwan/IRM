@@ -36,6 +36,12 @@ class AiPortfolioReportsController < ApplicationController
     @show_web_search_version = @current_section.show_web_search_version? && @current_section.web_search_content_exists?
   end
 
+  def edit
+    authorize @report
+    # Redirect to show page - the show page IS the editing interface
+    redirect_to @report
+  end
+
   def collated_report
     authorize @report
 
@@ -62,17 +68,17 @@ class AiPortfolioReportsController < ApplicationController
   def export_pdf
     authorize @report
 
-    @collated_content = @report.collated_report_html.presence || generate_collated_content
     @sections = @report.ai_report_sections.where(reviewed: true).order(:order_index)
+    company_name = @report.portfolio_company&.name&.parameterize || "portfolio-company"
 
-    # Render the same collated_report view but as PDF
-    respond_to do |format|
-      format.pdf do
-        render pdf: "portfolio_report_#{@report.id}",
-               template: 'ai_portfolio_reports/collated_report',
-               layout: false
-      end
-    end
+    render pdf: "#{company_name}-report-#{Date.today}",
+           template: 'ai_portfolio_reports/export_pdf',
+           layout: false,
+           page_size: 'A4',
+           margin: { top: 20, bottom: 20, left: 20, right: 20 },
+           encoding: 'UTF-8',
+           print_media_type: true,
+           disposition: 'attachment'
   end
 
   def export_docx
@@ -80,15 +86,21 @@ class AiPortfolioReportsController < ApplicationController
 
     require 'htmltoword'
 
-    # Get collated content
-    html_content = @report.collated_report_html.presence || generate_collated_content
+    @sections = @report.ai_report_sections.where(reviewed: true).order(:order_index)
+    company_name = @report.portfolio_company&.name&.parameterize || "portfolio-company"
+
+    # Render the Word template to get properly formatted HTML
+    html_content = render_to_string(
+      template: 'ai_portfolio_reports/export_docx',
+      layout: false
+    )
 
     # Convert HTML to DOCX
     file = Htmltoword::Document.create(html_content)
 
     # Send file
     send_data file,
-              filename: "portfolio_report_#{@report.portfolio_company&.name}_#{Date.today}.docx",
+              filename: "#{company_name}-report-#{Date.today}.docx",
               type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
               disposition: 'attachment'
   end
@@ -167,9 +179,9 @@ class AiPortfolioReportsController < ApplicationController
 
       content += <<-HTML
       <div id="section-#{section.id}" style="margin-top: 2rem; margin-bottom: 2rem;">
-        <h2 style="color: #2563eb; border-bottom: 2px solid #60a5fa; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+        <!--<h2 style="color: #2563eb; border-bottom: 2px solid #60a5fa; padding-bottom: 0.5rem; margin-bottom: 1rem;">
           #{section.section_type}
-        </h2>
+        </h2>-->
         #{section_content}
       </div>
       HTML

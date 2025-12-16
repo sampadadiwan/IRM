@@ -1,7 +1,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <div class="ai-collated-container">
-  <!-- Report Header -->
   <div class="ai-collated-header">
     <div class="ai-collated-title-section">
       <h1 class="ai-collated-title">
@@ -35,7 +34,7 @@
           </svg>
         </button>
         <div class="ai-export-menu" id="export-menu">
-          <a href="#" onclick="window.print(); return false;" class="ai-export-item">
+          <a href="<%= export_pdf_ai_portfolio_report_path(@report) %>" class="ai-export-item">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
@@ -62,22 +61,24 @@
         Back to Sections
       <% end %>
 
-      <span class="ai-status-badge <%= @report.status == 'finalized' ? 'finalized' : 'draft' %>">
+      <span id="report-status-badge" class="ai-status-badge <%= @report.status == 'finalized' ? 'finalized' : 'draft' %>">
         <%= @report.status&.humanize || 'Draft' %>
       </span>
     </div>
   </div>
 
-  <!-- Main Content Area -->
   <div class="ai-collated-workspace">
-    <!-- LEFT: Sections Navigation -->
-    <div class="ai-collated-sidebar">
+    <!-- Sections Sidebar (Fixed - doesn't scroll with content) -->
+    <div class="ai-sections-sidebar">
       <div class="ai-sidebar-header">
-        <span class="ai-sidebar-label">REPORT SECTIONS</span>
+        <span class="ai-sidebar-label">SECTIONS</span>
       </div>
       <div class="ai-sidebar-list">
-        <% @sections.each do |section| %>
-          <a href="#section-<%= section.id %>" class="ai-sidebar-item">
+        <% @sections.each_with_index do |section, index| %>
+          <a href="javascript:void(0)"
+             class="ai-sidebar-item"
+             data-section-id="section-<%= section.id %>"
+             onclick="scrollToSection('section-<%= section.id %>')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
@@ -88,8 +89,8 @@
       </div>
     </div>
 
-    <!-- MAIN: Editor Panel -->
-    <div class="ai-collated-editor">
+    <!-- Main Content Editor -->
+    <div class="ai-collated-editor" id="collated-editor">
       <div class="ai-editor-wrapper">
         <div id="collated-content" contenteditable="true" class="ai-collated-content">
           <%= @collated_content.html_safe %>
@@ -116,6 +117,31 @@
     }
   });
 
+  // Scroll to section - scrolls only the editor pane, not the sidebar
+  function scrollToSection(sectionId) {
+    const editorPane = document.getElementById('collated-editor');
+    const targetElement = document.getElementById(sectionId);
+
+    if (targetElement && editorPane) {
+      // Calculate the position of the target relative to the editor pane
+      const editorRect = editorPane.getBoundingClientRect();
+      const targetRect = targetElement.getBoundingClientRect();
+      const scrollTop = editorPane.scrollTop + (targetRect.top - editorRect.top) - 20;
+
+      // Scroll the editor pane
+      editorPane.scrollTo({
+        top: scrollTop,
+        behavior: 'smooth'
+      });
+
+      // Update active state in sidebar
+      document.querySelectorAll('.ai-sidebar-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      document.querySelector(`[data-section-id="${sectionId}"]`)?.classList.add('active');
+    }
+  }
+
   // Save collated report
   async function saveCollatedReport() {
     const content = document.getElementById('collated-content').innerHTML;
@@ -140,6 +166,13 @@
 
       if (data.success) {
         saveStatus.innerHTML = '<span class="ai-status-success"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Saved at ' + new Date().toLocaleTimeString() + '</span>';
+
+        // Update status badge to Finalized
+        const statusBadge = document.getElementById('report-status-badge');
+        if (statusBadge) {
+          statusBadge.className = 'ai-status-badge finalized';
+          statusBadge.textContent = 'Finalized';
+        }
       } else {
         saveStatus.innerHTML = '<span class="ai-status-error"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> Failed to save</span>';
         alert('Error: ' + data.error);
@@ -154,16 +187,8 @@
 
   // Light pastel color palette for charts
   const PASTEL_COLORS = [
-    '#93C5FD', // Light blue
-    '#A5B4FC', // Light indigo
-    '#F9A8D4', // Light pink
-    '#FCD34D', // Light yellow
-    '#6EE7B7', // Light green
-    '#FDBA74', // Light orange
-    '#C4B5FD', // Light purple
-    '#FCA5A5', // Light red
-    '#7DD3FC', // Sky blue
-    '#67E8F9', // Cyan
+    '#93C5FD', '#A5B4FC', '#F9A8D4', '#FCD34D', '#6EE7B7',
+    '#FDBA74', '#C4B5FD', '#FCA5A5', '#7DD3FC', '#67E8F9',
   ];
 
   function applyLightColors(data, chartType) {
@@ -213,49 +238,10 @@
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
 
-  // Render all charts and setup event listeners after page load
+  // Render all charts after page load
   document.addEventListener('DOMContentLoaded', function() {
     renderAllCharts();
-    setupSectionNavigation();
   });
-
-  function setupSectionNavigation() {
-    // Get all sidebar links
-    const sidebarLinks = document.querySelectorAll('.ai-sidebar-item');
-    const editorPane = document.querySelector('.ai-collated-editor');
-
-    sidebarLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const href = this.getAttribute('href');
-        if (!href || !href.startsWith('#section-')) return;
-
-        const targetId = href.substring(1);
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement && editorPane) {
-          // Calculate position relative to the editor pane's scroll container
-          const editorRect = editorPane.getBoundingClientRect();
-          const targetRect = targetElement.getBoundingClientRect();
-
-          // How far the target is from the top of the visible editor area
-          const relativeTop = targetRect.top - editorRect.top;
-
-          // New scroll position = current scroll + relative position - some padding
-          const newScrollTop = editorPane.scrollTop + relativeTop - 20;
-
-          // Scroll only the editor pane, not the whole page
-          editorPane.scrollTop = newScrollTop;
-
-          // Highlight active sidebar item
-          sidebarLinks.forEach(item => item.classList.remove('active'));
-          this.classList.add('active');
-        }
-      });
-    });
-  }
 
   function renderAllCharts() {
     const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
@@ -269,7 +255,6 @@
       try {
         let data = JSON.parse(chartConfig);
 
-        // Convert 'area' to 'line' with fill
         if (chartType === 'area') {
           chartType = 'line';
           if (data.datasets) {
@@ -279,22 +264,20 @@
           }
         }
 
-        // Apply light pastel colors
         data = applyLightColors(data, chartType);
 
-        // Clear placeholder and create canvas
         placeholder.innerHTML = '';
         const canvas = document.createElement('canvas');
         canvas.id = `chart-${index}`;
         placeholder.appendChild(canvas);
 
-        // Create the chart
         new Chart(canvas, {
           type: chartType,
           data: data,
           options: {
             responsive: true,
             maintainAspectRatio: true,
+            aspectRatio: 2,
             plugins: {
               legend: {
                 display: true,
@@ -316,7 +299,6 @@
       }
     });
   }
-
 </script>
 
 <style>
@@ -324,15 +306,13 @@
      Collated Report - Modern UI Styles
      ======================================== */
 
-  /* CSS Variables (matching show.html.erb) */
+  /* CSS Variables */
   :root {
     --ai-primary: #2563eb;
     --ai-primary-light: #3b82f6;
     --ai-primary-dark: #1e40af;
     --ai-secondary: #64748b;
     --ai-success: #10b981;
-    --ai-teal: #14b8a6;
-    --ai-purple: #8b5cf6;
     --ai-bg: #f8fafc;
     --ai-card: #ffffff;
     --ai-border: #e2e8f0;
@@ -403,23 +383,9 @@
     gap: 6px;
   }
 
-  .ai-status-saving {
-    color: var(--ai-text-muted);
-  }
-
-  .ai-status-success {
-    color: var(--ai-success);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .ai-status-error {
-    color: #ef4444;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+  .ai-status-saving { color: var(--ai-text-muted); }
+  .ai-status-success { color: var(--ai-success); display: flex; align-items: center; gap: 4px; }
+  .ai-status-error { color: #ef4444; display: flex; align-items: center; gap: 4px; }
 
   /* Buttons */
   .ai-btn {
@@ -436,9 +402,7 @@
     text-decoration: none;
   }
 
-  .ai-btn:hover {
-    text-decoration: none;
-  }
+  .ai-btn:hover { text-decoration: none; }
 
   .ai-btn-primary {
     background: linear-gradient(135deg, var(--ai-primary), var(--ai-primary-dark));
@@ -452,11 +416,7 @@
     color: white;
   }
 
-  .ai-btn-primary:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none;
-  }
+  .ai-btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
   .ai-btn-export {
     background: linear-gradient(135deg, var(--ai-success), #059669);
@@ -476,15 +436,10 @@
     border: 1px solid var(--ai-border);
   }
 
-  .ai-btn-back:hover {
-    background: #f1f5f9;
-    color: var(--ai-text);
-  }
+  .ai-btn-back:hover { background: #f1f5f9; color: var(--ai-text); }
 
   /* Export Dropdown */
-  .ai-export-dropdown {
-    position: relative;
-  }
+  .ai-export-dropdown { position: relative; }
 
   .ai-export-menu {
     position: absolute;
@@ -503,11 +458,7 @@
     z-index: 1000;
   }
 
-  .ai-export-menu.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
+  .ai-export-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
   .ai-export-item {
     display: flex;
@@ -520,19 +471,9 @@
     transition: var(--ai-transition);
   }
 
-  .ai-export-item:hover {
-    background: #f1f5f9;
-    color: var(--ai-primary);
-    text-decoration: none;
-  }
-
-  .ai-export-item:first-child {
-    border-radius: var(--ai-radius-sm) var(--ai-radius-sm) 0 0;
-  }
-
-  .ai-export-item:last-child {
-    border-radius: 0 0 var(--ai-radius-sm) var(--ai-radius-sm);
-  }
+  .ai-export-item:hover { background: #f1f5f9; color: var(--ai-primary); text-decoration: none; }
+  .ai-export-item:first-child { border-radius: var(--ai-radius-sm) var(--ai-radius-sm) 0 0; }
+  .ai-export-item:last-child { border-radius: 0 0 var(--ai-radius-sm) var(--ai-radius-sm); }
 
   /* Status Badge */
   .ai-status-badge {
@@ -544,15 +485,8 @@
     letter-spacing: 0.5px;
   }
 
-  .ai-status-badge.draft {
-    background: #dbeafe;
-    color: #1e40af;
-  }
-
-  .ai-status-badge.finalized {
-    background: #d1fae5;
-    color: #065f46;
-  }
+  .ai-status-badge.draft { background: #dbeafe; color: #1e40af; }
+  .ai-status-badge.finalized { background: #d1fae5; color: #065f46; }
 
   /* Workspace Layout */
   .ai-collated-workspace {
@@ -561,20 +495,23 @@
     overflow: hidden;
   }
 
-  /* Sidebar */
-  .ai-collated-sidebar {
-    width: 240px;
+  /* Sections Sidebar - Fixed, doesn't scroll with content */
+  .ai-sections-sidebar {
+    width: 220px;
     flex-shrink: 0;
     background: var(--ai-card);
     border-right: 1px solid var(--ai-border);
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    height: calc(100vh - 80px); /* Full height minus header */
+    position: sticky;
+    top: 0;
   }
 
   .ai-sidebar-header {
     padding: 16px 20px;
     border-bottom: 1px solid var(--ai-border);
+    flex-shrink: 0;
   }
 
   .ai-sidebar-label {
@@ -588,10 +525,7 @@
   .ai-sidebar-list {
     flex: 1;
     overflow-y: auto;
-    overflow-x: hidden;
     padding: 8px 0;
-    /* Prevent sidebar from scrolling when section anchors are clicked */
-    overscroll-behavior: contain;
   }
 
   .ai-sidebar-item {
@@ -605,6 +539,7 @@
     font-weight: 500;
     border-left: 3px solid transparent;
     transition: var(--ai-transition);
+    cursor: pointer;
   }
 
   .ai-sidebar-item:hover {
@@ -619,15 +554,8 @@
     border-left-color: var(--ai-primary);
   }
 
-  .ai-sidebar-item svg {
-    flex-shrink: 0;
-    opacity: 0.5;
-  }
-
-  .ai-sidebar-item:hover svg,
-  .ai-sidebar-item.active svg {
-    opacity: 1;
-  }
+  .ai-sidebar-item svg { flex-shrink: 0; opacity: 0.5; }
+  .ai-sidebar-item:hover svg, .ai-sidebar-item.active svg { opacity: 1; }
 
   .ai-sidebar-item-text {
     overflow: hidden;
@@ -635,17 +563,17 @@
     white-space: nowrap;
   }
 
-  /* Editor Panel */
+  /* Editor Panel - Scrolls independently */
   .ai-collated-editor {
     flex: 1;
     overflow-y: auto;
     padding: 32px;
     background: var(--ai-bg);
+    height: calc(100vh - 80px); /* Full height minus header */
   }
 
   .ai-editor-wrapper {
-    max-width: 900px;
-    margin: 0 auto;
+    width: 100%;
   }
 
   .ai-collated-content {
@@ -675,9 +603,7 @@
     margin-bottom: 1rem;
   }
 
-  .ai-collated-content h1:first-child {
-    margin-top: 0;
-  }
+  .ai-collated-content h1:first-child { margin-top: 0; }
 
   .ai-collated-content h2 {
     color: var(--ai-primary);
@@ -687,6 +613,7 @@
     padding-bottom: 0.4rem;
     margin-top: 1.5rem;
     margin-bottom: 0.8rem;
+    scroll-margin-top: 20px;
   }
 
   .ai-collated-content h3 {
@@ -705,24 +632,14 @@
     line-height: 1.8;
   }
 
-  .ai-collated-content ul,
-  .ai-collated-content ol {
+  .ai-collated-content ul, .ai-collated-content ol {
     margin-bottom: 1rem;
     padding-left: 2rem;
   }
 
-  .ai-collated-content ul {
-    list-style-type: disc;
-  }
-
-  .ai-collated-content ul ul {
-    list-style-type: circle;
-    margin-top: 0.5rem;
-  }
-
-  .ai-collated-content ol {
-    list-style-type: decimal;
-  }
+  .ai-collated-content ul { list-style-type: disc; }
+  .ai-collated-content ul ul { list-style-type: circle; margin-top: 0.5rem; }
+  .ai-collated-content ol { list-style-type: decimal; }
 
   .ai-collated-content li {
     margin-bottom: 0.5rem;
@@ -731,37 +648,14 @@
     line-height: 1.7;
   }
 
-  .ai-collated-content li::marker {
-    color: var(--ai-primary-light);
-    font-weight: bold;
-  }
+  .ai-collated-content li::marker { color: var(--ai-primary-light); font-weight: bold; }
+  .ai-collated-content strong, .ai-collated-content b { color: #1f2937; font-weight: 600; }
 
-  .ai-collated-content strong,
-  .ai-collated-content b {
-    color: #1f2937;
-    font-weight: 600;
-  }
+  .ai-collated-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  .ai-collated-content th, .ai-collated-content td { padding: 12px; border: 1px solid var(--ai-border); text-align: left; }
+  .ai-collated-content th { background: #f1f5f9; font-weight: 600; color: var(--ai-text); }
 
-  .ai-collated-content table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
-  }
-
-  .ai-collated-content th,
-  .ai-collated-content td {
-    padding: 12px;
-    border: 1px solid var(--ai-border);
-    text-align: left;
-  }
-
-  .ai-collated-content th {
-    background: #f1f5f9;
-    font-weight: 600;
-    color: var(--ai-text);
-  }
-
-  /* Chart Error */
+  /* Chart Styles */
   .ai-chart-error {
     padding: 16px;
     background: #fef2f2;
@@ -771,37 +665,45 @@
     font-size: 14px;
   }
 
+  .ai-collated-content .chart-placeholder,
+  .ai-collated-content canvas {
+    max-width: 100%;
+    height: auto !important;
+    box-sizing: border-box;
+  }
+
+  .ai-collated-content .chart-placeholder {
+    max-width: 800px;
+    margin: 20px auto;
+    height: auto;
+  }
+
   /* Scrollbar Styling */
-  .ai-sidebar-list::-webkit-scrollbar,
-  .ai-collated-editor::-webkit-scrollbar {
+  .ai-collated-editor::-webkit-scrollbar,
+  .ai-sidebar-list::-webkit-scrollbar {
     width: 6px;
   }
 
-  .ai-sidebar-list::-webkit-scrollbar-track,
-  .ai-collated-editor::-webkit-scrollbar-track {
+  .ai-collated-editor::-webkit-scrollbar-track,
+  .ai-sidebar-list::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  .ai-sidebar-list::-webkit-scrollbar-thumb,
-  .ai-collated-editor::-webkit-scrollbar-thumb {
+  .ai-collated-editor::-webkit-scrollbar-thumb,
+  .ai-sidebar-list::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 3px;
   }
 
-  .ai-sidebar-list::-webkit-scrollbar-thumb:hover,
-  .ai-collated-editor::-webkit-scrollbar-thumb:hover {
+  .ai-collated-editor::-webkit-scrollbar-thumb:hover,
+  .ai-sidebar-list::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
   }
 
   /* Responsive */
   @media (max-width: 1200px) {
-    .ai-collated-sidebar {
-      width: 200px;
-    }
-
-    .ai-collated-content {
-      padding: 32px;
-    }
+    .ai-collated-content { padding: 32px; }
+    .ai-sections-sidebar { width: 180px; }
   }
 
   @media (max-width: 768px) {
@@ -811,42 +713,22 @@
       gap: 16px;
     }
 
-    .ai-collated-actions {
-      flex-wrap: wrap;
-    }
-
-    .ai-collated-sidebar {
-      display: none;
-    }
-
-    .ai-collated-editor {
-      padding: 16px;
-    }
-
-    .ai-collated-content {
-      padding: 24px;
-    }
+    .ai-collated-actions { flex-wrap: wrap; }
+    .ai-sections-sidebar { display: none; }
+    .ai-collated-editor { padding: 16px; }
+    .ai-collated-content { padding: 24px; }
   }
 
   /* Print Styles */
   @media print {
     .ai-collated-header,
-    .ai-collated-sidebar {
+    .ai-sections-sidebar {
       display: none !important;
     }
 
-    .ai-collated-workspace {
-      display: block;
-    }
-
-    .ai-collated-editor {
-      padding: 0;
-      overflow: visible;
-    }
-
-    .ai-editor-wrapper {
-      max-width: 100%;
-    }
+    .ai-collated-workspace { display: block; }
+    .ai-collated-editor { padding: 0; overflow: visible; height: auto; }
+    .ai-editor-wrapper { max-width: 100%; }
 
     .ai-collated-content {
       box-shadow: none;
@@ -855,13 +737,7 @@
       min-height: auto;
     }
 
-    h2 {
-      page-break-after: avoid;
-    }
-
-    canvas {
-      max-width: 100%;
-      height: auto !important;
-    }
+    h2 { page-break-after: avoid; }
+    canvas { max-width: 100%; height: auto !important; }
   }
 </style>
