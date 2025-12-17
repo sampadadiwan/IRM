@@ -196,7 +196,6 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller"
 
-
   # gem 'rails-erd'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
@@ -267,4 +266,4 @@ gem 'json_schemer'
 gem 'ruby_llm', git: 'https://github.com/crmne/ruby_llm.git'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
-gem 'ruby_llm'
+# gem 'ruby_llm'
