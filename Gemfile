@@ -5,6 +5,9 @@ gem 'docusign_esign', '~> 4.0.0.rc1'
 gem 'faraday'
 gem 'faraday-typhoeus'
 
+# Gem for segmenting paragraphs into sentences
+gem 'pragmatic_segmenter'
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'pdf-reader'
 gem 'rails', '~> 8.0.0'
@@ -72,7 +75,7 @@ gem "aws-sdk-s3", require: false
 gem 'chewy'
 
 # gem 'kaminari'
-gem "pagy"
+gem "pagy", "~> 9.4"
 # gem 'paper_trail'
 
 # Charting gems
@@ -133,7 +136,7 @@ gem 'rack-attack'
 
 # for making external API calls
 gem 'httparty'
-gem 'rubyzip'
+gem 'rubyzip', "2.4.1"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
@@ -152,7 +155,7 @@ gem 'net-scp'
 gem 'net-smtp'
 gem 'net-ssh'
 gem 'public_activity'
-gem 'rubyXL', git: "https://github.com/weshatheleopard/rubyXL.git"
+gem 'rubyXL', "3.4.33"
 
 # gem "strong_migrations"
 
@@ -166,6 +169,7 @@ group :development, :test do
   gem 'bullet'
   gem 'htmlbeautifier'
   gem 'parallel_tests'
+  gem 'pry-byebug'
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
@@ -192,7 +196,6 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller"
 
-  gem "ruby-lsp", require: false
 
   # gem 'rails-erd'
 
@@ -264,3 +267,4 @@ gem 'json_schemer'
 gem 'ruby_llm', git: 'https://github.com/crmne/ruby_llm.git'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+gem 'ruby_llm'

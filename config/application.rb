@@ -11,8 +11,6 @@ module CapHive
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
-    config.i18n.available_locales = %i[en ja]
-    config.i18n.default_locale = :en
 
     config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA1
 
@@ -57,7 +55,7 @@ module CapHive
       config.paths['app/helpers'].unshift("#{Rails.root}/app/packs/startups/#{view_path}/helpers")
     end
 
-    ai_view_paths = %w[ai_rules ow chats agent_charts support_agents ai_portfolio_reports]
+    ai_view_paths = %w[ai_rules ow chats agent_charts support_agents faqs ai_portfolio_reports]
 
     ai_view_paths.each do |view_path|
       config.paths['app/views'].unshift("#{Rails.root}/app/packs/ai/#{view_path}/views")
@@ -106,9 +104,9 @@ module CapHive
     if ENV['VULN_SCAN'].blank?
       Rails.application.config.middleware.use ExceptionNotification::Rack,
                                               email: {
-                                                email_prefix: "[Error] #{Rails.env}: ",
-                                                sender_address: ENV.fetch("SUPPORT_EMAIL", nil),
-                                                exception_recipients: ENV.fetch('ERROR_EMAIL')
+                                                email_prefix: "[Error] #{Rails.env}:(#{ENV.fetch('BASE_DOMAIN', nil)})",
+                                                sender_address: ENV.fetch("SUPPORT_EMAIL_FROM", nil),
+                                                exception_recipients: ENV.fetch('ERROR_EMAIL', nil).split(',')
                                               }
 
     end
