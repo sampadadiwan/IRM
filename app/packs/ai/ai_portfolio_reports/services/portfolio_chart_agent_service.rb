@@ -7,48 +7,52 @@ class PortfolioChartAgentService
   # Minimal whitelist to keep outputs valid for Chart.js
   ALLOWED_TYPES = %w[bar line pie doughnut scatter radar polarArea].freeze
 
-  def initialize(csv_paths: [], json_data: nil)
+  def initialize(csv_paths: [], json_data: nil, skip_cleanup: false)
     @csv_paths = csv_paths # array of paths to .csv files on disk
     @json_data = json_data
+    @skip_cleanup = skip_cleanup
   end
 
   def build_system_msg
-  <<~SYS
-    You are a Chart.js config generator.
-    TASK: Output ONLY a single JSON object representing a valid Chart.js config:
-      {
-        "type": "<one of: #{ALLOWED_TYPES.join(', ')}>",
-        "data": {
-          "labels": [<strings or numbers>],
-          "datasets": [
-            {
-              "label": "<name>",
-              "data": [<numbers>],
-              "backgroundColor": [<array of colors for pie/bar> or <single color for line>],
-              "borderColor": "<color>",
-              "borderWidth": 2,
-              "fill": false
-            }
-          ]
-        },
-        "options": { }
-      }
-    RULES:
-    - No markdown, no code fences, no commentary - just JSON.
-    - IMPORTANT: Always use LIGHT, PASTEL colors - NOT dark saturated colors
-    - For pie/doughnut charts: Use array of light pastel colors like ["#93C5FD", "#A5B4FC", "#F9A8D4", "#FCD34D", "#6EE7B7", "#FDBA74"]
-    - For bar charts: Use array of light colors like ["#93C5FD", "#A5B4FC", "#F9A8D4", "#FCD34D", "#6EE7B7", "#FDBA74"]
-    - For line charts: Use borderColor like "#60A5FA" and backgroundColor "rgba(96, 165, 250, 0.15)"
-    - Use these LIGHT color palettes (prefer Pastel):
-      * Pastel (PREFERRED): ["#93C5FD", "#A5B4FC", "#F9A8D4", "#FCD34D", "#6EE7B7", "#FDBA74", "#C4B5FD", "#FCA5A5"]
-      * Soft Blue-Green: ["#7DD3FC", "#67E8F9", "#5EEAD4", "#6EE7B7", "#86EFAC", "#A3E635"]
-      * Warm Pastels: ["#FECACA", "#FED7AA", "#FDE68A", "#FEF08A", "#D9F99D", "#BBF7D0"]
-      * Cool Pastels: ["#BFDBFE", "#C7D2FE", "#DDD6FE", "#F5D0FE", "#FBCFE8", "#FECDD3"]
-    - If CSV files are provided, use them as primary data; if JSON is provided, merge it sensibly.
-    - Ensure arrays are equal length where required by Chart.js.
-    - Prefer sensible defaults; do not invent extra fields not in Chart.js.
-  SYS
-end
+    <<~SYS
+      You are a Chart.js config generator.
+      TASK: Output ONLY a single JSON object representing a valid Chart.js config:
+        {
+          "type": "<one of: #{ALLOWED_TYPES.join(', ')}>",
+          "data": {
+            "labels": [<strings or numbers>],
+            "datasets": [
+              {
+                "label": "<name>",
+                "data": [<numbers>],
+                "backgroundColor": [<array of colors for pie/bar> or <single color for line>],
+                "borderColor": "<color>",
+                "borderWidth": 2,
+                "fill": false
+              }
+            ]
+          },
+          "options": { }
+        }
+      RULES:
+      - No markdown, no code fences, no commentary - just JSON.
+      - CRITICAL: Output must be valid JSON only. NO JavaScript functions, callbacks, or code.
+      - DO NOT use function(), callbacks, or any JavaScript code in the output.
+      - Only use primitive values: strings, numbers, booleans, arrays, objects.
+      - IMPORTANT: Always use LIGHT, PASTEL colors - NOT dark saturated colors
+      - For pie/doughnut charts: Use array of light pastel colors like ["#93C5FD", "#A5B4FC", "#F9A8D4", "#FCD34D", "#6EE7B7", "#FDBA74"]
+      - For bar charts: Use array of light colors like ["#93C5FD", "#A5B4FC", "#F9A8D4", "#FCD34D", "#6EE7B7", "#FDBA74"]
+      - For line charts: Use borderColor like "#60A5FA" and backgroundColor "rgba(96, 165, 250, 0.15)"
+      - Use these LIGHT color palettes (prefer Pastel):
+        * Pastel (PREFERRED): ["#93C5FD", "#A5B4FC", "#F9A8D4", "#FCD34D", "#6EE7B7", "#FDBA74", "#C4B5FD", "#FCA5A5"]
+        * Soft Blue-Green: ["#7DD3FC", "#67E8F9", "#5EEAD4", "#6EE7B7", "#86EFAC", "#A3E635"]
+        * Warm Pastels: ["#FECACA", "#FED7AA", "#FDE68A", "#FEF08A", "#D9F99D", "#BBF7D0"]
+        * Cool Pastels: ["#BFDBFE", "#C7D2FE", "#DDD6FE", "#F5D0FE", "#FBCFE8", "#FECDD3"]
+      - If CSV files are provided, use them as primary data; if JSON is provided, merge it sensibly.
+      - Ensure arrays are equal length where required by Chart.js.
+      - Prefer sensible defaults; do not invent extra fields not in Chart.js.
+    SYS
+  end
 
   def build_user_msg(prompt)
     <<~USER
@@ -65,7 +69,7 @@ end
 
   # Returns a Ruby Hash ready to pass to Chart.js on the frontend
   def generate_chart!(prompt:)
-    chat = RubyLLM.chat(model: 'gpt-4o-mini')
+    chat = RubyLLM.chat(model: 'gemini-2.5-pro')
 
     # Build the system message with instructions
     system_msg = build_system_msg
@@ -77,7 +81,8 @@ end
 
     # Attach the CSV files if provided; otherwise just send the message
     raw = if @csv_paths.any?
-            chat.ask(system_msg) # prime the system instruction
+            Rails.logger.info "Sending #{@csv_paths.count} files to LLM: #{@csv_paths.map { |p| "#{File.basename(p)} (#{File.size(p)} bytes)" }.join(', ')}"
+            chat.ask(system_msg)
             chat.ask(user_msg, with: @csv_paths)
           else
             chat.ask([system_msg, user_msg].join("\n\n"))
@@ -97,6 +102,8 @@ end
   private
 
   def cleanup
+    return if @skip_cleanup
+
     @csv_paths.each do |path|
       FileUtils.rm_f(path)
     end

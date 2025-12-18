@@ -186,22 +186,29 @@ class PortfolioReportAgent < SupportAgentService
     Rails.logger.info "[PortfolioReportAgent] Full prompt length: #{prompt.length}"
     Rails.logger.info "[PortfolioReportAgent] Full prompt (first 2000 chars): #{prompt[0..2000].inspect}"
 
-    # Call LLM
-    api_key = ENV.fetch('OPENAI_API_KEY', nil)
-    raise "OpenAI API key not found" unless api_key
+    # # Call LLM
+    # api_key = ENV.fetch('OPENAI_API_KEY', nil)
+    # raise "OpenAI API key not found" unless api_key
 
-    llm = Langchain::LLM::OpenAI.new(
-      api_key: api_key,
-      default_options: {
-        chat_completion_model_name: ENV['REPORT_AGENT_MODEL'] || 'gpt-4o',
-        temperature: 0.3
-      }
-    )
+    # llm = Langchain::LLM::OpenAI.new(
+    #   api_key: api_key,
+    #   default_options: {
+    #     chat_completion_model_name: ENV['REPORT_AGENT_MODEL'] || 'gpt-4o',
+    #     temperature: 0.3
+    #   }
+    # )
 
+    # Rails.logger.info "[PortfolioReportAgent] Calling LLM to generate content..."
+
+    # response = llm.complete(prompt: prompt)
+    # content = clean_llm_output(response.completion)
+
+    # Call LLM using RubyLLM
     Rails.logger.info "[PortfolioReportAgent] Calling LLM to generate content..."
 
-    response = llm.complete(prompt: prompt)
-    content = clean_llm_output(response.completion)
+    chat = RubyLLM.chat(model: 'gemini-2.5-pro')
+    response = chat.ask(prompt)
+    content = clean_llm_output(response.content)
 
     ctx[:generated_content] = content
 
@@ -238,22 +245,29 @@ class PortfolioReportAgent < SupportAgentService
       web_search_enabled: web_search_enabled
     )
 
-    # Call LLM
-    api_key = ENV.fetch('OPENAI_API_KEY', nil)
-    raise "OpenAI API key not found" unless api_key
+    # # Call LLM
+    # api_key = ENV.fetch('OPENAI_API_KEY', nil)
+    # raise "OpenAI API key not found" unless api_key
 
-    llm = Langchain::LLM::OpenAI.new(
-      api_key: api_key,
-      default_options: {
-        chat_completion_model_name: ENV['REPORT_AGENT_MODEL'] || 'gpt-4o',
-        temperature: 0.7
-      }
-    )
+    # llm = Langchain::LLM::OpenAI.new(
+    #   api_key: api_key,
+    #   default_options: {
+    #     chat_completion_model_name: ENV['REPORT_AGENT_MODEL'] || 'gpt-4o',
+    #     temperature: 0.7
+    #   }
+    # )
 
+    # Rails.logger.info "[PortfolioReportAgent] Calling LLM to refine content..."
+
+    # response = llm.complete(prompt: prompt)
+    # content = clean_llm_output(response.completion)
+    #
+    # Call LLM using RubyLLM
     Rails.logger.info "[PortfolioReportAgent] Calling LLM to refine content..."
 
-    response = llm.complete(prompt: prompt)
-    content = clean_llm_output(response.completion)
+    chat = RubyLLM.chat(model: 'gemini-2.5-pro')
+    response = chat.ask(prompt)
+    content = clean_llm_output(response.content)
 
     ctx[:generated_content] = content
 
