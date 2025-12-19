@@ -489,7 +489,8 @@ class PortfolioReportAgent < SupportAgentService
     <<~PROMPT
       You are a professional investment analyst creating a #{section_type} section for a portfolio company report.
 
-      Company: #{company_name}
+      Company name must be inferred from documents if present
+
       Report Date: #{report_date}
 
       #{"AVAILABLE DOCUMENTS:\n#{documents}\n" if documents.present?}
@@ -508,6 +509,10 @@ class PortfolioReportAgent < SupportAgentService
       - Use proper HTML tags: <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>
       - Start directly with HTML tags (e.g., <h2>Section Title</h2>)
       - End with closing HTML tags (no extra text after)
+      - If documents are provided, DO NOT rely on any externally provided company name
+      - Identify and use the company name ONLY if explicitly mentioned in the documents
+      - If multiple or conflicting company names appear, state "Multiple companies referenced in provided documents"
+      - If no company name is mentioned, use "Company (name not specified in documents)"
 
       INSTRUCTIONS:
       1. Write in professional, analytical tone
@@ -536,7 +541,7 @@ class PortfolioReportAgent < SupportAgentService
     <<~PROMPT
       You are a professional investment analyst refining a #{section_type} section for a portfolio company report.
 
-      Company: #{company_name}
+      Company name must be inferred from documents if present
 
       CURRENT CONTENT (HTML):
       #{current_content}
@@ -565,6 +570,11 @@ class PortfolioReportAgent < SupportAgentService
             - DO NOT add any facts, figures, or claims not found in documents
             - DO NOT use your general knowledge about the company or industry
             - If user requests information not in documents, state "Information not available in provided documents"
+            - If documents are provided, DO NOT rely on any externally provided company name
+            - Identify and use the company name ONLY if explicitly mentioned in the documents
+            - If multiple or conflicting company names appear, state "Multiple companies referenced in provided documents"
+            - If no company name is mentioned, use "Company (name not specified in documents)"
+
           DOC_RULES
         end}
       #{'- You may also incorporate facts from the web search results provided above' if web_search.present?}
